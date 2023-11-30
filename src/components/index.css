@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.apexcharts-tooltip.apexcharts-theme-dark {
+  background: transparent !important;
+}
+
+.donut-chart .apexcharts-datalabels text {
+  fill: #333942;
+}
+
+.chart-tooltip {
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  background: #fff;
+  color: #416690;
+}
+
+.chart-tooltip strong {
+  display: flex;
+  align-items: center;
+  background: #333942;
+  padding: 0 16px;
+  height: 36px;
+  width: 100%;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  color: white;
+}
+
+.chart-tooltip div {
+  padding: 0 16px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  border: 1px solid #e4e6ea;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.chart-tooltip b {
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+  background: #eee;
+}
+
+.skeleton-box::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(255, 255, 255, 0.5) 60%,
+    rgba(255, 255, 255, 0)
+  );
+  animation: shimmer 2s infinite;
+  content: '';
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  background: #444;
+  border-radius: 6px;
+}
+
+.rdp .rdp-tbody {
+  --rdp-accent-color: #d3dfee;
+}
+
+.rdp .rdp-tbody .rdp-day_range_start,
+.rdp .rdp-tbody .rdp-day_range_end {
+  --rdp-accent-color: #416690;
+  border-radius: 4px;
+  --rdp-selected-color: white;
+}
+
+.rdp .rdp-tbody {
+  --rdp-selected-color: #416690;
+}

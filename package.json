@@ -1,0 +1,90 @@
+{
+  "name": "luuk-beans-workspace",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "embeddable:build": "embeddable build",
+    "embeddable:push": "embeddable push",
+    "embeddable:login": "embeddable login",
+    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tremor/react": "^3.2.1",
+    "apexcharts": "^3.44.0",
+    "chart.js": "^4.4.0",
+    "date-fns": "^2.30.0",
+    "dayjs": "^1.11.9",
+    "moment": "^2.29.4",
+    "react": "^18.2.0",
+    "react-apexcharts": "^1.4.1",
+    "react-chartjs-2": "^5.2.0",
+    "react-day-picker": "^8.9.1",
+    "react-dom": "^18.2.0",
+    "react-select": "^5.8.0",
+    "vite-plugin-css-injected-by-js": "^3.1.1"
+  },
+  "devDependencies": {
+    "@embeddable.com/core": "^2.4.3",
+    "@embeddable.com/react": "^2.4.2",
+    "@embeddable.com/sdk-core": "^2.4.5",
+    "@embeddable.com/sdk-react": "^2.2.4",
+    "@types/react": "^18.0.37",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^4.0.0",
+    "autoprefixer": "^10.4.14",
+    "eslint": "^8.38.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.3.4",
+    "postcss": "^8.4.24",
+    "tailwindcss": "^3.3.2",
+    "tailwindcss-themer": "^3.1.0",
+    "tw-colors": "^2.2.0",
+    "vite": "^4.3.9",
+    "vite-plugin-singlefile": "^0.13.5"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2020": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:react/jsx-runtime",
+      "plugin:react-hooks/recommended"
+    ],
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    },
+    "settings": {
+      "react": {
+        "version": "18.2"
+      }
+    },
+    "plugins": [
+      "react-refresh"
+    ],
+    "rules": {
+      "react-refresh/only-export-components": "warn",
+      "react/prop-types": "off"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "tailwindcss": {},
+      "autoprefixer": {}
+    }
+  },
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 100,
+    "trailingComma": "none",
+    "endOfLine": "auto"
+  }
+}
