@@ -25,7 +25,7 @@ export default (props: Props) => {
   const { isLoading, data, error } = results;
 
   useEffect(() => {
-    console.log(JSON.stringify(props, null, 2));
+    console.log(props); // TODO: Remove logs
   }, [props]);
 
   const options = useMemo(
