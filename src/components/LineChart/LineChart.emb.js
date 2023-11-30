@@ -62,7 +62,7 @@ export default defineComponent(LineChart, meta, {
   props: (props) => {
     return {
       ...props,
-      columns: loadData({
+      line: loadData({
         from: props.ds,
         dimensions: [props.groupingA, props.groupingB].filter((g) => !!g),
         measures: [props.count]

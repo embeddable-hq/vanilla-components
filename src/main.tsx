@@ -7,14 +7,14 @@ import LineChart from './components/LineChart/LineChart';
 import DonutChart from './components/DonutChart/DonutChart';
 import ColumnChart from './components/ColumnChart/ColumnChart';
 import SingleValue from './components/SingleValue/SingleValue';
-import Table from './components/Table/Table';
+// import Table from './components/Table/Table';
 import TextInput from './components/TextInput/TextInput';
 import NumberInput from './components/NumberInput/NumberInput';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <div className="p-8">
-      <Table
+      {/* <Table
         columns={[
           {
             name: 'customers.country',
@@ -93,7 +93,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           ]
         }}
       />
-      <br />
+      <br /> */}
       <div className="h-[500px]">
         <DonutChart
           showLabels
@@ -437,16 +437,233 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           }}
         />
       </div>
-      {/* <br />
-      <div className="h-96">
+      <br />
+
+      <div className="h-[400px]">
         <LineChart
-          title=""
-          columns={{ isLoading: false, data: [] }}
-          count={{ name: '', title: '', description: '' }}
-          groupingA={{ name: '', title: '', description: '' }}
-          groupingB={{ name: '', title: '', description: '' }}
-          // showLabels
+          title="Test"
+          showLabels
           showLegend
+          count={{
+            name: 'products.count',
+            title: 'Count',
+            description: null
+          }}
+          groupingB={{
+            name: 'products.size',
+            title: 'Size',
+            description: null
+          }}
+          groupingA={{
+            name: 'customers.country',
+            title: 'Country',
+            description: null
+          }}
+          line={{
+            isLoading: false,
+            data: [
+              {
+                'customers.country': 'United States',
+                'products.size': 'Giant',
+                'products.count': '6'
+              },
+              {
+                'customers.country': 'Germany',
+                'products.size': 'Giant',
+                'products.count': '5'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'products.size': 'Giant',
+                'products.count': '5'
+              },
+              {
+                'customers.country': 'United States',
+                'products.size': 'Huge',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'United States',
+                'products.size': 'Massive',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'products.size': 'Big',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'products.size': 'Great Big',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'Germany',
+                'products.size': 'Big',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'Germany',
+                'products.size': 'Massive',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'Germany',
+                'products.size': 'Huge',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'United States',
+                'products.size': 'Big',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'United States',
+                'products.size': 'Great Big',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'Belgium',
+                'products.size': 'Massive',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'products.size': 'Huge',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'products.size': 'Massive',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'products.size': 'Big',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'products.size': 'Super Giant',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'products.size': 'Huge',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'products.size': 'Massive',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Belgium',
+                'products.size': 'Super Giant',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United States',
+                'products.size': 'Super Giant',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Germany',
+                'products.size': 'Great Big',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Belgium',
+                'products.size': 'Big',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Iceland',
+                'products.size': 'Giant',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Australia',
+                'products.size': 'Great Big',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Belgium',
+                'products.size': 'Great Big',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Australia',
+                'products.size': 'Giant',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'products.size': 'Giant',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Iceland',
+                'products.size': 'Huge',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Australia',
+                'products.size': 'Huge',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Australia',
+                'products.size': 'Massive',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Australia',
+                'products.size': 'Super Giant',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Belgium',
+                'products.size': 'Giant',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Belgium',
+                'products.size': 'Huge',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Germany',
+                'products.size': 'Super Giant',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Iceland',
+                'products.size': 'Great Big',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Australia',
+                'products.size': 'Big',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Iceland',
+                'products.size': 'Massive',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'products.size': 'Great Big',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'products.size': 'Super Giant',
+                'products.count': '1'
+              }
+            ]
+          }}
         />
       </div>
       <br />
@@ -456,12 +673,47 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         property={{ name: '', title: '', description: '' }}
       />
       <br />
-      <Dropdown onChange={() => {}} value="Chocolate" />
+      <Dropdown
+        onChange={() => {}}
+        property={{
+          name: 'customers.email',
+          title: 'Email',
+          description: null
+        }}
+        title="test"
+        value="test"
+        options={{
+          isLoading: false,
+          data: [
+            {
+              'customers.email': 'acouvert1y@csmoncomor.com'
+            },
+            {
+              'customers.email': 'aeberdtq@lulu.com'
+            },
+            {
+              'customers.email': 'alarchier32@theguardian.com'
+            },
+            {
+              'customers.email': 'anisco3q@pen.io'
+            },
+            {
+              'customers.email': 'avalentine2w@blogtalkradio.com'
+            },
+            {
+              'customers.email': 'bbeaka@apache.org'
+            },
+            {
+              'customers.email': 'bbuchanan3g@bloomberg.com'
+            }
+          ]
+        }}
+      />
       <br />
       <TextInput onChange={() => {}} value="Chocolate" />
       <br />
       <NumberInput onChange={() => {}} value="123" />
-      <br /> */}
+      <br />
     </div>
   </React.StrictMode>
 );

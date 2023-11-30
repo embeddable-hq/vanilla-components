@@ -5,6 +5,13 @@ import TextInput from './TextInput';
 export const meta = {
   name: 'TextInput',
   label: 'Text Input',
+  inputs: [
+    {
+      name: 'value',
+      type: 'string',
+      label: 'Value'
+    }
+  ],
   events: [
     {
       name: 'onChange',
@@ -16,12 +23,23 @@ export const meta = {
         }
       ]
     }
+  ],
+  variables: [
+    {
+      name: 'Text Value',
+      type: 'string',
+      defaultValue: null,
+      inputs: ['value'],
+      events: [{ name: 'onChange', property: 'value' }]
+    }
   ]
 };
 
 export default defineComponent(TextInput, meta, {
   props: ({ value }) => ({ value }),
   events: {
-    onChange: (value) => ({ value })
+    onChange: (value) => {
+      return { value };
+    }
   }
 });

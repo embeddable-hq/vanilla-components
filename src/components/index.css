@@ -2,6 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+.dropdown .select-search-container {
+  --select-search-background: white;
+  --select-search-border: #dadce1;
+  --select-search-selected: #ccc;
+  --select-search-text: #333942;
+  --select-search-subtle-text: #ccc;
+  --select-search-highlight: #F6F6F7;
+  width: 100%;
+}
+
+.dropdown .select-search-container .select-search-input {
+  border-radius: 12px;
+  border-width: 1px;
+}
+
+.dropdown .select-search-container .select-search-select {
+  border-radius: 12px !important;
+  border-width: 1px;
+}
+
+.dropdown .select-search-container .select-search-options {
+  border-radius: 12px;
+}
+
+.dropdown .select-search-container .select-search-row:first-child {
+  border-radius: 12px;
+}
+
 .apexcharts-tooltip.apexcharts-theme-dark {
   background: transparent !important;
 }

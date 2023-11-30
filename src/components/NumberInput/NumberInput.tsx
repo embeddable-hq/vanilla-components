@@ -3,6 +3,7 @@ import React from 'react';
 import '../index.css';
 
 export default ({ onChange, value }) => {
+  console.log(3333, value);
   return (
     <div className="w-full relative rounded-xl border border-[#DADCE1] pr-8">
       <input
@@ -11,7 +12,12 @@ export default ({ onChange, value }) => {
         onChange={(e) => onChange(e.target.value)}
         defaultValue={value}
       />
-      <div className="opacity-50 hover:opacity-100 absolute w-10 right-0 top-0 h-full cursor-pointer group flex items-center justify-center">
+      <div
+        onClick={() => {
+          onChange('');
+        }}
+        className="opacity-50 hover:opacity-100 absolute w-10 right-0 top-0 h-full cursor-pointer group flex items-center justify-center"
+      >
         <ClearIcon />
       </div>
     </div>

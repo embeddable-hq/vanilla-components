@@ -1,5 +1,5 @@
-import { defineComponent } from '@embeddable.com/react';
 import { loadData } from '@embeddable.com/core';
+import { defineComponent } from '@embeddable.com/react';
 
 import DonutChart from './DonutChart';
 

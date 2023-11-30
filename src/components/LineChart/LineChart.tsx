@@ -18,8 +18,8 @@ type DimensionOrMeasure = {
 };
 
 type Props = {
-  title: string;
-  columns: Data;
+  title?: string;
+  line: Data;
   count: DimensionOrMeasure;
   groupingA: DimensionOrMeasure;
   groupingB: DimensionOrMeasure;
@@ -32,17 +32,39 @@ export default (props: Props) => {
   const [width, height] = useResize(ref);
 
   const { labels, series } = useMemo(() => {
-    console.log(props);
-
-    return {
-      labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
-      series: [
-        {
-          name: 'Desktops',
-          data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
-        }
-      ]
+    type Memo = {
+      labels: string[];
+      grouped: { [a: string]: { [b: string]: number } };
     };
+
+    if (!props.line?.data || !props.count?.name || !props.groupingA?.name) {
+      return { labels: [], series: [] };
+    }
+
+    const { grouped, labels } = props.line.data.reduce(
+      (memo: Memo, record) => {
+        const groupA = record[props.groupingA?.name || ''] as string;
+        const groupB = record[props.groupingB?.name || ''] || 'default';
+
+        if (!groupA || !groupB) return memo;
+
+        memo.grouped[groupB] = memo.grouped[groupB] || {};
+
+        memo.grouped[groupB][groupA] = record[props.count.name] as number;
+
+        if (!memo.labels.includes(groupA)) memo.labels.push(groupA);
+
+        return memo;
+      },
+      { labels: [], grouped: {} }
+    );
+
+    const series = Object.keys(grouped).map((name) => ({
+      name,
+      data: labels.map((label) => grouped[name][label] || 0)
+    }));
+
+    return { labels, series };
   }, [props]);
 
   return (
@@ -87,17 +109,15 @@ export default (props: Props) => {
               tickAmount: 5
             },
             tooltip: {
-              custom: ({ series, seriesIndex, w }) => {
-                const color = w.config.colors[seriesIndex];
-                // const label = props.columns.data
-                //   ? props.columns.data[seriesIndex][props.groupingA.name]
-                //   : '';
-                // const value = series[seriesIndex];
+              custom: (opt) => {
+                const color = opt.w.config.colors[opt.seriesIndex];
+                const label = series[opt.seriesIndex]?.name || '';
+                const value = opt.series[opt.seriesIndex][opt.dataPointIndex];
 
                 return `<div class="chart-tooltip">
-                <strong>${props.count.title}: ${'value'}</strong>
-                <div><b style="background-color:${color}"></b>${'label'}</div>
-              </div>`;
+                  <strong>${props.count.title}: ${value}</strong>
+                  <div><b style="background-color:${color}"></b>${label}</div>
+                </div>`;
               },
               style: {
                 fontSize: '9px'
@@ -133,15 +153,14 @@ export default (props: Props) => {
             plotOptions: {
               bar: {
                 borderRadius: 5,
-                columnWidth: 22,
-
+                columnWidth: 22
               }
             }
           }}
           series={series}
           type="line"
         />
-        {props.columns?.isLoading && (
+        {props.line?.isLoading && (
           <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
         )}
       </div>
