@@ -11,8 +11,6 @@ import Table from './components/Table/Table';
 import TextInput from './components/TextInput/TextInput';
 import NumberInput from './components/NumberInput/NumberInput';
 
-import Tom from './components/Tom';
-
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <div className="p-8">
@@ -20,223 +18,77 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         columns={[
           {
             name: 'customers.country',
-            title: 'Product Size',
+            title: 'Country',
             description: null
           },
           {
             name: 'products.size',
-            title: 'Product Size',
+            title: 'Size',
             description: null
           },
           {
-            name: 'products.count',
-            title: 'Count',
+            name: 'products.name',
+            title: 'Name',
             description: null
           }
         ]}
-        title="Courses In Progress"
-        table={{
+        maxPageRows={5}
+        defaultSort={[
+          {
+            property: {
+              name: 'customers.country',
+              title: 'Country',
+              __type__: 'dimension',
+              nativeType: 'string'
+            },
+            direction: 'asc'
+          },
+          {
+            property: {
+              name: 'products.size',
+              title: 'Size',
+              __type__: 'dimension',
+              nativeType: 'string'
+            },
+            direction: 'asc'
+          },
+          {
+            property: {
+              name: 'products.name',
+              title: 'Name',
+              __type__: 'dimension',
+              nativeType: 'string'
+            },
+            direction: 'asc'
+          }
+        ]}
+        tableData={{
           isLoading: false,
           data: [
             {
-              'customers.country': 'United States',
-              'products.size': 'Giant',
-              'products.count': '6'
-            },
-            {
-              'customers.country': 'Germany',
-              'products.size': 'Giant',
-              'products.count': '5'
-            },
-            {
-              'customers.country': 'United Kingdom',
-              'products.size': 'Giant',
-              'products.count': '5'
-            },
-            {
-              'customers.country': 'United States',
-              'products.size': 'Huge',
-              'products.count': '3'
-            },
-            {
-              'customers.country': 'United States',
-              'products.size': 'Massive',
-              'products.count': '3'
-            },
-            {
-              'customers.country': 'New Zealand',
-              'products.size': 'Big',
-              'products.count': '3'
-            },
-            {
-              'customers.country': 'United Kingdom',
-              'products.size': 'Great Big',
-              'products.count': '3'
-            },
-            {
-              'customers.country': 'Germany',
-              'products.size': 'Big',
-              'products.count': '3'
-            },
-            {
-              'customers.country': 'Germany',
-              'products.size': 'Massive',
-              'products.count': '3'
-            },
-            {
-              'customers.country': 'Germany',
-              'products.size': 'Huge',
-              'products.count': '3'
-            },
-            {
-              'customers.country': 'United States',
-              'products.size': 'Big',
-              'products.count': '3'
-            },
-            {
-              'customers.country': 'United States',
-              'products.size': 'Great Big',
-              'products.count': '3'
-            },
-            {
-              'customers.country': 'Belgium',
-              'products.size': 'Massive',
-              'products.count': '2'
-            },
-            {
-              'customers.country': 'New Zealand',
-              'products.size': 'Huge',
-              'products.count': '2'
-            },
-            {
-              'customers.country': 'New Zealand',
-              'products.size': 'Massive',
-              'products.count': '2'
-            },
-            {
-              'customers.country': 'United Kingdom',
-              'products.size': 'Big',
-              'products.count': '2'
-            },
-            {
-              'customers.country': 'New Zealand',
-              'products.size': 'Super Giant',
-              'products.count': '2'
-            },
-            {
-              'customers.country': 'United Kingdom',
-              'products.size': 'Huge',
-              'products.count': '2'
-            },
-            {
-              'customers.country': 'United Kingdom',
-              'products.size': 'Massive',
-              'products.count': '2'
-            },
-            {
-              'customers.country': 'Belgium',
-              'products.size': 'Super Giant',
-              'products.count': '2'
-            },
-            {
-              'customers.country': 'United States',
-              'products.size': 'Super Giant',
-              'products.count': '2'
-            },
-            {
-              'customers.country': 'Germany',
-              'products.size': 'Great Big',
-              'products.count': '2'
-            },
-            {
-              'customers.country': 'Belgium',
-              'products.size': 'Big',
-              'products.count': '2'
-            },
-            {
-              'customers.country': 'Iceland',
-              'products.size': 'Giant',
-              'products.count': '2'
-            },
-            {
               'customers.country': 'Australia',
-              'products.size': 'Great Big',
-              'products.count': '2'
-            },
-            {
-              'customers.country': 'Belgium',
-              'products.size': 'Great Big',
-              'products.count': '2'
+              'products.size': 'Big',
+              'products.name': 'Ultimate Relaxer'
             },
             {
               'customers.country': 'Australia',
               'products.size': 'Giant',
-              'products.count': '2'
+              'products.name': 'Camo Beanbag Surprise'
             },
             {
-              'customers.country': 'New Zealand',
+              'customers.country': 'Australia',
               'products.size': 'Giant',
-              'products.count': '2'
-            },
-            {
-              'customers.country': 'Iceland',
-              'products.size': 'Huge',
-              'products.count': '1'
+              'products.name': 'Suede Tanker'
             },
             {
               'customers.country': 'Australia',
-              'products.size': 'Huge',
-              'products.count': '1'
-            },
-            {
-              'customers.country': 'Australia',
-              'products.size': 'Massive',
-              'products.count': '1'
-            },
-            {
-              'customers.country': 'Australia',
-              'products.size': 'Super Giant',
-              'products.count': '1'
-            },
-            {
-              'customers.country': 'Belgium',
-              'products.size': 'Giant',
-              'products.count': '1'
-            },
-            {
-              'customers.country': 'Belgium',
-              'products.size': 'Huge',
-              'products.count': '1'
-            },
-            {
-              'customers.country': 'Germany',
-              'products.size': 'Super Giant',
-              'products.count': '1'
-            },
-            {
-              'customers.country': 'Iceland',
               'products.size': 'Great Big',
-              'products.count': '1'
+              'products.name': 'Cozy Cresh'
             },
             {
               'customers.country': 'Australia',
-              'products.size': 'Big',
-              'products.count': '1'
-            },
-            {
-              'customers.country': 'Iceland',
-              'products.size': 'Massive',
-              'products.count': '1'
-            },
-            {
-              'customers.country': 'New Zealand',
               'products.size': 'Great Big',
-              'products.count': '1'
-            },
-            {
-              'customers.country': 'United Kingdom',
-              'products.size': 'Super Giant',
-              'products.count': '1'
+              'products.name': 'Memory Bag with Leather Finish'
             }
           ]
         }}
