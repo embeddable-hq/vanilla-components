@@ -4,6 +4,7 @@ import React, { useMemo, useRef } from 'react';
 import useResize from '../../hooks/useResize';
 
 import '../index.css';
+import moment from 'moment';
 
 type Data = {
   error?: string;
@@ -21,8 +22,8 @@ type Props = {
   title?: string;
   line: Data;
   count: DimensionOrMeasure;
-  groupingA: DimensionOrMeasure;
-  groupingB: DimensionOrMeasure;
+  date: DimensionOrMeasure;
+  grouping: DimensionOrMeasure;
   showLabels?: boolean;
   showLegend?: boolean;
 };
@@ -37,14 +38,14 @@ export default (props: Props) => {
       grouped: { [a: string]: { [b: string]: number } };
     };
 
-    if (!props.line?.data || !props.count?.name || !props.groupingA?.name) {
+    if (!props.line?.data || !props.count?.name || !props.date?.name) {
       return { labels: [], series: [] };
     }
 
     const { grouped, labels } = props.line.data.reduce(
       (memo: Memo, record) => {
-        const groupA = record[props.groupingA?.name || ''] as string;
-        const groupB = record[props.groupingB?.name || ''] || 'default';
+        const groupA = record[props.date?.name || ''] as string;
+        const groupB = record[props.grouping?.name || ''] || 'default';
 
         if (!groupA || !groupB) return memo;
 
@@ -77,7 +78,7 @@ export default (props: Props) => {
       <div className="relative h-full" ref={ref}>
         <Chart
           className="line-chart"
-          height={!!props.title ? height - 25 : height}
+          height={!!props.title ? height - 30 : height}
           options={{
             colors: [
               '#2859C5',
@@ -103,7 +104,11 @@ export default (props: Props) => {
               }
             },
             xaxis: {
-              min: 0
+              type: 'datetime',
+              categories: labels,
+              labels: {
+                formatter: (v) => `${moment(v).format('L')}`
+              }
             },
             yaxis: {
               tickAmount: 5
@@ -123,7 +128,6 @@ export default (props: Props) => {
                 fontSize: '9px'
               }
             },
-            labels,
             legend: {
               show: !!props.showLegend,
               position: 'bottom',

@@ -7,6 +7,12 @@ export const meta = {
   label: 'Text Input',
   inputs: [
     {
+      name: 'title',
+      type: 'string',
+      label: 'Title',
+      description: 'The title'
+    },
+    {
       name: 'value',
       type: 'string',
       label: 'Value'
@@ -28,7 +34,7 @@ export const meta = {
     {
       name: 'Text Value',
       type: 'string',
-      defaultValue: null,
+      defaultValue: '',
       inputs: ['value'],
       events: [{ name: 'onChange', property: 'value' }]
     }
@@ -36,7 +42,7 @@ export const meta = {
 };
 
 export default defineComponent(TextInput, meta, {
-  props: ({ value }) => ({ value }),
+  props: (props) => ({ ...props }),
   events: {
     onChange: (value) => {
       return { value };

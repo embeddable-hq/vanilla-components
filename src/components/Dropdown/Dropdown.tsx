@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Select from 'react-select-search';
 
 import '../index.css';
@@ -17,7 +17,7 @@ type Dimension = {
 };
 
 type Props = {
-  title: string;
+  title?: string;
   options: Data;
   property: Dimension;
   onChange: (v: any) => void;

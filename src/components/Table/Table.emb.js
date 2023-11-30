@@ -37,12 +37,13 @@ export default defineComponent(Table, meta, {
     const limit =
       props.maxPageRows || state?.maxRowsFit
         ? Math.min(props.maxPageRows || 1000, state?.maxRowsFit || 1000)
-        : 0;
+        : 1;
 
-    const defaultSort = props.columns.map((property) => ({
-      property,
-      direction: 'asc'
-    }));
+    const defaultSort =
+      props.columns?.map((property) => ({
+        property,
+        direction: 'asc'
+      })) || [];
 
     return {
       ...props,

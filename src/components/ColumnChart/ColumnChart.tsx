@@ -131,11 +131,7 @@ export default (props: Props) => {
             dataLabels: {
               enabled: !!props.showLabels,
               dropShadow: { enabled: false },
-              background: {
-                enabled: true,
-                borderRadius: 10,
-                padding: 4
-              }
+              offsetY: -20
             },
             stroke: {
               show: true,
@@ -145,11 +141,14 @@ export default (props: Props) => {
             plotOptions: {
               bar: {
                 borderRadius: 5,
-                columnWidth: 22
+                columnWidth: 22,
+                dataLabels: {
+                  position: 'top'
+                }
               }
             }
           }}
-          height={!!props.title ? height - 25 : height}
+          height={!!props.title ? height - 30 : height}
           width={width}
           series={series}
           type="bar"

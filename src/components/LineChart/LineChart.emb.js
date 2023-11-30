@@ -1,6 +1,8 @@
 import { loadData } from '@embeddable.com/core';
 import { defineComponent } from '@embeddable.com/react';
 
+import GranularityType from '../../types/Granularity.type.emb.js';
+
 import LineChart from './LineChart';
 
 export const meta = {
@@ -21,17 +23,22 @@ export const meta = {
       defaultValue: false
     },
     {
-      name: 'groupingA',
+      name: 'date',
       type: 'dimension',
-      label: 'Grouping A',
+      label: 'Date',
       config: {
         dataset: 'ds'
       }
     },
     {
-      name: 'groupingB',
+      name: 'granularity',
+      type: GranularityType,
+      label: 'Granularity'
+    },
+    {
+      name: 'grouping',
       type: 'dimension',
-      label: 'Grouping B',
+      label: 'Grouping',
       config: {
         dataset: 'ds'
       }
@@ -64,7 +71,15 @@ export default defineComponent(LineChart, meta, {
       ...props,
       line: loadData({
         from: props.ds,
-        dimensions: [props.groupingA, props.groupingB].filter((g) => !!g),
+        timeDimensions: props.date
+          ? [
+              {
+                dimension: props.date.name,
+                granularity: props.granularity
+              }
+            ]
+          : undefined,
+        dimensions: [props.grouping].filter((g) => !!g),
         measures: [props.count]
       })
     };

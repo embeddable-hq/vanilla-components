@@ -22,11 +22,23 @@ export const meta = {
     },
     {
       name: 'property',
-      type: 'dimensionOrMeasure',
+      type: 'measure',
       label: 'Property',
       config: {
         dataset: 'ds'
       }
+    },
+    {
+      name: 'prefix',
+      type: 'string',
+      label: 'Prefix',
+      description: 'Prefix'
+    },
+    {
+      name: 'suffix',
+      type: 'string',
+      label: 'Suffix',
+      description: 'Suffix'
     }
   ],
   events: []
@@ -36,7 +48,7 @@ export default defineComponent(SingleValue, meta, {
   props: (props) => {
     return {
       ...props,
-      columns: loadData({
+      value: loadData({
         from: props.ds,
         dimensions: isDimension(props.property) ? [props.property] : [],
         measures: isMeasure(props.property) ? [props.property] : []

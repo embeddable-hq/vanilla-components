@@ -8,6 +8,12 @@ export const meta = {
   label: 'Number Input',
   inputs: [
     {
+      name: 'title',
+      type: 'string',
+      label: 'Title',
+      description: 'The title'
+    },
+    {
       name: 'value',
       type: 'number',
       label: 'Value'
@@ -37,7 +43,7 @@ export const meta = {
 };
 
 export default defineComponent(NumberInput, meta, {
-  props: ({ value }) => ({ value }),
+  props: (props) => ({ ...props }),
   events: {
     onChange: (value) => {
       const noValue = typeof value !== 'number' && !value;

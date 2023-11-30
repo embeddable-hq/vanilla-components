@@ -449,12 +449,12 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             title: 'Count',
             description: null
           }}
-          groupingB={{
+          grouping={{
             name: 'products.size',
             title: 'Size',
             description: null
           }}
-          groupingA={{
+          date={{
             name: 'customers.country',
             title: 'Country',
             description: null
@@ -712,7 +712,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <br />
       <TextInput onChange={() => {}} value="Chocolate" />
       <br />
-      <NumberInput onChange={() => {}} value="123" />
+      <NumberInput onChange={() => {}} value={12} />
       <br />
     </div>
   </React.StrictMode>

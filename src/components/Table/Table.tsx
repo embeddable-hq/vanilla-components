@@ -59,7 +59,7 @@ export default (props: Props) => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      const heightWithoutHead = height - 40;
+      const heightWithoutHead = height - 30;
       const maxRowsFit = Math.floor(heightWithoutHead / 53);
 
       setMeta({ ...meta, maxRowsFit });
@@ -131,11 +131,14 @@ export default (props: Props) => {
                 <TableRow key={index} className="hover:bg-gray-400/5">
                   {row.map((c, i) => (
                     <TableCell key={i} className="text-sm text-dark">
-                      <div
-                        className={`${i === 0 ? 'font-bold text-[#aaa]' : ''} flex w-0 basis-0 row`}
-                      >
-                        {typeof c === 'number' ? format(c) : c}
-                      </div>
+                      <span className="text-overflow-dynamic-container">
+                        <span
+                          className="text-overflow-dynamic-ellipsis"
+                          title={typeof c === 'number' ? format(c) : c}
+                        >
+                          {typeof c === 'number' ? format(c) : c}
+                        </span>
+                      </span>
                     </TableCell>
                   ))}
                 </TableRow>

@@ -17,7 +17,7 @@ type DimensionOrMeasure = {
 };
 
 type Props = {
-  title: string;
+  title?: string;
   donut: Data;
   count: DimensionOrMeasure;
   groups: DimensionOrMeasure;
@@ -147,7 +147,7 @@ export default (props: Props) => {
               }
             }
           }}
-          height={!!props.title ? height - 25 : height}
+          height={!!props.title ? height - 30 : height}
           width={width}
           series={series}
           type="donut"
