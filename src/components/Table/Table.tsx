@@ -1,5 +1,9 @@
+import { useEmbeddableState } from '@embeddable.com/react';
+import { OrderBy, OrderDirection } from '@embeddable.com/core';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Table, TableRow, TableBody, TableCell, TableHead, TableHeaderCell } from '@tremor/react';
-import React, { useCallback, useMemo, useState } from 'react';
+
+import useResize from '../../hooks/useResize';
 
 type Column = {
   name: string;
@@ -8,9 +12,11 @@ type Column = {
 };
 
 type Props = {
-  title: string;
-  columns?: Column[];
-  table: TableData;
+  title?: string;
+  columns: Column[];
+  maxPageRows?: number;
+  tableData: TableData;
+  defaultSort: OrderBy[];
 };
 
 type TableData = {
@@ -20,36 +26,53 @@ type TableData = {
 };
 
 export default (props: Props) => {
-  const [sort, setSort] = useState(1);
-  const { columns, table } = props;
+  const { columns, tableData } = props;
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [width, height] = useResize(ref);
   const { format } = useMemo(() => new Intl.NumberFormat(), []);
 
-  const sortRows = useCallback((rows: (number | string)[][], sort: number) => {
-    const desc = sort > 0 ? -1 : 1;
-    const index = Math.abs(sort) - 1;
+  const [meta, setMeta] = useEmbeddableState({
+    page: 0,
+    maxRowsFit: 0,
+    sort: props.defaultSort
+  }) as any;
 
-    return [
-      ...rows.sort((a, b) => {
-        if (typeof a[index] === 'number' && typeof b[index] === 'number') {
-          return ((a[index] as number) - (b[index] as number)) * desc;
-        }
+  const updateSort = useCallback(
+    (column: Column) => {
+      if (!meta) return;
 
-        const aStr = `${a}`.toLowerCase();
+      const sort: OrderBy[] = meta.sort.slice();
+      const invert = { asc: 'desc', desc: 'asc' };
+      const index = sort.findIndex((c) => c.property.name === column.name);
 
-        const bStr = `${b}`.toLowerCase();
+      if (index === 0) {
+        sort[0] = { ...sort[0], direction: invert[sort[0].direction] as OrderDirection };
+      } else {
+        const [newOrder] = sort.splice(index, 1);
+        sort.unshift(newOrder);
+      }
 
-        if (aStr < bStr) return -1 * desc;
+      setMeta({ ...meta, sort });
+    },
+    [meta, setMeta]
+  );
 
-        if (aStr > bStr) return desc;
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const heightWithoutHead = height - 40;
+      const maxRowsFit = Math.floor(heightWithoutHead / 53);
 
-        return 0;
-      })
-    ];
-  }, []);
+      setMeta({ ...meta, maxRowsFit });
+    }, 100);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [height]);
 
   const rows = useMemo(
     () =>
-      table?.data?.map(
+      tableData?.data?.map(
         (record) =>
           columns?.map((prop) => {
             if (!prop) return '';
@@ -59,73 +82,94 @@ export default (props: Props) => {
             return `${parsed}` === record[prop.name] ? parsed : record[prop.name] || '';
           }) || []
       ) || [],
-    [table]
+    [tableData]
   );
 
-  const sortedRows = useMemo(() => sortRows(rows, sort), [rows, sort]);
-
   return (
-    <>
+    <div className="h-full flex flex-col justify-start">
       {!!props.title && (
         <h2 className="text-[#333942] text-[14px] font-bold justify-start flex mb-8">
           {props.title}
         </h2>
       )}
-      <Table className="mt-4 overflow-visible">
-        <TableHead className="border-y border-[#B8BDC6]">
-          <TableRow>
-            {columns?.map((h, i) => (
-              <TableHeaderCell
-                onClick={() => {
-                  setSort(sort === i + 1 ? sort * -1 : i + 1);
-                }}
-                key={i}
-                className="select-none cursor-pointer text-[#333942]"
-              >
-                <div className="flex items-center justify-start basis-0 grow w-0 text-[#333942] hover:text-black font-bold text-[12px]">
-                  {h?.title}
-                  <div
-                    className={`${
-                      Math.abs(sort) === i + 1 ? 'text-tremor-brand' : 'text-[#777]'
-                    } ml-1`}
-                  >
-                    {Math.abs(sort) === i + 1 && sort < 0 ? (
-                      <SortUp fill={Math.abs(sort) === i + 1 ? '#FF6B6C' : '#333942'} />
-                    ) : (
-                      <SortDown fill={Math.abs(sort) === i + 1 ? '#FF6B6C' : '#333942'} />
-                    )}
-                  </div>
-                </div>
-              </TableHeaderCell>
-            ))}
-          </TableRow>
-        </TableHead>
+      <div className="grow overflow-hidden relative" ref={ref}>
+        {!!meta && !(props.tableData?.isLoading && !props.tableData?.data?.length) && (
+          <Table className="overflow-visible">
+            <TableHead className="border-y border-[#B8BDC6]">
+              <TableRow>
+                {columns?.map((h, i) => {
+                  const sortIndex = meta.sort.findIndex((c) => c.property.name === h.name);
 
-        <TableBody>
-          {sortedRows.map((row, index) => (
-            <TableRow key={index} className="hover:bg-gray-400/5">
-              {row.map((c, i) => (
-                <TableCell key={i} className="text-sm text-dark">
-                  <div className={`${i === 0 ? 'font-bold text-[#aaa]' : ''} flex w-0 basis-0 row`}>
-                    {typeof c === 'number' ? format(c) : c}
-                  </div>
-                </TableCell>
+                  return (
+                    <TableHeaderCell
+                      onClick={() => updateSort(h)}
+                      key={i}
+                      className="bg-white select-none cursor-pointer text-[#333942]"
+                    >
+                      <div className="flex items-center justify-start basis-0 grow w-0 text-[#333942] hover:text-black font-bold text-[12px]">
+                        {h?.title}
+                        <div
+                          className={`${
+                            sortIndex === 0 ? 'text-[#FF6B6C]' : 'text-[#333942]'
+                          } ml-1`}
+                        >
+                          {meta.sort[sortIndex]?.direction === 'asc' ? (
+                            <SortUp fill="currentcolor" />
+                          ) : (
+                            <SortDown fill="currentcolor" />
+                          )}
+                        </div>
+                      </div>
+                    </TableHeaderCell>
+                  );
+                })}
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {rows.map((row, index) => (
+                <TableRow key={index} className="hover:bg-gray-400/5">
+                  {row.map((c, i) => (
+                    <TableCell key={i} className="text-sm text-dark">
+                      <div
+                        className={`${i === 0 ? 'font-bold text-[#aaa]' : ''} flex w-0 basis-0 row`}
+                      >
+                        {typeof c === 'number' ? format(c) : c}
+                      </div>
+                    </TableCell>
+                  ))}
+                </TableRow>
               ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <div className="flex mt-2 items-center justify-center text-[12px] font-bold text-[#333942]">
-        <ShevronLeft className="cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center" />
-        <span className="mx-4">Page 1</span>
-        <ShevronRight className="cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center" />
+            </TableBody>
+          </Table>
+        )}
+
+        {(!meta || (props.tableData?.isLoading && !props.tableData?.data?.length)) && (
+          <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
+        )}
       </div>
-    </>
+      <div className="flex mt-2 items-center justify-center text-[12px] font-bold text-[#333942] select-none">
+        <ShevronLeft
+          onClick={() => {
+            setMeta({ ...meta, page: Math.max(0, (meta?.page || 0) - 1) });
+          }}
+          className="cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center"
+        />
+        <span className="mx-4">Page {(meta?.page || 0) + 1}</span>
+        <ShevronRight
+          onClick={() => {
+            setMeta({ ...meta, page: (meta?.page || 0) + 1 });
+          }}
+          className="cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center"
+        />
+      </div>
+    </div>
   );
 };
 
-const ShevronLeft = ({ className }: { className?: string }) => (
+const ShevronLeft = ({ className, onClick }: { className?: string; onClick?: () => void }) => (
   <svg
+    onClick={onClick}
     className={className}
     xmlns="http://www.w3.org/2000/svg"
     width="17"
@@ -142,8 +186,9 @@ const ShevronLeft = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const ShevronRight = ({ className }: { className?: string }) => (
+const ShevronRight = ({ className, onClick }: { className?: string; onClick?: () => void }) => (
   <svg
+    onClick={onClick}
     className={className}
     xmlns="http://www.w3.org/2000/svg"
     width="17"

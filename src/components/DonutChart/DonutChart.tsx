@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import Chart from 'react-apexcharts';
 
 import '../index.css';
+import useResize from '../../hooks/useResize';
 
 type Data = {
   error?: string;
@@ -27,6 +28,9 @@ type Props = {
 };
 
 export default (props: Props) => {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [width, height] = useResize(ref);
+
   const { labels, series } = useMemo(() => {
     const labels =
       props.donut.data
@@ -68,13 +72,13 @@ export default (props: Props) => {
   }, [props]);
 
   return (
-    <div>
+    <div className="h-full">
       {!!props.title && (
         <h2 className="text-[#333942] text-[14px] font-bold justify-start flex mb-8">
           {props.title}
         </h2>
       )}
-      <div className="relative">
+      <div className="h-full relative" ref={ref}>
         <Chart
           className="donut-chart"
           options={{
@@ -143,6 +147,8 @@ export default (props: Props) => {
               }
             }
           }}
+          height={!!props.title ? height - 25 : height}
+          width={width}
           series={series}
           type="donut"
         />
