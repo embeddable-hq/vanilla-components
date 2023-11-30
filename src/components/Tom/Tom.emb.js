@@ -1,7 +1,7 @@
 import { defineComponent } from '@embeddable.com/react';
 import { loadData } from '@embeddable.com/core';
 
-import Component from './Tom';
+import Component from './index';
 
 export const meta = {
   name: 'Tom',

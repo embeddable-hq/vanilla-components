@@ -16,7 +16,53 @@ import Tom from './components/Tom';
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <div className="p-8">
-      <Tom results={{ data: [] }} />
+      <Tom
+        showLegend
+        yAxis={{
+          name: 'transactions.count',
+          title: 'Count',
+          __type__: 'measure',
+          nativeType: 'number',
+          description: 'Count of transactions'
+        }}
+        xAxis={{
+          name: 'transactions.created_at',
+          title: 'Created at',
+          nativeType: 'time',
+          __type__: 'dimension',
+          description: 'The time when the transaction was created'
+        }}
+        title="test"
+        results={{
+          isLoading: false,
+          data: [
+            {
+              'transactions.created_at': '2018-02-28T00:00:00.000',
+              'transactions.count': '15'
+            },
+            {
+              'transactions.created_at': '2018-04-28T00:00:00.000',
+              'transactions.count': '11'
+            },
+            {
+              'transactions.created_at': '2018-03-08T00:00:00.000',
+              'transactions.count': '8'
+            },
+            {
+              'transactions.created_at': '2018-04-23T00:00:00.000',
+              'transactions.count': '7'
+            },
+            {
+              'transactions.created_at': '2018-05-25T00:00:00.000',
+              'transactions.count': '1'
+            },
+            {
+              'transactions.created_at': '2018-02-03T00:00:00.000',
+              'transactions.count': '1'
+            }
+          ]
+        }}
+      />
       <Table
         columns={[
           {
