@@ -6,7 +6,8 @@
   background: transparent !important;
 }
 
-.donut-chart .apexcharts-datalabels text {
+.donut-chart .apexcharts-datalabels text,
+.column-chart .apexcharts-datalabels text {
   fill: #333942;
 }
 

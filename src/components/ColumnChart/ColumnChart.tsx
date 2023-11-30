@@ -8,7 +8,7 @@ import '../index.css';
 type Data = {
   error?: string;
   isLoading: boolean;
-  data?: any[];
+  data?: { [key: string]: number | string }[];
 };
 
 type DimensionOrMeasure = {
@@ -18,11 +18,11 @@ type DimensionOrMeasure = {
 };
 
 type Props = {
-  title: string;
+  title?: string;
   columns: Data;
   count: DimensionOrMeasure;
   groupingA: DimensionOrMeasure;
-  groupingB: DimensionOrMeasure;
+  groupingB?: DimensionOrMeasure;
   showLabels?: boolean;
   showLegend?: boolean;
 };
@@ -32,21 +32,39 @@ export default (props: Props) => {
   const [width, height] = useResize(ref);
 
   const { labels, series } = useMemo(() => {
-    console.log(props);
-
-    return {
-      labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
-      series: [
-        {
-          name: 'Net Profit',
-          data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-        },
-        {
-          name: 'Revenue',
-          data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-        }
-      ]
+    type Memo = {
+      labels: string[];
+      grouped: { [a: string]: { [b: string]: number } };
     };
+
+    if (!props.columns?.data || !props.count?.name || !props.groupingA?.name) {
+      return { labels: [], series: [] };
+    }
+
+    const { grouped, labels } = props.columns.data.reduce(
+      (memo: Memo, record) => {
+        const groupA = record[props.groupingA?.name || ''] as string;
+        const groupB = record[props.groupingB?.name || ''] || 'default';
+
+        if (!groupA || !groupB) return memo;
+
+        memo.grouped[groupB] = memo.grouped[groupB] || {};
+
+        memo.grouped[groupB][groupA] = record[props.count.name] as number;
+
+        if (!memo.labels.includes(groupA)) memo.labels.push(groupA);
+
+        return memo;
+      },
+      { labels: [], grouped: {} }
+    );
+
+    const series = Object.keys(grouped).map((name) => ({
+      name,
+      data: labels.map((label) => grouped[name][label] || 0)
+    }));
+
+    return { labels, series };
   }, [props]);
 
   return (
@@ -84,17 +102,15 @@ export default (props: Props) => {
               min: 0
             },
             tooltip: {
-              custom: ({ series, seriesIndex, w }) => {
-                const color = w.config.colors[seriesIndex];
-                // const label = props.columns.data
-                //   ? props.columns.data[seriesIndex][props.groupingA.name]
-                //   : '';
-                // const value = series[seriesIndex];
+              custom: (opt) => {
+                const color = opt.w.config.colors[opt.seriesIndex];
+                const label = series[opt.seriesIndex]?.name || '';
+                const value = opt.series[opt.seriesIndex][opt.dataPointIndex];
 
                 return `<div class="chart-tooltip">
-                <strong>${props.count.title}: ${'value'}</strong>
-                <div><b style="background-color:${color}"></b>${'label'}</div>
-              </div>`;
+                  <strong>${props.count.title}: ${value}</strong>
+                  <div><b style="background-color:${color}"></b>${label}</div>
+                </div>`;
               },
               style: {
                 fontSize: '9px'
@@ -119,8 +135,7 @@ export default (props: Props) => {
                 enabled: true,
                 borderRadius: 10,
                 padding: 4
-              },
-              style: {}
+              }
             },
             stroke: {
               show: true,

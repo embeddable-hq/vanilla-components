@@ -16,54 +16,7 @@ import Tom from './components/Tom';
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <div className="p-8">
-      <Tom
-        showLegend
-        yAxis={{
-          name: 'transactions.count',
-          title: 'Count',
-          __type__: 'measure',
-          nativeType: 'number',
-          description: 'Count of transactions'
-        }}
-        xAxis={{
-          name: 'transactions.created_at',
-          title: 'Created at',
-          nativeType: 'time',
-          __type__: 'dimension',
-          description: 'The time when the transaction was created'
-        }}
-        title="test"
-        results={{
-          isLoading: false,
-          data: [
-            {
-              'transactions.created_at': '2018-02-28T00:00:00.000',
-              'transactions.count': '15'
-            },
-            {
-              'transactions.created_at': '2018-04-28T00:00:00.000',
-              'transactions.count': '11'
-            },
-            {
-              'transactions.created_at': '2018-03-08T00:00:00.000',
-              'transactions.count': '8'
-            },
-            {
-              'transactions.created_at': '2018-04-23T00:00:00.000',
-              'transactions.count': '7'
-            },
-            {
-              'transactions.created_at': '2018-05-25T00:00:00.000',
-              'transactions.count': '1'
-            },
-            {
-              'transactions.created_at': '2018-02-03T00:00:00.000',
-              'transactions.count': '1'
-            }
-          ]
-        }}
-      />
-      <Table
+      {/* <Table
         columns={[
           {
             name: 'courses_in_progress.full_name',
@@ -237,17 +190,235 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           ]
         }}
       />
-      <br />
-      <ColumnChart
-        title=""
-        columns={{ isLoading: false, data: [] }}
-        count={{ name: '', title: '', description: '' }}
-        groupingA={{ name: '', title: '', description: '' }}
-        groupingB={{ name: '', title: '', description: '' }}
-        // showLabels
-        showLegend
-      />
-      <br />
+      <br /> */}
+      <div className="h-[400px]">
+        <ColumnChart
+          title="Test"
+          showLabels
+          showLegend
+          count={{
+            name: 'products.count',
+            title: 'Count',
+            description: null
+          }}
+          groupingB={{
+            name: 'products.size',
+            title: 'Size',
+            description: null
+          }}
+          groupingA={{
+            name: 'customers.country',
+            title: 'Country',
+            description: null
+          }}
+          columns={{
+            isLoading: false,
+            data: [
+              {
+                'customers.country': 'United States',
+                'products.size': 'Giant',
+                'products.count': '6'
+              },
+              {
+                'customers.country': 'Germany',
+                'products.size': 'Giant',
+                'products.count': '5'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'products.size': 'Giant',
+                'products.count': '5'
+              },
+              {
+                'customers.country': 'United States',
+                'products.size': 'Huge',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'United States',
+                'products.size': 'Massive',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'products.size': 'Big',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'products.size': 'Great Big',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'Germany',
+                'products.size': 'Big',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'Germany',
+                'products.size': 'Massive',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'Germany',
+                'products.size': 'Huge',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'United States',
+                'products.size': 'Big',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'United States',
+                'products.size': 'Great Big',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'Belgium',
+                'products.size': 'Massive',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'products.size': 'Huge',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'products.size': 'Massive',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'products.size': 'Big',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'products.size': 'Super Giant',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'products.size': 'Huge',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'products.size': 'Massive',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Belgium',
+                'products.size': 'Super Giant',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United States',
+                'products.size': 'Super Giant',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Germany',
+                'products.size': 'Great Big',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Belgium',
+                'products.size': 'Big',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Iceland',
+                'products.size': 'Giant',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Australia',
+                'products.size': 'Great Big',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Belgium',
+                'products.size': 'Great Big',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Australia',
+                'products.size': 'Giant',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'products.size': 'Giant',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Iceland',
+                'products.size': 'Huge',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Australia',
+                'products.size': 'Huge',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Australia',
+                'products.size': 'Massive',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Australia',
+                'products.size': 'Super Giant',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Belgium',
+                'products.size': 'Giant',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Belgium',
+                'products.size': 'Huge',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Germany',
+                'products.size': 'Super Giant',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Iceland',
+                'products.size': 'Great Big',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Australia',
+                'products.size': 'Big',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Iceland',
+                'products.size': 'Massive',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'products.size': 'Great Big',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'products.size': 'Super Giant',
+                'products.count': '1'
+              }
+            ]
+          }}
+        />
+      </div>
+      {/* <br />
       <div className="h-96">
         <LineChart
           title=""
@@ -271,7 +442,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <TextInput onChange={() => {}} value="Chocolate" />
       <br />
       <NumberInput onChange={() => {}} value="123" />
-      <br />
+      <br /> */}
     </div>
   </React.StrictMode>
 );
