@@ -45,12 +45,22 @@ export const meta = {
       }
     },
     {
+      name: 'xAxisTitle',
+      type: 'string',
+      label: 'X-Axis Title'
+    },
+    {
+      name: 'yAxisTitle',
+      type: 'string',
+      label: 'Y-Axis Title'
+    },
+    {
       name: 'showLabels',
       type: 'boolean',
       label: 'Show Labels'
     },
     {
-      name: 'Showlegend',
+      name: 'showLegend',
       type: 'boolean',
       label: 'Show Legend'
     }

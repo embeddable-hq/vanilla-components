@@ -215,6 +215,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           title="Test"
           showLabels
           showLegend
+          xAxisTitle="Countries"
+          yAxisTitle="Amount of products"
           count={{
             name: 'products.count',
             title: 'Count',
@@ -441,226 +443,724 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 
       <div className="h-[400px]">
         <LineChart
-          title="Test"
-          showLabels
-          showLegend
+          date={{
+            name: 'transactions.created_at',
+            title: 'Created at',
+            description: 'The time when the transaction was created'
+          }}
+          showLabels={false}
+          showLegend={true}
+          granularity="week"
           count={{
             name: 'products.count',
             title: 'Count',
             description: null
           }}
+          xAxisTitle="Date"
           grouping={{
-            name: 'products.size',
-            title: 'Size',
-            description: null
-          }}
-          date={{
             name: 'customers.country',
             title: 'Country',
             description: null
           }}
+          yAxisTitle="Product Count"
           line={{
             isLoading: false,
             data: [
               {
+                'customers.country': 'New Zealand',
+                'transactions.created_at.week': '2017-10-30T00:00:00.000',
+                'transactions.created_at': '2017-10-30T00:00:00.000',
+                'products.count': '1'
+              },
+              {
                 'customers.country': 'United States',
-                'products.size': 'Giant',
+                'transactions.created_at.week': '2017-10-30T00:00:00.000',
+                'transactions.created_at': '2017-10-30T00:00:00.000',
+                'products.count': '4'
+              },
+              {
+                'customers.country': 'Australia',
+                'transactions.created_at.week': '2017-11-06T00:00:00.000',
+                'transactions.created_at': '2017-11-06T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'transactions.created_at.week': '2017-11-06T00:00:00.000',
+                'transactions.created_at': '2017-11-06T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2017-11-06T00:00:00.000',
+                'transactions.created_at': '2017-11-06T00:00:00.000',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'Belgium',
+                'transactions.created_at.week': '2017-11-13T00:00:00.000',
+                'transactions.created_at': '2017-11-13T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2017-11-13T00:00:00.000',
+                'transactions.created_at': '2017-11-13T00:00:00.000',
+                'products.count': '8'
+              },
+              {
+                'customers.country': 'Belgium',
+                'transactions.created_at.week': '2017-11-20T00:00:00.000',
+                'transactions.created_at': '2017-11-20T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2017-11-20T00:00:00.000',
+                'transactions.created_at': '2017-11-20T00:00:00.000',
+                'products.count': '4'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'transactions.created_at.week': '2017-11-20T00:00:00.000',
+                'transactions.created_at': '2017-11-20T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'transactions.created_at.week': '2017-11-20T00:00:00.000',
+                'transactions.created_at': '2017-11-20T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2017-11-20T00:00:00.000',
+                'transactions.created_at': '2017-11-20T00:00:00.000',
+                'products.count': '8'
+              },
+              {
+                'customers.country': 'Belgium',
+                'transactions.created_at.week': '2017-11-27T00:00:00.000',
+                'transactions.created_at': '2017-11-27T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2017-11-27T00:00:00.000',
+                'transactions.created_at': '2017-11-27T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'transactions.created_at.week': '2017-11-27T00:00:00.000',
+                'transactions.created_at': '2017-11-27T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2017-11-27T00:00:00.000',
+                'transactions.created_at': '2017-11-27T00:00:00.000',
+                'products.count': '8'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'transactions.created_at.week': '2017-12-04T00:00:00.000',
+                'transactions.created_at': '2017-12-04T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'transactions.created_at.week': '2017-12-04T00:00:00.000',
+                'transactions.created_at': '2017-12-04T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2017-12-04T00:00:00.000',
+                'transactions.created_at': '2017-12-04T00:00:00.000',
+                'products.count': '11'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2017-12-11T00:00:00.000',
+                'transactions.created_at': '2017-12-11T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Iceland',
+                'transactions.created_at.week': '2017-12-11T00:00:00.000',
+                'transactions.created_at': '2017-12-11T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'transactions.created_at.week': '2017-12-11T00:00:00.000',
+                'transactions.created_at': '2017-12-11T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2017-12-11T00:00:00.000',
+                'transactions.created_at': '2017-12-11T00:00:00.000',
+                'products.count': '9'
+              },
+              {
+                'customers.country': 'Australia',
+                'transactions.created_at.week': '2017-12-18T00:00:00.000',
+                'transactions.created_at': '2017-12-18T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'transactions.created_at.week': '2017-12-18T00:00:00.000',
+                'transactions.created_at': '2017-12-18T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2017-12-18T00:00:00.000',
+                'transactions.created_at': '2017-12-18T00:00:00.000',
+                'products.count': '11'
+              },
+              {
+                'customers.country': 'Belgium',
+                'transactions.created_at.week': '2017-12-25T00:00:00.000',
+                'transactions.created_at': '2017-12-25T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2017-12-25T00:00:00.000',
+                'transactions.created_at': '2017-12-25T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'transactions.created_at.week': '2017-12-25T00:00:00.000',
+                'transactions.created_at': '2017-12-25T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2017-12-25T00:00:00.000',
+                'transactions.created_at': '2017-12-25T00:00:00.000',
+                'products.count': '13'
+              },
+              {
+                'customers.country': 'Belgium',
+                'transactions.created_at.week': '2018-01-01T00:00:00.000',
+                'transactions.created_at': '2018-01-01T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2018-01-01T00:00:00.000',
+                'transactions.created_at': '2018-01-01T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'transactions.created_at.week': '2018-01-01T00:00:00.000',
+                'transactions.created_at': '2018-01-01T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'transactions.created_at.week': '2018-01-01T00:00:00.000',
+                'transactions.created_at': '2018-01-01T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-01-01T00:00:00.000',
+                'transactions.created_at': '2018-01-01T00:00:00.000',
+                'products.count': '8'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2018-01-08T00:00:00.000',
+                'transactions.created_at': '2018-01-08T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'transactions.created_at.week': '2018-01-08T00:00:00.000',
+                'transactions.created_at': '2018-01-08T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-01-08T00:00:00.000',
+                'transactions.created_at': '2018-01-08T00:00:00.000',
+                'products.count': '8'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2018-01-15T00:00:00.000',
+                'transactions.created_at': '2018-01-15T00:00:00.000',
+                'products.count': '4'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-01-15T00:00:00.000',
+                'transactions.created_at': '2018-01-15T00:00:00.000',
                 'products.count': '6'
               },
               {
+                'customers.country': 'Belgium',
+                'transactions.created_at.week': '2018-01-22T00:00:00.000',
+                'transactions.created_at': '2018-01-22T00:00:00.000',
+                'products.count': '1'
+              },
+              {
                 'customers.country': 'Germany',
-                'products.size': 'Giant',
+                'transactions.created_at.week': '2018-01-22T00:00:00.000',
+                'transactions.created_at': '2018-01-22T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Iceland',
+                'transactions.created_at.week': '2018-01-22T00:00:00.000',
+                'transactions.created_at': '2018-01-22T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'transactions.created_at.week': '2018-01-22T00:00:00.000',
+                'transactions.created_at': '2018-01-22T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-01-22T00:00:00.000',
+                'transactions.created_at': '2018-01-22T00:00:00.000',
+                'products.count': '11'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'transactions.created_at.week': '2018-01-29T00:00:00.000',
+                'transactions.created_at': '2018-01-29T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-01-29T00:00:00.000',
+                'transactions.created_at': '2018-01-29T00:00:00.000',
+                'products.count': '7'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2018-02-05T00:00:00.000',
+                'transactions.created_at': '2018-02-05T00:00:00.000',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'Iceland',
+                'transactions.created_at.week': '2018-02-05T00:00:00.000',
+                'transactions.created_at': '2018-02-05T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'transactions.created_at.week': '2018-02-05T00:00:00.000',
+                'transactions.created_at': '2018-02-05T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-02-05T00:00:00.000',
+                'transactions.created_at': '2018-02-05T00:00:00.000',
+                'products.count': '7'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2018-02-12T00:00:00.000',
+                'transactions.created_at': '2018-02-12T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'transactions.created_at.week': '2018-02-12T00:00:00.000',
+                'transactions.created_at': '2018-02-12T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-02-12T00:00:00.000',
+                'transactions.created_at': '2018-02-12T00:00:00.000',
+                'products.count': '12'
+              },
+              {
+                'customers.country': 'Belgium',
+                'transactions.created_at.week': '2018-02-19T00:00:00.000',
+                'transactions.created_at': '2018-02-19T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2018-02-19T00:00:00.000',
+                'transactions.created_at': '2018-02-19T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'transactions.created_at.week': '2018-02-19T00:00:00.000',
+                'transactions.created_at': '2018-02-19T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-02-19T00:00:00.000',
+                'transactions.created_at': '2018-02-19T00:00:00.000',
+                'products.count': '7'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2018-02-26T00:00:00.000',
+                'transactions.created_at': '2018-02-26T00:00:00.000',
+                'products.count': '4'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'transactions.created_at.week': '2018-02-26T00:00:00.000',
+                'transactions.created_at': '2018-02-26T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'transactions.created_at.week': '2018-02-26T00:00:00.000',
+                'transactions.created_at': '2018-02-26T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-02-26T00:00:00.000',
+                'transactions.created_at': '2018-02-26T00:00:00.000',
+                'products.count': '15'
+              },
+              {
+                'customers.country': 'Belgium',
+                'transactions.created_at.week': '2018-03-05T00:00:00.000',
+                'transactions.created_at': '2018-03-05T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2018-03-05T00:00:00.000',
+                'transactions.created_at': '2018-03-05T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'transactions.created_at.week': '2018-03-05T00:00:00.000',
+                'transactions.created_at': '2018-03-05T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-03-05T00:00:00.000',
+                'transactions.created_at': '2018-03-05T00:00:00.000',
+                'products.count': '9'
+              },
+              {
+                'customers.country': 'Australia',
+                'transactions.created_at.week': '2018-03-12T00:00:00.000',
+                'transactions.created_at': '2018-03-12T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Belgium',
+                'transactions.created_at.week': '2018-03-12T00:00:00.000',
+                'transactions.created_at': '2018-03-12T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-03-12T00:00:00.000',
+                'transactions.created_at': '2018-03-12T00:00:00.000',
+                'products.count': '9'
+              },
+              {
+                'customers.country': 'Australia',
+                'transactions.created_at.week': '2018-03-19T00:00:00.000',
+                'transactions.created_at': '2018-03-19T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Belgium',
+                'transactions.created_at.week': '2018-03-19T00:00:00.000',
+                'transactions.created_at': '2018-03-19T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2018-03-19T00:00:00.000',
+                'transactions.created_at': '2018-03-19T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Iceland',
+                'transactions.created_at.week': '2018-03-19T00:00:00.000',
+                'transactions.created_at': '2018-03-19T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'transactions.created_at.week': '2018-03-19T00:00:00.000',
+                'transactions.created_at': '2018-03-19T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'transactions.created_at.week': '2018-03-19T00:00:00.000',
+                'transactions.created_at': '2018-03-19T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-03-19T00:00:00.000',
+                'transactions.created_at': '2018-03-19T00:00:00.000',
+                'products.count': '13'
+              },
+              {
+                'customers.country': 'Australia',
+                'transactions.created_at.week': '2018-03-26T00:00:00.000',
+                'transactions.created_at': '2018-03-26T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Iceland',
+                'transactions.created_at.week': '2018-03-26T00:00:00.000',
+                'transactions.created_at': '2018-03-26T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-03-26T00:00:00.000',
+                'transactions.created_at': '2018-03-26T00:00:00.000',
                 'products.count': '5'
               },
               {
+                'customers.country': 'Australia',
+                'transactions.created_at.week': '2018-04-02T00:00:00.000',
+                'transactions.created_at': '2018-04-02T00:00:00.000',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'Belgium',
+                'transactions.created_at.week': '2018-04-02T00:00:00.000',
+                'transactions.created_at': '2018-04-02T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2018-04-02T00:00:00.000',
+                'transactions.created_at': '2018-04-02T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'transactions.created_at.week': '2018-04-02T00:00:00.000',
+                'transactions.created_at': '2018-04-02T00:00:00.000',
+                'products.count': '2'
+              },
+              {
                 'customers.country': 'United Kingdom',
-                'products.size': 'Giant',
+                'transactions.created_at.week': '2018-04-02T00:00:00.000',
+                'transactions.created_at': '2018-04-02T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-04-02T00:00:00.000',
+                'transactions.created_at': '2018-04-02T00:00:00.000',
+                'products.count': '11'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2018-04-09T00:00:00.000',
+                'transactions.created_at': '2018-04-09T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'transactions.created_at.week': '2018-04-09T00:00:00.000',
+                'transactions.created_at': '2018-04-09T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-04-09T00:00:00.000',
+                'transactions.created_at': '2018-04-09T00:00:00.000',
+                'products.count': '10'
+              },
+              {
+                'customers.country': 'Australia',
+                'transactions.created_at.week': '2018-04-16T00:00:00.000',
+                'transactions.created_at': '2018-04-16T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Belgium',
+                'transactions.created_at.week': '2018-04-16T00:00:00.000',
+                'transactions.created_at': '2018-04-16T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2018-04-16T00:00:00.000',
+                'transactions.created_at': '2018-04-16T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'transactions.created_at.week': '2018-04-16T00:00:00.000',
+                'transactions.created_at': '2018-04-16T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'transactions.created_at.week': '2018-04-16T00:00:00.000',
+                'transactions.created_at': '2018-04-16T00:00:00.000',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-04-16T00:00:00.000',
+                'transactions.created_at': '2018-04-16T00:00:00.000',
+                'products.count': '8'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2018-04-23T00:00:00.000',
+                'transactions.created_at': '2018-04-23T00:00:00.000',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'Iceland',
+                'transactions.created_at.week': '2018-04-23T00:00:00.000',
+                'transactions.created_at': '2018-04-23T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'transactions.created_at.week': '2018-04-23T00:00:00.000',
+                'transactions.created_at': '2018-04-23T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'transactions.created_at.week': '2018-04-23T00:00:00.000',
+                'transactions.created_at': '2018-04-23T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-04-23T00:00:00.000',
+                'transactions.created_at': '2018-04-23T00:00:00.000',
+                'products.count': '14'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2018-04-30T00:00:00.000',
+                'transactions.created_at': '2018-04-30T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'transactions.created_at.week': '2018-04-30T00:00:00.000',
+                'transactions.created_at': '2018-04-30T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-04-30T00:00:00.000',
+                'transactions.created_at': '2018-04-30T00:00:00.000',
+                'products.count': '10'
+              },
+              {
+                'customers.country': 'Belgium',
+                'transactions.created_at.week': '2018-05-07T00:00:00.000',
+                'transactions.created_at': '2018-05-07T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2018-05-07T00:00:00.000',
+                'transactions.created_at': '2018-05-07T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'transactions.created_at.week': '2018-05-07T00:00:00.000',
+                'transactions.created_at': '2018-05-07T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United Kingdom',
+                'transactions.created_at.week': '2018-05-07T00:00:00.000',
+                'transactions.created_at': '2018-05-07T00:00:00.000',
+                'products.count': '2'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-05-07T00:00:00.000',
+                'transactions.created_at': '2018-05-07T00:00:00.000',
+                'products.count': '10'
+              },
+              {
+                'customers.country': 'Germany',
+                'transactions.created_at.week': '2018-05-14T00:00:00.000',
+                'transactions.created_at': '2018-05-14T00:00:00.000',
+                'products.count': '3'
+              },
+              {
+                'customers.country': 'New Zealand',
+                'transactions.created_at.week': '2018-05-14T00:00:00.000',
+                'transactions.created_at': '2018-05-14T00:00:00.000',
+                'products.count': '1'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-05-14T00:00:00.000',
+                'transactions.created_at': '2018-05-14T00:00:00.000',
                 'products.count': '5'
               },
               {
-                'customers.country': 'United States',
-                'products.size': 'Huge',
-                'products.count': '3'
-              },
-              {
-                'customers.country': 'United States',
-                'products.size': 'Massive',
-                'products.count': '3'
-              },
-              {
-                'customers.country': 'New Zealand',
-                'products.size': 'Big',
-                'products.count': '3'
-              },
-              {
-                'customers.country': 'United Kingdom',
-                'products.size': 'Great Big',
-                'products.count': '3'
-              },
-              {
                 'customers.country': 'Germany',
-                'products.size': 'Big',
-                'products.count': '3'
-              },
-              {
-                'customers.country': 'Germany',
-                'products.size': 'Massive',
-                'products.count': '3'
-              },
-              {
-                'customers.country': 'Germany',
-                'products.size': 'Huge',
-                'products.count': '3'
-              },
-              {
-                'customers.country': 'United States',
-                'products.size': 'Big',
-                'products.count': '3'
-              },
-              {
-                'customers.country': 'United States',
-                'products.size': 'Great Big',
-                'products.count': '3'
-              },
-              {
-                'customers.country': 'Belgium',
-                'products.size': 'Massive',
-                'products.count': '2'
-              },
-              {
-                'customers.country': 'New Zealand',
-                'products.size': 'Huge',
-                'products.count': '2'
-              },
-              {
-                'customers.country': 'New Zealand',
-                'products.size': 'Massive',
-                'products.count': '2'
-              },
-              {
-                'customers.country': 'United Kingdom',
-                'products.size': 'Big',
-                'products.count': '2'
-              },
-              {
-                'customers.country': 'New Zealand',
-                'products.size': 'Super Giant',
-                'products.count': '2'
-              },
-              {
-                'customers.country': 'United Kingdom',
-                'products.size': 'Huge',
-                'products.count': '2'
-              },
-              {
-                'customers.country': 'United Kingdom',
-                'products.size': 'Massive',
-                'products.count': '2'
-              },
-              {
-                'customers.country': 'Belgium',
-                'products.size': 'Super Giant',
-                'products.count': '2'
-              },
-              {
-                'customers.country': 'United States',
-                'products.size': 'Super Giant',
-                'products.count': '2'
-              },
-              {
-                'customers.country': 'Germany',
-                'products.size': 'Great Big',
-                'products.count': '2'
-              },
-              {
-                'customers.country': 'Belgium',
-                'products.size': 'Big',
+                'transactions.created_at.week': '2018-05-21T00:00:00.000',
+                'transactions.created_at': '2018-05-21T00:00:00.000',
                 'products.count': '2'
               },
               {
                 'customers.country': 'Iceland',
-                'products.size': 'Giant',
-                'products.count': '2'
-              },
-              {
-                'customers.country': 'Australia',
-                'products.size': 'Great Big',
-                'products.count': '2'
-              },
-              {
-                'customers.country': 'Belgium',
-                'products.size': 'Great Big',
-                'products.count': '2'
-              },
-              {
-                'customers.country': 'Australia',
-                'products.size': 'Giant',
-                'products.count': '2'
-              },
-              {
-                'customers.country': 'New Zealand',
-                'products.size': 'Giant',
-                'products.count': '2'
-              },
-              {
-                'customers.country': 'Iceland',
-                'products.size': 'Huge',
-                'products.count': '1'
-              },
-              {
-                'customers.country': 'Australia',
-                'products.size': 'Huge',
-                'products.count': '1'
-              },
-              {
-                'customers.country': 'Australia',
-                'products.size': 'Massive',
-                'products.count': '1'
-              },
-              {
-                'customers.country': 'Australia',
-                'products.size': 'Super Giant',
-                'products.count': '1'
-              },
-              {
-                'customers.country': 'Belgium',
-                'products.size': 'Giant',
-                'products.count': '1'
-              },
-              {
-                'customers.country': 'Belgium',
-                'products.size': 'Huge',
-                'products.count': '1'
-              },
-              {
-                'customers.country': 'Germany',
-                'products.size': 'Super Giant',
-                'products.count': '1'
-              },
-              {
-                'customers.country': 'Iceland',
-                'products.size': 'Great Big',
-                'products.count': '1'
-              },
-              {
-                'customers.country': 'Australia',
-                'products.size': 'Big',
-                'products.count': '1'
-              },
-              {
-                'customers.country': 'Iceland',
-                'products.size': 'Massive',
+                'transactions.created_at.week': '2018-05-21T00:00:00.000',
+                'transactions.created_at': '2018-05-21T00:00:00.000',
                 'products.count': '1'
               },
               {
                 'customers.country': 'New Zealand',
-                'products.size': 'Great Big',
+                'transactions.created_at.week': '2018-05-21T00:00:00.000',
+                'transactions.created_at': '2018-05-21T00:00:00.000',
                 'products.count': '1'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-05-21T00:00:00.000',
+                'transactions.created_at': '2018-05-21T00:00:00.000',
+                'products.count': '6'
               },
               {
                 'customers.country': 'United Kingdom',
-                'products.size': 'Super Giant',
+                'transactions.created_at.week': '2018-05-28T00:00:00.000',
+                'transactions.created_at': '2018-05-28T00:00:00.000',
                 'products.count': '1'
+              },
+              {
+                'customers.country': 'United States',
+                'transactions.created_at.week': '2018-05-28T00:00:00.000',
+                'transactions.created_at': '2018-05-28T00:00:00.000',
+                'products.count': '5'
               }
             ]
           }}

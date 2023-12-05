@@ -1,8 +1,6 @@
 import { loadData } from '@embeddable.com/core';
 import { defineComponent } from '@embeddable.com/react';
 
-import GranularityType from '../../types/Granularity.type.emb.js';
-
 import LineChart from './LineChart';
 
 export const meta = {
@@ -32,7 +30,7 @@ export const meta = {
     },
     {
       name: 'granularity',
-      type: GranularityType,
+      type: 'granularity',
       label: 'Granularity'
     },
     {
@@ -52,12 +50,22 @@ export const meta = {
       }
     },
     {
+      name: 'xAxisTitle',
+      type: 'string',
+      label: 'X-Axis Title'
+    },
+    {
+      name: 'yAxisTitle',
+      type: 'string',
+      label: 'Y-Axis Title'
+    },
+    {
       name: 'showLabels',
       type: 'boolean',
       label: 'Show Labels'
     },
     {
-      name: 'Showlegend',
+      name: 'showLegend',
       type: 'boolean',
       label: 'Show Legend'
     }

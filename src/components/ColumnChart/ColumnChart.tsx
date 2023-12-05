@@ -1,6 +1,7 @@
 import Chart from 'react-apexcharts';
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 
+import useFont from '../../hooks/useFont';
 import useResize from '../../hooks/useResize';
 
 import '../index.css';
@@ -23,13 +24,21 @@ type Props = {
   count: DimensionOrMeasure;
   groupingA: DimensionOrMeasure;
   groupingB?: DimensionOrMeasure;
+  xAxisTitle?: string;
+  yAxisTitle?: string;
   showLabels?: boolean;
   showLegend?: boolean;
 };
 
 export default (props: Props) => {
+  const font = useFont();
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, height] = useResize(ref);
+
+  useEffect(
+    () => font.load({ Futura: 'futura-medium-bt.ttf', 'Space Mono': 'space-mono-bold.ttf' }),
+    []
+  );
 
   const { labels, series } = useMemo(() => {
     type Memo = {
@@ -98,8 +107,12 @@ export default (props: Props) => {
                 show: false
               }
             },
+            yaxis: {
+              title: { text: props.yAxisTitle, style: { color: '#333942' } }
+            },
             xaxis: {
-              min: 0
+              min: 0,
+              title: { text: props.xAxisTitle, style: { color: '#333942' } }
             },
             tooltip: {
               custom: (opt) => {

@@ -1,10 +1,11 @@
 import Chart from 'react-apexcharts';
-import React, { useMemo, useRef } from 'react';
+import { format, parseJSON } from 'date-fns';
+import React, { useEffect, useMemo, useRef } from 'react';
 
+import useFont from '../../hooks/useFont';
 import useResize from '../../hooks/useResize';
 
 import '../index.css';
-import moment from 'moment';
 
 type Data = {
   error?: string;
@@ -20,17 +21,26 @@ type DimensionOrMeasure = {
 
 type Props = {
   title?: string;
+  granularity?: string;
   line: Data;
   count: DimensionOrMeasure;
   date: DimensionOrMeasure;
   grouping: DimensionOrMeasure;
+  xAxisTitle?: string;
+  yAxisTitle?: string;
   showLabels?: boolean;
   showLegend?: boolean;
 };
 
 export default (props: Props) => {
+  const font = useFont();
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, height] = useResize(ref);
+
+  useEffect(
+    () => font.load({ Futura: 'futura-medium-bt.ttf', 'Space Mono': 'space-mono-bold.ttf' }),
+    []
+  );
 
   const { labels, series } = useMemo(() => {
     type Memo = {
@@ -106,12 +116,14 @@ export default (props: Props) => {
             xaxis: {
               type: 'datetime',
               categories: labels,
+              title: { text: props.xAxisTitle, style: { color: '#333942' } },
               labels: {
-                formatter: (v) => `${moment(v).format('L')}`
+                formatter: (v) => `${format(parseJSON(v), 'P')}`
               }
             },
             yaxis: {
-              tickAmount: 5
+              tickAmount: 5,
+              title: { text: props.yAxisTitle, style: { color: '#333942' } }
             },
             tooltip: {
               custom: (opt) => {
