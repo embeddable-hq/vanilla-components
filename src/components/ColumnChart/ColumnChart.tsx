@@ -24,6 +24,8 @@ type Props = {
   count: DimensionOrMeasure;
   groupingA: DimensionOrMeasure;
   groupingB?: DimensionOrMeasure;
+  maxAmountA?: number;
+  maxAmountB?: number;
   xAxisTitle?: string;
   yAxisTitle?: string;
   showLabels?: boolean;
@@ -40,32 +42,64 @@ export default (props: Props) => {
     []
   );
 
-  const { labels, series } = useMemo(() => {
+  const { labels, series, maxCount } = useMemo(() => {
     type Memo = {
       labels: string[];
       grouped: { [a: string]: { [b: string]: number } };
+      maxCount: number;
     };
 
     if (!props.columns?.data || !props.count?.name || !props.groupingA?.name) {
-      return { labels: [], series: [] };
+      return { labels: [], series: [], maxCount: 1 };
     }
 
-    const { grouped, labels } = props.columns.data.reduce(
-      (memo: Memo, record) => {
+    type MemoObj = { [dimension: string]: true };
+
+    const dimensions = props.columns.data.reduce(
+      (memo: { a: MemoObj; b: MemoObj }, record) => {
         const groupA = record[props.groupingA?.name || ''] as string;
         const groupB = record[props.groupingB?.name || ''] || 'default';
 
-        if (!groupA || !groupB) return memo;
-
-        memo.grouped[groupB] = memo.grouped[groupB] || {};
-
-        memo.grouped[groupB][groupA] = record[props.count.name] as number;
-
-        if (!memo.labels.includes(groupA)) memo.labels.push(groupA);
+        memo.a[groupA] = true;
+        memo.b[groupB] = true;
 
         return memo;
       },
-      { labels: [], grouped: {} }
+      { a: {}, b: {} }
+    );
+
+    const keysA = Object.keys(dimensions.a);
+    const keysB = Object.keys(dimensions.b);
+
+    const maxKeysA = Math.min(props.maxAmountA || 50, 50);
+    const maxKeysB = Math.min(props.maxAmountB || 50, 50);
+
+    const { grouped, labels, maxCount } = props.columns.data.reduce(
+      (memo: Memo, record) => {
+        const groupA = record[props.groupingA?.name || ''] as string;
+        const groupB = `${record[props.groupingB?.name || ''] || 'default'}`;
+
+        if (!groupA) return memo;
+
+        const keyA =
+          keysA.length > maxKeysA && keysA.indexOf(groupA) >= maxKeysA - 1 ? 'Other' : groupA;
+
+        const keyB =
+          keysB.length > maxKeysB && keysB.indexOf(groupB) >= maxKeysB - 1 ? 'Other' : groupB;
+
+        memo.grouped[keyB] = memo.grouped[keyB] || {};
+
+        memo.grouped[keyB][keyA] = memo.grouped[keyB][keyA] || 0;
+
+        memo.grouped[keyB][keyA] += parseInt(`${record[props.count.name]}`, 10) as number;
+
+        if (memo.maxCount < memo.grouped[keyB][keyA]) memo.maxCount = memo.grouped[keyB][keyA];
+
+        if (!memo.labels.includes(keyA)) memo.labels.push(keyA);
+
+        return memo;
+      },
+      { labels: [], grouped: {}, maxCount: 0 }
     );
 
     const series = Object.keys(grouped).map((name) => ({
@@ -73,7 +107,7 @@ export default (props: Props) => {
       data: labels.map((label) => grouped[name][label] || 0)
     }));
 
-    return { labels, series };
+    return { labels, series, maxCount };
   }, [props]);
 
   return (
@@ -108,7 +142,8 @@ export default (props: Props) => {
               }
             },
             yaxis: {
-              title: { text: props.yAxisTitle, style: { color: '#333942' } }
+              title: { text: props.yAxisTitle, style: { color: '#333942' } },
+              max: Math.ceil(maxCount + 0.1 * maxCount)
             },
             xaxis: {
               min: 0,

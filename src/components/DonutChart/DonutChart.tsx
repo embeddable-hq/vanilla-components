@@ -1,8 +1,10 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import Chart from 'react-apexcharts';
 
-import '../index.css';
+import useFont from '../../hooks/useFont';
 import useResize from '../../hooks/useResize';
+
+import '../index.css';
 
 type Data = {
   error?: string;
@@ -28,8 +30,11 @@ type Props = {
 };
 
 export default (props: Props) => {
+  const font = useFont();
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, height] = useResize(ref);
+
+  useEffect(() => font.load({ 'Open Sans': 'OpenSans.ttf' }), []);
 
   const { labels, series } = useMemo(() => {
     const labels =
@@ -70,6 +75,8 @@ export default (props: Props) => {
       }, [])
     };
   }, [props]);
+
+  console.log(labels, height, width, series);
 
   return (
     <div className="h-full">

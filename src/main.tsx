@@ -215,6 +215,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           title="Test"
           showLabels
           showLegend
+          maxAmountA={5}
+          maxAmountB={5}
           xAxisTitle="Countries"
           yAxisTitle="Amount of products"
           count={{

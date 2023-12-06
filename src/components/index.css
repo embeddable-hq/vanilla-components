@@ -2,13 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  font-family: 'Open Sans', sans-serif;
+}
+
+::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+  background: #eee;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  background: #444;
+  border-radius: 6px;
+}
+
 .dropdown .select-search-container {
   --select-search-background: white;
   --select-search-border: #dadce1;
   --select-search-selected: #ccc;
   --select-search-text: #333942;
   --select-search-subtle-text: #ccc;
-  --select-search-highlight: #F6F6F7;
+  --select-search-highlight: #f6f6f7;
   width: 100%;
 }
 
@@ -152,7 +167,7 @@
   -o-text-overflow: ellipsis;
   max-width: 100%;
   min-width: 0;
-  width:100%;
+  width: 100%;
   top: 0;
   left: 0;
 }

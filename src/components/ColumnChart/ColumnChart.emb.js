@@ -37,6 +37,16 @@ export const meta = {
       }
     },
     {
+      name: 'maxAmountA',
+      type: 'number',
+      label: 'Max Amount A'
+    },
+    {
+      name: 'maxAmountB',
+      type: 'number',
+      label: 'Max Amount B'
+    },
+    {
       name: 'count',
       type: 'measure',
       label: 'Count',
