@@ -69,7 +69,7 @@ export default defineComponent(Dropdown, meta, {
   },
   events: {
     onChange: (option) => {
-      return { value: option.value };
+      return { value: option?.value || '' };
     }
   }
 });

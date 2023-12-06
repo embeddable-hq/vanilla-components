@@ -1,5 +1,5 @@
 import 'react-select-search/style.css';
-import Select from 'react-select-search';
+import Select, { SelectedOptionValue } from 'react-select-search';
 import React, { useEffect, useState } from 'react';
 
 import '../index.css';
@@ -42,8 +42,8 @@ export default (props: Props) => {
       <div className="relative">
         <Select
           search
-          onChange={(o: any) => {
-            setValue(o.value);
+          onChange={(o) => {
+            setValue(o as string);
             props.onChange(o);
           }}
           value={value}

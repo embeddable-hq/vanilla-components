@@ -37,8 +37,6 @@ export default (props: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, height] = useResize(ref);
 
-  console.log('measure series props', props);
-
   useFont();
 
   const { labels, series } = useMemo(() => {
@@ -77,7 +75,7 @@ export default (props: Props) => {
 
     return { labels, series };
   }, [props]);
-  console.log('measure series series and labels', series, labels);
+
   return (
     <div className="h-full">
       {!!props.title && (
@@ -114,16 +112,14 @@ export default (props: Props) => {
             },
             tooltip: {
               custom: (opt) => {
-                // const color = opt.w.config.colors[opt.seriesIndex];
-                // const label = series[opt.seriesIndex]?.name || '';
-                // const value = opt.series[opt.seriesIndex][opt.dataPointIndex];
-                console.log(opt, series, labels);
-                return '<div class="chart-tooltip"></div>';
+                const color = opt.w.config.colors[opt.seriesIndex];
+                const label = series[opt.seriesIndex]?.name || '';
+                const value = opt.series[opt.seriesIndex][opt.dataPointIndex];
 
-                // return `<div class="chart-tooltip">
-                //   <strong>${props.count.title}: ${value}</strong>
-                //   <div><b style="background-color:${color}"></b>${label}</div>
-                // </div>`;
+                return `<div class="chart-tooltip">
+                  <strong>${value}</strong>
+                  <div><b style="background-color:${color}"></b>${label}</div>
+                </div>`;
               },
               style: {
                 fontSize: '9px'
