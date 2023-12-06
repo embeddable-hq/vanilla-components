@@ -1,6 +1,8 @@
 import 'react-select-search/style.css';
-import Select, { SelectedOptionValue } from 'react-select-search';
+import Select from 'react-select-search';
 import React, { useEffect, useState } from 'react';
+
+import useFont from '../../hooks/useFont';
 
 import '../index.css';
 import { ClearIcon } from '../icons';
@@ -27,6 +29,8 @@ type Props = {
 
 export default (props: Props) => {
   const [value, setValue] = useState(props.value);
+
+  useFont();
 
   useEffect(() => {
     setValue(props.value);

@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
 
+import useFont from '../../hooks/useFont';
+
 import '../index.css';
 import Spinner from '../Spinner';
 
@@ -24,6 +26,8 @@ type Props = {
 };
 
 export default (props: Props) => {
+  useFont();
+
   const n = useMemo(() => {
     if (!props.value?.data?.length) return;
 
