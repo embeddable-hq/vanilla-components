@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useRef } from 'react';
 import Chart from 'react-apexcharts';
+import React, { useMemo, useRef } from 'react';
 
 import useFont from '../../hooks/useFont';
 import useResize from '../../hooks/useResize';
@@ -30,11 +30,10 @@ type Props = {
 };
 
 export default (props: Props) => {
-  const font = useFont();
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, height] = useResize(ref);
 
-  useEffect(() => font.load({ 'Open Sans': 'OpenSans.ttf' }), []);
+  useFont();
 
   const { labels, series } = useMemo(() => {
     const labels =
@@ -45,7 +44,7 @@ export default (props: Props) => {
     const series =
       props.donut.data
         ?.sort((a, b) => b[props.count.name] - a[props.count.name])
-        .map((record) => record[props.count.name]) || [];
+        .map((record) => parseInt(`${record[props.count.name]}`, 10)) || [];
 
     const length = props.donut.data?.length || 0;
 
@@ -61,7 +60,7 @@ export default (props: Props) => {
 
         return memo;
       }, []),
-      series: series.reduce((memo, s, i) => {
+      series: series.reduce((memo: number[], s, i) => {
         if (i < maxLength - 1) {
           memo.push(s);
           return memo;
@@ -109,9 +108,7 @@ export default (props: Props) => {
             tooltip: {
               custom: ({ series, seriesIndex, w }) => {
                 const color = w.config.colors[seriesIndex];
-                const label = props.donut.data
-                  ? props.donut.data[seriesIndex][props.groups.name]
-                  : '';
+                const label = labels[seriesIndex] || '';
                 const value = props.showPercentages
                   ? `${Math.round(
                       (100 * series[seriesIndex]) / series.reduce((t, n) => t + n, 0)

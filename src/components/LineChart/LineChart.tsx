@@ -1,6 +1,6 @@
 import Chart from 'react-apexcharts';
 import { format, parseJSON } from 'date-fns';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 
 import useFont from '../../hooks/useFont';
 import useResize from '../../hooks/useResize';
@@ -33,14 +33,10 @@ type Props = {
 };
 
 export default (props: Props) => {
-  const font = useFont();
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, height] = useResize(ref);
 
-  useEffect(
-    () => font.load({ Futura: 'futura-medium-bt.ttf', 'Space Mono': 'space-mono-bold.ttf' }),
-    []
-  );
+  useFont();
 
   const { labels, series } = useMemo(() => {
     type Memo = {

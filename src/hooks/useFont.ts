@@ -1,11 +1,13 @@
-import { useCallback } from 'react';
+import { useEffect } from 'react';
+
+import { FONTS } from '../constants';
 
 export default () => {
-  const load = useCallback((fonts: { [family: string]: string }) => {
-    Object.keys(fonts).forEach(async (family) => {
+  useEffect(() => {
+    Object.keys(FONTS).forEach(async (family) => {
       const font = new FontFace(
         family,
-        `url('https://storage.googleapis.com/luuk-bucket/fonts/${fonts[family]}')`
+        `url('https://storage.googleapis.com/luuk-bucket/fonts/${FONTS[family]}')`
       );
 
       if (Array.from(document.fonts.keys()).find((f) => f.family === family)) return;
@@ -15,6 +17,4 @@ export default () => {
       document.fonts.add(loaded);
     });
   }, []);
-
-  return { load };
 };
