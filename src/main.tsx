@@ -15,6 +15,45 @@ import DateRangePicker from './components/DateRangePicker/DateRangePicker';
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <div className="p-8">
+      <br />
+      <br />
+      <br />
+      <Dropdown
+        title="test"
+        onChange={() => {}}
+        property={{
+          name: 'customers.country',
+          title: 'Country',
+          description: null
+        }}
+        value=""
+        options={{
+          isLoading: false,
+          data: [
+            {
+              'customers.country': 'Australia'
+            },
+            {
+              'customers.country': 'Belgium'
+            },
+            {
+              'customers.country': 'Germany'
+            },
+            {
+              'customers.country': 'Iceland'
+            },
+            {
+              'customers.country': 'New Zealand'
+            },
+            {
+              'customers.country': 'United Kingdom'
+            },
+            {
+              'customers.country': 'United States'
+            }
+          ]
+        }}
+      />
       <DateRangePicker onChange={() => {}} />
       {/* <Table
         columns={[
