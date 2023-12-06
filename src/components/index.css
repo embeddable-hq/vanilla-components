@@ -17,6 +17,29 @@
   border-radius: 6px;
 }
 
+.spinner {
+  -webkit-animation: spin 500ms ease-in-out infinite;
+  -moz-animation: spin 500ms ease-in-out infinite;
+  animation: spin 500ms ease-in-out infinite;
+}
+
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
 .dropdown .select-search-container {
   --select-search-background: white;
   --select-search-border: #dadce1;

@@ -1,4 +1,5 @@
 import Chart from 'react-apexcharts';
+import { format, parseJSON } from 'date-fns';
 import React, { useMemo, useRef } from 'react';
 
 import { COLORS } from '../../constants';
@@ -11,7 +12,7 @@ import Spinner from '../Spinner';
 type Data = {
   error?: string;
   isLoading: boolean;
-  data?: { [key: string]: number | string }[];
+  data?: any[];
 };
 
 type DimensionOrMeasure = {
@@ -22,12 +23,11 @@ type DimensionOrMeasure = {
 
 type Props = {
   title?: string;
-  columns: Data;
+  granularity?: string;
+  line: Data;
   count: DimensionOrMeasure;
-  groupingA: DimensionOrMeasure;
-  groupingB?: DimensionOrMeasure;
-  maxAmountA?: number;
-  maxAmountB?: number;
+  date: DimensionOrMeasure;
+  grouping: DimensionOrMeasure;
   xAxisTitle?: string;
   yAxisTitle?: string;
   showLabels?: boolean;
@@ -40,64 +40,32 @@ export default (props: Props) => {
 
   useFont();
 
-  const { labels, series, maxCount } = useMemo(() => {
+  const { labels, series } = useMemo(() => {
     type Memo = {
       labels: string[];
       grouped: { [a: string]: { [b: string]: number } };
-      maxCount: number;
     };
 
-    if (!props.columns?.data || !props.count?.name || !props.groupingA?.name) {
-      return { labels: [], series: [], maxCount: 1 };
+    if (!props.line?.data || !props.count?.name || !props.date?.name) {
+      return { labels: [], series: [] };
     }
 
-    type MemoObj = { [dimension: string]: true };
-
-    const dimensions = props.columns.data.reduce(
-      (memo: { a: MemoObj; b: MemoObj }, record) => {
-        const groupA = record[props.groupingA?.name || ''] as string;
-        const groupB = record[props.groupingB?.name || ''] || 'default';
-
-        memo.a[groupA] = true;
-        memo.b[groupB] = true;
-
-        return memo;
-      },
-      { a: {}, b: {} }
-    );
-
-    const keysA = Object.keys(dimensions.a);
-    const keysB = Object.keys(dimensions.b);
-
-    const maxKeysA = Math.min(props.maxAmountA || 50, 50);
-    const maxKeysB = Math.min(props.maxAmountB || 50, 50);
-
-    const { grouped, labels, maxCount } = props.columns.data.reduce(
+    const { grouped, labels } = props.line.data.reduce(
       (memo: Memo, record) => {
-        const groupA = record[props.groupingA?.name || ''] as string;
-        const groupB = `${record[props.groupingB?.name || ''] || 'default'}`;
+        const groupA = record[props.date?.name || ''] as string;
+        const groupB = record[props.grouping?.name || ''] || 'default';
 
-        if (!groupA) return memo;
+        if (!groupA || !groupB) return memo;
 
-        const keyA =
-          keysA.length > maxKeysA && keysA.indexOf(groupA) >= maxKeysA - 1 ? 'Other' : groupA;
+        memo.grouped[groupB] = memo.grouped[groupB] || {};
 
-        const keyB =
-          keysB.length > maxKeysB && keysB.indexOf(groupB) >= maxKeysB - 1 ? 'Other' : groupB;
+        memo.grouped[groupB][groupA] = record[props.count.name] as number;
 
-        memo.grouped[keyB] = memo.grouped[keyB] || {};
-
-        memo.grouped[keyB][keyA] = memo.grouped[keyB][keyA] || 0;
-
-        memo.grouped[keyB][keyA] += parseInt(`${record[props.count.name]}`, 10) as number;
-
-        if (memo.maxCount < memo.grouped[keyB][keyA]) memo.maxCount = memo.grouped[keyB][keyA];
-
-        if (!memo.labels.includes(keyA)) memo.labels.push(keyA);
+        if (!memo.labels.includes(groupA)) memo.labels.push(groupA);
 
         return memo;
       },
-      { labels: [], grouped: {}, maxCount: 0 }
+      { labels: [], grouped: {} }
     );
 
     const series = Object.keys(grouped).map((name) => ({
@@ -105,7 +73,7 @@ export default (props: Props) => {
       data: labels.map((label) => grouped[name][label] || 0)
     }));
 
-    return { labels, series, maxCount };
+    return { labels, series };
   }, [props]);
 
   return (
@@ -115,24 +83,32 @@ export default (props: Props) => {
           {props.title}
         </h2>
       )}
-      <div className="h-full relative flex grow" ref={ref}>
+      <div className="relative h-full" ref={ref}>
         <Chart
-          className="column-chart"
+          className="line-chart"
+          height={!!props.title ? height - 30 : height}
           options={{
             colors: COLORS,
             chart: {
-              type: 'bar',
+              type: 'line',
               toolbar: {
                 show: false
+              },
+              zoom: {
+                enabled: false
+              }
+            },
+            xaxis: {
+              type: 'datetime',
+              categories: labels,
+              title: { text: props.xAxisTitle, style: { color: '#333942' } },
+              labels: {
+                formatter: (v) => `${format(parseJSON(v), 'P')}`
               }
             },
             yaxis: {
-              title: { text: props.yAxisTitle, style: { color: '#333942' } },
-              max: Math.ceil(maxCount + 0.1 * maxCount)
-            },
-            xaxis: {
-              min: 0,
-              title: { text: props.xAxisTitle, style: { color: '#333942' } }
+              tickAmount: 5,
+              title: { text: props.yAxisTitle, style: { color: '#333942' } }
             },
             tooltip: {
               custom: (opt) => {
@@ -149,7 +125,6 @@ export default (props: Props) => {
                 fontSize: '9px'
               }
             },
-            labels,
             legend: {
               show: !!props.showLegend,
               position: 'bottom',
@@ -164,32 +139,32 @@ export default (props: Props) => {
             dataLabels: {
               enabled: !!props.showLabels,
               dropShadow: { enabled: false },
-              offsetY: -20
+              background: {
+                enabled: true,
+                borderRadius: 10,
+                padding: 4
+              },
+              style: {}
             },
             stroke: {
               show: true,
-              width: 7,
-              colors: ['transparent']
+              width: 3,
+              curve: 'smooth'
             },
             plotOptions: {
               bar: {
                 borderRadius: 5,
-                columnWidth: 22,
-                dataLabels: {
-                  position: 'top'
-                }
+                columnWidth: 22
               }
             }
           }}
-          height={!!props.title ? height - 30 : height}
-          width={width}
           series={series}
-          type="bar"
+          type="line"
         />
-        {props.columns?.isLoading && !props.columns?.data?.length && (
+        {props.line?.isLoading && !props.line?.data?.length && (
           <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
         )}
-        <Spinner show={props.columns?.isLoading} />
+        <Spinner show={props.line?.isLoading} />
       </div>
     </div>
   );

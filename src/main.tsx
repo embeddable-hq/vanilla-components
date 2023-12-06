@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 
 import './components/index.css';
 import Dropdown from './components/Dropdown/Dropdown';
-import LineChart from './components/LineChart/LineChart';
+import DimensionSeries from './components/DimensionSeries/DimensionSeries';
 import DonutChart from './components/DonutChart/DonutChart';
 import ColumnChart from './components/ColumnChart/ColumnChart';
 import SingleValue from './components/SingleValue/SingleValue';
@@ -446,7 +446,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <br />
 
       <div className="h-[400px]">
-        <LineChart
+        <DimensionSeries
           date={{
             name: 'transactions.created_at',
             title: 'Created at',

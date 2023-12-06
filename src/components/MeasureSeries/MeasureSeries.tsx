@@ -7,6 +7,7 @@ import useFont from '../../hooks/useFont';
 import useResize from '../../hooks/useResize';
 
 import '../index.css';
+import Spinner from '../Spinner';
 
 type Data = {
   error?: string;
@@ -24,9 +25,8 @@ type Props = {
   title?: string;
   granularity?: string;
   line: Data;
-  count: DimensionOrMeasure;
+  measures: DimensionOrMeasure[];
   date: DimensionOrMeasure;
-  grouping: DimensionOrMeasure;
   xAxisTitle?: string;
   yAxisTitle?: string;
   showLabels?: boolean;
@@ -37,6 +37,8 @@ export default (props: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, height] = useResize(ref);
 
+  console.log('measure series props', props);
+
   useFont();
 
   const { labels, series } = useMemo(() => {
@@ -45,22 +47,23 @@ export default (props: Props) => {
       grouped: { [a: string]: { [b: string]: number } };
     };
 
-    if (!props.line?.data || !props.count?.name || !props.date?.name) {
+    if (!props.line?.data || !props.measures?.length || !props.date?.name) {
       return { labels: [], series: [] };
     }
 
     const { grouped, labels } = props.line.data.reduce(
       (memo: Memo, record) => {
-        const groupA = record[props.date?.name || ''] as string;
-        const groupB = record[props.grouping?.name || ''] || 'default';
+        const date = record[props.date?.name || ''] as string;
 
-        if (!groupA || !groupB) return memo;
+        if (!date) return memo;
 
-        memo.grouped[groupB] = memo.grouped[groupB] || {};
+        props.measures.forEach((m) => {
+          memo.grouped[m.name] = memo.grouped[m.name] || {};
 
-        memo.grouped[groupB][groupA] = record[props.count.name] as number;
+          memo.grouped[m.name][date] = parseInt(`${record[m.name] || 0}`, 10);
+        });
 
-        if (!memo.labels.includes(groupA)) memo.labels.push(groupA);
+        if (!memo.labels.includes(date)) memo.labels.push(date);
 
         return memo;
       },
@@ -68,13 +71,13 @@ export default (props: Props) => {
     );
 
     const series = Object.keys(grouped).map((name) => ({
-      name,
+      name: props.measures.find((m) => m.name === name)?.title || '',
       data: labels.map((label) => grouped[name][label] || 0)
     }));
 
     return { labels, series };
   }, [props]);
-
+  console.log('measure series series and labels', series, labels);
   return (
     <div className="h-full">
       {!!props.title && (
@@ -111,14 +114,16 @@ export default (props: Props) => {
             },
             tooltip: {
               custom: (opt) => {
-                const color = opt.w.config.colors[opt.seriesIndex];
-                const label = series[opt.seriesIndex]?.name || '';
-                const value = opt.series[opt.seriesIndex][opt.dataPointIndex];
+                // const color = opt.w.config.colors[opt.seriesIndex];
+                // const label = series[opt.seriesIndex]?.name || '';
+                // const value = opt.series[opt.seriesIndex][opt.dataPointIndex];
+                console.log(opt, series, labels);
+                return '<div class="chart-tooltip"></div>';
 
-                return `<div class="chart-tooltip">
-                  <strong>${props.count.title}: ${value}</strong>
-                  <div><b style="background-color:${color}"></b>${label}</div>
-                </div>`;
+                // return `<div class="chart-tooltip">
+                //   <strong>${props.count.title}: ${value}</strong>
+                //   <div><b style="background-color:${color}"></b>${label}</div>
+                // </div>`;
               },
               style: {
                 fontSize: '9px'
@@ -160,9 +165,10 @@ export default (props: Props) => {
           series={series}
           type="line"
         />
-        {props.line?.isLoading && (
+        {props.line?.isLoading && !props.line?.data?.length && (
           <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
         )}
+        <Spinner show={props.line?.isLoading} />
       </div>
     </div>
   );

@@ -1,11 +1,11 @@
 import { loadData } from '@embeddable.com/core';
 import { defineComponent } from '@embeddable.com/react';
 
-import LineChart from './LineChart';
+import MeasureSeries from './MeasureSeries';
 
 export const meta = {
-  name: 'LineChart',
-  label: 'Line Chart',
+  name: 'MeasureSeries',
+  label: 'Measure Series',
   inputs: [
     {
       name: 'title',
@@ -34,17 +34,10 @@ export const meta = {
       label: 'Granularity'
     },
     {
-      name: 'grouping',
-      type: 'dimension',
-      label: 'Grouping',
-      config: {
-        dataset: 'ds'
-      }
-    },
-    {
-      name: 'count',
+      name: 'measures',
       type: 'measure',
-      label: 'Count',
+      label: 'Measures',
+      array: true,
       config: {
         dataset: 'ds'
       }
@@ -73,7 +66,7 @@ export const meta = {
   events: []
 };
 
-export default defineComponent(LineChart, meta, {
+export default defineComponent(MeasureSeries, meta, {
   props: (props) => {
     return {
       ...props,
@@ -87,8 +80,7 @@ export default defineComponent(LineChart, meta, {
               }
             ]
           : undefined,
-        dimensions: [props.grouping].filter((g) => !!g),
-        measures: [props.count]
+        measures: props.measures
       })
     };
   }

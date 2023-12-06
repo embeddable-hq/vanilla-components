@@ -5,6 +5,8 @@ import { Table, TableRow, TableBody, TableCell, TableHead, TableHeaderCell } fro
 
 import useResize from '../../hooks/useResize';
 
+import Spinner from '../Spinner';
+
 type Column = {
   name: string;
   title: string;
@@ -151,6 +153,7 @@ export default (props: Props) => {
         {(!meta || (props.tableData?.isLoading && !props.tableData?.data?.length)) && (
           <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
         )}
+        <Spinner show={!meta || props.tableData?.isLoading} />
       </div>
       <div className="flex mt-2 items-center justify-center text-[12px] font-bold text-[#333942] select-none">
         <ShevronLeft

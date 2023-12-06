@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 
 import '../index.css';
+import Spinner from '../Spinner';
 
 type Data = {
   error?: string;
@@ -52,9 +53,10 @@ export default (props: Props) => {
           {n}
           {props.suffix}
         </div>
-        {props.value?.isLoading && (
+        {props.value?.isLoading && !props.value?.data?.length && (
           <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
         )}
+        <Spinner show={props.value?.isLoading} />
       </div>
     </div>
   );

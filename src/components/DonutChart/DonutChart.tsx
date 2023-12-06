@@ -6,6 +6,7 @@ import useFont from '../../hooks/useFont';
 import useResize from '../../hooks/useResize';
 
 import '../index.css';
+import Spinner from '../Spinner';
 
 type Data = {
   error?: string;
@@ -142,9 +143,11 @@ export default (props: Props) => {
           series={series}
           type="donut"
         />
-        {props.donut?.isLoading && (
+
+        {props.donut?.isLoading && !props.donut?.data?.length && (
           <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
         )}
+        <Spinner show={props.donut?.isLoading} />
       </div>
     </div>
   );
