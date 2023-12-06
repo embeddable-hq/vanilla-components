@@ -10,10 +10,12 @@ import SingleValue from './components/SingleValue/SingleValue';
 // import Table from './components/Table/Table';
 import TextInput from './components/TextInput/TextInput';
 import NumberInput from './components/NumberInput/NumberInput';
+import DateRangePicker from './components/DateRangePicker/DateRangePicker';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <div className="p-8">
+      <DateRangePicker onChange={() => {}} />
       {/* <Table
         columns={[
           {

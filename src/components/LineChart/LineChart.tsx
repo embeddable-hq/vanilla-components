@@ -2,6 +2,7 @@ import Chart from 'react-apexcharts';
 import { format, parseJSON } from 'date-fns';
 import React, { useMemo, useRef } from 'react';
 
+import { COLORS } from '../../constants';
 import useFont from '../../hooks/useFont';
 import useResize from '../../hooks/useResize';
 
@@ -86,20 +87,7 @@ export default (props: Props) => {
           className="line-chart"
           height={!!props.title ? height - 30 : height}
           options={{
-            colors: [
-              '#2859C5',
-              '#F58D02',
-              '#964FD2',
-              '#FF6B6C',
-              '#B8B8D1',
-              '#FFC145',
-              '#4473D9',
-              '#FDA32B',
-              '#AF79DD',
-              '#FF9E9F',
-              '#D7D7E5',
-              '#FFD37A'
-            ],
+            colors: COLORS,
             chart: {
               type: 'line',
               toolbar: {

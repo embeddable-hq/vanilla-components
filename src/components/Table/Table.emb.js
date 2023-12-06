@@ -8,6 +8,11 @@ export const meta = {
   label: 'Table',
   inputs: [
     {
+      name: 'title',
+      type: 'string',
+      label: 'Title'
+    },
+    {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset to display',
@@ -47,6 +52,7 @@ export default defineComponent(Table, meta, {
 
     return {
       ...props,
+      limit,
       defaultSort,
       tableData: loadData({
         from: props.ds,

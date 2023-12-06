@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import '../index.css';
 
@@ -10,6 +10,10 @@ type Props = {
 
 export default (props: Props) => {
   const [value, setValue] = useState(`${props.value}`);
+
+  useEffect(() => {
+    setValue(`${props.value}`);
+  }, [props.value]);
 
   return (
     <div className="w-full">

@@ -1,6 +1,7 @@
 import Chart from 'react-apexcharts';
 import React, { useMemo, useRef } from 'react';
 
+import { COLORS } from '../../constants';
 import useFont from '../../hooks/useFont';
 import useResize from '../../hooks/useResize';
 
@@ -75,8 +76,6 @@ export default (props: Props) => {
     };
   }, [props]);
 
-  console.log(labels, height, width, series);
-
   return (
     <div className="h-full">
       {!!props.title && (
@@ -88,20 +87,7 @@ export default (props: Props) => {
         <Chart
           className="donut-chart"
           options={{
-            colors: [
-              '#2859C5',
-              '#F58D02',
-              '#964FD2',
-              '#FF6B6C',
-              '#B8B8D1',
-              '#FFC145',
-              '#4473D9',
-              '#FDA32B',
-              '#AF79DD',
-              '#FF9E9F',
-              '#D7D7E5',
-              '#FFD37A'
-            ],
+            colors: COLORS,
             chart: {
               type: 'donut'
             },

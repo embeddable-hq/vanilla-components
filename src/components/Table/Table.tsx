@@ -13,6 +13,7 @@ type Column = {
 
 type Props = {
   title?: string;
+  limit: number;
   columns: Column[];
   maxPageRows?: number;
   tableData: TableData;
@@ -52,7 +53,7 @@ export default (props: Props) => {
         sort.unshift(newOrder);
       }
 
-      setMeta({ ...meta, sort });
+      setMeta({ ...meta, sort, page: 0 });
     },
     [meta, setMeta]
   );
@@ -156,14 +157,18 @@ export default (props: Props) => {
           onClick={() => {
             setMeta({ ...meta, page: Math.max(0, (meta?.page || 0) - 1) });
           }}
-          className="cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center"
+          className={`cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center ${
+            meta.page === 0 ? 'opacity-50 pointer-events-none' : ''
+          }`}
         />
         <span className="mx-4">Page {(meta?.page || 0) + 1}</span>
         <ShevronRight
           onClick={() => {
             setMeta({ ...meta, page: (meta?.page || 0) + 1 });
           }}
-          className="cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center"
+          className={`cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center ${
+            rows.length < props.limit ? 'opacity-50 pointer-events-none' : ''
+          }`}
         />
       </div>
     </div>
