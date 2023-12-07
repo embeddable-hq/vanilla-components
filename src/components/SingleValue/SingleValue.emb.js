@@ -21,9 +21,9 @@ export const meta = {
       defaultValue: false
     },
     {
-      name: 'property',
+      name: 'metric',
       type: 'measure',
-      label: 'Property',
+      label: 'Metric',
       config: {
         dataset: 'ds'
       }

@@ -1213,7 +1213,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <SingleValue
         title=""
         value={{ isLoading: false, data: [] }}
-        property={{ name: '', title: '', description: '' }}
+        metric={{ name: '', title: '', description: '' }}
       />
       <br />
       <Dropdown
@@ -1224,7 +1224,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           description: null
         }}
         title="test"
-        value="test"
+        value=""
         options={{
           isLoading: false,
           data: [

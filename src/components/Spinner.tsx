@@ -1,8 +1,8 @@
 import React from 'react';
 
-export default ({ show }: { show?: boolean }) => (
+export default ({ show, className }: { show?: boolean; className?: string }) => (
   <svg
-    className={`spinner absolute right-2 top-2 z-10 pointer-events-none ${
+    className={`${className || 'absolute right-2 top-2 z-10 pointer-events-none'} spinner ${
       show ? 'opacity-100' : 'opacity-0'
     }`}
     width="24"

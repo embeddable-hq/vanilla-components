@@ -8,6 +8,7 @@ import useResize from '../../hooks/useResize';
 
 import '../index.css';
 import Spinner from '../Spinner';
+import Title from '../Title';
 
 type Data = {
   error?: string;
@@ -78,11 +79,7 @@ export default (props: Props) => {
 
   return (
     <div className="h-full">
-      {!!props.title && (
-        <h2 className="text-[#333942] text-[14px] font-bold justify-start flex mb-8">
-          {props.title}
-        </h2>
-      )}
+      <Title title={props.title} />
       <div className="relative h-full" ref={ref}>
         <Chart
           className="line-chart"

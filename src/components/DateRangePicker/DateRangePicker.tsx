@@ -3,7 +3,7 @@ import * as chrono from 'chrono-node';
 import 'react-day-picker/dist/style.css';
 import React, { useEffect, useState } from 'react';
 import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
-import { dateParser } from "@cubejs-backend/api-gateway/dist/src/dateParser";
+import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser';
 
 import useFont from '../../hooks/useFont';
 
@@ -27,7 +27,7 @@ type TimeRange = {
   to?: Date;
   from?: Date;
   relativeTimeString?: string;
-}
+};
 
 export default (props: { value?: TimeRange; onChange: (v?: TimeRange) => void }) => {
   const [range, setRange] = useState<TimeRange | undefined>(props.value);
@@ -51,29 +51,37 @@ export default (props: { value?: TimeRange; onChange: (v?: TimeRange) => void })
   return (
     <div className="flex justify-center">
       <div className="relative inline-flex border rounded-md border-[#d8dad9] h-11 w-[420px] text-[#101010] text-sm font-medium">
-        <div className="border-r border-[#d8dad9] grow flex items-center p-4 max-w-[180px] hover:bg-[#f3f4f6] cursor-pointer group relative text-[14px]">
-          {range?.relativeTimeString || ((range?.from && range?.to) ? 'Custom' : 'Select')} <ChevronDown className="ml-auto" />
+        <div className="border-r border-[#d8dad9] grow flex items-center p-4 max-w-[180px] hover:bg-[#f3f4f6] cursor-pointer group relative text-[14px] w-full">
+          {range?.relativeTimeString || (range?.from && range?.to ? 'Custom' : 'Select')}{' '}
+          <ChevronDown className="ml-auto" />
           <div className="hidden w-full group-hover:block absolute top-8 left-0 z-50 pt-4 pointer-events-auto opacity-100">
             <div className="rounded w-full border border-[#d8dad9] overflow-hidden">
-              {ranges.map((relativeTimeString, i) => (
-                !!relativeTimeString && <div
-                  onClick={() => {
-                    if (!ranges[i]) return;
+              {ranges.map(
+                (relativeTimeString, i) =>
+                  !!relativeTimeString && (
+                    <div
+                      onClick={() => {
+                        if (!ranges[i]) return;
 
-                    const [from, to] = dateParser(relativeTimeString, 'UTC');
+                        const [from, to] = dateParser(relativeTimeString, 'UTC');
 
-                    if (!from || !to) return;
+                        if (!from || !to) return;
 
-                    setRange({ relativeTimeString, from: new Date(from), to: new Date(to) });
-                  }}
-                  className={`${i === 0 ? '' : 'border-t'
-                    } border-[#d8dad9] text-[14px] h-10 w-full flex items-center justify-center cursor-pointer hover:bg-[#f3f4f6] hover:text-[#333942] ${(range?.relativeTimeString || '') === relativeTimeString ? 'bg-[#f3f4f6] text-[#333942]' : 'bg-white'
-                    }`}
-                  key={i}
-                >
-                  {relativeTimeString}
-                </div>
-              ))}
+                        setRange({ relativeTimeString, from: new Date(from), to: new Date(to) });
+                      }}
+                      className={`${
+                        i === 0 ? '' : 'border-t'
+                      } border-[#d8dad9] text-[14px] h-10 w-full flex items-center justify-center cursor-pointer hover:bg-[#f3f4f6] hover:text-[#333942] ${
+                        (range?.relativeTimeString || '') === relativeTimeString
+                          ? 'bg-[#f3f4f6] text-[#333942]'
+                          : 'bg-white'
+                      }`}
+                      key={i}
+                    >
+                      {relativeTimeString}
+                    </div>
+                  )
+              )}
             </div>
           </div>
         </div>
@@ -91,11 +99,11 @@ export default (props: { value?: TimeRange; onChange: (v?: TimeRange) => void })
               }}
               weekStartsOn={1}
               mode="range"
-              selected={(range?.from && range?.to) ? { from: range.from, to: range.to } : undefined}
+              selected={range?.from && range?.to ? { from: range.from, to: range.to } : undefined}
               onSelect={(range) => {
                 setRange(range);
 
-                props.onChange(range?.from && range?.to ? { ...range } : undefined)
+                props.onChange(range?.from && range?.to ? { ...range } : undefined);
               }}
             />
           </div>

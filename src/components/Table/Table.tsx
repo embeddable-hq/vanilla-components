@@ -6,6 +6,7 @@ import { Table, TableRow, TableBody, TableCell, TableHead, TableHeaderCell } fro
 import useFont from '../../hooks/useFont';
 import useResize from '../../hooks/useResize';
 
+import Title from '../Title';
 import Spinner from '../Spinner';
 import { ChevronRight, ChevronLeft, SortDown, SortUp } from '../icons';
 
@@ -94,11 +95,7 @@ export default (props: Props) => {
 
   return (
     <div className="h-full flex flex-col justify-start">
-      {!!props.title && (
-        <h2 className="text-[#333942] text-[14px] font-bold justify-start flex mb-8">
-          {props.title}
-        </h2>
-      )}
+      <Title title={props.title} />
       <div className="grow overflow-hidden relative" ref={ref}>
         {!!meta && !(props.tableData?.isLoading && !props.tableData?.data?.length) && (
           <Table className="overflow-visible">
@@ -116,8 +113,9 @@ export default (props: Props) => {
                       <div className="flex items-center justify-start basis-0 grow w-0 text-[#333942] hover:text-black font-bold text-[12px]">
                         {h?.title}
                         <div
-                          className={`${sortIndex === 0 ? 'text-[#FF6B6C]' : 'text-[#333942]'
-                            } ml-1`}
+                          className={`${
+                            sortIndex === 0 ? 'text-[#FF6B6C]' : 'text-[#333942]'
+                          } ml-1`}
                         >
                           {meta?.sort?.[sortIndex]?.direction === 'asc' ? (
                             <SortUp fill="currentcolor" />
@@ -163,16 +161,18 @@ export default (props: Props) => {
           onClick={() => {
             setMeta({ ...meta, page: Math.max(0, (meta?.page || 0) - 1) });
           }}
-          className={`cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center ${meta?.page === 0 ? 'opacity-50 pointer-events-none' : ''
-            }`}
+          className={`cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center ${
+            meta?.page === 0 ? 'opacity-50 pointer-events-none' : ''
+          }`}
         />
         <span className="mx-4">Page {(meta?.page || 0) + 1}</span>
         <ChevronRight
           onClick={() => {
             setMeta({ ...meta, page: (meta?.page || 0) + 1 });
           }}
-          className={`cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center ${rows.length < props.limit ? 'opacity-50 pointer-events-none' : ''
-            }`}
+          className={`cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center ${
+            rows.length < props.limit ? 'opacity-50 pointer-events-none' : ''
+          }`}
         />
       </div>
     </div>

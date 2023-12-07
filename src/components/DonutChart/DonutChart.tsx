@@ -1,5 +1,5 @@
 import Chart from 'react-apexcharts';
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 import { COLORS } from '../../constants';
 import useFont from '../../hooks/useFont';
@@ -7,6 +7,7 @@ import useResize from '../../hooks/useResize';
 
 import '../index.css';
 import Spinner from '../Spinner';
+import Title from '../Title';
 
 type Data = {
   error?: string;
@@ -36,6 +37,10 @@ export default (props: Props) => {
   const [width, height] = useResize(ref);
 
   useFont();
+
+  useEffect(() => {
+    console.log('DonutChart props', props);
+  }, [props]);
 
   const { labels, series } = useMemo(() => {
     const labels =
@@ -79,11 +84,7 @@ export default (props: Props) => {
 
   return (
     <div className="h-full">
-      {!!props.title && (
-        <h2 className="text-[#333942] text-[14px] font-bold justify-start flex mb-8">
-          {props.title}
-        </h2>
-      )}
+      <Title title={props.title} />
       <div className="h-full relative" ref={ref}>
         <Chart
           className="donut-chart"

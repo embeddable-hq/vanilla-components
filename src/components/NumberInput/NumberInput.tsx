@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import useFont from '../../hooks/useFont';
 
 import '../index.css';
+import Title from '../Title';
 import { ClearIcon } from '../icons';
 
 type Props = {
@@ -22,11 +23,7 @@ export default (props: Props) => {
 
   return (
     <div className="w-full">
-      {!!props.title && (
-        <h2 className="text-[#333942] text-[14px] font-bold justify-start flex mb-8">
-          {props.title}
-        </h2>
-      )}
+      <Title title={props.title} />
 
       <div className="w-full relative rounded-xl bg-white border border-[#DADCE1] pr-8">
         <input
