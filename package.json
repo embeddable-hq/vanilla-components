@@ -13,8 +13,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cubejs-backend/api-gateway": "^0.34.31",
     "@tremor/react": "^3.2.1",
     "apexcharts": "^3.44.0",
+    "chrono-node": "^2.7.3",
     "date-fns": "^2.30.0",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
