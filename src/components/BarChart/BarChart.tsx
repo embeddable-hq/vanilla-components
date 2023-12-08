@@ -114,7 +114,7 @@ export default (props: Props) => {
   }, [props]);
 
   return (
-    <div className="h-full">
+    <div className="h-full pb-2">
       <Title title={props.title} />
       <div className="h-full relative flex grow" ref={ref}>
         <Chart

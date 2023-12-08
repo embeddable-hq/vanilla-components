@@ -1,5 +1,4 @@
 import { format } from 'date-fns';
-import * as chrono from 'chrono-node';
 import 'react-day-picker/dist/style.css';
 import React, { useEffect, useState } from 'react';
 import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
@@ -8,6 +7,7 @@ import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser';
 import useFont from '../../hooks/useFont';
 
 import '../index.css';
+import Title from '../Title';
 import { CalendarIcon, ChevronDown, ChevronLeft, ChevronRight } from '../icons';
 
 const ranges = [
@@ -29,7 +29,13 @@ type TimeRange = {
   relativeTimeString?: string;
 };
 
-export default (props: { value?: TimeRange; onChange: (v?: TimeRange) => void }) => {
+type Props = {
+  value?: TimeRange;
+  title?: string;
+  onChange: (v?: TimeRange) => void
+};
+
+export default (props: Props) => {
   const [range, setRange] = useState<TimeRange | undefined>(props.value);
 
   useFont();
@@ -49,8 +55,9 @@ export default (props: { value?: TimeRange; onChange: (v?: TimeRange) => void })
   }, [props.value]);
 
   return (
-    <div className="flex justify-center">
-      <div className="relative inline-flex border rounded-md border-[#d8dad9] h-11 w-[420px] text-[#101010] text-sm font-medium">
+    <div className="w-full">
+      <Title title={props.title} />
+      <div className="relative inline-flex border rounded-md border-[#d8dad9] h-11 w-full text-[#101010] text-sm font-medium">
         <div className="border-r border-[#d8dad9] grow flex items-center p-4 max-w-[180px] hover:bg-[#f3f4f6] cursor-pointer group relative text-[14px] w-full">
           {range?.relativeTimeString || (range?.from && range?.to ? 'Custom' : 'Select')}{' '}
           <ChevronDown className="ml-auto" />
@@ -69,13 +76,11 @@ export default (props: { value?: TimeRange; onChange: (v?: TimeRange) => void })
 
                         setRange({ relativeTimeString, from: new Date(from), to: new Date(to) });
                       }}
-                      className={`${
-                        i === 0 ? '' : 'border-t'
-                      } border-[#d8dad9] text-[14px] h-10 w-full flex items-center justify-center cursor-pointer hover:bg-[#f3f4f6] hover:text-[#333942] ${
-                        (range?.relativeTimeString || '') === relativeTimeString
+                      className={`${i === 0 ? '' : 'border-t'
+                        } border-[#d8dad9] text-[14px] h-10 w-full flex items-center justify-center cursor-pointer hover:bg-[#f3f4f6] hover:text-[#333942] ${(range?.relativeTimeString || '') === relativeTimeString
                           ? 'bg-[#f3f4f6] text-[#333942]'
                           : 'bg-white'
-                      }`}
+                        }`}
                       key={i}
                     >
                       {relativeTimeString}
