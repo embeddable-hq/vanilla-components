@@ -26,8 +26,9 @@ type Props = {
   title?: string;
   granularity?: string;
   line: Data;
-  measures: DimensionOrMeasure[];
-  date: DimensionOrMeasure;
+  metric?: DimensionOrMeasure;
+  xAxis?: DimensionOrMeasure;
+  xAxisLabel?: DimensionOrMeasure;
   xAxisTitle?: string;
   yAxisTitle?: string;
   showLabels?: boolean;
@@ -46,23 +47,22 @@ export default (props: Props) => {
       grouped: { [a: string]: { [b: string]: number } };
     };
 
-    if (!props.line?.data || !props.measures?.length || !props.date?.name) {
+    if (!props.line?.data || !props.metric?.name || !props.xAxis?.name) {
       return { labels: [], series: [] };
     }
 
     const { grouped, labels } = props.line.data.reduce(
       (memo: Memo, record) => {
-        const date = record[props.date?.name || ''] as string;
+        const groupA = record[props.xAxis?.name || ''] as string;
+        const groupB = record[props.xAxisLabel?.name || ''] || 'default';
 
-        if (!date) return memo;
+        if (!groupA || !groupB) return memo;
 
-        props.measures.forEach((m) => {
-          memo.grouped[m.name] = memo.grouped[m.name] || {};
+        memo.grouped[groupB] = memo.grouped[groupB] || {};
 
-          memo.grouped[m.name][date] = parseInt(`${record[m.name] || 0}`, 10);
-        });
+        memo.grouped[groupB][groupA] = record[props.metric?.name || ''] as number;
 
-        if (!memo.labels.includes(date)) memo.labels.push(date);
+        if (!memo.labels.includes(groupA)) memo.labels.push(groupA);
 
         return memo;
       },
@@ -70,7 +70,7 @@ export default (props: Props) => {
     );
 
     const series = Object.keys(grouped).map((name) => ({
-      name: props.measures.find((m) => m.name === name)?.title || '',
+      name,
       data: labels.map((label) => grouped[name][label] || 0)
     }));
 
@@ -114,7 +114,7 @@ export default (props: Props) => {
                 const value = opt.series[opt.seriesIndex][opt.dataPointIndex];
 
                 return `<div class="chart-tooltip">
-                  <strong>${value}</strong>
+                  <strong>${props.metric?.title || ''}: ${value}</strong>
                   <div><b style="background-color:${color}"></b>${label}</div>
                 </div>`;
               },
@@ -136,12 +136,9 @@ export default (props: Props) => {
             dataLabels: {
               enabled: !!props.showLabels,
               dropShadow: { enabled: false },
-              background: {
-                enabled: true,
-                borderRadius: 10,
-                padding: 4
-              },
-              style: {}
+              background: { enabled: false },
+              offsetY: -6,
+              style: { colors: ['##333942'] }
             },
             stroke: {
               show: true,

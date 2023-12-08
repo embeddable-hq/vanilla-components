@@ -1,11 +1,11 @@
 import { loadData } from '@embeddable.com/core';
 import { defineComponent } from '@embeddable.com/react';
 
-import DimensionSeries from './DimensionSeries';
+import TimeSeriesLineChart1 from './TimeSeriesLineChart1';
 
 export const meta = {
-  name: 'DimensionSeries',
-  label: 'Dimension Series',
+  name: 'TimeSeriesLineChart1',
+  label: 'Time Series Line Chart 1',
   inputs: [
     {
       name: 'title',
@@ -21,11 +21,12 @@ export const meta = {
       defaultValue: false
     },
     {
-      name: 'date',
+      name: 'xAxis',
       type: 'dimension',
-      label: 'Date',
+      label: 'X-Axis',
       config: {
-        dataset: 'ds'
+        dataset: 'ds',
+        supportedTypes: ['time']
       }
     },
     {
@@ -34,17 +35,17 @@ export const meta = {
       label: 'Granularity'
     },
     {
-      name: 'grouping',
+      name: 'xAxisLabel',
       type: 'dimension',
-      label: 'Grouping',
+      label: 'X-Axis Label',
       config: {
         dataset: 'ds'
       }
     },
     {
-      name: 'count',
+      name: 'metric',
       type: 'measure',
-      label: 'Count',
+      label: 'Metric',
       config: {
         dataset: 'ds'
       }
@@ -73,22 +74,22 @@ export const meta = {
   events: []
 };
 
-export default defineComponent(DimensionSeries, meta, {
+export default defineComponent(TimeSeriesLineChart1, meta, {
   props: (props) => {
     return {
       ...props,
       line: loadData({
         from: props.ds,
-        timeDimensions: props.date
+        timeDimensions: props.xAxis
           ? [
               {
-                dimension: props.date.name,
+                dimension: props.xAxis.name,
                 granularity: props.granularity
               }
             ]
           : undefined,
-        dimensions: [props.grouping].filter((g) => !!g),
-        measures: [props.count]
+        dimensions: [props.xAxisLabel].filter((g) => !!g),
+        measures: [props.metric]
       })
     };
   }

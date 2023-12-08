@@ -6,8 +6,8 @@ import useFont from '../../hooks/useFont';
 import useResize from '../../hooks/useResize';
 
 import '../index.css';
-import Spinner from '../Spinner';
 import Title from '../Title';
+import Spinner from '../Spinner';
 
 type Data = {
   error?: string;
@@ -24,11 +24,11 @@ type DimensionOrMeasure = {
 type Props = {
   title?: string;
   columns: Data;
-  count: DimensionOrMeasure;
+  metric: DimensionOrMeasure;
   groupingA: DimensionOrMeasure;
   groupingB?: DimensionOrMeasure;
-  maxAmountA?: number;
-  maxAmountB?: number;
+  maxXaxisItems?: number;
+  maxLabels?: number;
   xAxisTitle?: string;
   yAxisTitle?: string;
   showLabels?: boolean;
@@ -48,7 +48,7 @@ export default (props: Props) => {
       maxCount: number;
     };
 
-    if (!props.columns?.data || !props.count?.name || !props.groupingA?.name) {
+    if (!props.columns?.data || !props.metric?.name || !props.groupingA?.name) {
       return { labels: [], series: [], maxCount: 1 };
     }
 
@@ -70,8 +70,8 @@ export default (props: Props) => {
     const keysA = Object.keys(dimensions.a);
     const keysB = Object.keys(dimensions.b);
 
-    const maxKeysA = Math.min(props.maxAmountA || 50, 50);
-    const maxKeysB = Math.min(props.maxAmountB || 50, 50);
+    const maxKeysA = Math.min(props.maxXaxisItems || 50, 50);
+    const maxKeysB = Math.min(props.maxLabels || 50, 50);
 
     const { grouped, labels, maxCount } = props.columns.data.reduce(
       (memo: Memo, record) => {
@@ -90,7 +90,7 @@ export default (props: Props) => {
 
         memo.grouped[keyB][keyA] = memo.grouped[keyB][keyA] || 0;
 
-        memo.grouped[keyB][keyA] += parseInt(`${record[props.count.name]}`, 10) as number;
+        memo.grouped[keyB][keyA] += parseInt(`${record[props.metric.name]}`, 10) as number;
 
         if (memo.maxCount < memo.grouped[keyB][keyA]) memo.maxCount = memo.grouped[keyB][keyA];
 
@@ -138,7 +138,7 @@ export default (props: Props) => {
                 const value = opt.series[opt.seriesIndex][opt.dataPointIndex];
 
                 return `<div class="chart-tooltip">
-                  <strong>${props.count.title}: ${value}</strong>
+                  <strong>${props.metric.title}: ${value}</strong>
                   <div><b style="background-color:${color}"></b>${label}</div>
                 </div>`;
               },

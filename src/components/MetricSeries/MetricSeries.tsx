@@ -26,9 +26,8 @@ type Props = {
   title?: string;
   granularity?: string;
   line: Data;
-  count: DimensionOrMeasure;
-  date: DimensionOrMeasure;
-  grouping: DimensionOrMeasure;
+  metrics: DimensionOrMeasure[];
+  xAxis?: DimensionOrMeasure;
   xAxisTitle?: string;
   yAxisTitle?: string;
   showLabels?: boolean;
@@ -47,22 +46,23 @@ export default (props: Props) => {
       grouped: { [a: string]: { [b: string]: number } };
     };
 
-    if (!props.line?.data || !props.count?.name || !props.date?.name) {
+    if (!props.line?.data || !props.metrics?.length || !props.xAxis?.name) {
       return { labels: [], series: [] };
     }
 
     const { grouped, labels } = props.line.data.reduce(
       (memo: Memo, record) => {
-        const groupA = record[props.date?.name || ''] as string;
-        const groupB = record[props.grouping?.name || ''] || 'default';
+        const date = record[props.xAxis?.name || ''] as string;
 
-        if (!groupA || !groupB) return memo;
+        if (!date) return memo;
 
-        memo.grouped[groupB] = memo.grouped[groupB] || {};
+        props.metrics.forEach((m) => {
+          memo.grouped[m.name] = memo.grouped[m.name] || {};
 
-        memo.grouped[groupB][groupA] = record[props.count.name] as number;
+          memo.grouped[m.name][date] = parseInt(`${record[m.name] || 0}`, 10);
+        });
 
-        if (!memo.labels.includes(groupA)) memo.labels.push(groupA);
+        if (!memo.labels.includes(date)) memo.labels.push(date);
 
         return memo;
       },
@@ -70,7 +70,7 @@ export default (props: Props) => {
     );
 
     const series = Object.keys(grouped).map((name) => ({
-      name,
+      name: props.metrics.find((m) => m.name === name)?.title || '',
       data: labels.map((label) => grouped[name][label] || 0)
     }));
 
@@ -114,7 +114,7 @@ export default (props: Props) => {
                 const value = opt.series[opt.seriesIndex][opt.dataPointIndex];
 
                 return `<div class="chart-tooltip">
-                  <strong>${props.count.title}: ${value}</strong>
+                  <strong>${value}</strong>
                   <div><b style="background-color:${color}"></b>${label}</div>
                 </div>`;
               },
@@ -136,17 +136,14 @@ export default (props: Props) => {
             dataLabels: {
               enabled: !!props.showLabels,
               dropShadow: { enabled: false },
-              background: {
-                enabled: true,
-                borderRadius: 10,
-                padding: 4
-              },
-              style: {}
+              background: { enabled: false },
+              offsetY: -6,
+              style: { colors: ['##333942'] }
             },
             stroke: {
               show: true,
               width: 3,
-              curve: 'smooth'
+              curve: 'smooth',
             },
             plotOptions: {
               bar: {

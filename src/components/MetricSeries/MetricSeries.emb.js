@@ -1,10 +1,10 @@
 import { loadData } from '@embeddable.com/core';
 import { defineComponent } from '@embeddable.com/react';
 
-import MeasureSeries from './MeasureSeries';
+import MetricSeries from './MetricSeries';
 
 export const meta = {
-  name: 'MeasureSeries',
+  name: 'MetricSeries',
   label: 'Measure Series',
   inputs: [
     {
@@ -21,11 +21,12 @@ export const meta = {
       defaultValue: false
     },
     {
-      name: 'date',
+      name: 'aAxis',
       type: 'dimension',
-      label: 'Date',
+      label: 'X-Axis',
       config: {
-        dataset: 'ds'
+        dataset: 'ds',
+        supportedTypes: ['time']
       }
     },
     {
@@ -34,9 +35,9 @@ export const meta = {
       label: 'Granularity'
     },
     {
-      name: 'measures',
+      name: 'metrics',
       type: 'measure',
-      label: 'Measures',
+      label: 'Metrics',
       array: true,
       config: {
         dataset: 'ds'
@@ -66,7 +67,7 @@ export const meta = {
   events: []
 };
 
-export default defineComponent(MeasureSeries, meta, {
+export default defineComponent(MetricSeries, meta, {
   props: (props) => {
     return {
       ...props,

@@ -1,11 +1,11 @@
 import { loadData } from '@embeddable.com/core';
 import { defineComponent } from '@embeddable.com/react';
 
-import ColumnChart from './ColumnChart';
+import BarChart from './BarChart';
 
 export const meta = {
-  name: 'ColumnChart',
-  label: 'Column Chart',
+  name: 'BarChart',
+  label: 'Bar Chart',
   inputs: [
     {
       name: 'title',
@@ -37,19 +37,9 @@ export const meta = {
       }
     },
     {
-      name: 'maxAmountA',
-      type: 'number',
-      label: 'Max Amount A'
-    },
-    {
-      name: 'maxAmountB',
-      type: 'number',
-      label: 'Max Amount B'
-    },
-    {
-      name: 'count',
+      name: 'metric',
       type: 'measure',
-      label: 'Count',
+      label: 'Metric',
       config: {
         dataset: 'ds'
       }
@@ -73,12 +63,22 @@ export const meta = {
       name: 'showLegend',
       type: 'boolean',
       label: 'Show Legend'
+    },
+    {
+      name: 'maxXaxisItems',
+      type: 'number',
+      label: 'Max X-Axis Items'
+    },
+    {
+      name: 'maxLabels',
+      type: 'number',
+      label: 'Max Labels'
     }
   ],
   events: []
 };
 
-export default defineComponent(ColumnChart, meta, {
+export default defineComponent(BarChart, meta, {
   props: (props) => {
     return {
       ...props,
