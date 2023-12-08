@@ -1,4 +1,4 @@
-import { isMeasure, isDimension, loadData } from '@embeddable.com/core';
+import { loadData } from '@embeddable.com/core';
 import { defineComponent } from '@embeddable.com/react';
 
 import SingleValue from './SingleValue';
@@ -50,8 +50,7 @@ export default defineComponent(SingleValue, meta, {
       ...props,
       value: loadData({
         from: props.ds,
-        dimensions: isDimension(props.property) ? [props.property] : [],
-        measures: isMeasure(props.property) ? [props.property] : []
+        measures: [props.metric]
       })
     };
   }

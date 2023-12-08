@@ -57,7 +57,6 @@ export const meta = {
       label: 'Max Legend Items'
     }
   ],
-  events: []
 };
 
 export default defineComponent(DonutChart, meta, {

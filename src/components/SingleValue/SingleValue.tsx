@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 
 import useFont from '../../hooks/useFont';
 
@@ -6,21 +6,12 @@ import '../index.css';
 import Title from '../Title';
 import Spinner from '../Spinner';
 
-type Data = {
-  error?: string;
-  isLoading: boolean;
-  data?: any[];
-};
-
-type Measure = {
-  name: string;
-  title: string;
-  description: string | null;
-};
+import { Measure } from "@embeddable.com/core";
+import { DataResponse } from "@embeddable.com/react";
 
 type Props = {
   title?: string;
-  value: Data;
+  value: DataResponse;
   metric: Measure;
   suffix?: string;
   prefix?: string;
@@ -28,6 +19,10 @@ type Props = {
 
 export default (props: Props) => {
   useFont();
+
+  useEffect(() => {
+    console.log('SingleValue props', props);
+  }, [props]);
 
   const n = useMemo(() => {
     if (!props.value?.data?.length) return;
