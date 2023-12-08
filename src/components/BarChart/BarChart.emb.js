@@ -21,21 +21,21 @@ export const meta = {
       defaultValue: false
     },
     {
-      name: 'xAxisLabel',
+      name: 'xAxis',
       type: 'dimension',
       label: 'X-Axis',
       config: {
         dataset: 'ds'
       }
     },
-    {
-      name: 'xAxis',
-      type: 'dimension',
-      label: 'X-Axis Label',
-      config: {
-        dataset: 'ds'
-      }
-    },
+    // {
+    //   name: 'label',
+    //   type: 'dimension',
+    //   label: '2nd dimension',
+    //   config: {
+    //     dataset: 'ds'
+    //   }
+    // },
     {
       name: 'metric',
       type: 'measure',
@@ -65,27 +65,26 @@ export const meta = {
       label: 'Show Legend'
     },
     {
-      name: 'maxXaxisItems',
+      name: 'maxXAxisItems',
       type: 'number',
       label: 'Max X-Axis Items'
     },
-    {
-      name: 'maxLabels',
-      type: 'number',
-      label: 'Max Labels'
-    }
+    // {
+    //   name: 'maxLabels',
+    //   type: 'number',
+    //   label: 'Max Labels'
+    // }
   ],
-  events: []
 };
 
 export default defineComponent(BarChart, meta, {
-  props: (props) => {
+  props: (inputs) => {
     return {
-      ...props,
+      ...inputs,
       columns: loadData({
-        from: props.ds,
-        dimensions: [props.xAxisLabel, props.xAxis].filter((g) => !!g),
-        measures: [props.metric]
+        from: inputs.ds,
+        dimensions: [inputs.xAxis],
+        measures: [inputs.metric]
       })
     };
   }

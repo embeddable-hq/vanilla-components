@@ -9,25 +9,16 @@ import '../index.css';
 import Title from '../Title';
 import Spinner from '../Spinner';
 
-type Data = {
-  error?: string;
-  isLoading: boolean;
-  data?: { [key: string]: number | string }[];
-};
-
-type DimensionOrMeasure = {
-  name: string;
-  title: string;
-  description: string | null;
-};
+import { Dimension, Measure } from "@embeddable.com/core";
+import { DataResponse } from "@embeddable.com/react";
 
 type Props = {
   title?: string;
-  columns: Data;
-  metric: DimensionOrMeasure;
-  xAxisLabel: DimensionOrMeasure;
-  xAxis?: DimensionOrMeasure;
-  maxXaxisItems?: number;
+  columns: DataResponse;
+  metric: Measure;
+  xAxis: Dimension;
+  secondXAxis?: Dimension;
+  maxXAxisItems?: number;
   maxLabels?: number;
   xAxisTitle?: string;
   yAxisTitle?: string;
@@ -52,7 +43,7 @@ export default (props: Props) => {
       maxCount: number;
     };
 
-    if (!props.columns?.data || !props.metric?.name || !props.xAxisLabel?.name) {
+    if (!props.columns?.data || !props.metric?.name || !props.xAxis?.name) {
       return { labels: [], series: [], maxCount: 1 };
     }
 
@@ -60,8 +51,8 @@ export default (props: Props) => {
 
     const dimensions = props.columns.data.reduce(
       (memo: { a: MemoObj; b: MemoObj }, record) => {
-        const groupA = record[props.xAxisLabel?.name || ''] as string;
-        const groupB = record[props.xAxis?.name || ''] || 'default';
+        const groupA = record[props.xAxis?.name || ''] as string;
+        const groupB = record[props.secondXAxis?.name || ''] || 'default';
 
         memo.a[groupA] = true;
         memo.b[groupB] = true;
@@ -74,13 +65,13 @@ export default (props: Props) => {
     const keysA = Object.keys(dimensions.a);
     const keysB = Object.keys(dimensions.b);
 
-    const maxKeysA = Math.min(props.maxXaxisItems || 50, 50);
+    const maxKeysA = Math.min(props.maxXAxisItems || 50, 50);
     const maxKeysB = Math.min(props.maxLabels || 50, 50);
 
     const { grouped, labels, maxCount } = props.columns.data.reduce(
       (memo: Memo, record) => {
-        const groupA = record[props.xAxisLabel?.name || ''] as string;
-        const groupB = `${record[props.xAxis?.name || ''] || 'default'}`;
+        const groupA = record[props.xAxis?.name || ''] as string;
+        const groupB = `${record[props.secondXAxis?.name || ''] || 'default'}`;
 
         if (!groupA) return memo;
 
