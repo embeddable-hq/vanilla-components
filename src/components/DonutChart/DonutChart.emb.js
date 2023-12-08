@@ -21,9 +21,9 @@ export const meta = {
       defaultValue: false
     },
     {
-      name: 'groups',
+      name: 'segments',
       type: 'dimension',
-      label: 'Groups',
+      label: 'Segments',
       config: {
         dataset: 'ds'
       }
@@ -52,7 +52,7 @@ export const meta = {
       label: 'Show Legend'
     },
     {
-      name: 'maxGroups',
+      name: 'maxSegments',
       type: 'number',
       label: 'Max Legend Items'
     }
@@ -61,13 +61,13 @@ export const meta = {
 };
 
 export default defineComponent(DonutChart, meta, {
-  props: (props) => {
+  props: (inputs) => {
     return {
-      ...props,
+      ...inputs,
       donut: loadData({
-        from: props.ds,
-        dimensions: [props.groups],
-        measures: [props.metric]
+        from: inputs.ds,
+        dimensions: [inputs.segments],
+        measures: [inputs.metric]
       })
     };
   }

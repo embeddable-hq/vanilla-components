@@ -9,27 +9,19 @@ import '../index.css';
 import Spinner from '../Spinner';
 import Title from '../Title';
 
-type Data = {
-  error?: string;
-  isLoading: boolean;
-  data?: any[];
-};
+import { Dimension, Measure } from "@embeddable.com/core";
+import { DataResponse } from "@embeddable.com/react";
 
-type DimensionOrMeasure = {
-  name: string;
-  title: string;
-  description: string | null;
-};
 
 type Props = {
   title?: string;
-  donut: Data;
-  metric?: DimensionOrMeasure;
-  groups: DimensionOrMeasure;
+  donut: DataResponse;
+  metric?: Measure;
+  segments: Dimension;
   showPercentages?: boolean;
   showLabels?: boolean;
   showLegend?: boolean;
-  maxGroups?: number;
+  maxSegments?: number;
 };
 
 export default (props: Props) => {
@@ -55,7 +47,7 @@ export default (props: Props) => {
 
     const length = props.donut.data?.length || 0;
 
-    const maxLength = props.maxGroups || length;
+    const maxLength = props.maxSegments || length;
 
     if (length <= maxLength) return { labels, series };
 
