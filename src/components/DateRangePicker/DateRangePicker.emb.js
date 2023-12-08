@@ -7,15 +7,9 @@ export const meta = {
   label: 'Date Range Picker',
   inputs: [
     {
-      name: 'title',
-      type: 'string',
-      label: 'Title',
-      description: ''
-    },
-    {
       name: 'value',
       type: 'timeRange',
-      label: 'Value'
+      label: 'Initial value'
     }
   ],
   events: [
@@ -41,9 +35,9 @@ export const meta = {
   ],
   variables: [
     {
-      name: 'Date Range Value',
+      name: 'chosen date range',
       type: 'timeRange',
-      defaultValue: '',
+      defaultValue: null,
       inputs: ['value'],
       events: [{ name: 'onChange', property: 'dateRange' }]
     }
@@ -51,11 +45,14 @@ export const meta = {
 };
 
 export default defineComponent(DateRangePicker, meta, {
-  props: ({ value }) => ({ value }),
+  props: (inputs) => ({
+    value: inputs.value
+  }),
   events: {
-    onChange: (dateRange) => ({
-      ...dateRange,
-      dateRange
+    onChange: (timeRange) => ({
+      from: timeRange.from,
+      to: timeRange.to,
+      timeRange: timeRange
     })
   }
 });
