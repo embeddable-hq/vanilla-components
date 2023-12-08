@@ -25,8 +25,8 @@ type Props = {
   title?: string;
   columns: Data;
   metric: DimensionOrMeasure;
-  groupingA: DimensionOrMeasure;
-  groupingB?: DimensionOrMeasure;
+  xAxisLabel: DimensionOrMeasure;
+  xAxis?: DimensionOrMeasure;
   maxXaxisItems?: number;
   maxLabels?: number;
   xAxisTitle?: string;
@@ -52,7 +52,7 @@ export default (props: Props) => {
       maxCount: number;
     };
 
-    if (!props.columns?.data || !props.metric?.name || !props.groupingA?.name) {
+    if (!props.columns?.data || !props.metric?.name || !props.xAxisLabel?.name) {
       return { labels: [], series: [], maxCount: 1 };
     }
 
@@ -60,8 +60,8 @@ export default (props: Props) => {
 
     const dimensions = props.columns.data.reduce(
       (memo: { a: MemoObj; b: MemoObj }, record) => {
-        const groupA = record[props.groupingA?.name || ''] as string;
-        const groupB = record[props.groupingB?.name || ''] || 'default';
+        const groupA = record[props.xAxisLabel?.name || ''] as string;
+        const groupB = record[props.xAxis?.name || ''] || 'default';
 
         memo.a[groupA] = true;
         memo.b[groupB] = true;
@@ -79,8 +79,8 @@ export default (props: Props) => {
 
     const { grouped, labels, maxCount } = props.columns.data.reduce(
       (memo: Memo, record) => {
-        const groupA = record[props.groupingA?.name || ''] as string;
-        const groupB = `${record[props.groupingB?.name || ''] || 'default'}`;
+        const groupA = record[props.xAxisLabel?.name || ''] as string;
+        const groupB = `${record[props.xAxis?.name || ''] || 'default'}`;
 
         if (!groupA) return memo;
 

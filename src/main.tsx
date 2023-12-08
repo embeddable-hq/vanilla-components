@@ -57,7 +57,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           showLabels
           showLegend
           maxGroups={4}
-          count={{
+          metric={{
             name: 'courses_in_progress.count',
             title: 'Count',
             description: null
@@ -173,7 +173,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           title="Test"
           showLabels
           showLegend
-          maxXaxisItems={2}
+          maxXaxisItems={5}
           maxLabels={5}
           xAxisTitle="Countries"
           yAxisTitle="Amount of products"
@@ -182,12 +182,12 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             title: 'Count',
             description: null
           }}
-          groupingB={{
+          xAxis={{
             name: 'products.size',
             title: 'Size',
             description: null
           }}
-          groupingA={{
+          xAxisLabel={{
             name: 'customers.country',
             title: 'Country',
             description: null

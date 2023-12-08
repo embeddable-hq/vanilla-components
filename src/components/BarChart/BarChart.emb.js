@@ -21,17 +21,17 @@ export const meta = {
       defaultValue: false
     },
     {
-      name: 'groupingA',
+      name: 'xAxisLabel',
       type: 'dimension',
-      label: 'Grouping A',
+      label: 'X-Axis',
       config: {
         dataset: 'ds'
       }
     },
     {
-      name: 'groupingB',
+      name: 'xAxis',
       type: 'dimension',
-      label: 'Grouping B',
+      label: 'X-Axis Label',
       config: {
         dataset: 'ds'
       }
@@ -84,7 +84,7 @@ export default defineComponent(BarChart, meta, {
       ...props,
       columns: loadData({
         from: props.ds,
-        dimensions: [props.groupingA, props.groupingB].filter((g) => !!g),
+        dimensions: [props.xAxisLabel, props.xAxis].filter((g) => !!g),
         measures: [props.metric]
       })
     };
