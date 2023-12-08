@@ -29,9 +29,9 @@ export const meta = {
       }
     },
     {
-      name: 'count',
+      name: 'metric',
       type: 'measure',
-      label: 'Count',
+      label: 'Metric',
       config: {
         dataset: 'ds'
       }
@@ -67,7 +67,7 @@ export default defineComponent(DonutChart, meta, {
       donut: loadData({
         from: props.ds,
         dimensions: [props.groups],
-        measures: [props.count]
+        measures: [props.metric]
       })
     };
   }

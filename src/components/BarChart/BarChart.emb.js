@@ -85,7 +85,7 @@ export default defineComponent(BarChart, meta, {
       columns: loadData({
         from: props.ds,
         dimensions: [props.groupingA, props.groupingB].filter((g) => !!g),
-        measures: [props.count]
+        measures: [props.metric]
       })
     };
   }
