@@ -1,11 +1,11 @@
 import { loadData } from '@embeddable.com/core';
 import { defineComponent } from '@embeddable.com/react';
 
-import MeasureSeries from './MeasureSeries';
+import BarChart from './BarChart';
 
 export const meta = {
-  name: 'MeasureSeries',
-  label: 'Measure Series',
+  name: 'BarChart',
+  label: 'Bar Chart',
   inputs: [
     {
       name: 'title',
@@ -21,23 +21,25 @@ export const meta = {
       defaultValue: false
     },
     {
-      name: 'date',
+      name: 'xAxisLabel',
       type: 'dimension',
-      label: 'Date',
+      label: 'X-Axis',
       config: {
         dataset: 'ds'
       }
     },
     {
-      name: 'granularity',
-      type: 'granularity',
-      label: 'Granularity'
+      name: 'xAxis',
+      type: 'dimension',
+      label: 'X-Axis Label',
+      config: {
+        dataset: 'ds'
+      }
     },
     {
-      name: 'measures',
+      name: 'metric',
       type: 'measure',
-      label: 'Measures',
-      array: true,
+      label: 'Metric',
       config: {
         dataset: 'ds'
       }
@@ -61,26 +63,29 @@ export const meta = {
       name: 'showLegend',
       type: 'boolean',
       label: 'Show Legend'
+    },
+    {
+      name: 'maxXaxisItems',
+      type: 'number',
+      label: 'Max X-Axis Items'
+    },
+    {
+      name: 'maxLabels',
+      type: 'number',
+      label: 'Max Labels'
     }
   ],
   events: []
 };
 
-export default defineComponent(MeasureSeries, meta, {
+export default defineComponent(BarChart, meta, {
   props: (props) => {
     return {
       ...props,
-      line: loadData({
+      columns: loadData({
         from: props.ds,
-        timeDimensions: props.date
-          ? [
-              {
-                dimension: props.date.name,
-                granularity: props.granularity
-              }
-            ]
-          : undefined,
-        measures: props.measures
+        dimensions: [props.xAxisLabel, props.xAxis].filter((g) => !!g),
+        measures: [props.metric]
       })
     };
   }

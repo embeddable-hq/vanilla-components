@@ -7,6 +7,12 @@ export const meta = {
   label: 'Date Range Picker',
   inputs: [
     {
+      name: 'title',
+      type: 'string',
+      label: 'Title',
+      description: ''
+    },
+    {
       name: 'value',
       type: 'timeRange',
       label: 'Value'
@@ -31,6 +37,15 @@ export const meta = {
           label: 'Date range'
         }
       ]
+    }
+  ],
+  variables: [
+    {
+      name: 'Date Range Value',
+      type: 'timeRange',
+      defaultValue: '',
+      inputs: ['value'],
+      events: [{ name: 'onChange', property: 'dateRange' }]
     }
   ]
 };

@@ -1413,6 +1413,11 @@ chrono-node@^2.6.2, chrono-node@^2.7.3:
   dependencies:
     dayjs "^1.10.0"
 
+classnames@^2.2.3:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.2.tgz#351d813bf0137fcc6a76a16b88208d2560a0d924"
+  integrity sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==
+
 cli-cursor@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/cli-cursor/-/cli-cursor-4.0.0.tgz#3cecfe3734bf4fe02a8361cbdc0f6fe28c6a57ea"
@@ -3784,6 +3789,13 @@ react-dom@^18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
+react-dropdown@^1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/react-dropdown/-/react-dropdown-1.11.0.tgz#b9576de17efd28e5684d101b3f58dfe784af242c"
+  integrity sha512-E2UWetRPxNdIhQahXw6b984ME7WmcgDj9AEAjrtS/oyLCFVo+2qkCfcS06C22JR0Zj+YLnygwv0Ozf6VKKDq7g==
+  dependencies:
+    classnames "^2.2.3"
+
 react-is@^16.10.2, react-is@^16.13.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -3798,11 +3810,6 @@ react-refresh@^0.14.0:
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.14.0.tgz#4e02825378a5f227079554d4284889354e5f553e"
   integrity sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==
-
-react-select-search@^4.1.7:
-  version "4.1.7"
-  resolved "https://registry.yarnpkg.com/react-select-search/-/react-select-search-4.1.7.tgz#5662729b9052282bde52e1352006d495d9c5ed6e"
-  integrity sha512-pU7ONAdK+bmz2tbhBWYQv9m5mnXOn8yImuiy+5UhimIG80d5iKv3nSYJIjJWjDbdrrdoXiCRwQm8xbA8llTjmQ==
 
 react-smooth@^2.0.5:
   version "2.0.5"

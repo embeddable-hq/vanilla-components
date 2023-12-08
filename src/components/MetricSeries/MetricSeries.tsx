@@ -1,6 +1,6 @@
 import Chart from 'react-apexcharts';
 import { format, parseJSON } from 'date-fns';
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 import { COLORS } from '../../constants';
 import useFont from '../../hooks/useFont';
@@ -8,6 +8,7 @@ import useResize from '../../hooks/useResize';
 
 import '../index.css';
 import Spinner from '../Spinner';
+import Title from '../Title';
 
 type Data = {
   error?: string;
@@ -25,8 +26,8 @@ type Props = {
   title?: string;
   granularity?: string;
   line: Data;
-  measures: DimensionOrMeasure[];
-  date: DimensionOrMeasure;
+  metrics: DimensionOrMeasure[];
+  xAxis?: DimensionOrMeasure;
   xAxisTitle?: string;
   yAxisTitle?: string;
   showLabels?: boolean;
@@ -39,23 +40,27 @@ export default (props: Props) => {
 
   useFont();
 
+  useEffect(() => {
+    console.log('MetricSeries props', props);
+  }, [props]);
+
   const { labels, series } = useMemo(() => {
     type Memo = {
       labels: string[];
       grouped: { [a: string]: { [b: string]: number } };
     };
 
-    if (!props.line?.data || !props.measures?.length || !props.date?.name) {
+    if (!props.line?.data || !props.metrics?.length || !props.xAxis?.name) {
       return { labels: [], series: [] };
     }
 
     const { grouped, labels } = props.line.data.reduce(
       (memo: Memo, record) => {
-        const date = record[props.date?.name || ''] as string;
+        const date = record[props.xAxis?.name || ''] as string;
 
         if (!date) return memo;
 
-        props.measures.forEach((m) => {
+        props.metrics.forEach((m) => {
           memo.grouped[m.name] = memo.grouped[m.name] || {};
 
           memo.grouped[m.name][date] = parseInt(`${record[m.name] || 0}`, 10);
@@ -69,7 +74,7 @@ export default (props: Props) => {
     );
 
     const series = Object.keys(grouped).map((name) => ({
-      name: props.measures.find((m) => m.name === name)?.title || '',
+      name: props.metrics.find((m) => m.name === name)?.title || '',
       data: labels.map((label) => grouped[name][label] || 0)
     }));
 
@@ -78,11 +83,7 @@ export default (props: Props) => {
 
   return (
     <div className="h-full">
-      {!!props.title && (
-        <h2 className="text-[#333942] text-[14px] font-bold justify-start flex mb-8">
-          {props.title}
-        </h2>
-      )}
+      <Title title={props.title} />
       <div className="relative h-full" ref={ref}>
         <Chart
           className="line-chart"
@@ -139,17 +140,14 @@ export default (props: Props) => {
             dataLabels: {
               enabled: !!props.showLabels,
               dropShadow: { enabled: false },
-              background: {
-                enabled: true,
-                borderRadius: 10,
-                padding: 4
-              },
-              style: {}
+              background: { enabled: false },
+              offsetY: -6,
+              style: { colors: ['##333942'] }
             },
             stroke: {
               show: true,
               width: 3,
-              curve: 'smooth'
+              curve: 'smooth',
             },
             plotOptions: {
               bar: {

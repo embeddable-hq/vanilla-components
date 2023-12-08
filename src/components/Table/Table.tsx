@@ -6,6 +6,7 @@ import { Table, TableRow, TableBody, TableCell, TableHead, TableHeaderCell } fro
 import useFont from '../../hooks/useFont';
 import useResize from '../../hooks/useResize';
 
+import Title from '../Title';
 import Spinner from '../Spinner';
 import { ChevronRight, ChevronLeft, SortDown, SortUp } from '../icons';
 
@@ -48,7 +49,7 @@ export default (props: Props) => {
     (column: Column) => {
       if (!meta) return;
 
-      const sort: OrderBy[] = meta.sort.slice();
+      const sort: OrderBy[] = meta.sort?.slice() || [];
       const invert = { asc: 'desc', desc: 'asc' };
       const index = sort.findIndex((c) => c.property.name === column.name);
 
@@ -94,18 +95,14 @@ export default (props: Props) => {
 
   return (
     <div className="h-full flex flex-col justify-start">
-      {!!props.title && (
-        <h2 className="text-[#333942] text-[14px] font-bold justify-start flex mb-8">
-          {props.title}
-        </h2>
-      )}
+      <Title title={props.title} />
       <div className="grow overflow-hidden relative" ref={ref}>
         {!!meta && !(props.tableData?.isLoading && !props.tableData?.data?.length) && (
           <Table className="overflow-visible">
             <TableHead className="border-y border-[#B8BDC6]">
               <TableRow>
                 {columns?.map((h, i) => {
-                  const sortIndex = meta.sort.findIndex((c) => c.property.name === h.name);
+                  const sortIndex = meta?.sort?.findIndex((c) => c.property.name === h.name) || [];
 
                   return (
                     <TableHeaderCell
@@ -120,7 +117,7 @@ export default (props: Props) => {
                             sortIndex === 0 ? 'text-[#FF6B6C]' : 'text-[#333942]'
                           } ml-1`}
                         >
-                          {meta.sort[sortIndex]?.direction === 'asc' ? (
+                          {meta?.sort?.[sortIndex]?.direction === 'asc' ? (
                             <SortUp fill="currentcolor" />
                           ) : (
                             <SortDown fill="currentcolor" />
@@ -165,7 +162,7 @@ export default (props: Props) => {
             setMeta({ ...meta, page: Math.max(0, (meta?.page || 0) - 1) });
           }}
           className={`cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center ${
-            meta.page === 0 ? 'opacity-50 pointer-events-none' : ''
+            meta?.page === 0 ? 'opacity-50 pointer-events-none' : ''
           }`}
         />
         <span className="mx-4">Page {(meta?.page || 0) + 1}</span>

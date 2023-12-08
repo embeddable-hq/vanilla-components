@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import useFont from '../../hooks/useFont';
 
 import '../index.css';
+import Title from '../Title';
 import Spinner from '../Spinner';
 
 type Data = {
@@ -20,7 +21,7 @@ type Measure = {
 type Props = {
   title?: string;
   value: Data;
-  property: Measure;
+  metric: Measure;
   suffix?: string;
   prefix?: string;
 };
@@ -31,9 +32,9 @@ export default (props: Props) => {
   const n = useMemo(() => {
     if (!props.value?.data?.length) return;
 
-    if (!props.property?.name) return;
+    if (!props.metric?.name) return;
 
-    const n = props.value.data[0][props.property?.name];
+    const n = props.value.data[0][props.metric?.name];
 
     const num = parseFloat(n);
 
@@ -46,11 +47,7 @@ export default (props: Props) => {
 
   return (
     <div className="h-full flex flex-col justify-start">
-      {!!props.title && (
-        <h2 className="text-[#333942] text-[14px] font-bold justify-start flex mb-8">
-          {props.title}
-        </h2>
-      )}
+      <Title title={props.title} />
       <div className="relative grow items-center justify-center flex">
         <div className="flex items-center justify-center font-futura text-[#333942] text-[48px] font-bold">
           {props.prefix}

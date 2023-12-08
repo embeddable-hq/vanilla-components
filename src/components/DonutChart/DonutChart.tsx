@@ -1,5 +1,5 @@
 import Chart from 'react-apexcharts';
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 import { COLORS } from '../../constants';
 import useFont from '../../hooks/useFont';
@@ -7,6 +7,7 @@ import useResize from '../../hooks/useResize';
 
 import '../index.css';
 import Spinner from '../Spinner';
+import Title from '../Title';
 
 type Data = {
   error?: string;
@@ -23,7 +24,7 @@ type DimensionOrMeasure = {
 type Props = {
   title?: string;
   donut: Data;
-  count: DimensionOrMeasure;
+  metric?: DimensionOrMeasure;
   groups: DimensionOrMeasure;
   showPercentages?: boolean;
   showLabels?: boolean;
@@ -37,16 +38,20 @@ export default (props: Props) => {
 
   useFont();
 
+  useEffect(() => {
+    console.log('DonutChart props', props);
+  }, [props]);
+
   const { labels, series } = useMemo(() => {
     const labels =
       props.donut.data
-        ?.sort((a, b) => b[props.count.name] - a[props.count.name])
+        ?.sort((a, b) => b[props.metric?.name || ''] - a[props.metric?.name || ''])
         .map((record) => record[props.groups.name]) || [];
 
     const series =
       props.donut.data
-        ?.sort((a, b) => b[props.count.name] - a[props.count.name])
-        .map((record) => parseInt(`${record[props.count.name]}`, 10)) || [];
+        ?.sort((a, b) => b[props.metric?.name || ''] - a[props.metric?.name || ''])
+        .map((record) => parseInt(`${record[props.metric?.name || '']}`, 10)) || [];
 
     const length = props.donut.data?.length || 0;
 
@@ -79,11 +84,7 @@ export default (props: Props) => {
 
   return (
     <div className="h-full">
-      {!!props.title && (
-        <h2 className="text-[#333942] text-[14px] font-bold justify-start flex mb-8">
-          {props.title}
-        </h2>
-      )}
+      <Title title={props.title} />
       <div className="h-full relative" ref={ref}>
         <Chart
           className="donut-chart"
@@ -98,12 +99,12 @@ export default (props: Props) => {
                 const label = labels[seriesIndex] || '';
                 const value = props.showPercentages
                   ? `${Math.round(
-                      (100 * series[seriesIndex]) / series.reduce((t, n) => t + n, 0)
-                    )}%`
+                    (100 * series[seriesIndex]) / series.reduce((t, n) => t + n, 0)
+                  )}%`
                   : series[seriesIndex];
 
                 return `<div class="chart-tooltip">
-                <strong>${props.count.title}: ${value}</strong>
+                <strong>${props.metric?.title || ''}: ${value}</strong>
                 <div><b style="background-color:${color}"></b>${label}</div>
               </div>`;
               },

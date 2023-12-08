@@ -1,11 +1,11 @@
 import { loadData } from '@embeddable.com/core';
 import { defineComponent } from '@embeddable.com/react';
 
-import ColumnChart from './ColumnChart';
+import MetricSeries from './MetricSeries';
 
 export const meta = {
-  name: 'ColumnChart',
-  label: 'Column Chart',
+  name: 'MetricSeries',
+  label: 'Measure Series',
   inputs: [
     {
       name: 'title',
@@ -21,35 +21,24 @@ export const meta = {
       defaultValue: false
     },
     {
-      name: 'groupingA',
+      name: 'aAxis',
       type: 'dimension',
-      label: 'Grouping A',
+      label: 'X-Axis',
       config: {
-        dataset: 'ds'
+        dataset: 'ds',
+        supportedTypes: ['time']
       }
     },
     {
-      name: 'groupingB',
-      type: 'dimension',
-      label: 'Grouping B',
-      config: {
-        dataset: 'ds'
-      }
+      name: 'granularity',
+      type: 'granularity',
+      label: 'Granularity'
     },
     {
-      name: 'maxAmountA',
-      type: 'number',
-      label: 'Max Amount A'
-    },
-    {
-      name: 'maxAmountB',
-      type: 'number',
-      label: 'Max Amount B'
-    },
-    {
-      name: 'count',
+      name: 'metrics',
       type: 'measure',
-      label: 'Count',
+      label: 'Metrics',
+      array: true,
       config: {
         dataset: 'ds'
       }
@@ -78,14 +67,21 @@ export const meta = {
   events: []
 };
 
-export default defineComponent(ColumnChart, meta, {
+export default defineComponent(MetricSeries, meta, {
   props: (props) => {
     return {
       ...props,
-      columns: loadData({
+      line: loadData({
         from: props.ds,
-        dimensions: [props.groupingA, props.groupingB].filter((g) => !!g),
-        measures: [props.count]
+        timeDimensions: props.date
+          ? [
+              {
+                dimension: props.date.name,
+                granularity: props.granularity
+              }
+            ]
+          : undefined,
+        measures: props.measures
       })
     };
   }

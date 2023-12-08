@@ -1,6 +1,6 @@
 import Chart from 'react-apexcharts';
 import { format, parseJSON } from 'date-fns';
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 import { COLORS } from '../../constants';
 import useFont from '../../hooks/useFont';
@@ -8,6 +8,7 @@ import useResize from '../../hooks/useResize';
 
 import '../index.css';
 import Spinner from '../Spinner';
+import Title from '../Title';
 
 type Data = {
   error?: string;
@@ -25,9 +26,9 @@ type Props = {
   title?: string;
   granularity?: string;
   line: Data;
-  count: DimensionOrMeasure;
-  date: DimensionOrMeasure;
-  grouping: DimensionOrMeasure;
+  metric?: DimensionOrMeasure;
+  xAxis?: DimensionOrMeasure;
+  xAxisLabel?: DimensionOrMeasure;
   xAxisTitle?: string;
   yAxisTitle?: string;
   showLabels?: boolean;
@@ -40,26 +41,30 @@ export default (props: Props) => {
 
   useFont();
 
+  useEffect(() => {
+    console.log('TimeSeriesLineChart1 props', props);
+  }, [props]);
+
   const { labels, series } = useMemo(() => {
     type Memo = {
       labels: string[];
       grouped: { [a: string]: { [b: string]: number } };
     };
 
-    if (!props.line?.data || !props.count?.name || !props.date?.name) {
+    if (!props.line?.data || !props.metric?.name || !props.xAxis?.name) {
       return { labels: [], series: [] };
     }
 
     const { grouped, labels } = props.line.data.reduce(
       (memo: Memo, record) => {
-        const groupA = record[props.date?.name || ''] as string;
-        const groupB = record[props.grouping?.name || ''] || 'default';
+        const groupA = record[props.xAxis?.name || ''] as string;
+        const groupB = record[props.xAxisLabel?.name || ''] || 'default';
 
         if (!groupA || !groupB) return memo;
 
         memo.grouped[groupB] = memo.grouped[groupB] || {};
 
-        memo.grouped[groupB][groupA] = record[props.count.name] as number;
+        memo.grouped[groupB][groupA] = record[props.metric?.name || ''] as number;
 
         if (!memo.labels.includes(groupA)) memo.labels.push(groupA);
 
@@ -78,11 +83,7 @@ export default (props: Props) => {
 
   return (
     <div className="h-full">
-      {!!props.title && (
-        <h2 className="text-[#333942] text-[14px] font-bold justify-start flex mb-8">
-          {props.title}
-        </h2>
-      )}
+      <Title title={props.title} />
       <div className="relative h-full" ref={ref}>
         <Chart
           className="line-chart"
@@ -117,7 +118,7 @@ export default (props: Props) => {
                 const value = opt.series[opt.seriesIndex][opt.dataPointIndex];
 
                 return `<div class="chart-tooltip">
-                  <strong>${props.count.title}: ${value}</strong>
+                  <strong>${props.metric?.title || ''}: ${value}</strong>
                   <div><b style="background-color:${color}"></b>${label}</div>
                 </div>`;
               },
@@ -139,12 +140,9 @@ export default (props: Props) => {
             dataLabels: {
               enabled: !!props.showLabels,
               dropShadow: { enabled: false },
-              background: {
-                enabled: true,
-                borderRadius: 10,
-                padding: 4
-              },
-              style: {}
+              background: { enabled: false },
+              offsetY: -6,
+              style: { colors: ['##333942'] }
             },
             stroke: {
               show: true,

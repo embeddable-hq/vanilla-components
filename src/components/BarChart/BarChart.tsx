@@ -1,11 +1,12 @@
 import Chart from 'react-apexcharts';
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 import { COLORS } from '../../constants';
 import useFont from '../../hooks/useFont';
 import useResize from '../../hooks/useResize';
 
 import '../index.css';
+import Title from '../Title';
 import Spinner from '../Spinner';
 
 type Data = {
@@ -23,11 +24,11 @@ type DimensionOrMeasure = {
 type Props = {
   title?: string;
   columns: Data;
-  count: DimensionOrMeasure;
-  groupingA: DimensionOrMeasure;
-  groupingB?: DimensionOrMeasure;
-  maxAmountA?: number;
-  maxAmountB?: number;
+  metric: DimensionOrMeasure;
+  xAxisLabel: DimensionOrMeasure;
+  xAxis?: DimensionOrMeasure;
+  maxXaxisItems?: number;
+  maxLabels?: number;
   xAxisTitle?: string;
   yAxisTitle?: string;
   showLabels?: boolean;
@@ -40,6 +41,10 @@ export default (props: Props) => {
 
   useFont();
 
+  useEffect(() => {
+    console.log('BarChart props', props);
+  }, [props]);
+
   const { labels, series, maxCount } = useMemo(() => {
     type Memo = {
       labels: string[];
@@ -47,7 +52,7 @@ export default (props: Props) => {
       maxCount: number;
     };
 
-    if (!props.columns?.data || !props.count?.name || !props.groupingA?.name) {
+    if (!props.columns?.data || !props.metric?.name || !props.xAxisLabel?.name) {
       return { labels: [], series: [], maxCount: 1 };
     }
 
@@ -55,8 +60,8 @@ export default (props: Props) => {
 
     const dimensions = props.columns.data.reduce(
       (memo: { a: MemoObj; b: MemoObj }, record) => {
-        const groupA = record[props.groupingA?.name || ''] as string;
-        const groupB = record[props.groupingB?.name || ''] || 'default';
+        const groupA = record[props.xAxisLabel?.name || ''] as string;
+        const groupB = record[props.xAxis?.name || ''] || 'default';
 
         memo.a[groupA] = true;
         memo.b[groupB] = true;
@@ -69,13 +74,13 @@ export default (props: Props) => {
     const keysA = Object.keys(dimensions.a);
     const keysB = Object.keys(dimensions.b);
 
-    const maxKeysA = Math.min(props.maxAmountA || 50, 50);
-    const maxKeysB = Math.min(props.maxAmountB || 50, 50);
+    const maxKeysA = Math.min(props.maxXaxisItems || 50, 50);
+    const maxKeysB = Math.min(props.maxLabels || 50, 50);
 
     const { grouped, labels, maxCount } = props.columns.data.reduce(
       (memo: Memo, record) => {
-        const groupA = record[props.groupingA?.name || ''] as string;
-        const groupB = `${record[props.groupingB?.name || ''] || 'default'}`;
+        const groupA = record[props.xAxisLabel?.name || ''] as string;
+        const groupB = `${record[props.xAxis?.name || ''] || 'default'}`;
 
         if (!groupA) return memo;
 
@@ -89,7 +94,7 @@ export default (props: Props) => {
 
         memo.grouped[keyB][keyA] = memo.grouped[keyB][keyA] || 0;
 
-        memo.grouped[keyB][keyA] += parseInt(`${record[props.count.name]}`, 10) as number;
+        memo.grouped[keyB][keyA] += parseInt(`${record[props.metric.name]}`, 10) as number;
 
         if (memo.maxCount < memo.grouped[keyB][keyA]) memo.maxCount = memo.grouped[keyB][keyA];
 
@@ -109,12 +114,8 @@ export default (props: Props) => {
   }, [props]);
 
   return (
-    <div className="h-full">
-      {!!props.title && (
-        <h2 className="text-[#333942] text-[14px] font-bold justify-start flex mb-8">
-          {props.title}
-        </h2>
-      )}
+    <div className="h-full pb-2">
+      <Title title={props.title} />
       <div className="h-full relative flex grow" ref={ref}>
         <Chart
           className="column-chart"
@@ -141,7 +142,7 @@ export default (props: Props) => {
                 const value = opt.series[opt.seriesIndex][opt.dataPointIndex];
 
                 return `<div class="chart-tooltip">
-                  <strong>${props.count.title}: ${value}</strong>
+                  <strong>${props.metric.title}: ${value}</strong>
                   <div><b style="background-color:${color}"></b>${label}</div>
                 </div>`;
               },
