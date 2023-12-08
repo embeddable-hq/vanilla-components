@@ -1,6 +1,6 @@
 import Chart from 'react-apexcharts';
 import { format, parseJSON } from 'date-fns';
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 import { COLORS } from '../../constants';
 import useFont from '../../hooks/useFont';
@@ -40,6 +40,10 @@ export default (props: Props) => {
   const [width, height] = useResize(ref);
 
   useFont();
+
+  useEffect(() => {
+    console.log('TimeSeriesLineChart1 props', props);
+  }, [props]);
 
   const { labels, series } = useMemo(() => {
     type Memo = {

@@ -1,5 +1,5 @@
 import Chart from 'react-apexcharts';
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 import { COLORS } from '../../constants';
 import useFont from '../../hooks/useFont';
@@ -40,6 +40,10 @@ export default (props: Props) => {
   const [width, height] = useResize(ref);
 
   useFont();
+
+  useEffect(() => {
+    console.log('BarChart props', props);
+  }, [props]);
 
   const { labels, series, maxCount } = useMemo(() => {
     type Memo = {
