@@ -1,3 +1,5 @@
+import { DataResponse } from '@embeddable.com/react';
+import { DimensionOrMeasure } from '@embeddable.com/core';
 import { useEmbeddableState } from '@embeddable.com/react';
 import { OrderBy, OrderDirection } from '@embeddable.com/core';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
@@ -9,9 +11,6 @@ import useResize from '../../../hooks/useResize';
 import Title from '../../Title';
 import Spinner from '../../Spinner';
 import { ChevronRight, ChevronLeft, SortDown, SortUp } from '../../icons';
-
-import { DimensionOrMeasure } from "@embeddable.com/core";
-import { DataResponse } from "@embeddable.com/react";
 
 type Props = {
   title?: string;
@@ -30,10 +29,6 @@ export default (props: Props) => {
 
   useFont();
 
-  useEffect(() => {
-    console.log('Table props', props);
-  }, [props]);
-
   const [meta, setMeta] = useEmbeddableState({
     page: 0,
     maxRowsFit: 0,
@@ -41,7 +36,7 @@ export default (props: Props) => {
   }) as any;
 
   const updateSort = useCallback(
-    (column: Column) => {
+    (column: DimensionOrMeasure) => {
       if (!meta) return;
 
       const sort: OrderBy[] = meta.sort?.slice() || [];
@@ -71,7 +66,7 @@ export default (props: Props) => {
     return () => {
       clearTimeout(timeout);
     };
-  }, [height]);
+  }, [height, props.tableData?.data?.length]);
 
   const rows = useMemo(
     () =>
@@ -97,7 +92,7 @@ export default (props: Props) => {
             <TableHead className="border-y border-[#B8BDC6]">
               <TableRow>
                 {columns?.map((h, i) => {
-                  const sortIndex = meta?.sort?.findIndex((c) => c.property.name === h.name) || [];
+                  const sortIndex = meta?.sort?.findIndex((c) => c.property.name === h.name) || 0;
 
                   return (
                     <TableHeaderCell
