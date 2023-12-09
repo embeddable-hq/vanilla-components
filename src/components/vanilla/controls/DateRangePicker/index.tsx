@@ -32,7 +32,7 @@ type TimeRange = {
 type Props = {
   value?: TimeRange;
   title?: string;
-  onChange: (v?: TimeRange) => void
+  onChange: (v?: { value: TimeRange }) => void;
 };
 
 export default (props: Props) => {
@@ -76,11 +76,13 @@ export default (props: Props) => {
 
                         setRange({ relativeTimeString, from: new Date(from), to: new Date(to) });
                       }}
-                      className={`${i === 0 ? '' : 'border-t'
-                        } border-[#d8dad9] text-[14px] h-10 w-full flex items-center justify-center cursor-pointer hover:bg-[#f3f4f6] hover:text-[#333942] ${(range?.relativeTimeString || '') === relativeTimeString
+                      className={`${
+                        i === 0 ? '' : 'border-t'
+                      } border-[#d8dad9] text-[14px] h-10 w-full flex items-center justify-center cursor-pointer hover:bg-[#f3f4f6] hover:text-[#333942] ${
+                        (range?.relativeTimeString || '') === relativeTimeString
                           ? 'bg-[#f3f4f6] text-[#333942]'
                           : 'bg-white'
-                        }`}
+                      }`}
                       key={i}
                     >
                       {relativeTimeString}
@@ -104,11 +106,15 @@ export default (props: Props) => {
               }}
               weekStartsOn={1}
               mode="range"
-              selected={range?.from && range?.to ? { from: range.from, to: range.to } : undefined}
+              selected={{ from: range?.from, to: range?.to }}
               onSelect={(range) => {
                 setRange(range);
 
-                props.onChange(range?.from && range?.to ? { ...range } : undefined);
+                console.log(222, range);
+
+                if (!range?.from || !range?.to) return;
+
+                props.onChange({ value: { ...range } });
               }}
             />
           </div>

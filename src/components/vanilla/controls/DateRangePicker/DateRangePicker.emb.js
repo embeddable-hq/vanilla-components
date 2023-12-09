@@ -18,15 +18,7 @@ export const meta = {
       label: 'Change',
       properties: [
         {
-          name: 'from',
-          type: 'time'
-        },
-        {
-          name: 'to',
-          type: 'time'
-        },
-        {
-          name: 'dateRange',
+          name: 'value',
           type: 'timeRange',
           label: 'Date range'
         }
@@ -35,11 +27,11 @@ export const meta = {
   ],
   variables: [
     {
-      name: 'chosen date range',
+      name: 'date range value',
       type: 'timeRange',
       defaultValue: null,
       inputs: ['value'],
-      events: [{ name: 'onChange', property: 'dateRange' }]
+      events: [{ name: 'onChange', property: 'value' }]
     }
   ]
 };
@@ -49,10 +41,6 @@ export default defineComponent(Component, meta, {
     value: inputs.value
   }),
   events: {
-    onChange: (timeRange) => ({
-      from: timeRange.from,
-      to: timeRange.to,
-      timeRange: timeRange
-    })
+    onChange: (value) => ({ value })
   }
 });
