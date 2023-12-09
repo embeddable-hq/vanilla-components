@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import './components/index.css';
-import Dropdown from './components/Dropdown/Dropdown';
-import TextInput from './components/TextInput/TextInput';
-import DonutChart from './components/DonutChart/DonutChart';
-import BarChart from './components/BarChart/BarChart';
-import SingleValue from './components/SingleValue/SingleValue';
-import NumberInput from './components/NumberInput/NumberInput';
-import MetricSeries from './components/MetricSeries/MetricSeries';
-import DateRangePicker from './components/DateRangePicker/DateRangePicker';
+import './vanilla/index.css';
+import Dropdown from './vanilla/Dropdown/Dropdown';
+import TextInput from './vanilla/TextInput/TextInput';
+import DonutChart from './vanilla/DonutChart/DonutChart';
+import BarChart from './vanilla/BarChart/BarChart';
+import SingleValue from './vanilla/SingleValue/SingleValue';
+import NumberInput from './vanilla/NumberInput/NumberInput';
+import MetricSeries from './vanilla/MetricSeries/MetricSeries';
+import DateRangePicker from './vanilla/DateRangePicker/DateRangePicker';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

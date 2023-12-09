@@ -38,7 +38,7 @@ export default (props: Props) => {
     const labels =
       props.donut.data
         ?.sort((a, b) => b[props.metric?.name || ''] - a[props.metric?.name || ''])
-        .map((record) => record[props.groups.name]) || [];
+        .map((record) => record[props.segments.name]) || [];
 
     const series =
       props.donut.data
