@@ -91,6 +91,8 @@ export default (props: Props) => {
             },
             tooltip: {
               custom: ({ series, seriesIndex, w }) => {
+                const left = w.globals.clientX - 50;
+                const top = w.globals.clientY - 120;
                 const color = w.config.colors[seriesIndex];
                 const label = labels[seriesIndex] || '';
                 const value = props.showPercentages
@@ -99,7 +101,7 @@ export default (props: Props) => {
                     )}%`
                   : series[seriesIndex];
 
-                return `<div class="chart-tooltip">
+                return `<div style="left: ${left}px; top: ${top}px;" class="chart-tooltip">
                 <strong>${props.metric?.title || ''}: ${value}</strong>
                 <div><b style="background-color:${color}"></b>${label}</div>
               </div>`;

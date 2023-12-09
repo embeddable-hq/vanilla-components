@@ -133,11 +133,13 @@ export default (props: Props) => {
             },
             tooltip: {
               custom: (opt) => {
+                const left = opt.w.globals.clientX - 50;
+                const top = opt.w.globals.clientY - 120;
                 const color = opt.w.config.colors[opt.seriesIndex];
                 const label = series[opt.seriesIndex]?.name || '';
                 const value = opt.series[opt.seriesIndex][opt.dataPointIndex];
 
-                return `<div class="chart-tooltip">
+                return `<div style="left: ${left}px; top: ${top}px;" class="chart-tooltip">
                   <strong>${props.metric.title}: ${value}</strong>
                   <div><b style="background-color:${color}"></b>${label}</div>
                 </div>`;
