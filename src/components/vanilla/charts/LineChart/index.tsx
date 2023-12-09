@@ -10,8 +10,8 @@ import '../../index.css';
 import Spinner from '../../Spinner';
 import Title from '../../Title';
 
-import { Dimension, Measure } from "@embeddable.com/core";
-import { DataResponse } from "@embeddable.com/react";
+import { Dimension, Measure } from '@embeddable.com/core';
+import { DataResponse } from '@embeddable.com/react';
 
 type Props = {
   title?: string;
@@ -95,8 +95,9 @@ export default (props: Props) => {
               categories: labels,
               title: { text: props.xAxisTitle, style: { color: '#333942' } },
               labels: {
-                formatter: (v) => `${format(parseJSON(v), 'P')}`
-              }
+                formatter: (v) => `${format(parseJSON(v), 'dd-MM-yy')}`
+              },
+              overwriteCategories: labels
             },
             yaxis: {
               title: { text: props.yAxisTitle, style: { color: '#333942' } }
@@ -137,7 +138,7 @@ export default (props: Props) => {
             stroke: {
               show: true,
               width: 3,
-              curve: 'smooth',
+              curve: 'smooth'
             },
             plotOptions: {
               bar: {

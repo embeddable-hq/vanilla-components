@@ -66,7 +66,7 @@ export default (props: Props) => {
     return () => {
       clearTimeout(timeout);
     };
-  }, [height, props.tableData?.data?.length]);
+  }, [height, setMeta]);
 
   const rows = useMemo(
     () =>
