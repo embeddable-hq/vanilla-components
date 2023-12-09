@@ -1,10 +1,10 @@
 import React, { useMemo, useEffect } from 'react';
 
-import useFont from '../../hooks/useFont';
+import useFont from '../../../hooks/useFont';
 
-import '../index.css';
-import Title from '../Title';
-import Spinner from '../Spinner';
+import '../../index.css';
+import Title from '../../Title';
+import Spinner from '../../Spinner';
 
 import { Measure } from "@embeddable.com/core";
 import { DataResponse } from "@embeddable.com/react";

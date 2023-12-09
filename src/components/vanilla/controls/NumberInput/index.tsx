@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from 'react';
 
-import useFont from '../../hooks/useFont';
+import useFont from '../../../hooks/useFont';
 
-import '../index.css';
-import Title from '../Title';
-import { ClearIcon } from '../icons';
+import '../../index.css';
+import Title from '../../Title';
+import { ClearIcon } from '../../icons';
 
 type Props = {
   title?: string;
-  value: string;
+  value: number;
   onChange: (v: any) => void;
 };
 
 export default (props: Props) => {
-  const [value, setValue] = useState(props.value);
+  const [value, setValue] = useState(`${props.value}`);
 
   useFont();
 
   useEffect(() => {
-    setValue(props.value);
+    setValue(`${props.value}`);
   }, [props.value]);
 
   return (
@@ -27,6 +27,7 @@ export default (props: Props) => {
 
       <div className="w-full relative rounded-xl bg-white border border-[#DADCE1] pr-8">
         <input
+          type="number"
           className="rounded-xl w-full outline-none leading-10 h-10 border-0 px-3"
           onChange={(e) => {
             setValue(e.target.value);

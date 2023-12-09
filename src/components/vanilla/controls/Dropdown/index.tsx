@@ -1,12 +1,12 @@
 import Dropdown from 'react-dropdown';
 import React, { useEffect, useState } from 'react';
 
-import useFont from '../../hooks/useFont';
+import useFont from '../../../hooks/useFont';
 
-import '../index.css';
-import Title from '../Title';
-import Spinner from '../Spinner';
-import { ClearIcon } from '../icons';
+import '../../index.css';
+import Title from '../../Title';
+import Spinner from '../../Spinner';
+import { ClearIcon } from '../../icons';
 
 import { Dimension, Measure } from "@embeddable.com/core";
 import { DataResponse } from "@embeddable.com/react";

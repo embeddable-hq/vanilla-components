@@ -1,11 +1,10 @@
-import { Value } from '@embeddable.com/core';
 import { defineComponent } from '@embeddable.com/react';
 
-import NumberInput from './NumberInput';
+import Component from './index';
 
 export const meta = {
-  name: 'NumberInput',
-  label: 'Number Input',
+  name: 'TextInput',
+  label: 'Text Input',
   inputs: [
     {
       name: 'title',
@@ -15,7 +14,7 @@ export const meta = {
     },
     {
       name: 'value',
-      type: 'number',
+      type: 'string',
       label: 'Value'
     }
   ],
@@ -26,29 +25,29 @@ export const meta = {
       properties: [
         {
           name: 'value',
-          type: 'number'
+          type: 'string'
         }
       ]
     }
   ],
   variables: [
     {
-      name: 'Number Value',
-      type: 'number',
-      defaultValue: null,
+      name: 'Text Value',
+      type: 'string',
+      defaultValue: '',
       inputs: ['value'],
       events: [{ name: 'onChange', property: 'value' }]
     }
   ]
 };
 
-export default defineComponent(NumberInput, meta, {
-  props: (props) => ({ ...props }),
+export default defineComponent(Component, meta, {
+  props: (inputs) => ({ 
+    ...inputs 
+  }),
   events: {
     onChange: (value) => {
-      const noValue = typeof value !== 'number' && !value;
-
-      return { value: noValue ? Value.noFilter() : parseFloat(`${value}`) };
+      return { value };
     }
   }
 });

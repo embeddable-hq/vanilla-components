@@ -1,7 +1,7 @@
 import { loadData } from '@embeddable.com/core';
 import { defineComponent } from '@embeddable.com/react';
 
-import Dropdown from './Dropdown';
+import Component from './index';
 
 export const meta = {
   name: 'Dropdown',
@@ -56,7 +56,7 @@ export const meta = {
   ]
 };
 
-export default defineComponent(Dropdown, meta, {
+export default defineComponent(Component, meta, {
   props: (inputs) => {
     return {
       ...inputs,

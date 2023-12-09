@@ -3,12 +3,12 @@ import { OrderBy, OrderDirection } from '@embeddable.com/core';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Table, TableRow, TableBody, TableCell, TableHead, TableHeaderCell } from '@tremor/react';
 
-import useFont from '../../hooks/useFont';
-import useResize from '../../hooks/useResize';
+import useFont from '../../../hooks/useFont';
+import useResize from '../../../hooks/useResize';
 
-import Title from '../Title';
-import Spinner from '../Spinner';
-import { ChevronRight, ChevronLeft, SortDown, SortUp } from '../icons';
+import Title from '../../Title';
+import Spinner from '../../Spinner';
+import { ChevronRight, ChevronLeft, SortDown, SortUp } from '../../icons';
 
 import { DimensionOrMeasure } from "@embeddable.com/core";
 import { DataResponse } from "@embeddable.com/react";

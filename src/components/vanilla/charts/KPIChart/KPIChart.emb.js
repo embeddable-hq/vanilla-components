@@ -1,11 +1,11 @@
 import { loadData } from '@embeddable.com/core';
 import { defineComponent } from '@embeddable.com/react';
 
-import SingleValue from './SingleValue';
+import Component from './index';
 
 export const meta = {
-  name: 'SingleValue',
-  label: 'Single Value',
+  name: 'KPIChart',
+  label: 'KPI',
   inputs: [
     {
       name: 'title',
@@ -23,7 +23,7 @@ export const meta = {
     {
       name: 'metric',
       type: 'measure',
-      label: 'Metric',
+      label: 'KPI',
       config: {
         dataset: 'ds'
       }
@@ -44,13 +44,13 @@ export const meta = {
   events: []
 };
 
-export default defineComponent(SingleValue, meta, {
-  props: (props) => {
+export default defineComponent(Component, meta, {
+  props: (inputs) => {
     return {
-      ...props,
+      ...inputs,
       value: loadData({
-        from: props.ds,
-        measures: [props.metric]
+        from: inputs.ds,
+        measures: [inputs.metric]
       })
     };
   }

@@ -2,14 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import './vanilla/index.css';
-import Dropdown from './vanilla/Dropdown/Dropdown';
-import TextInput from './vanilla/TextInput/TextInput';
-import DonutChart from './vanilla/DonutChart/DonutChart';
-import BarChart from './vanilla/BarChart/BarChart';
-import SingleValue from './vanilla/SingleValue/SingleValue';
-import NumberInput from './vanilla/NumberInput/NumberInput';
-import MetricSeries from './vanilla/MetricSeries/MetricSeries';
-import DateRangePicker from './vanilla/DateRangePicker/DateRangePicker';
+import Dropdown from './vanilla/controls/Dropdown/index';
+import TextInput from './vanilla/controls/TextInput/index';
+import DonutChart from './vanilla/charts/DonutChart/index';
+import BarChart from './vanilla/charts/BarChart/index';
+import KPIChart from './vanilla/charts/KPIChart/index';
+import NumberInput from './vanilla/controls/NumberInput/index';
+import LineChart from './vanilla/charts/LineChart/index';
+import DateRangePicker from './vanilla/controls/DateRangePicker/index';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -200,7 +200,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <br />
 
       <div className="h-[400px]">
-        <MetricSeries
+        <LineChart
           metrics={[
             {
               name: 'products.count',
@@ -225,7 +225,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         />
       </div>
       <br />
-      <SingleValue
+      <KPIChart
         title=""
         value={{ isLoading: false, data: [] }}
         metric={{ name: '', title: '', description: '' }}
