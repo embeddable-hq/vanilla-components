@@ -1,17 +1,17 @@
 import Chart from 'react-apexcharts';
 import { format, parseJSON } from 'date-fns';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
+import { DataResponse } from '@embeddable.com/react';
+import { Dimension, Measure } from '@embeddable.com/core';
 
 import { COLORS } from '../../../constants';
 import useFont from '../../../hooks/useFont';
 import useResize from '../../../hooks/useResize';
 
 import '../../index.css';
-import Spinner from '../../Spinner';
 import Title from '../../Title';
-
-import { Dimension, Measure } from '@embeddable.com/core';
-import { DataResponse } from '@embeddable.com/react';
+import Spinner from '../../Spinner';
+import { WarningIcon } from '../../icons';
 
 const granularityFormats = {
   second: 'hh:mm.ss d MMM',
@@ -78,6 +78,15 @@ export default (props: Props) => {
 
     return { labels, series };
   }, [props]);
+
+  if (props.line?.error) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <WarningIcon />
+        <div className="whitespace-pre-wrap p-4 max-w-sm text-xs">{props.line?.error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-full">

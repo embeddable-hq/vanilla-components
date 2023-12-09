@@ -1,6 +1,6 @@
 import Chart from 'react-apexcharts';
+import React, { useMemo, useRef } from 'react';
 import { DataResponse } from '@embeddable.com/react';
-import React, { useEffect, useMemo, useRef } from 'react';
 import { Dimension, Measure } from '@embeddable.com/core';
 
 import { COLORS } from '../../../constants';
@@ -8,8 +8,9 @@ import useFont from '../../../hooks/useFont';
 import useResize from '../../../hooks/useResize';
 
 import '../../index.css';
-import Spinner from '../../Spinner';
 import Title from '../../Title';
+import Spinner from '../../Spinner';
+import { WarningIcon } from '../../icons';
 
 type Props = {
   title?: string;
@@ -67,6 +68,15 @@ export default (props: Props) => {
       }, [])
     };
   }, [props]);
+
+  if (props.donut?.error) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <WarningIcon />
+        <div className="whitespace-pre-wrap p-4 max-w-sm text-xs">{props.donut?.error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-full">

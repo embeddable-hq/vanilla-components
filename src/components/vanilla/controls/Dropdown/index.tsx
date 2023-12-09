@@ -7,7 +7,7 @@ import useFont from '../../../hooks/useFont';
 import '../../index.css';
 import Title from '../../Title';
 import Spinner from '../../Spinner';
-import { ChevronDown, ClearIcon } from '../../icons';
+import { ChevronDown, ClearIcon, WarningIcon } from '../../icons';
 
 type Props = {
   title?: string;
@@ -72,6 +72,15 @@ export default (props: Props) => {
       }, []),
     [props, search, value, set]
   );
+
+  if (props.options?.error) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <WarningIcon />
+        <div className="whitespace-pre-wrap p-4 max-w-sm text-xs">{props.options?.error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="dropdown relative w-full">

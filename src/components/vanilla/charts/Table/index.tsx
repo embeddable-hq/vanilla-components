@@ -10,7 +10,7 @@ import useResize from '../../../hooks/useResize';
 
 import Title from '../../Title';
 import Spinner from '../../Spinner';
-import { ChevronRight, ChevronLeft, SortDown, SortUp } from '../../icons';
+import { ChevronRight, ChevronLeft, SortDown, SortUp, WarningIcon } from '../../icons';
 
 type Props = {
   title?: string;
@@ -82,6 +82,15 @@ export default (props: Props) => {
       ) || [],
     [tableData]
   );
+
+  if (props.tableData?.error) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <WarningIcon />
+        <div className="whitespace-pre-wrap p-4 max-w-sm text-xs">{props.tableData?.error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-full flex flex-col justify-start">

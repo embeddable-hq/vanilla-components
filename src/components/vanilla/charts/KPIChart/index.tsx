@@ -1,13 +1,13 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
+import { Measure } from '@embeddable.com/core';
+import { DataResponse } from '@embeddable.com/react';
 
 import useFont from '../../../hooks/useFont';
 
 import '../../index.css';
 import Title from '../../Title';
 import Spinner from '../../Spinner';
-
-import { Measure } from '@embeddable.com/core';
-import { DataResponse } from '@embeddable.com/react';
+import { WarningIcon } from '../../icons';
 
 type Props = {
   title?: string;
@@ -35,6 +35,15 @@ export default (props: Props) => {
 
     return formatter.format(num);
   }, [props]);
+
+  if (props.value?.error) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <WarningIcon />
+        <div className="whitespace-pre-wrap p-4 max-w-sm text-xs">{props.value?.error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-full flex flex-col justify-start">
