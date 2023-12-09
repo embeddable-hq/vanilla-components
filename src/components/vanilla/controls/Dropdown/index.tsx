@@ -113,6 +113,7 @@ export default (props: Props) => {
               setValue('');
               setSearch('');
               props.onChange('');
+              ref.current?.focus();
             }}
             className="absolute right-10 top-0 h-10 flex items-center z-10 cursor-pointer"
           >
