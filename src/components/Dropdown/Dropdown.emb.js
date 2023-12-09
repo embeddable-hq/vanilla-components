@@ -18,12 +18,6 @@ export const meta = {
       type: 'dataset',
       label: 'Dataset',
       description: 'Dataset',
-      defaultValue: false
-    },
-    {
-      name: 'value',
-      type: 'string',
-      label: 'Value'
     },
     {
       name: 'property',
@@ -32,7 +26,12 @@ export const meta = {
       config: {
         dataset: 'ds'
       }
-    }
+    },
+    {
+      name: 'defaultValue',
+      type: 'string',
+      label: 'Default value'
+    },
   ],
   events: [
     {
@@ -48,22 +47,22 @@ export const meta = {
   ],
   variables: [
     {
-      name: 'Dropdown Value',
+      name: 'dropdown value',
       type: 'string',
       defaultValue: '',
-      inputs: ['value'],
+      inputs: ['defaultValue'],
       events: [{ name: 'onChange', property: 'value' }]
     }
   ]
 };
 
 export default defineComponent(Dropdown, meta, {
-  props: (props) => {
+  props: (inputs) => {
     return {
-      ...props,
+      ...inputs,
       options: loadData({
-        from: props.ds,
-        dimensions: [props.property]
+        from: inputs.ds,
+        dimensions: [inputs.property]
       })
     };
   },

@@ -10,25 +10,16 @@ import Title from '../Title';
 import Spinner from '../Spinner';
 import { ChevronRight, ChevronLeft, SortDown, SortUp } from '../icons';
 
-type Column = {
-  name: string;
-  title: string;
-  description: string | null;
-};
+import { DimensionOrMeasure } from "@embeddable.com/core";
+import { DataResponse } from "@embeddable.com/react";
 
 type Props = {
   title?: string;
   limit: number;
-  columns: Column[];
+  columns: DimensionOrMeasure[];
   maxPageRows?: number;
-  tableData: TableData;
+  tableData: DataResponse;
   defaultSort: OrderBy[];
-};
-
-type TableData = {
-  error?: string;
-  isLoading: boolean;
-  data?: any[];
 };
 
 export default (props: Props) => {

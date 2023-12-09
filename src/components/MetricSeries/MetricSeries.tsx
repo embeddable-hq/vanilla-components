@@ -10,24 +10,15 @@ import '../index.css';
 import Spinner from '../Spinner';
 import Title from '../Title';
 
-type Data = {
-  error?: string;
-  isLoading: boolean;
-  data?: any[];
-};
-
-type DimensionOrMeasure = {
-  name: string;
-  title: string;
-  description: string | null;
-};
+import { Dimension, Measure } from "@embeddable.com/core";
+import { DataResponse } from "@embeddable.com/react";
 
 type Props = {
   title?: string;
   granularity?: string;
-  line: Data;
-  metrics: DimensionOrMeasure[];
-  xAxis?: DimensionOrMeasure;
+  line: DataResponse;
+  metrics: Measure[];
+  xAxis?: Dimension;
   xAxisTitle?: string;
   yAxisTitle?: string;
   showLabels?: boolean;

@@ -8,34 +8,25 @@ import Title from '../Title';
 import Spinner from '../Spinner';
 import { ClearIcon } from '../icons';
 
-type Data = {
-  error?: string;
-  isLoading: boolean;
-  data?: any[];
-};
-
-type Dimension = {
-  name: string;
-  title: string;
-  description: string | null;
-};
+import { Dimension, Measure } from "@embeddable.com/core";
+import { DataResponse } from "@embeddable.com/react";
 
 type Props = {
   title?: string;
-  options: Data;
+  options: DataResponse;
   value: string;
   property: Dimension;
   onChange: (v: any) => void;
 };
 
 export default (props: Props) => {
-  const [value, setValue] = useState(props.value);
+  const [value, setValue] = useState(props.defaultValue);
 
   useFont();
 
   useEffect(() => {
-    setValue(props.value);
-  }, [props.value]);
+    setValue(props.defaultValue);
+  }, [props.defaultValue]);
 
   return (
     <div className="dropdown relative w-full">
