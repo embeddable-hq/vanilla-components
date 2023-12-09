@@ -6,6 +6,7 @@ import Component from './index';
 export const meta = {
   name: 'KPIChart',
   label: 'KPI',
+  classNames: ['inside-card'],
   inputs: [
     {
       name: 'title',

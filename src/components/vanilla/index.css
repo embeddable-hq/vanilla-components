@@ -10,6 +10,11 @@
 :host(.on-top) {
   z-index: 1;
 }
+:host(.inside-card) {
+  box-shadow: 0px 1px 4px rgba(28,28,33,0.2);
+  border-radius: 16px;
+  padding: 30px;
+}
 
 .rdp-day_selected,
 .rdp-day_selected:focus-visible,
