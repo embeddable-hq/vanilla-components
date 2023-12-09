@@ -4,11 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
 import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser';
 
-import useFont from '../../hooks/useFont';
+import useFont from '../../../hooks/useFont';
 
-import '../index.css';
-import Title from '../Title';
-import { CalendarIcon, ChevronDown, ChevronLeft, ChevronRight } from '../icons';
+import '../../index.css';
+import Title from '../../Title';
+import { CalendarIcon, ChevronDown, ChevronLeft, ChevronRight } from '../../icons';
 
 const ranges = [
   '',

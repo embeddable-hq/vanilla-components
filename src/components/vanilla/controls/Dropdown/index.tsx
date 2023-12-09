@@ -2,12 +2,12 @@ import { Dimension } from '@embeddable.com/core';
 import { DataResponse } from '@embeddable.com/react';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import useFont from '../../hooks/useFont';
+import useFont from '../../../hooks/useFont';
 
-import '../index.css';
-import Title from '../Title';
-import Spinner from '../Spinner';
-import { ChevronDown, ClearIcon } from '../icons';
+import '../../index.css';
+import Title from '../../Title';
+import Spinner from '../../Spinner';
+import { ChevronDown, ClearIcon } from '../../icons';
 
 type Props = {
   title?: string;

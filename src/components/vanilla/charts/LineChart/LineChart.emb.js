@@ -1,10 +1,10 @@
 import { loadData } from '@embeddable.com/core';
 import { defineComponent } from '@embeddable.com/react';
 
-import MetricSeries from './MetricSeries';
+import Component from './index';
 
 export const meta = {
-  name: 'MetricSeries',
+  name: 'LineChart',
   label: 'Line chart (time-series)',
   inputs: [
     {
@@ -67,7 +67,7 @@ export const meta = {
   events: []
 };
 
-export default defineComponent(MetricSeries, meta, {
+export default defineComponent(Component, meta, {
   props: (inputs) => {
     return {
       ...inputs,

@@ -1,7 +1,7 @@
 import { defineComponent } from '@embeddable.com/react';
 import { loadData, isMeasure, isDimension } from '@embeddable.com/core';
 
-import Table from './Table';
+import Component from './index';
 
 export const meta = {
   name: 'Table',
@@ -37,27 +37,27 @@ export const meta = {
   events: []
 };
 
-export default defineComponent(Table, meta, {
-  props: (props, [state]) => {
+export default defineComponent(Component, meta, {
+  props: (inputs, [state]) => {
     const limit =
-      props.maxPageRows || state?.maxRowsFit
-        ? Math.min(props.maxPageRows || 1000, state?.maxRowsFit || 1000)
+      inputs.maxPageRows || state?.maxRowsFit
+        ? Math.min(inputs.maxPageRows || 1000, state?.maxRowsFit || 1000)
         : 1;
 
     const defaultSort =
-      props.columns?.map((property) => ({
+      inputs.columns?.map((property) => ({
         property,
         direction: 'asc'
       })) || [];
 
     return {
-      ...props,
+      ...inputs,
       limit,
       defaultSort,
       tableData: loadData({
-        from: props.ds,
-        dimensions: props.columns?.filter((c) => isDimension(c)) || [],
-        measures: props.columns?.filter((c) => isMeasure(c)) || [],
+        from: inputs.ds,
+        dimensions: inputs.columns?.filter((c) => isDimension(c)) || [],
+        measures: inputs.columns?.filter((c) => isMeasure(c)) || [],
         limit,
         offset: limit * (state?.page || 0),
         orderBy: state?.sort || defaultSort

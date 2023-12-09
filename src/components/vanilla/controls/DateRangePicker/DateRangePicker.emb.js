@@ -1,6 +1,6 @@
 import { defineComponent } from '@embeddable.com/react';
 
-import DateRangePicker from './DateRangePicker';
+import Component from './index';
 
 export const meta = {
   name: 'DateRangePicker',
@@ -44,7 +44,7 @@ export const meta = {
   ]
 };
 
-export default defineComponent(DateRangePicker, meta, {
+export default defineComponent(Component, meta, {
   props: (inputs) => ({
     value: inputs.value
   }),

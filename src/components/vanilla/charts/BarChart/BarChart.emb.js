@@ -1,11 +1,11 @@
 import { loadData } from '@embeddable.com/core';
 import { defineComponent } from '@embeddable.com/react';
 
-import DonutChart from './DonutChart';
+import Component from './index';
 
 export const meta = {
-  name: 'DonutChart',
-  label: 'Donut Chart',
+  name: 'BarChart',
+  label: 'Bar Chart',
   inputs: [
     {
       name: 'title',
@@ -21,13 +21,21 @@ export const meta = {
       defaultValue: false
     },
     {
-      name: 'segments',
+      name: 'xAxis',
       type: 'dimension',
-      label: 'Segments',
+      label: 'X-Axis',
       config: {
         dataset: 'ds'
       }
     },
+    // {
+    //   name: 'label',
+    //   type: 'dimension',
+    //   label: '2nd dimension',
+    //   config: {
+    //     dataset: 'ds'
+    //   }
+    // },
     {
       name: 'metric',
       type: 'measure',
@@ -37,9 +45,14 @@ export const meta = {
       }
     },
     {
-      name: 'showPercentages',
-      type: 'boolean',
-      label: 'Show as Percentage'
+      name: 'xAxisTitle',
+      type: 'string',
+      label: 'X-Axis Title'
+    },
+    {
+      name: 'yAxisTitle',
+      type: 'string',
+      label: 'Y-Axis Title'
     },
     {
       name: 'showLabels',
@@ -52,20 +65,25 @@ export const meta = {
       label: 'Show Legend'
     },
     {
-      name: 'maxSegments',
+      name: 'maxXAxisItems',
       type: 'number',
-      label: 'Max Legend Items'
-    }
+      label: 'Max X-Axis Items'
+    },
+    // {
+    //   name: 'maxLabels',
+    //   type: 'number',
+    //   label: 'Max Labels'
+    // }
   ],
 };
 
-export default defineComponent(DonutChart, meta, {
+export default defineComponent(Component, meta, {
   props: (inputs) => {
     return {
       ...inputs,
-      donut: loadData({
+      columns: loadData({
         from: inputs.ds,
-        dimensions: [inputs.segments],
+        dimensions: [inputs.xAxis],
         measures: [inputs.metric]
       })
     };

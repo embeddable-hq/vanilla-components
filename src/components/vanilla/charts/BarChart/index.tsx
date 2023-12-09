@@ -1,13 +1,13 @@
 import Chart from 'react-apexcharts';
 import React, { useEffect, useMemo, useRef } from 'react';
 
-import { COLORS } from '../../constants';
-import useFont from '../../hooks/useFont';
-import useResize from '../../hooks/useResize';
+import { COLORS } from '../../../constants';
+import useFont from '../../../hooks/useFont';
+import useResize from '../../../hooks/useResize';
 
-import '../index.css';
-import Title from '../Title';
-import Spinner from '../Spinner';
+import '../../index.css';
+import Title from '../../Title';
+import Spinner from '../../Spinner';
 
 import { Dimension, Measure } from "@embeddable.com/core";
 import { DataResponse } from "@embeddable.com/react";
