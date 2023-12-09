@@ -10,7 +10,6 @@ import SingleValue from './components/SingleValue/SingleValue';
 import NumberInput from './components/NumberInput/NumberInput';
 import MetricSeries from './components/MetricSeries/MetricSeries';
 import DateRangePicker from './components/DateRangePicker/DateRangePicker';
-import TimeSeriesLineChart1 from './components/TimeSeriesLineChart1/TimeSeriesLineChart1';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -218,35 +217,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           showLegend={true}
           granularity="week"
           xAxisTitle="Date"
-          yAxisTitle="Product Count"
-          line={{
-            isLoading: false,
-            data: fakeChartData()
-          }}
-        />
-      </div>
-
-      <div className="h-[400px]">
-        <TimeSeriesLineChart1
-          xAxis={{
-            name: 'transactions.created_at',
-            title: 'Created at',
-            description: 'The time when the transaction was created'
-          }}
-          showLabels={true}
-          showLegend={true}
-          granularity="week"
-          metric={{
-            name: 'products.count',
-            title: 'Count',
-            description: null
-          }}
-          xAxisTitle="Date"
-          xAxisLabel={{
-            name: 'customers.country',
-            title: 'Country',
-            description: null
-          }}
           yAxisTitle="Product Count"
           line={{
             isLoading: false,
