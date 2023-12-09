@@ -27,6 +27,7 @@ cubes:
     measures:
       - name: count
         type: count
+        title: '# of transactions'
         description: 'Count of transactions'
         meta:
           some_meta: 'value'
@@ -63,6 +64,7 @@ cubes:
     measures:
       - name: count
         type: count
+        title: '# of customers'
 
     pre_aggregations:
     # Pre-aggregation definitions go here.
@@ -96,6 +98,7 @@ cubes:
     measures:
       - name: count
         type: count
+        title: '# of products'
 
     pre_aggregations:
     # Pre-aggregation definitions go here.
