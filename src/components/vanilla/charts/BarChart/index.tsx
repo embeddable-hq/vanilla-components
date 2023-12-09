@@ -1,4 +1,6 @@
 import Chart from 'react-apexcharts';
+import { DataResponse } from '@embeddable.com/react';
+import { Dimension, Measure } from '@embeddable.com/core';
 import React, { useEffect, useMemo, useRef } from 'react';
 
 import { COLORS } from '../../../constants';
@@ -8,9 +10,6 @@ import useResize from '../../../hooks/useResize';
 import '../../index.css';
 import Title from '../../Title';
 import Spinner from '../../Spinner';
-
-import { Dimension, Measure } from "@embeddable.com/core";
-import { DataResponse } from "@embeddable.com/react";
 
 type Props = {
   title?: string;
@@ -31,10 +30,6 @@ export default (props: Props) => {
   const [width, height] = useResize(ref);
 
   useFont();
-
-  useEffect(() => {
-    console.log('BarChart props', props);
-  }, [props]);
 
   const { labels, series, maxCount } = useMemo(() => {
     type Memo = {
@@ -103,13 +98,13 @@ export default (props: Props) => {
 
     return { labels, series, maxCount };
   }, [props]);
-
+  console.log;
   return (
     <div className="h-full pb-2">
       <Title title={props.title} />
       <div className="h-full relative flex grow" ref={ref}>
         <Chart
-          className="column-chart"
+          className="bar-chart"
           options={{
             colors: COLORS,
             chart: {
@@ -120,7 +115,7 @@ export default (props: Props) => {
             },
             yaxis: {
               title: { text: props.yAxisTitle, style: { color: '#333942' } },
-              max: Math.ceil(maxCount + 0.1 * maxCount)
+              tickAmount: Math.min(Math.ceil(height / 100), maxCount)
             },
             xaxis: {
               min: 0,
@@ -155,8 +150,7 @@ export default (props: Props) => {
             },
             dataLabels: {
               enabled: !!props.showLabels,
-              dropShadow: { enabled: false },
-              offsetY: -20
+              dropShadow: { enabled: false }
             },
             stroke: {
               show: true,

@@ -11,7 +11,7 @@
   z-index: 1;
 }
 :host(.inside-card) {
-  box-shadow: 0px 1px 4px rgba(28,28,33,0.2);
+  box-shadow: 0px 1px 4px rgba(28, 28, 33, 0.2);
   border-radius: 16px;
   padding: 30px;
 }
@@ -62,9 +62,13 @@
   background: transparent !important;
 }
 
-.donut-chart .apexcharts-datalabels text,
-.column-chart .apexcharts-datalabels text {
+.donut-chart .apexcharts-datalabels text {
   fill: #333942;
+}
+
+.bar-chart .apexcharts-datalabels text {
+  fill: #333942;
+  transform: translateY(-20px);
 }
 
 .chart-tooltip {

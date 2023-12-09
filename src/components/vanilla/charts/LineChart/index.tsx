@@ -99,7 +99,6 @@ export default (props: Props) => {
               }
             },
             yaxis: {
-              tickAmount: 5,
               title: { text: props.yAxisTitle, style: { color: '#333942' } }
             },
             tooltip: {

@@ -171,7 +171,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         />
       </div>
       <br />
-      <div className="h-[400px]">
+      <div className="h-[250px]">
         <BarChart
           title="Test"
           showLabels
