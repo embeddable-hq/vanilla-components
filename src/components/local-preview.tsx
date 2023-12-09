@@ -16,13 +16,13 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <div className="p-8">
       <Dropdown
         title="test"
-        onChange={() => { }}
+        onChange={() => {}}
         property={{
           name: 'customers.country',
           title: 'Country',
-          description: null
+          description: ''
         }}
-        value=""
+        defaultValue="Germany"
         options={{
           isLoading: false,
           data: [
@@ -50,7 +50,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           ]
         }}
       />
-      <DateRangePicker onChange={() => { }} />
+      <DateRangePicker onChange={() => {}} />
       <div className="h-[500px]">
         <DonutChart
           showLabels
@@ -59,13 +59,17 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           metric={{
             name: 'courses_in_progress.count',
             title: 'Count',
-            description: null
+            description: '',
+            nativeType: 'string',
+            __type__: 'measure'
           }}
           title="Courses In Progress"
           segments={{
             name: 'courses_in_progress.full_name',
             title: 'Full Name',
-            description: null
+            description: '',
+            nativeType: 'string',
+            __type__: 'dimension'
           }}
           donut={{
             isLoading: false,
@@ -172,24 +176,30 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           title="Test"
           showLabels
           showLegend
-          maxXaxisItems={5}
+          maxXAxisItems={5}
           maxLabels={5}
           xAxisTitle="Countries"
           yAxisTitle="Amount of products"
           metric={{
             name: 'products.count',
             title: 'Count',
-            description: null
+            description: '',
+            nativeType: 'string',
+            __type__: 'measure'
           }}
           xAxis={{
             name: 'products.size',
             title: 'Size',
-            description: null
+            description: '',
+            nativeType: 'string',
+            __type__: 'dimension'
           }}
-          xAxisLabel={{
+          secondXAxis={{
             name: 'customers.country',
             title: 'Country',
-            description: null
+            description: '',
+            nativeType: 'string',
+            __type__: 'dimension'
           }}
           columns={{
             isLoading: false,
@@ -205,13 +215,17 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             {
               name: 'products.count',
               title: 'Count',
-              description: null
+              description: '',
+              nativeType: 'string',
+              __type__: 'measure'
             }
           ]}
           xAxis={{
             name: 'transactions.created_at',
             title: 'Created at',
-            description: 'The time when the transaction was created'
+            description: 'The time when the transaction was created',
+            nativeType: 'string',
+            __type__: 'dimension'
           }}
           showLabels={true}
           showLegend={true}
@@ -228,18 +242,26 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <KPIChart
         title=""
         value={{ isLoading: false, data: [] }}
-        metric={{ name: '', title: '', description: '' }}
+        metric={{
+          name: '',
+          title: '',
+          description: '',
+          nativeType: 'string',
+          __type__: 'measure'
+        }}
       />
       <br />
       <Dropdown
-        onChange={() => { }}
+        onChange={() => {}}
         property={{
           name: 'customers.email',
           title: 'Email',
-          description: null
+          description: '',
+          nativeType: 'string',
+          __type__: 'dimension'
         }}
         title="test"
-        value=""
+        defaultValue=""
         options={{
           isLoading: false,
           data: [
@@ -268,9 +290,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         }}
       />
       <br />
-      <TextInput onChange={() => { }} value="Chocolate" />
+      <TextInput onChange={() => {}} value="Chocolate" />
       <br />
-      <NumberInput onChange={() => { }} value={12} />
+      <NumberInput onChange={() => {}} value={12} />
       <br />
     </div>
   </React.StrictMode>
