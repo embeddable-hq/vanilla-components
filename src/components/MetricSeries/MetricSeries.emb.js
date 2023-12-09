@@ -5,7 +5,7 @@ import MetricSeries from './MetricSeries';
 
 export const meta = {
   name: 'MetricSeries',
-  label: 'Measure Series',
+  label: 'Line chart (time-series)',
   inputs: [
     {
       name: 'title',
@@ -21,7 +21,7 @@ export const meta = {
       defaultValue: false
     },
     {
-      name: 'aAxis',
+      name: 'xAxis',
       type: 'dimension',
       label: 'X-Axis',
       config: {
@@ -68,20 +68,20 @@ export const meta = {
 };
 
 export default defineComponent(MetricSeries, meta, {
-  props: (props) => {
+  props: (inputs) => {
     return {
-      ...props,
+      ...inputs,
       line: loadData({
-        from: props.ds,
-        timeDimensions: props.date
+        from: inputs.ds,
+        timeDimensions: inputs.xAxis
           ? [
               {
-                dimension: props.date.name,
-                granularity: props.granularity
+                dimension: inputs.xAxis.name,
+                granularity: inputs.granularity
               }
             ]
           : undefined,
-        measures: props.measures
+        measures: inputs.metrics
       })
     };
   }
