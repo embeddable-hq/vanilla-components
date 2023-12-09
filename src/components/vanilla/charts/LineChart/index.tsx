@@ -114,10 +114,12 @@ export default (props: Props) => {
                 formatter: (v) =>
                   `${format(parseJSON(v), granularityFormats[props.granularity || 'day'])}`
               },
-              overwriteCategories: labels
+              overwriteCategories: labels,
+              crosshairs: { show: false }
             },
             yaxis: {
-              title: { text: props.yAxisTitle, style: { color: '#333942' } }
+              title: { text: props.yAxisTitle, style: { color: '#333942' } },
+              crosshairs: { show: false }
             },
             tooltip: {
               custom: (opt) => {
@@ -126,8 +128,11 @@ export default (props: Props) => {
                 const color = opt.w.config.colors[opt.seriesIndex];
                 const label = series[opt.seriesIndex]?.name || '';
                 const value = opt.series[opt.seriesIndex][opt.dataPointIndex];
+                const offsets = opt.w.globals.dom.baseEl.getBoundingClientRect();
 
-                return `<div style="left: ${left}px; top: ${top}px;" class="chart-tooltip">
+                return `<div style="left: ${left - offsets.left}px; top: ${
+                  top - offsets.top
+                }px;" class="chart-tooltip">
                   <strong>${value}</strong>
                   <div><b style="background-color:${color}"></b>${label}</div>
                 </div>`;

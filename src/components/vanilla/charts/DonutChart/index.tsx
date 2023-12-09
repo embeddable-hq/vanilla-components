@@ -100,8 +100,11 @@ export default (props: Props) => {
                       (100 * series[seriesIndex]) / series.reduce((t, n) => t + n, 0)
                     )}%`
                   : series[seriesIndex];
+                const offsets = w.globals.dom.baseEl.getBoundingClientRect();
 
-                return `<div style="left: ${left}px; top: ${top}px;" class="chart-tooltip">
+                return `<div style="left: ${left - offsets.left}px; top: ${
+                  top - offsets.top
+                }px;" class="chart-tooltip">
                 <strong>${props.metric?.title || ''}: ${value}</strong>
                 <div><b style="background-color:${color}"></b>${label}</div>
               </div>`;

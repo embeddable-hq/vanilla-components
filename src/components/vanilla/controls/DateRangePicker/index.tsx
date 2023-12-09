@@ -110,11 +110,11 @@ export default (props: Props) => {
               onSelect={(range) => {
                 setRange(range);
 
-                console.log(222, range);
+                console.log('executing props.onChange with', { value: range });
 
                 if (!range?.from || !range?.to) return;
 
-                props.onChange({ value: { ...range } });
+                props.onChange({ value: range });
               }}
             />
           </div>
