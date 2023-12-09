@@ -98,7 +98,7 @@ export default (props: Props) => {
 
     return { labels, series, maxCount };
   }, [props]);
-  console.log;
+
   return (
     <div className="h-full pb-2">
       <Title title={props.title} />

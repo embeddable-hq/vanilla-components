@@ -9,9 +9,8 @@ import '../../index.css';
 import Spinner from '../../Spinner';
 import Title from '../../Title';
 
-import { Dimension, Measure } from "@embeddable.com/core";
-import { DataResponse } from "@embeddable.com/react";
-
+import { Dimension, Measure } from '@embeddable.com/core';
+import { DataResponse } from '@embeddable.com/react';
 
 type Props = {
   title?: string;
@@ -29,10 +28,6 @@ export default (props: Props) => {
   const [width, height] = useResize(ref);
 
   useFont();
-
-  useEffect(() => {
-    console.log('DonutChart props', props);
-  }, [props]);
 
   const { labels, series } = useMemo(() => {
     const labels =
@@ -91,8 +86,8 @@ export default (props: Props) => {
                 const label = labels[seriesIndex] || '';
                 const value = props.showPercentages
                   ? `${Math.round(
-                    (100 * series[seriesIndex]) / series.reduce((t, n) => t + n, 0)
-                  )}%`
+                      (100 * series[seriesIndex]) / series.reduce((t, n) => t + n, 0)
+                    )}%`
                   : series[seriesIndex];
 
                 return `<div class="chart-tooltip">

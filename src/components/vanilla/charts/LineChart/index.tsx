@@ -13,6 +13,17 @@ import Title from '../../Title';
 import { Dimension, Measure } from '@embeddable.com/core';
 import { DataResponse } from '@embeddable.com/react';
 
+const granularityFormats = {
+  second: 'hh:mm.ss d MMM',
+  minute: 'hh:mm d MMM',
+  hour: 'hh:mm d MMM',
+  day: 'd MMM',
+  week: 'd MMM',
+  month: 'LLL yy',
+  quarter: 'qqq yy',
+  year: 'yy'
+};
+
 type Props = {
   title?: string;
   granularity?: string;
@@ -30,10 +41,6 @@ export default (props: Props) => {
   const [width, height] = useResize(ref);
 
   useFont();
-
-  useEffect(() => {
-    console.log('MetricSeries props', props);
-  }, [props]);
 
   const { labels, series } = useMemo(() => {
     type Memo = {
@@ -95,7 +102,8 @@ export default (props: Props) => {
               categories: labels,
               title: { text: props.xAxisTitle, style: { color: '#333942' } },
               labels: {
-                formatter: (v) => `${format(parseJSON(v), 'dd-MM-yy')}`
+                formatter: (v) =>
+                  `${format(parseJSON(v), granularityFormats[props.granularity || 'day'])}`
               },
               overwriteCategories: labels
             },

@@ -6,8 +6,8 @@ import '../../index.css';
 import Title from '../../Title';
 import Spinner from '../../Spinner';
 
-import { Measure } from "@embeddable.com/core";
-import { DataResponse } from "@embeddable.com/react";
+import { Measure } from '@embeddable.com/core';
+import { DataResponse } from '@embeddable.com/react';
 
 type Props = {
   title?: string;
@@ -19,10 +19,6 @@ type Props = {
 
 export default (props: Props) => {
   useFont();
-
-  useEffect(() => {
-    console.log('SingleValue props', props);
-  }, [props]);
 
   const n = useMemo(() => {
     if (!props.value?.data?.length) return;
