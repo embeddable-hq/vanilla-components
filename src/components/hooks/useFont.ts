@@ -7,7 +7,7 @@ export default () => {
     Object.keys(FONTS).forEach(async (family) => {
       const font = new FontFace(
         family,
-        `url('https://storage.googleapis.com/luuk-bucket/fonts/${FONTS[family]}')`
+        `url('https://storage.googleapis.com/embeddable-static-data-production/fonts/${FONTS[family]}')`
       );
 
       if (Array.from(document.fonts.keys()).find((f) => f.family === family)) return;
