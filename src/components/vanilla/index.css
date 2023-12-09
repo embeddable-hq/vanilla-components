@@ -7,6 +7,10 @@
   -webkit-font-smoothing: antialiased;
 }
 
+:host(.on-top) {
+  z-index: 1;
+}
+
 .rdp-day_selected,
 .rdp-day_selected:focus-visible,
 .rdp-day_selected:hover {

@@ -6,6 +6,7 @@ import Component from './index';
 export const meta = {
   name: 'Dropdown',
   label: 'Dropdown',
+  classNames: ['on-top'],
   inputs: [
     {
       name: 'title',
