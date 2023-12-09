@@ -127,7 +127,11 @@ export default (props: Props) => {
                 borderRadius: 10,
                 padding: 4
               },
-              style: {}
+              ...(props.showPercentages
+                ? {}
+                : {
+                    formatter: (val, props) => props.w.config.series[props.seriesIndex]
+                  })
             },
             plotOptions: {
               pie: {
