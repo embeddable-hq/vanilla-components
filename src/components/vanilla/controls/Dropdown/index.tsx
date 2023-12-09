@@ -1,6 +1,6 @@
 import { Dimension } from '@embeddable.com/core';
 import { DataResponse } from '@embeddable.com/react';
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import useFont from '../../../hooks/useFont';
 
@@ -26,6 +26,15 @@ export default (props: Props) => {
 
   useFont();
 
+  const set = useCallback(
+    (value: string) => {
+      setSearch('');
+      setValue(value);
+      props.onChange(value);
+    },
+    [setValue, props.onChange, setSearch]
+  );
+
   useEffect(() => {
     setValue(props.defaultValue);
   }, [props.defaultValue]);
@@ -50,11 +59,7 @@ export default (props: Props) => {
         memo.push(
           <div
             key={i}
-            onClick={() => {
-              setSearch('');
-              setValue(o[props.property?.name || '']);
-              props.onChange(o[props.property?.name || '']);
-            }}
+            onClick={() => set(o[props.property?.name || ''] || '')}
             className={`px-3 py-2 hover:bg-black/5 cursor-pointer ${
               value === o[props.property?.name || ''] ? 'bg-black/5' : ''
             }`}
@@ -65,7 +70,7 @@ export default (props: Props) => {
 
         return memo;
       }, []),
-    [props, search, value]
+    [props, search, value, set]
   );
 
   return (
@@ -112,9 +117,7 @@ export default (props: Props) => {
         {!!value && (
           <div
             onClick={() => {
-              setValue('');
-              setSearch('');
-              props.onChange('');
+              set('');
               ref.current?.focus();
             }}
             className="absolute right-10 top-0 h-10 flex items-center z-10 cursor-pointer"

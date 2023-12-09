@@ -18,7 +18,7 @@ export const meta = {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset',
-      description: 'Dataset',
+      description: 'Dataset'
     },
     {
       name: 'property',
@@ -32,7 +32,7 @@ export const meta = {
       name: 'defaultValue',
       type: 'string',
       label: 'Default value'
-    },
+    }
   ],
   events: [
     {
@@ -40,7 +40,7 @@ export const meta = {
       label: 'Change',
       properties: [
         {
-          name: 'value',
+          name: 'defaultValue',
           type: 'string'
         }
       ]
@@ -52,7 +52,7 @@ export const meta = {
       type: 'string',
       defaultValue: '',
       inputs: ['defaultValue'],
-      events: [{ name: 'onChange', property: 'value' }]
+      events: [{ name: 'onChange', property: 'defaultValue' }]
     }
   ]
 };
@@ -68,8 +68,6 @@ export default defineComponent(Component, meta, {
     };
   },
   events: {
-    onChange: (option) => {
-      return { value: option?.value || '' };
-    }
+    onChange: (defaultValue) => ({ defaultValue })
   }
 });
