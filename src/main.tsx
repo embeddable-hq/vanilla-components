@@ -55,14 +55,14 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <DonutChart
           showLabels
           showLegend
-          maxGroups={4}
+          maxSegments={4}
           metric={{
             name: 'courses_in_progress.count',
             title: 'Count',
             description: null
           }}
           title="Courses In Progress"
-          groups={{
+          segments={{
             name: 'courses_in_progress.full_name',
             title: 'Full Name',
             description: null
