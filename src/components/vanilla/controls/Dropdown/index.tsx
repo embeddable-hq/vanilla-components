@@ -55,7 +55,9 @@ export default (props: Props) => {
               setValue(o[props.property?.name || '']);
               props.onChange(o[props.property?.name || '']);
             }}
-            className="px-3 py-2 hover:bg-black/5 cursor-pointer"
+            className={`px-3 py-2 hover:bg-black/5 cursor-pointer ${
+              value === o[props.property?.name || ''] ? 'bg-black/5' : ''
+            }`}
           >
             {o[props.property?.name || '']}
           </div>
@@ -63,7 +65,7 @@ export default (props: Props) => {
 
         return memo;
       }, []),
-    [props, search]
+    [props, search, value]
   );
 
   return (
@@ -77,7 +79,7 @@ export default (props: Props) => {
           onFocus={() => setFocus(true)}
           onBlur={() => setTriggerBlur(true)}
           onChange={(e) => setSearch(e.target.value)}
-          className="outline-none bg-transparent leading-10 h-10 border-0 px-3 w-full"
+          className="outline-none bg-transparent leading-10 h-10 border-0 px-3 w-full cursor-pointer"
         />
 
         {!!value && (
@@ -102,9 +104,9 @@ export default (props: Props) => {
         )}
 
         {props.options.isLoading ? (
-          <Spinner show className="absolute right-4 top-2.5 z-10" />
+          <Spinner show className="absolute right-4 top-2.5 z-10 pointer-events-none" />
         ) : (
-          <ChevronDown className="absolute right-4 top-2.5 z-10" />
+          <ChevronDown className="absolute right-4 top-2.5 z-10 pointer-events-none" />
         )}
 
         {!!value && (
