@@ -2,14 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import './vanilla/index.css';
-import Dropdown from './vanilla/controls/Dropdown/index';
-import TextInput from './vanilla/controls/TextInput/index';
-import DonutChart from './vanilla/charts/DonutChart/index';
-import BarChart from './vanilla/charts/BarChart/index';
-import KPIChart from './vanilla/charts/KPIChart/index';
-import NumberInput from './vanilla/controls/NumberInput/index';
-import LineChart from './vanilla/charts/LineChart/index';
-import DateRangePicker from './vanilla/controls/DateRangePicker/index';
+import Dropdown from './vanilla/controls/Dropdown';
+import TextInput from './vanilla/controls/TextInput';
+import DonutChart from './vanilla/charts/DonutChart';
+import BarChart from './vanilla/charts/BarChart';
+import KPIChart from './vanilla/charts/KPIChart';
+import NumberInput from './vanilla/controls/NumberInput';
+import LineChart from './vanilla/charts/LineChart';
+import DateRangePicker from './vanilla/controls/DateRangePicker';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
