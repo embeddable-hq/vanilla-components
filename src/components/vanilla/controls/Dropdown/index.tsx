@@ -42,8 +42,12 @@ export default (props: Props) => {
   useLayoutEffect(() => {
     if (!triggerBlur) return;
 
-    setTriggerBlur(false);
-    setTimeout(setFocus, 100, false);
+    const timeout = setTimeout(() => {
+      setFocus(false);
+      setTriggerBlur(false);
+    }, 500);
+
+    return () => clearTimeout(timeout);
   }, [triggerBlur]);
 
   const list = useMemo(
@@ -59,7 +63,11 @@ export default (props: Props) => {
         memo.push(
           <div
             key={i}
-            onClick={() => set(o[props.property?.name || ''] || '')}
+            onClick={() => {
+              setFocus(false);
+              setTriggerBlur(false);
+              set(o[props.property?.name || ''] || '');
+            }}
             className={`px-3 py-2 hover:bg-black/5 cursor-pointer ${
               value === o[props.property?.name || ''] ? 'bg-black/5' : ''
             }`}
@@ -109,7 +117,7 @@ export default (props: Props) => {
         {focus && (
           <div className="flex flex-col bg-white rounded-xl absolute top-11 z-10 border border-[#DADCE1] w-full">
             {list}
-            {list.length === 0 && !!search && (
+            {list?.length === 0 && !!search && (
               <div className="px-3 py-2 text-black/50 italic cursor-pointer text-xs">
                 No results
               </div>
