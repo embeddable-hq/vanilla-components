@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { Measure } from '@embeddable.com/core';
 import { DataResponse } from '@embeddable.com/react';
 
@@ -19,6 +19,10 @@ type Props = {
 
 export default (props: Props) => {
   useFont();
+
+  useEffect(() => {
+    console.log('KPIChart props', props);
+  }, [props]);
 
   const n = useMemo(() => {
     if (!props.value?.data?.length) return;

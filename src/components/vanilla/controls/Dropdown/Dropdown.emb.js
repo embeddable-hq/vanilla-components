@@ -1,4 +1,4 @@
-import { loadData } from '@embeddable.com/core';
+import { loadData, Value } from '@embeddable.com/core';
 import { defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
@@ -46,15 +46,15 @@ export const meta = {
       ]
     }
   ],
-  variables: [
-    {
-      name: 'dropdown value',
-      type: 'string',
-      defaultValue: '',
-      inputs: ['defaultValue'],
-      events: [{ name: 'onChange', property: 'defaultValue' }]
-    }
-  ]
+  // variables: [
+  //   {
+  //     name: 'dropdown value',
+  //     type: 'string',
+  //     defaultValue: Value.noFilter(),
+  //     inputs: ['defaultValue'],
+  //     events: [{ name: 'onChange', property: 'defaultValue' }]
+  //   }
+  // ]
 };
 
 export default defineComponent(Component, meta, {

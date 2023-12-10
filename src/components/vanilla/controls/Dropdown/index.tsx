@@ -1,4 +1,4 @@
-import { Dimension } from '@embeddable.com/core';
+import { Dimension, Value } from '@embeddable.com/core';
 import { DataResponse } from '@embeddable.com/react';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
@@ -26,11 +26,15 @@ export default (props: Props) => {
 
   useFont();
 
+  useEffect(() => {
+    console.log('Dropdown props', props);
+  }, [props]);
+
   const set = useCallback(
     (value: string) => {
       setSearch('');
       setValue(value);
-      props.onChange(value);
+      props.onChange(value ?? Value.noFilter());
     },
     [setValue, props.onChange, setSearch]
   );

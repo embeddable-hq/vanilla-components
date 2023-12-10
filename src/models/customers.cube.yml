@@ -1,0 +1,45 @@
+cubes:
+  - name: customers
+    title: My customers
+    sql_table: public.customers 
+
+    # sql: select * from public.customers where ... # alternative to sql_table
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: email
+        title: "Email address"
+        sql: email
+        type: string
+
+      - name: full_name
+        title: "Full name"
+        sql: CONCAT(first_name, ' ', last_name)
+        type: string
+
+      - name: country
+        title: "Country of origin"
+        sql: country
+        type: string
+
+      - name: signed_up_at
+        sql: signed_up_at
+        type: time
+
+    measures:
+      - name: count
+        type: count
+        title: '# of customers'
+
+    joins:
+      - name: orders # the name of the data model to join to (not the table)
+        sql: "{CUBE}.id = {orders}.customer_id"
+        relationship: one_to_many
+
+    pre_aggregations:
+    # Pre-aggregation definitions go here.
+    # Learn more in the documentation: https://cube.dev/docs/caching/pre-aggregations/getting-started

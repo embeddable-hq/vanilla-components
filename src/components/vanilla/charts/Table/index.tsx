@@ -29,6 +29,10 @@ export default (props: Props) => {
 
   useFont();
 
+  useEffect(() => {
+    console.log('Table props', props);
+  }, [props]);
+
   const [meta, setMeta] = useEmbeddableState({
     page: 0,
     maxRowsFit: 0,

@@ -1,5 +1,5 @@
 import Chart from 'react-apexcharts';
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef, useEffect } from 'react';
 import { DataResponse } from '@embeddable.com/react';
 import { Dimension, Measure } from '@embeddable.com/core';
 
@@ -31,6 +31,10 @@ export default (props: Props) => {
   const [width, height] = useResize(ref);
 
   useFont();
+
+  useEffect(() => {
+    console.log('BarChart props', props);
+  }, [props]);
 
   const { labels, series, maxCount } = useMemo(() => {
     type Memo = {
