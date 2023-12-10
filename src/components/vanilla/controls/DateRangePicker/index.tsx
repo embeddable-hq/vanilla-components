@@ -41,6 +41,10 @@ export default (props: Props) => {
   useFont();
 
   useEffect(() => {
+    console.log('DateRangePicker props', props);
+  }, [props]);
+
+  useEffect(() => {
     if (!props.value?.relativeTimeString) return;
 
     const [from, to] = dateParser(props.value?.relativeTimeString, 'UTC');
