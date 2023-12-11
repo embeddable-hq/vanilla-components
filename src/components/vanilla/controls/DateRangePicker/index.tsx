@@ -79,6 +79,7 @@ export default (props: Props) => {
                         if (!from || !to) return;
 
                         setRange({ relativeTimeString, from: new Date(from), to: new Date(to) });
+                        props.onChange(range);
                       }}
                       className={`${
                         i === 0 ? '' : 'border-t'
@@ -114,11 +115,9 @@ export default (props: Props) => {
               onSelect={(range) => {
                 setRange(range);
 
-                console.log('executing props.onChange with', { value: range });
-
                 if (!range?.from || !range?.to) return;
 
-                props.onChange({ value: range });
+                props.onChange(range);
               }}
             />
           </div>

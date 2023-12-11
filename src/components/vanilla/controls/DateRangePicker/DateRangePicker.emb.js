@@ -5,6 +5,7 @@ import Component from './index';
 export const meta = {
   name: 'DateRangePicker',
   label: 'Date Range Picker',
+  classNames: ['on-top'],
   inputs: [
     {
       name: 'value',
@@ -41,6 +42,9 @@ export default defineComponent(Component, meta, {
     value: inputs.value
   }),
   events: {
-    onChange: (value) => ({ value })
+    onChange: (value) => {
+      console.log('DateRangePicker.onChange', value)
+      return ({ value });
+    } 
   }
 });
