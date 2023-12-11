@@ -1,3 +1,5 @@
+export const DEFAULT_FONT = 'Open Sans';
+
 export const FONTS = { 'Open Sans': 'OpenSans.ttf' };
 
 export const COLORS = [

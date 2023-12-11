@@ -1,12 +1,12 @@
 import Chart from 'react-apexcharts';
 import { format, parseJSON } from 'date-fns';
-import React, { useMemo, useRef, useEffect } from 'react';
 import { DataResponse } from '@embeddable.com/react';
+import React, { useMemo, useRef, useEffect } from 'react';
 import { Dimension, Measure } from '@embeddable.com/core';
 
-import { COLORS } from '../../../constants';
 import useFont from '../../../hooks/useFont';
 import useResize from '../../../hooks/useResize';
+import { COLORS, DEFAULT_FONT } from '../../../constants';
 
 import '../../index.css';
 import Title from '../../Title';
@@ -102,6 +102,7 @@ export default (props: Props) => {
           options={{
             colors: COLORS,
             chart: {
+              fontFamily: DEFAULT_FONT,
               type: 'line',
               toolbar: {
                 show: false
