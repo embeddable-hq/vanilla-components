@@ -55,7 +55,7 @@ export default (props: Props) => {
       <div className="relative grow items-center justify-center flex">
         <div className="flex items-center justify-center font-futura text-[#333942] text-[48px] font-bold">
           {props.prefix}
-          {n}
+          {n || 0}
           {props.suffix}
         </div>
         {props.value?.isLoading && !props.value?.data?.length && (

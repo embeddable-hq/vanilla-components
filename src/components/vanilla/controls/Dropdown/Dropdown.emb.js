@@ -46,15 +46,15 @@ export const meta = {
       ]
     }
   ],
-  // variables: [
-  //   {
-  //     name: 'dropdown value',
-  //     type: 'string',
-  //     defaultValue: Value.noFilter(),
-  //     inputs: ['defaultValue'],
-  //     events: [{ name: 'onChange', property: 'defaultValue' }]
-  //   }
-  // ]
+  variables: [
+    {
+      name: 'dropdown value',
+      type: 'string',
+      defaultValue: Value.noFilter(),
+      inputs: ['defaultValue'],
+      events: [{ name: 'onChange', property: 'defaultValue' }]
+    }
+  ]
 };
 
 export default defineComponent(Component, meta, {
@@ -68,6 +68,6 @@ export default defineComponent(Component, meta, {
     };
   },
   events: {
-    onChange: (defaultValue) => ({ defaultValue })
+    onChange: (defaultValue) => ({ defaultValue: defaultValue || Value.noFilter() })
   }
 });

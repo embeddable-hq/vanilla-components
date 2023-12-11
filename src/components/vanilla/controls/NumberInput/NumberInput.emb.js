@@ -35,7 +35,7 @@ export const meta = {
     {
       name: 'Number Value',
       type: 'number',
-      defaultValue: null,
+      defaultValue: Value.noFilter(),
       inputs: ['value'],
       events: [{ name: 'onChange', property: 'value' }]
     }

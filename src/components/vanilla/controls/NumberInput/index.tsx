@@ -15,6 +15,7 @@ type Props = {
 export default (props: Props) => {
   const ref = useRef<HTMLInputElement | null>(null);
   const [value, setValue] = useState(`${props.value}`);
+  let timeout = null;
 
   useFont();
 
@@ -37,7 +38,12 @@ export default (props: Props) => {
           className="rounded-xl w-full outline-none leading-10 h-10 border-0 px-3"
           onChange={(e) => {
             setValue(e.target.value);
-            props.onChange(e.target.value);
+            if(timeout) {
+              clearTimeout(timeout);
+            }
+            timeout = setTimeout(() => {
+              props.onChange(e.target.value);
+            }, 1000)
           }}
           defaultValue={value}
         />

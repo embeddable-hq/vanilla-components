@@ -34,7 +34,7 @@ export default (props: Props) => {
     (value: string) => {
       setSearch('');
       setValue(value);
-      props.onChange(value || Value.noFilter());
+      props.onChange(value);
     },
     [setValue, props.onChange, setSearch]
   );

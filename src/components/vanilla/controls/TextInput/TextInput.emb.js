@@ -1,4 +1,5 @@
 import { defineComponent } from '@embeddable.com/react';
+import { Value } from '@embeddable.com/core';
 
 import Component from './index';
 
@@ -15,7 +16,7 @@ export const meta = {
     {
       name: 'value',
       type: 'string',
-      label: 'Value'
+      label: 'Initial value'
     }
   ],
   events: [
@@ -34,7 +35,7 @@ export const meta = {
     {
       name: 'Text Value',
       type: 'string',
-      defaultValue: '',
+      defaultValue: Value.noFilter(),
       inputs: ['value'],
       events: [{ name: 'onChange', property: 'value' }]
     }
@@ -47,7 +48,7 @@ export default defineComponent(Component, meta, {
   }),
   events: {
     onChange: (value) => {
-      return { value };
+      return { value: value || Value.noFilter() };
     }
   }
 });
