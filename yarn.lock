@@ -312,22 +312,22 @@
     "@cubejs-backend/shared" "0.33.20"
     source-map-support "^0.5.21"
 
-"@embeddable.com/core@*", "@embeddable.com/core@^2.4.3":
-  version "2.4.5"
-  resolved "https://registry.npmjs.org/@embeddable.com/core/-/core-2.4.5.tgz"
-  integrity sha512-NIZ6wt48PEHnEXn9Br/HHkp5G0/tcEHDqXb9RvTpfj6pocdf/fGgKjnefFtkdXzyJSs0mgdfdDf+kULuNFQp9g==
+"@embeddable.com/core@*", "@embeddable.com/core@^2.4.7":
+  version "2.4.7"
+  resolved "https://registry.npmjs.org/@embeddable.com/core/-/core-2.4.7.tgz"
+  integrity sha512-CTjSaq1XtAVBpIawMNrkN9s1RwxqYZ54Z9FNfR0qRqfKT9HBL0guBAVG+iZbWI69IIx+s0N3nlvmVJkPjF2h9Q==
 
-"@embeddable.com/react@*", "@embeddable.com/react@^2.4.7":
-  version "2.4.8"
-  resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.4.8.tgz"
-  integrity sha512-BD2FFUiJL+cE1pWxoPmQQEofolIZjDtjS3RR8yEiyFvx1Nphd9k0VbSBqvUHVL0DnBdd7IsgfMpbfL3oyECELw==
+"@embeddable.com/react@*", "@embeddable.com/react@^2.4.9":
+  version "2.4.9"
+  resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.4.9.tgz"
+  integrity sha512-O5kTPmeLfjzNduizgHgq8BFmeyqP+6uDnD+DjJ9PiMngqIPzLCt7lN+NBMw5FXdLHM3C90IwDyrobP/LLzutUg==
   dependencies:
     "@embeddable.com/core" "*"
 
-"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@^2.4.8":
-  version "2.4.8"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-2.4.8.tgz"
-  integrity sha512-S/1vo3UNwyTXDIgeK5M1spGk0UhiNhFifMi4VWShuF4GwSQjrBzIlfk7FWOgKg2CLM63PCZdjkQ8fHnsYM1lcg==
+"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@^2.4.10":
+  version "2.4.10"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-2.4.10.tgz"
+  integrity sha512-OtoF7Sc/0l/Elb4eUoU+mzLGD93sNr1G8gl6JzlOrKnYYoqq5Ju61VrBIGe7bjM+28FoROK3my0stSKvAal1sA==
   dependencies:
     "@embeddable.com/sdk-utils" "*"
     "@inquirer/select" "^1.3.0"
@@ -341,10 +341,10 @@
     vite "^4.5.0"
     yaml "^2.3.3"
 
-"@embeddable.com/sdk-react@^2.2.7":
-  version "2.2.8"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-2.2.8.tgz"
-  integrity sha512-mdxyw1YGse2dNgIXeQPqWR5eLYnm62WNDGCz9qieUTGkhIGfcVg2GZZocm8paAy2MiXY/nMStJiNffU3gCSAhQ==
+"@embeddable.com/sdk-react@^2.2.9":
+  version "2.2.9"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-2.2.9.tgz"
+  integrity sha512-27M9WuwcRakF2rGUI2+9jdBB4ulQELXJTtO0t1npF/Z0QZH+zcuhyN5EIRZ3fph0EMCXOEfeC8bKRW+a9/1s3g==
   dependencies:
     "@babel/generator" "^7.23.0"
     "@babel/parser" "^7.23.0"
@@ -359,9 +359,9 @@
     zod "^3.22.4"
 
 "@embeddable.com/sdk-utils@*":
-  version "0.2.4"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-utils/-/sdk-utils-0.2.4.tgz"
-  integrity sha512-N7NE4tKefUQ+QOmv3cQoxXrvFhuqmOLHbIJn9jZOeMsUdJNFUQzVcdMUUb5ApZdYJtNehVaTnOui8KHAfjNugA==
+  version "0.2.6"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-utils/-/sdk-utils-0.2.6.tgz"
+  integrity sha512-PnheQdeQs6sCG9Fqi0mfViAVLH/r+6AfX61KRPGgI4WoRBeOfYO1g3/n9JJQI+BZhA6nTou4/vIt2lseNY63Tw==
   dependencies:
     ora "^7.0.1"
     zod "^3.22.4"

@@ -34,7 +34,7 @@ export default (props: Props) => {
     (value: string) => {
       setSearch('');
       setValue(value);
-      props.onChange(value ?? Value.noFilter());
+      props.onChange(value || Value.noFilter());
     },
     [setValue, props.onChange, setSearch]
   );
@@ -139,7 +139,6 @@ export default (props: Props) => {
           <div
             onClick={() => {
               set('');
-              ref.current?.focus();
             }}
             className="absolute right-10 top-0 h-10 flex items-center z-10 cursor-pointer"
           >
