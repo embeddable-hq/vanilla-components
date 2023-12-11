@@ -1,6 +1,19 @@
 import { DataResponse } from '@embeddable.com/react';
 import { DimensionOrMeasure } from '@embeddable.com/core';
+
 import { useEmbeddableState } from '@embeddable.com/react';
+
+const getEmbeddableState = debug => {
+  if(debug) {
+    return (initialState) => [
+        initialState,
+        (newState) => initialState = newState
+      ];
+  }
+  return useEmbeddableState;
+}
+
+
 import { OrderBy, OrderDirection } from '@embeddable.com/core';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Table, TableRow, TableBody, TableCell, TableHead, TableHeaderCell } from '@tremor/react';
@@ -19,13 +32,27 @@ type Props = {
   maxPageRows?: number;
   tableData: DataResponse;
   defaultSort: OrderBy[];
+  debug: boolean;
 };
 
 export default (props: Props) => {
   const { columns, tableData } = props;
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, height] = useResize(ref);
-  const { format } = useMemo(() => new Intl.NumberFormat(), []);
+  const embeddableState = getEmbeddableState(props.debug);
+
+  const format = (text, column) => {
+    if(typeof text === 'number') {
+      return new Intl.NumberFormat().format(text);
+    }
+    if(text && column.nativeType === 'time') {
+      if(text.endsWith('T00:00:00.000')) {
+        return new Intl.DateTimeFormat().format(new Date(text));
+      }
+      return new Date(text).toLocaleString();
+    }
+    return text;
+  }
 
   useFont();
 
@@ -33,7 +60,7 @@ export default (props: Props) => {
     console.log('Table props', props);
   }, [props]);
 
-  const [meta, setMeta] = useEmbeddableState({
+  const [meta, setMeta] = embeddableState({
     page: 0,
     maxRowsFit: 0,
     sort: props.defaultSort
@@ -141,9 +168,9 @@ export default (props: Props) => {
                       <span className="text-overflow-dynamic-container">
                         <span
                           className="text-overflow-dynamic-ellipsis"
-                          title={typeof c === 'number' ? format(c) : c}
+                          title={format(c, columns[i])}
                         >
-                          {typeof c === 'number' ? format(c) : c}
+                          {format(c, columns[i])}
                         </span>
                       </span>
                     </TableCell>
