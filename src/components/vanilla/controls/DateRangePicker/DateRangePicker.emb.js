@@ -1,4 +1,5 @@
 import { defineComponent } from '@embeddable.com/react';
+import { Value } from '@embeddable.com/core';
 
 import Component from './index';
 
@@ -30,7 +31,7 @@ export const meta = {
     {
       name: 'date range value',
       type: 'timeRange',
-      defaultValue: null,
+      defaultValue: Value.noFilter(),
       inputs: ['value'],
       events: [{ name: 'onChange', property: 'value' }]
     }
