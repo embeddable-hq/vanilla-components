@@ -16,11 +16,6 @@ cubes:
         sql: email
         type: string
 
-      - name: full_name
-        title: "Full name"
-        sql: CONCAT(first_name, ' ', last_name)
-        type: string
-
       - name: country
         title: "Country of origin"
         sql: country
@@ -29,6 +24,11 @@ cubes:
       - name: signed_up_at
         sql: signed_up_at
         type: time
+
+      # - name: full_name
+      #   title: "Full name"
+      #   sql: CONCAT(first_name, ' ', last_name)
+      #   type: string
 
     measures:
       - name: count
