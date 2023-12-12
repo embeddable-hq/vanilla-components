@@ -6,7 +6,7 @@ import { Dimension, Measure } from '@embeddable.com/core';
 
 import useFont from '../../../hooks/useFont';
 import useResize from '../../../hooks/useResize';
-import { COLORS, DEFAULT_FONT } from '../../../constants';
+import { COLORS, EMB_FONT, SMALL_FONT_SIZE } from '../../../constants';
 
 import '../../index.css';
 import Title from '../../Title';
@@ -87,7 +87,7 @@ export default (props: Props) => {
 
   if (props.line?.error) {
     return (
-      <div className="h-full flex items-center justify-center">
+      <div className="h-full flex items-center justify-center font-embeddable text-sm">
         <WarningIcon />
         <div className="whitespace-pre-wrap p-4 max-w-sm text-xs">{props.line?.error}</div>
       </div>
@@ -95,7 +95,7 @@ export default (props: Props) => {
   }
 
   return (
-    <div className={`h-full relative ${props.title ? 'pt-10' : ''}`}>
+    <div className={`h-full relative font-embeddable text-sm ${props.title ? 'pt-10' : ''}`}>
       <Title absolute title={props.title} />
       <div className="relative h-full" ref={ref}>
         <Chart
@@ -112,7 +112,7 @@ export default (props: Props) => {
                 enabled: false
               },
               parentHeightOffset: 0,
-              fontFamily: DEFAULT_FONT
+              fontFamily: EMB_FONT
             },
             grid: {
               show: false,
@@ -123,19 +123,16 @@ export default (props: Props) => {
               categories: labels,
               title: { text: props.xAxisTitle, style: { color: '#333942' } },
               labels: {
-                hideOverlappingLabels: true,
-                style: {
-                  fontFamily: 'Arial'
-                }
-                // formatter: (v) =>
-                //   v || `${format(parseJSON(v), granularityFormats[props.granularity || 'day'])} `
+                style: { fontSize: SMALL_FONT_SIZE, colors: ['#959CA8'] },
+                hideOverlappingLabels: true
               },
               overwriteCategories: labels,
               crosshairs: { show: false }
             },
             yaxis: {
               title: { text: props.yAxisTitle, style: { color: '#333942' } },
-              crosshairs: { show: false }
+              crosshairs: { show: false },
+              labels: { style: { fontSize: SMALL_FONT_SIZE, colors: ['#959CA8'] } }
             },
             tooltip: {
               custom: (opt) => {
@@ -146,9 +143,9 @@ export default (props: Props) => {
                 const value = opt.series[opt.seriesIndex][opt.dataPointIndex];
                 const offsets = opt.w.globals.dom.baseEl.getBoundingClientRect();
 
-                return `<div style="left: ${left - offsets.left}px; top: ${
-                  top - offsets.top
-                }px;" class="chart-tooltip">
+                return `<div style="font-size: ${SMALL_FONT_SIZE}; left: ${
+                  left - offsets.left
+                }px; top: ${top - offsets.top}px;" class="chart-tooltip">
                   <strong>${value}</strong>
                   <div><b style="background-color:${color}"></b>${label}</div>
                 </div>`;
@@ -167,14 +164,15 @@ export default (props: Props) => {
               itemMargin: {
                 horizontal: 10,
                 vertical: 10
-              }
+              },
+              fontSize: SMALL_FONT_SIZE
             },
             dataLabels: {
               enabled: !!props.showLabels,
               dropShadow: { enabled: false },
               background: { enabled: false },
               offsetY: -6,
-              style: { colors: ['##333942'] }
+              style: { colors: ['##333942'], fontSize: SMALL_FONT_SIZE }
             },
             stroke: {
               show: true,

@@ -12,12 +12,13 @@ import { ChevronDown, ClearIcon, WarningIcon } from '../../icons';
 type Props = {
   title?: string;
   className?: string;
+  placeholder?: string;
   defaultValue: string;
   options: DataResponse;
-  inputClassName?: string;
   unclearable?: boolean;
-  property: Partial<Dimension>;
+  inputClassName?: string;
   onChange: (v: any) => void;
+  property: Partial<Dimension>;
 };
 
 export default (props: Props) => {
@@ -98,7 +99,7 @@ export default (props: Props) => {
   }
 
   return (
-    <div className={`dropdown ${props.className || 'relative w-full'}`}>
+    <div className={`dropdown font-embeddable text-sm ${props.className || 'relative w-full'}`}>
       <Title title={props.title} />
       <div
         className={
@@ -109,7 +110,7 @@ export default (props: Props) => {
         <input
           ref={ref}
           value={search}
-          placeholder="Select..."
+          placeholder={props.placeholder}
           onFocus={() => setFocus(true)}
           onBlur={() => setTriggerBlur(true)}
           onChange={(e) => setSearch(e.target.value)}
@@ -130,17 +131,15 @@ export default (props: Props) => {
           <div className="flex flex-col bg-white rounded-xl absolute top-11 z-10 border border-[#DADCE1] w-full">
             {list}
             {list?.length === 0 && !!search && (
-              <div className="px-3 py-2 text-black/50 italic cursor-pointer text-xs">
-                No results
-              </div>
+              <div className="px-3 py-2 text-black/50 italic cursor-pointer">No results</div>
             )}
           </div>
         )}
 
         {props.options.isLoading ? (
-          <Spinner show className="absolute right-4 top-2.5 z-10 pointer-events-none" />
+          <Spinner show className="absolute right-4 top-2.5 z-1 pointer-events-none" />
         ) : (
-          <ChevronDown className="absolute right-4 top-2.5 z-10 pointer-events-none" />
+          <ChevronDown className="absolute right-4 top-2.5 z-1 pointer-events-none" />
         )}
 
         {!props.unclearable && !!value && (

@@ -112,7 +112,7 @@ export default (props: Props) => {
 
   if (props.tableData?.error) {
     return (
-      <div className="h-full flex items-center justify-center">
+      <div className="h-full flex items-center justify-center font-embeddable text-sm">
         <WarningIcon />
         <div className="whitespace-pre-wrap p-4 max-w-sm text-xs">{props.tableData?.error}</div>
       </div>
@@ -121,7 +121,7 @@ export default (props: Props) => {
 
   return (
     <>
-      <div className="h-full flex flex-col justify-start w-full overflow-x-auto">
+      <div className="h-full flex flex-col justify-start w-full overflow-x-auto font-embeddable text-sm">
         <Title title={props.title} />
         <div
           className="grow overflow-hidden relative"

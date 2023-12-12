@@ -3,8 +3,11 @@
 @tailwind utilities;
 
 * {
-  font-family: 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+.apexcharts-xaxis-label tspan {
+  fill: #959CA8;
 }
 
 :host(.on-top) {

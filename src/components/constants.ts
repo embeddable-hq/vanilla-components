@@ -1,6 +1,11 @@
-export const DEFAULT_FONT = 'Open Sans';
+export const EMB_FONT =
+  '-apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
 
-export const FONTS = { 'Open Sans': 'OpenSans.ttf' };
+export const FONTS = {
+  // 'Open Sans': 'OpenSans.ttf'
+};
+
+export const SMALL_FONT_SIZE = '12px';
 
 export const COLORS = [
   '#2859C5',

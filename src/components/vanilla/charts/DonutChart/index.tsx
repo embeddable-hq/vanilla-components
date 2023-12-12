@@ -5,7 +5,7 @@ import React, { useMemo, useRef, useEffect } from 'react';
 
 import useFont from '../../../hooks/useFont';
 import useResize from '../../../hooks/useResize';
-import { COLORS, DEFAULT_FONT } from '../../../constants';
+import { COLORS, EMB_FONT, SMALL_FONT_SIZE } from '../../../constants';
 
 import '../../index.css';
 import Title from '../../Title';
@@ -75,7 +75,7 @@ export default (props: Props) => {
 
   if (props.donut?.error) {
     return (
-      <div className="h-full flex items-center justify-center">
+      <div className="h-full flex items-center justify-center font-embeddable text-sm">
         <WarningIcon />
         <div className="whitespace-pre-wrap p-4 max-w-sm text-xs">{props.donut?.error}</div>
       </div>
@@ -84,10 +84,12 @@ export default (props: Props) => {
 
   return (
     <div
-      className={`h-full relative ${props.title ? 'pt-6' : ''} ${props.showLegend ? '-mb-16' : ''}`}
+      className={`h-full relative font-embeddable text-sm ${props.title ? 'pt-6' : ''} ${
+        props.showLegend ? '-mb-16' : ''
+      }`}
     >
       <Title absolute title={props.title} />
-      <div className="h-full relative" ref={ref}>
+      <div className="h-full text-sm relative" ref={ref}>
         <Chart
           className="donut-chart"
           options={{
@@ -95,7 +97,7 @@ export default (props: Props) => {
             chart: {
               type: 'donut',
               parentHeightOffset: 0,
-              fontFamily: DEFAULT_FONT
+              fontFamily: EMB_FONT
             },
             grid: {
               show: true,
@@ -114,9 +116,9 @@ export default (props: Props) => {
                   : series[seriesIndex];
                 const offsets = w.globals.dom.baseEl.getBoundingClientRect();
 
-                return `<div style="left: ${left - offsets.left}px; top: ${
-                  top - offsets.top
-                }px;" class="chart-tooltip">
+                return `<div style="font-size: ${SMALL_FONT_SIZE}; left: ${
+                  left - offsets.left
+                }px; top: ${top - offsets.top}px;" class="chart-tooltip">
                 <strong>${props.metric?.title || ''}: ${value}</strong>
                 <div><b style="background-color:${color}"></b>${label}</div>
               </div>`;
@@ -133,7 +135,8 @@ export default (props: Props) => {
               itemMargin: {
                 horizontal: 10,
                 vertical: 10
-              }
+              },
+              fontSize: SMALL_FONT_SIZE
             },
             dataLabels: {
               enabled: !!props.showLabels,
@@ -143,6 +146,7 @@ export default (props: Props) => {
                 borderRadius: 10,
                 padding: 4
               },
+              style: { fontSize: SMALL_FONT_SIZE },
               ...(props.showPercentages
                 ? {}
                 : {

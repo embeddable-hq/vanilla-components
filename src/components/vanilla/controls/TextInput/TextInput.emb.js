@@ -17,6 +17,11 @@ export const meta = {
       name: 'value',
       type: 'string',
       label: 'Initial value'
+    },
+    {
+      name: 'placeholder',
+      type: 'string',
+      label: 'Placeholder'
     }
   ],
   events: [
@@ -43,8 +48,8 @@ export const meta = {
 };
 
 export default defineComponent(Component, meta, {
-  props: (inputs) => ({ 
-    ...inputs 
+  props: (inputs) => ({
+    ...inputs
   }),
   events: {
     onChange: (value) => {

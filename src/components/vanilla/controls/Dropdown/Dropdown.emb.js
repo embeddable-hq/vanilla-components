@@ -32,6 +32,11 @@ export const meta = {
       name: 'defaultValue',
       type: 'string',
       label: 'Default value'
+    },
+    {
+      name: 'placeholder',
+      type: 'string',
+      label: 'Placeholder'
     }
   ],
   events: [

@@ -7,8 +7,9 @@ import Title from '../../Title';
 import { ClearIcon } from '../../icons';
 
 type Props = {
-  title?: string;
   value: string;
+  title?: string;
+  placeholder?: string;
   onChange: (v: any) => void;
 };
 
@@ -28,21 +29,22 @@ export default (props: Props) => {
   }, [props.value]);
 
   return (
-    <div className="w-full">
+    <div className="w-full font-embeddable text-sm">
       <Title title={props.title} />
 
       <div className="w-full relative rounded-xl bg-white border border-[#DADCE1] pr-8">
         <input
           ref={ref}
+          placeholder={props.placeholder}
           className="rounded-xl w-full outline-none leading-10 h-10 border-0 px-3"
           onChange={(e) => {
             setValue(e.target.value);
-            if(timeout) {
+            if (timeout) {
               clearTimeout(timeout);
             }
             timeout = setTimeout(() => {
               props.onChange(e.target.value);
-            }, 1000)
+            }, 1000) as any;
           }}
           defaultValue={value}
         />

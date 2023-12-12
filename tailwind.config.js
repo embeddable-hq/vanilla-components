@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
+import { EMB_FONT } from './src/components/constants';
+
 module.exports = {
   darkMode: 'class',
   content: [
@@ -14,8 +16,7 @@ module.exports = {
     current: 'currentColor',
     extend: {
       fontFamily: {
-        futura: 'Futura, sans-serif',
-        spacemono: 'Space Mono, monospace, sans-serif'
+        embeddable: EMB_FONT
       },
       colors: {
         // light mode

@@ -74,7 +74,7 @@ export default (props: Props) => {
   }, [props.value]);
 
   return (
-    <div className="w-full">
+    <div className="w-full font-embeddable text-sm">
       <Title title={props.title} />
       <div className="relative inline-flex h-10 w-full text-[#101010] text-sm font-medium">
         <Dropdown

@@ -42,7 +42,7 @@ export default (props: Props) => {
 
   if (props.value?.error) {
     return (
-      <div className="h-full flex items-center justify-center">
+      <div className="h-full flex items-center justify-center font-embeddable text-sm">
         <WarningIcon />
         <div className="whitespace-pre-wrap p-4 max-w-sm text-xs">{props.value?.error}</div>
       </div>
@@ -50,10 +50,10 @@ export default (props: Props) => {
   }
 
   return (
-    <div className="h-full flex flex-col justify-start">
+    <div className="h-full flex flex-col justify-start font-embeddable text-sm">
       <Title title={props.title} />
-      <div className="relative grow items-center justify-center flex">
-        <div className="flex items-center justify-center font-futura text-[#333942] text-[48px] font-bold">
+      <div className="relative grow items-center justify-center flex min-h-[40px]">
+        <div className="flex items-center justify-center font-embeddable text-[#333942] text-[48px] font-bold">
           {props.prefix}
           {n || 0}
           {props.suffix}

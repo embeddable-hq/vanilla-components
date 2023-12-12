@@ -298,6 +298,17 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           __type__: 'measure'
         }}
       />
+      <KPIChart
+        title=""
+        value={{ isLoading: true, data: [] }}
+        metric={{
+          name: '',
+          title: '',
+          description: '',
+          nativeType: 'string',
+          __type__: 'measure'
+        }}
+      />
       <Dropdown
         onChange={() => {}}
         property={{
@@ -336,8 +347,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           ]
         }}
       />
-      <TextInput onChange={() => {}} value="Chocolate" />
-      <NumberInput onChange={() => {}} value={12} />
+      <TextInput placeholder="Provide text" onChange={() => {}} value="Chocolate" />
+      <NumberInput placeholder="Provide number" onChange={() => {}} value={12} />
     </div>
   </React.StrictMode>
 );
