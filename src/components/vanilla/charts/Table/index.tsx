@@ -121,8 +121,8 @@ export default (props: Props) => {
 
   return (
     <>
+      <Title title={props.title} />
       <div className="h-full flex flex-col justify-start w-full overflow-x-auto font-embeddable text-sm">
-        <Title title={props.title} />
         <div
           className="grow overflow-hidden relative"
           style={{ minWidth: `${columns.length * 100}px` }}
@@ -143,9 +143,7 @@ export default (props: Props) => {
                       >
                         <div className="flex items-center justify-start basis-0 grow w-0 h-5 text-[#333942] hover:text-black font-bold text-sm">
                           <div className="absolute left-0 top-0 h-full w-full flex items-center px-3">
-                            <span className="block text-ellipsis overflow-hidden">
-                              {h?.title}
-                            </span>
+                            <span className="block text-ellipsis overflow-hidden">{h?.title}</span>
                             <div
                               className={`${
                                 sortIndex === 0 ? 'text-[#FF6B6C]' : 'text-[#333942]'
