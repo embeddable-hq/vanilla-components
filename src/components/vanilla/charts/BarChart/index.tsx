@@ -142,8 +142,7 @@ export default (props: Props) => {
             xaxis: {
               min: 0,
               title: { text: props.xAxisTitle, style: { color: '#333942' } },
-              crosshairs: { show: false },
-              labels: { rotate: 0 }
+              crosshairs: { show: false }
             },
             tooltip: {
               custom: (opt) => {

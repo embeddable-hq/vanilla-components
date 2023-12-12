@@ -1,4 +1,4 @@
-import { Dimension, Value } from '@embeddable.com/core';
+import { Dimension } from '@embeddable.com/core';
 import { DataResponse } from '@embeddable.com/react';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
@@ -11,8 +11,11 @@ import { ChevronDown, ClearIcon, WarningIcon } from '../../icons';
 
 type Props = {
   title?: string;
+  className?: string;
   defaultValue: string;
   options: DataResponse;
+  inputClassName?: string;
+  unclearable?: boolean;
   property: Partial<Dimension>;
   onChange: (v: any) => void;
 };
@@ -95,9 +98,14 @@ export default (props: Props) => {
   }
 
   return (
-    <div className="dropdown relative w-full">
+    <div className={`dropdown ${props.className || 'relative w-full'}`}>
       <Title title={props.title} />
-      <div className="relative rounded-xl w-full h-10 border border-[#DADCE1] mb-2">
+      <div
+        className={
+          props.inputClassName ||
+          'relative rounded-xl w-full h-10 border border-[#DADCE1] mb-2 flex items-center'
+        }
+      >
         <input
           ref={ref}
           value={search}
@@ -105,12 +113,12 @@ export default (props: Props) => {
           onFocus={() => setFocus(true)}
           onBlur={() => setTriggerBlur(true)}
           onChange={(e) => setSearch(e.target.value)}
-          className="outline-none bg-transparent leading-10 h-10 border-0 px-3 w-full cursor-pointer"
+          className="outline-none bg-transparent leading-9 h-9 border-0 px-3 w-full cursor-pointer text-sm"
         />
 
         {!!value && (
           <span
-            className={`absolute w-[calc(100%-2rem)] rounded-xl left-3 top-1 h-8 leading-8 block pointer-events-none bg-white ${
+            className={`absolute w-[calc(100%-2rem)] rounded-xl left-3 top-1 h-8 leading-8 block pointer-events-none bg-white text-sm ${
               focus ? 'hidden' : ''
             }`}
           >
@@ -135,7 +143,7 @@ export default (props: Props) => {
           <ChevronDown className="absolute right-4 top-2.5 z-10 pointer-events-none" />
         )}
 
-        {!!value && (
+        {!props.unclearable && !!value && (
           <div
             onClick={() => {
               set('');

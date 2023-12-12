@@ -257,8 +257,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           }}
         />
       </div>
-      <br />
-
       <div className="h-[400px]">
         <LineChart
           title="Test"
@@ -280,7 +278,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           }}
           showLabels={true}
           showLegend={true}
-          granularity="week"
+          granularity="day"
           xAxisTitle="Date"
           yAxisTitle="Product Count"
           line={{
@@ -289,7 +287,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           }}
         />
       </div>
-      <br />
       <KPIChart
         title=""
         value={{ isLoading: false, data: [] }}
@@ -301,7 +298,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           __type__: 'measure'
         }}
       />
-      <br />
       <Dropdown
         onChange={() => {}}
         property={{
@@ -340,11 +336,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           ]
         }}
       />
-      <br />
       <TextInput onChange={() => {}} value="Chocolate" />
-      <br />
       <NumberInput onChange={() => {}} value={12} />
-      <br />
     </div>
   </React.StrictMode>
 );

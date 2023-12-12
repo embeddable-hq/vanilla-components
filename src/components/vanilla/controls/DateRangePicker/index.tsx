@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import 'react-day-picker/dist/style.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
 import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser';
 
@@ -8,10 +8,11 @@ import useFont from '../../../hooks/useFont';
 
 import '../../index.css';
 import Title from '../../Title';
-import { CalendarIcon, ChevronDown, ChevronLeft, ChevronRight } from '../../icons';
+import { CalendarIcon, ChevronLeft, ChevronRight } from '../../icons';
+
+import Dropdown from '../Dropdown';
 
 const ranges = [
-  '',
   'Today',
   'Yesterday',
   'This week',
@@ -32,13 +33,27 @@ type TimeRange = {
 type Props = {
   value?: TimeRange;
   title?: string;
-  onChange: (v?: { value: TimeRange }) => void;
+  onChange: (v?: TimeRange) => void;
 };
 
 export default (props: Props) => {
+  const [focus, setFocus] = useState(false);
+  const ref = useRef<HTMLInputElement | null>(null);
+  const [triggerBlur, setTriggerBlur] = useState(false);
   const [range, setRange] = useState<TimeRange | undefined>(props.value);
 
   useFont();
+
+  useLayoutEffect(() => {
+    if (!triggerBlur) return;
+
+    const timeout = setTimeout(() => {
+      setFocus(false);
+      setTriggerBlur(false);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [triggerBlur]);
 
   useEffect(() => {
     console.log('DateRangePicker props', props);
@@ -61,51 +76,53 @@ export default (props: Props) => {
   return (
     <div className="w-full">
       <Title title={props.title} />
-      <div className="relative inline-flex border rounded-md border-[#d8dad9] h-11 w-full text-[#101010] text-sm font-medium">
-        <div className="border-r border-[#d8dad9] grow flex items-center p-4 max-w-[180px] hover:bg-[#f3f4f6] cursor-pointer group relative text-[14px] w-full">
-          {range?.relativeTimeString || (range?.from && range?.to ? 'Custom' : 'Select')}{' '}
-          <ChevronDown className="ml-auto" />
-          <div className="hidden w-full group-hover:block absolute top-8 left-0 z-50 pt-4 pointer-events-auto opacity-100">
-            <div className="rounded w-full border border-[#d8dad9] overflow-hidden">
-              {ranges.map(
-                (relativeTimeString, i) =>
-                  !!relativeTimeString && (
-                    <div
-                      onClick={() => {
-                        if (!ranges[i]) return;
+      <div className="relative inline-flex h-10 w-full text-[#101010] text-sm font-medium">
+        <Dropdown
+          unclearable
+          className="relative w-full max-w-[180px]"
+          inputClassName="relative rounded-l-xl w-full h-10 border border-[#DADCE1] mb-2 flex items-center"
+          defaultValue={range?.relativeTimeString || ''}
+          onChange={(relativeTimeString) => {
+            const [from, to] = dateParser(relativeTimeString, 'UTC');
 
-                        const [from, to] = dateParser(relativeTimeString, 'UTC');
+            if (!from || !to) return;
 
-                        if (!from || !to) return;
+            const range = { relativeTimeString, from: new Date(from), to: new Date(to) };
 
-                        setRange({ relativeTimeString, from: new Date(from), to: new Date(to) });
-                        props.onChange(range);
-                      }}
-                      className={`${
-                        i === 0 ? '' : 'border-t'
-                      } border-[#d8dad9] text-[14px] h-10 w-full flex items-center justify-center cursor-pointer hover:bg-[#f3f4f6] hover:text-[#333942] ${
-                        (range?.relativeTimeString || '') === relativeTimeString
-                          ? 'bg-[#f3f4f6] text-[#333942]'
-                          : 'bg-white'
-                      }`}
-                      key={i}
-                    >
-                      {relativeTimeString}
-                    </div>
-                  )
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="grow flex items-center p-4 hover:bg-[#f3f4f6] cursor-pointer group relative text-[14px]">
+            setRange(range);
+
+            props.onChange(range);
+          }}
+          options={{
+            isLoading: false,
+            data: ranges.map((value) => ({ value }))
+          }}
+          property={{ name: 'value' }}
+        />
+        <div className="grow flex items-center p-4 hover:bg-[#f3f4f6] cursor-pointer relative text-sm border-y border-r rounded-r-xl border-[#d8dad9]">
+          <input
+            ref={ref}
+            onChange={() => {}}
+            onFocus={() => setFocus(true)}
+            onBlur={() => setTriggerBlur(true)}
+            className="absolute left-0 top-0 h-full w-full opacity-0"
+          />
           <CalendarIcon className="mr-2 " />{' '}
           {!!range?.from && !!range?.to
             ? `${format(range.from, 'd MMM yyyy')} - ${format(range.to, 'd MMM yyyy')}`
             : 'Select'}
-          <div className="hidden group-hover:block absolute top-8 left-0 z-50 pt-4 pointer-events-auto opacity-100">
+          <div
+            onClick={() => {
+              setTriggerBlur(false);
+              ref.current?.focus();
+            }}
+            className={`${
+              focus ? 'block' : 'hidden'
+            } absolute top-8 left-0 z-50 pt-4 pointer-events-auto opacity-100`}
+          >
             <DayPicker
               showOutsideDays
-              className="border border-[#d8dad9] bg-white rounded-md shadow px-4 py-3 text-[#101010] !m-0"
+              className="border border-[#d8dad9] bg-white rounded-xl shadow px-4 py-3 text-[#101010] !m-0"
               components={{
                 Caption: CustomCaption
               }}
@@ -113,9 +130,13 @@ export default (props: Props) => {
               mode="range"
               selected={{ from: range?.from, to: range?.to }}
               onSelect={(range) => {
-                setRange(range);
+                setRange({ ...range, relativeTimeString: 'Custom' });
 
                 if (!range?.from || !range?.to) return;
+
+                setFocus(false);
+
+                setTriggerBlur(false);
 
                 props.onChange(range);
               }}

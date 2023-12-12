@@ -62,13 +62,15 @@ export default (props: Props) => {
 
         if (!date) return memo;
 
+        const formatted = format(parseJSON(date), granularityFormats[props.granularity || 'day']);
+
         props.metrics.forEach((m) => {
           memo.grouped[m.name] = memo.grouped[m.name] || {};
 
-          memo.grouped[m.name][date] = parseInt(`${record[m.name] || 0}`, 10);
+          memo.grouped[m.name][formatted] = parseInt(`${record[m.name] || 0}`, 10);
         });
 
-        if (!memo.labels.includes(date)) memo.labels.push(date);
+        if (!memo.labels.includes(formatted)) memo.labels.push(formatted);
 
         return memo;
       },
@@ -117,13 +119,16 @@ export default (props: Props) => {
               padding: { left: 0, right: 0, top: 0, bottom: 0 }
             },
             xaxis: {
-              type: 'datetime',
+              type: 'category',
               categories: labels,
               title: { text: props.xAxisTitle, style: { color: '#333942' } },
               labels: {
-                rotate: 0,
-                formatter: (v) =>
-                  `${format(parseJSON(v), granularityFormats[props.granularity || 'day'])}`
+                hideOverlappingLabels: true,
+                style: {
+                  fontFamily: 'Arial'
+                }
+                // formatter: (v) =>
+                //   v || `${format(parseJSON(v), granularityFormats[props.granularity || 'day'])} `
               },
               overwriteCategories: labels,
               crosshairs: { show: false }
