@@ -84,8 +84,8 @@ export default (props: Props) => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      const heightWithoutHead = height - 45;
-      const maxRowsFit = Math.ceil(heightWithoutHead / 45);
+      const heightWithoutHead = height - 40;
+      const maxRowsFit = Math.floor(heightWithoutHead / 45);
 
       setMeta({ ...meta, maxRowsFit });
     }, 100);

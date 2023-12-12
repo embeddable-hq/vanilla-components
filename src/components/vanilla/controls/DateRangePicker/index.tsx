@@ -90,7 +90,7 @@ export default (props: Props) => {
         <Dropdown
           unclearable
           className="relative w-full max-w-[120px] sm:max-w-[140px]"
-          inputClassName="relative rounded-l-xl w-full h-10 border border-[#DADCE1] mb-2 flex items-center"
+          inputClassName="relative rounded-l-xl w-full h-10 border border-[#DADCE1] flex items-center"
           defaultValue={range?.relativeTimeString || ''}
           onChange={(relativeTimeString) => {
             const [from, to] = dateParser(relativeTimeString, 'UTC');

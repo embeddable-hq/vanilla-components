@@ -104,7 +104,7 @@ export default (props: Props) => {
       <div
         className={
           props.inputClassName ||
-          'relative rounded-xl w-full h-10 border border-[#DADCE1] mb-2 flex items-center'
+          'relative rounded-xl w-full h-10 border border-[#DADCE1] flex items-center'
         }
       >
         <input
@@ -128,7 +128,7 @@ export default (props: Props) => {
         )}
 
         {focus && (
-          <div className="flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[#DADCE1] w-full">
+          <div className="flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[#DADCE1] w-full overflow-hidden">
             {list}
             {list?.length === 0 && !!search && (
               <div className="px-3 py-2 text-black/50 italic cursor-pointer">No results</div>
