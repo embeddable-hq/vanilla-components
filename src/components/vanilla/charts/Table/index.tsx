@@ -120,68 +120,75 @@ export default (props: Props) => {
   }
 
   return (
-    <div className="h-full flex flex-col justify-start">
-      <Title title={props.title} />
-      <div className="grow overflow-hidden relative" ref={ref}>
-        {!!meta && !(props.tableData?.isLoading && !props.tableData?.data?.length) && (
-          <Table className="overflow-visible">
-            <TableHead className="border-y border-[#B8BDC6]">
-              <TableRow>
-                {columns?.map((h, i) => {
-                  const sortIndex = meta?.sort?.findIndex((c) => c.property.name === h.name) || 0;
+    <>
+      <div className="h-full flex flex-col justify-start w-full overflow-x-auto">
+        <Title title={props.title} />
+        <div
+          className="grow overflow-hidden relative"
+          style={{ minWidth: `${columns.length * 200}px` }}
+          ref={ref}
+        >
+          {!!meta && !(props.tableData?.isLoading && !props.tableData?.data?.length) && (
+            <Table className="overflow-visible">
+              <TableHead className="border-y border-[#B8BDC6]">
+                <TableRow>
+                  {columns?.map((h, i) => {
+                    const sortIndex = meta?.sort?.findIndex((c) => c.property.name === h.name) || 0;
 
-                  return (
-                    <TableHeaderCell
-                      onClick={() => updateSort(h)}
-                      key={i}
-                      className="bg-white select-none cursor-pointer text-[#333942]"
-                    >
-                      <div className="flex items-center justify-start basis-0 grow w-0 text-[#333942] hover:text-black font-bold text-[12px]">
-                        {h?.title}
-                        <div
-                          className={`${
-                            sortIndex === 0 ? 'text-[#FF6B6C]' : 'text-[#333942]'
-                          } ml-1`}
-                        >
-                          {meta?.sort?.[sortIndex]?.direction === 'asc' ? (
-                            <SortUp fill="currentcolor" />
-                          ) : (
-                            <SortDown fill="currentcolor" />
-                          )}
+                    return (
+                      <TableHeaderCell
+                        onClick={() => updateSort(h)}
+                        key={i}
+                        className="bg-white select-none cursor-pointer text-[#333942]"
+                      >
+                        <div className="flex items-center justify-start basis-0 grow w-0 text-[#333942] hover:text-black font-bold text-[12px]">
+                          {h?.title}
+                          <div
+                            className={`${
+                              sortIndex === 0 ? 'text-[#FF6B6C]' : 'text-[#333942]'
+                            } ml-1`}
+                          >
+                            {meta?.sort?.[sortIndex]?.direction === 'asc' ? (
+                              <SortUp fill="currentcolor" />
+                            ) : (
+                              <SortDown fill="currentcolor" />
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    </TableHeaderCell>
-                  );
-                })}
-              </TableRow>
-            </TableHead>
-
-            <TableBody>
-              {rows.map((row, index) => (
-                <TableRow key={index} className="hover:bg-gray-400/5">
-                  {row.map((c, i) => (
-                    <TableCell key={i} className="text-sm text-dark">
-                      <span className="text-overflow-dynamic-container">
-                        <span
-                          className="text-overflow-dynamic-ellipsis"
-                          title={format(c, columns[i])}
-                        >
-                          {format(c, columns[i])}
-                        </span>
-                      </span>
-                    </TableCell>
-                  ))}
+                      </TableHeaderCell>
+                    );
+                  })}
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
+              </TableHead>
 
-        {(!meta || (props.tableData?.isLoading && !props.tableData?.data?.length)) && (
-          <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
-        )}
-        <Spinner show={!meta || props.tableData?.isLoading} />
+              <TableBody>
+                {rows.map((row, index) => (
+                  <TableRow key={index} className="hover:bg-gray-400/5">
+                    {row.map((c, i) => (
+                      <TableCell key={i} className="text-sm text-dark">
+                        <span className="text-overflow-dynamic-container">
+                          <span
+                            className="text-overflow-dynamic-ellipsis"
+                            title={format(c, columns[i])}
+                          >
+                            {format(c, columns[i])}
+                          </span>
+                        </span>
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+
+          {(!meta || (props.tableData?.isLoading && !props.tableData?.data?.length)) && (
+            <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
+          )}
+          <Spinner show={!meta || props.tableData?.isLoading} />
+        </div>
       </div>
+
       <div className="flex mt-2 items-center justify-center text-[12px] font-bold text-[#333942] select-none">
         <ChevronLeft
           onClick={() => {
@@ -201,6 +208,6 @@ export default (props: Props) => {
           }`}
         />
       </div>
-    </div>
+    </>
   );
 };

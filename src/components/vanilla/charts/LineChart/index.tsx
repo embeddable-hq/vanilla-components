@@ -121,6 +121,7 @@ export default (props: Props) => {
               categories: labels,
               title: { text: props.xAxisTitle, style: { color: '#333942' } },
               labels: {
+                rotate: 0,
                 formatter: (v) =>
                   `${format(parseJSON(v), granularityFormats[props.granularity || 'day'])}`
               },

@@ -83,7 +83,7 @@ export default (props: Props) => {
   }
 
   return (
-    <div className={`h-full relative ${props.title ? 'pt-10' : ''}`}>
+    <div className={`h-full relative ${props.title ? 'pt-6' : ''}`}>
       <Title absolute title={props.title} />
       <div className="h-full relative" ref={ref}>
         <Chart

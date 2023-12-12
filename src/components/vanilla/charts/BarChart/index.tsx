@@ -114,7 +114,7 @@ export default (props: Props) => {
   }
 
   return (
-    <div className={`h-full relative ${props.title ? 'pt-10' : ''}`}>
+    <div className={`h-full relative ${props.title ? 'pt-6' : ''}`}>
       <Title absolute title={props.title} />
       <div className="h-full relative flex grow" ref={ref}>
         <Chart
@@ -142,7 +142,8 @@ export default (props: Props) => {
             xaxis: {
               min: 0,
               title: { text: props.xAxisTitle, style: { color: '#333942' } },
-              crosshairs: { show: false }
+              crosshairs: { show: false },
+              labels: { rotate: 0 }
             },
             tooltip: {
               custom: (opt) => {
