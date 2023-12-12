@@ -89,7 +89,7 @@ export default (props: Props) => {
       <div className="relative inline-flex h-10 w-full text-[#101010] text-sm">
         <Dropdown
           unclearable
-          className="relative w-full max-w-[120px] sm:max-w-[180px]"
+          className="relative w-full max-w-[120px] sm:max-w-[140px]"
           inputClassName="relative rounded-l-xl w-full h-10 border border-[#DADCE1] mb-2 flex items-center"
           defaultValue={range?.relativeTimeString || ''}
           onChange={(relativeTimeString) => {

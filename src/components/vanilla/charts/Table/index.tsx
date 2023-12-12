@@ -84,8 +84,8 @@ export default (props: Props) => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      const heightWithoutHead = height - 50;
-      const maxRowsFit = Math.floor(heightWithoutHead / 45);
+      const heightWithoutHead = height - 45;
+      const maxRowsFit = Math.ceil(heightWithoutHead / 45);
 
       setMeta({ ...meta, maxRowsFit });
     }, 100);
@@ -120,9 +120,9 @@ export default (props: Props) => {
   }
 
   return (
-    <>
+    <div className="h-full relative flex flex-col">
       <Title title={props.title} />
-      <div className="h-full flex flex-col justify-start w-full overflow-x-auto font-embeddable text-sm">
+      <div className="grow flex flex-col justify-start w-full overflow-x-auto font-embeddable text-sm">
         <div
           className="grow overflow-hidden relative"
           style={{ minWidth: `${columns.length * 100}px` }}
@@ -187,7 +187,6 @@ export default (props: Props) => {
           {(!meta || (props.tableData?.isLoading && !props.tableData?.data?.length)) && (
             <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
           )}
-          <Spinner show={!meta || props.tableData?.isLoading} />
         </div>
       </div>
 
@@ -210,6 +209,7 @@ export default (props: Props) => {
           }`}
         />
       </div>
-    </>
+      <Spinner show={!meta || props.tableData?.isLoading} />
+    </div>
   );
 };
