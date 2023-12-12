@@ -125,7 +125,7 @@ export default (props: Props) => {
         <Title title={props.title} />
         <div
           className="grow overflow-hidden relative"
-          style={{ minWidth: `${columns.length * 200}px` }}
+          style={{ minWidth: `${columns.length * 100}px` }}
           ref={ref}
         >
           {!!meta && !(props.tableData?.isLoading && !props.tableData?.data?.length) && (
@@ -141,7 +141,7 @@ export default (props: Props) => {
                         key={i}
                         className="bg-white select-none cursor-pointer text-[#333942] p-3"
                       >
-                        <div className="flex items-center justify-start basis-0 grow w-0 h-5 text-[#333942] hover:text-black font-bold text-[12px]">
+                        <div className="flex items-center justify-start basis-0 grow w-0 h-5 text-[#333942] hover:text-black font-bold text-sm">
                           <div className="absolute left-0 top-0 h-full w-full flex items-center px-3">
                             <span className="block text-ellipsis overflow-hidden">
                               {h?.title}
