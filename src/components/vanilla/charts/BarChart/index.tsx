@@ -114,19 +114,25 @@ export default (props: Props) => {
   }
 
   return (
-    <div className="h-full pb-2">
-      <Title title={props.title} />
+    <div className={`h-full relative ${props.title ? 'pt-10' : ''}`}>
+      <Title absolute title={props.title} />
       <div className="h-full relative flex grow" ref={ref}>
         <Chart
           className="bar-chart"
+          height="100%"
           options={{
             colors: COLORS,
             chart: {
-              fontFamily: DEFAULT_FONT,
               type: 'bar',
               toolbar: {
                 show: false
-              }
+              },
+              parentHeightOffset: 0,
+              fontFamily: DEFAULT_FONT
+            },
+            grid: {
+              show: true,
+              padding: { left: 0, right: 0, top: 0, bottom: 0 }
             },
             yaxis: {
               title: { text: props.yAxisTitle, style: { color: '#333942' } },
@@ -161,6 +167,7 @@ export default (props: Props) => {
             labels,
             legend: {
               show: !!props.showLegend,
+              showForSingleSeries: true,
               position: 'bottom',
               markers: {
                 radius: 100
@@ -189,7 +196,6 @@ export default (props: Props) => {
               }
             }
           }}
-          height={!!props.title ? height - 30 : height}
           width={width}
           series={series}
           type="bar"

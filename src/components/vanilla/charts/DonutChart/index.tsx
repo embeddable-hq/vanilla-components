@@ -83,16 +83,21 @@ export default (props: Props) => {
   }
 
   return (
-    <div className="h-full">
-      <Title title={props.title} />
+    <div className={`h-full relative ${props.title ? 'pt-10' : ''}`}>
+      <Title absolute title={props.title} />
       <div className="h-full relative" ref={ref}>
         <Chart
           className="donut-chart"
           options={{
             colors: COLORS,
             chart: {
-              fontFamily: DEFAULT_FONT,
-              type: 'donut'
+              type: 'donut',
+              parentHeightOffset: 0,
+              fontFamily: DEFAULT_FONT
+            },
+            grid: {
+              show: true,
+              padding: { left: 0, right: 0, top: 0, bottom: 0 }
             },
             tooltip: {
               custom: ({ series, seriesIndex, w }) => {
@@ -121,6 +126,7 @@ export default (props: Props) => {
             labels,
             legend: {
               show: !!props.showLegend,
+              showForSingleSeries: true,
               position: 'bottom',
               itemMargin: {
                 horizontal: 10,
@@ -149,7 +155,7 @@ export default (props: Props) => {
               }
             }
           }}
-          height={!!props.title ? height - 30 : height}
+          height="100%"
           width={width}
           series={series}
           type="donut"

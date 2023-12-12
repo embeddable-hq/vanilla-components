@@ -1,6 +1,12 @@
 import React from 'react';
 
-export default ({ title }: { title?: string }) =>
+export default ({ title, absolute }: { title?: string; absolute?: boolean }) =>
   !!title && (
-    <h2 className="text-[#333942] text-[14px] font-bold font-futura justify-start flex mb-8">{title}</h2>
+    <h2
+      className={`${
+        absolute ? 'absolute left-0 top-0' : ''
+      } w-full text-[#333942] text-[14px] font-bold font-futura justify-start flex leading-6`}
+    >
+      {title}
+    </h2>
   );

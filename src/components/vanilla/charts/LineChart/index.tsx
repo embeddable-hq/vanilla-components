@@ -93,23 +93,28 @@ export default (props: Props) => {
   }
 
   return (
-    <div className="h-full">
-      <Title title={props.title} />
+    <div className={`h-full relative ${props.title ? 'pt-10' : ''}`}>
+      <Title absolute title={props.title} />
       <div className="relative h-full" ref={ref}>
         <Chart
           className="line-chart"
-          height={!!props.title ? height - 30 : height}
+          height="100%"
           options={{
             colors: COLORS,
             chart: {
-              fontFamily: DEFAULT_FONT,
               type: 'line',
               toolbar: {
                 show: false
               },
               zoom: {
                 enabled: false
-              }
+              },
+              parentHeightOffset: 0,
+              fontFamily: DEFAULT_FONT
+            },
+            grid: {
+              show: false,
+              padding: { left: 0, right: 0, top: 0, bottom: 0 }
             },
             xaxis: {
               type: 'datetime',
@@ -148,6 +153,7 @@ export default (props: Props) => {
             },
             legend: {
               show: !!props.showLegend,
+              showForSingleSeries: true,
               position: 'bottom',
               markers: {
                 radius: 100

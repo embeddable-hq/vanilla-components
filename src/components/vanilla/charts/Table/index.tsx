@@ -3,16 +3,12 @@ import { DimensionOrMeasure } from '@embeddable.com/core';
 
 import { useEmbeddableState } from '@embeddable.com/react';
 
-const getEmbeddableState = debug => {
-  if(debug) {
-    return (initialState) => [
-        initialState,
-        (newState) => initialState = newState
-      ];
+const getEmbeddableState = (debug) => {
+  if (debug) {
+    return (initialState) => [initialState, (newState) => (initialState = newState)];
   }
   return useEmbeddableState;
-}
-
+};
 
 import { OrderBy, OrderDirection } from '@embeddable.com/core';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
@@ -27,11 +23,11 @@ import { ChevronRight, ChevronLeft, SortDown, SortUp, WarningIcon } from '../../
 
 type Props = {
   title?: string;
-  limit: number;
+  limit?: number;
   columns: DimensionOrMeasure[];
   maxPageRows?: number;
   tableData: DataResponse;
-  defaultSort: OrderBy[];
+  defaultSort?: OrderBy[];
   debug: boolean;
 };
 
@@ -42,17 +38,17 @@ export default (props: Props) => {
   const embeddableState = getEmbeddableState(props.debug);
 
   const format = (text, column) => {
-    if(typeof text === 'number') {
+    if (typeof text === 'number') {
       return new Intl.NumberFormat().format(text);
     }
-    if(text && column.nativeType === 'time') {
-      if(text.endsWith('T00:00:00.000')) {
+    if (text && column.nativeType === 'time') {
+      if (text.endsWith('T00:00:00.000')) {
         return new Intl.DateTimeFormat().format(new Date(text));
       }
       return new Date(text).toLocaleString();
     }
     return text;
-  }
+  };
 
   useFont();
 
@@ -201,7 +197,7 @@ export default (props: Props) => {
             setMeta({ ...meta, page: (meta?.page || 0) + 1 });
           }}
           className={`cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center ${
-            rows.length < props.limit ? 'opacity-50 pointer-events-none' : ''
+            props.limit ? rows.length < props.limit : false ? 'opacity-50 pointer-events-none' : ''
           }`}
         />
       </div>

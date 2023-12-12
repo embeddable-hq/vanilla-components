@@ -14,44 +14,56 @@ import DateRangePicker from './vanilla/controls/DateRangePicker';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <div>
+    <div className="p-8">
       <Table
         debug={true}
         tableData={{
           isLoading: false,
-          error: null,
+          error: '',
           data: [
             {
-              "customers.email": "acouvert1y@csmoncomor.com",
-              "customers.signed_up_at": "2023-10-21T00:00:00.000",
-              "customers.country": "United States"
+              'customers.email': 'acouvert1y@csmoncomor.com',
+              'customers.signed_up_at': '2023-10-21T00:00:00.000',
+              'customers.country': 'United States'
             },
             {
-              "customers.email": "aeberdtq@lulu.com",
-              "customers.signed_up_at": "2023-09-21T00:00:00.000",
-              "customers.country": "United States"
+              'customers.email': 'aeberdtq@lulu.com',
+              'customers.signed_up_at': '2023-09-21T00:00:00.000',
+              'customers.country': 'United States'
             },
             {
-              "customers.email": "alarchier32@theguardian.com",
-              "customers.signed_up_at": "2023-11-16T00:00:00.000",
-              "customers.country": "United Kingdom"
+              'customers.email': 'alarchier32@theguardian.com',
+              'customers.signed_up_at': '2023-11-16T00:00:00.000',
+              'customers.country': 'United Kingdom'
             },
             {
-              "customers.email": "anisco3q@pen.io",
-              "customers.signed_up_at": "2023-12-03T12:35:00.030",
-              "customers.country": "United Kingdom"
+              'customers.email': 'anisco3q@pen.io',
+              'customers.signed_up_at': '2023-12-03T12:35:00.030',
+              'customers.country': 'United Kingdom'
             }
           ]
         }}
         columns={[
-            { name: 'customers.email', title: 'Country', nativeType: 'string' },
-            { name: 'customers.signed_up_at', title: 'Country', nativeType: 'time' },
-            { name: 'customers.country', title: 'Country', nativeType: 'string' },
-          ]}
+          {
+            name: 'customers.email',
+            title: 'Country',
+            nativeType: 'string',
+            __type__: 'dimension'
+          },
+          {
+            name: 'customers.signed_up_at',
+            title: 'Country',
+            nativeType: 'time',
+            __type__: 'dimension'
+          },
+          {
+            name: 'customers.country',
+            title: 'Country',
+            nativeType: 'string',
+            __type__: 'dimension'
+          }
+        ]}
       />
-    </div>
-    <br/>
-    <div className="p-8">
       <Dropdown
         title="test"
         onChange={() => {}}
@@ -209,7 +221,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         />
       </div>
       <br />
-      <div className="h-[250px]">
+      <div className="h-[450px]">
         <BarChart
           title="Test"
           showLabels
@@ -249,6 +261,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 
       <div className="h-[400px]">
         <LineChart
+          title="Test"
           metrics={[
             {
               name: 'products.count',
