@@ -52,7 +52,7 @@ export default (props: Props) => {
     const dimensions = props.columns.data.reduce(
       (memo: { a: MemoObj; b: MemoObj }, record) => {
         const groupA = record[props.xAxis?.name || ''] as string;
-        const groupB = record[props.secondXAxis?.name || ''] || 'default';
+        const groupB = record[props.secondXAxis?.name || ''] || 'Value';
 
         memo.a[groupA] = true;
         memo.b[groupB] = true;
@@ -71,7 +71,7 @@ export default (props: Props) => {
     const { grouped, labels, maxCount } = props.columns.data.reduce(
       (memo: Memo, record) => {
         const groupA = record[props.xAxis?.name || ''] as string;
-        const groupB = `${record[props.secondXAxis?.name || ''] || 'default'}`;
+        const groupB = `${record[props.secondXAxis?.name || ''] || 'Value'}`;
 
         if (!groupA) return memo;
 
@@ -114,15 +114,18 @@ export default (props: Props) => {
   }
 
   return (
-    <div className={`h-full relative font-embeddable text-sm ${props.title ? 'pt-6' : ''}`}>
-      <Title absolute title={props.title} />
-      <div className="h-full relative flex grow" ref={ref}>
+    <div className="h-full relative font-embeddable text-sm flex flex-col">
+      <Title title={props.title} />
+      <div className="relative grow" ref={ref}>
         <Chart
           className="bar-chart"
           height="100%"
           options={{
             colors: COLORS,
             chart: {
+              animations: {
+                enabled: false
+              },
               type: 'bar',
               toolbar: {
                 show: false
@@ -176,7 +179,7 @@ export default (props: Props) => {
               },
               itemMargin: {
                 horizontal: 10,
-                vertical: 10
+                vertical: 5
               },
               fontSize: SMALL_FONT_SIZE
             },

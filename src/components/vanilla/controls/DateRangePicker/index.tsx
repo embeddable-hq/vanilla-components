@@ -1,6 +1,6 @@
-import { format } from 'date-fns';
+import { format, getYear } from 'date-fns';
 import 'react-day-picker/dist/style.css';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
 import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser';
 
@@ -73,13 +73,23 @@ export default (props: Props) => {
     });
   }, [props.value]);
 
+  const formatFrom = useMemo(
+    () => (getYear(range?.from || new Date()) === getYear(new Date()) ? 'd MMM' : 'd MMM yyyy'),
+    [range?.from]
+  );
+
+  const formatTo = useMemo(
+    () => (getYear(range?.to || new Date()) === getYear(new Date()) ? 'd MMM' : 'd MMM yyyy'),
+    [range?.to]
+  );
+
   return (
     <div className="w-full font-embeddable text-sm">
       <Title title={props.title} />
-      <div className="relative inline-flex h-10 w-full text-[#101010] text-sm font-medium">
+      <div className="relative inline-flex h-10 w-full text-[#101010] text-sm">
         <Dropdown
           unclearable
-          className="relative w-full max-w-[180px]"
+          className="relative w-full max-w-[120px] sm:max-w-[180px]"
           inputClassName="relative rounded-l-xl w-full h-10 border border-[#DADCE1] mb-2 flex items-center"
           defaultValue={range?.relativeTimeString || ''}
           onChange={(relativeTimeString) => {
@@ -107,9 +117,9 @@ export default (props: Props) => {
             onBlur={() => setTriggerBlur(true)}
             className="absolute left-0 top-0 h-full w-full opacity-0"
           />
-          <CalendarIcon className="mr-2 " />{' '}
+          <CalendarIcon className="mr-2 hidden sm:block" />
           {!!range?.from && !!range?.to
-            ? `${format(range.from, 'd MMM yyyy')} - ${format(range.to, 'd MMM yyyy')}`
+            ? `${format(range.from, formatFrom)} - ${format(range.to, formatTo)}`
             : 'Select'}
           <div
             onClick={() => {
@@ -118,7 +128,7 @@ export default (props: Props) => {
             }}
             className={`${
               focus ? 'block' : 'hidden'
-            } absolute top-8 left-0 z-50 pt-4 pointer-events-auto opacity-100`}
+            } absolute top-8 right-0 sm:right-auto sm:left-0 z-50 pt-3 pointer-events-auto opacity-100`}
           >
             <DayPicker
               showOutsideDays
@@ -160,7 +170,7 @@ const CustomCaption = (props: CaptionProps) => {
       >
         <ChevronLeft />
       </button>
-      <span className="mx-auto text-sm font-medium">{format(props.displayMonth, 'MMMM yyy')}</span>
+      <span className="mx-auto text-sm">{format(props.displayMonth, 'MMMM yyy')}</span>
       <button
         className="w-7 h-7 bg-white rounded shadow border border-slate-500 justify-center items-center inline-flex"
         disabled={!nextMonth}

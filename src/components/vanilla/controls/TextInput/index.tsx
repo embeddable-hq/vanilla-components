@@ -48,17 +48,19 @@ export default (props: Props) => {
           }}
           defaultValue={value}
         />
-        <div
-          onClick={() => {
-            setValue('');
-            props.onChange('');
-            ref.current!.value = '';
-            ref.current?.focus();
-          }}
-          className="opacity-50 hover:opacity-100 absolute w-10 right-0 top-0 h-full cursor-pointer group flex items-center justify-center"
-        >
-          <ClearIcon />
-        </div>
+        {!!value && (
+          <div
+            onClick={() => {
+              setValue('');
+              props.onChange('');
+              ref.current!.value = '';
+              ref.current?.focus();
+            }}
+            className="opacity-50 hover:opacity-100 absolute w-10 right-0 top-0 h-full cursor-pointer group flex items-center justify-center"
+          >
+            <ClearIcon />
+          </div>
+        )}
       </div>
     </div>
   );

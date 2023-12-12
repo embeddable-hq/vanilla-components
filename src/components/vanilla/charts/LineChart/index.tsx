@@ -95,9 +95,9 @@ export default (props: Props) => {
   }
 
   return (
-    <div className={`h-full relative font-embeddable text-sm ${props.title ? 'pt-10' : ''}`}>
-      <Title absolute title={props.title} />
-      <div className="relative h-full" ref={ref}>
+    <div className="h-full relative font-embeddable text-sm flex flex-col">
+      <Title title={props.title} />
+      <div className="relative grow" ref={ref}>
         <Chart
           className="line-chart"
           height="100%"
@@ -163,7 +163,7 @@ export default (props: Props) => {
               },
               itemMargin: {
                 horizontal: 10,
-                vertical: 10
+                vertical: 5
               },
               fontSize: SMALL_FONT_SIZE
             },

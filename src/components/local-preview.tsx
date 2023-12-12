@@ -46,7 +46,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         columns={[
           {
             name: 'customers.email',
-            title: 'Country',
+            title: 'Country Country Country Country Country Country',
             nativeType: 'string',
             __type__: 'dimension'
           },
@@ -287,28 +287,19 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           }}
         />
       </div>
-      <KPIChart
-        title=""
-        value={{ isLoading: false, data: [] }}
-        metric={{
-          name: '',
-          title: '',
-          description: '',
-          nativeType: 'string',
-          __type__: 'measure'
-        }}
-      />
-      <KPIChart
-        title=""
-        value={{ isLoading: true, data: [] }}
-        metric={{
-          name: '',
-          title: '',
-          description: '',
-          nativeType: 'string',
-          __type__: 'measure'
-        }}
-      />
+      <div className="h-[500px]">
+        <KPIChart
+          title=""
+          value={{ isLoading: false, data: [] }}
+          metric={{
+            name: '',
+            title: '',
+            description: '',
+            nativeType: 'string',
+            __type__: 'measure'
+          }}
+        />
+      </div>
       <Dropdown
         onChange={() => {}}
         property={{

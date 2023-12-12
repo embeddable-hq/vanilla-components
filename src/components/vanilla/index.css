@@ -7,7 +7,7 @@
 }
 
 .apexcharts-xaxis-label tspan {
-  fill: #959CA8;
+  fill: #959ca8;
 }
 
 :host(.on-top) {
@@ -61,7 +61,12 @@
   }
 }
 
+.apexcharts-legend.apexcharts-align-center.apx-legend-position-bottom {
+  padding-left: 35px;
+}
+
 .apexcharts-tooltip {
+  border: 0 !important;
   overflow: visible !important;
   top: 0 !important;
   left: 0 !important;

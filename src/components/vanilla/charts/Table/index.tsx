@@ -85,7 +85,7 @@ export default (props: Props) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       const heightWithoutHead = height - 30;
-      const maxRowsFit = Math.floor(heightWithoutHead / 53);
+      const maxRowsFit = Math.floor(heightWithoutHead / 45);
 
       setMeta({ ...meta, maxRowsFit });
     }, 100);
@@ -139,20 +139,24 @@ export default (props: Props) => {
                       <TableHeaderCell
                         onClick={() => updateSort(h)}
                         key={i}
-                        className="bg-white select-none cursor-pointer text-[#333942]"
+                        className="bg-white select-none cursor-pointer text-[#333942] p-3"
                       >
-                        <div className="flex items-center justify-start basis-0 grow w-0 text-[#333942] hover:text-black font-bold text-[12px]">
-                          {h?.title}
-                          <div
-                            className={`${
-                              sortIndex === 0 ? 'text-[#FF6B6C]' : 'text-[#333942]'
-                            } ml-1`}
-                          >
-                            {meta?.sort?.[sortIndex]?.direction === 'asc' ? (
-                              <SortUp fill="currentcolor" />
-                            ) : (
-                              <SortDown fill="currentcolor" />
-                            )}
+                        <div className="flex items-center justify-start basis-0 grow w-0 h-5 text-[#333942] hover:text-black font-bold text-[12px]">
+                          <div className="absolute left-0 top-0 h-full w-full flex items-center px-3">
+                            <span className="block text-ellipsis overflow-hidden">
+                              {h?.title}
+                            </span>
+                            <div
+                              className={`${
+                                sortIndex === 0 ? 'text-[#FF6B6C]' : 'text-[#333942]'
+                              } ml-1`}
+                            >
+                              {meta?.sort?.[sortIndex]?.direction === 'asc' ? (
+                                <SortUp fill="currentcolor" />
+                              ) : (
+                                <SortDown fill="currentcolor" />
+                              )}
+                            </div>
                           </div>
                         </div>
                       </TableHeaderCell>
@@ -165,7 +169,7 @@ export default (props: Props) => {
                 {rows.map((row, index) => (
                   <TableRow key={index} className="hover:bg-gray-400/5">
                     {row.map((c, i) => (
-                      <TableCell key={i} className="text-sm text-dark">
+                      <TableCell key={i} className="text-sm text-dark p-3">
                         <span className="text-overflow-dynamic-container">
                           <span
                             className="text-overflow-dynamic-ellipsis"

@@ -76,7 +76,7 @@ export default (props: Props) => {
               setTriggerBlur(false);
               set(o[props.property?.name || ''] || '');
             }}
-            className={`px-3 py-2 hover:bg-black/5 cursor-pointer ${
+            className={`px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
               value === o[props.property?.name || ''] ? 'bg-black/5' : ''
             }`}
           >
@@ -128,7 +128,7 @@ export default (props: Props) => {
         )}
 
         {focus && (
-          <div className="flex flex-col bg-white rounded-xl absolute top-11 z-10 border border-[#DADCE1] w-full">
+          <div className="flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[#DADCE1] w-full">
             {list}
             {list?.length === 0 && !!search && (
               <div className="px-3 py-2 text-black/50 italic cursor-pointer">No results</div>
@@ -137,9 +137,9 @@ export default (props: Props) => {
         )}
 
         {props.options.isLoading ? (
-          <Spinner show className="absolute right-4 top-2.5 z-1 pointer-events-none" />
+          <Spinner show className="absolute right-2 top-2 z-1 pointer-events-none" />
         ) : (
-          <ChevronDown className="absolute right-4 top-2.5 z-1 pointer-events-none" />
+          <ChevronDown className="absolute right-2.5 top-2.5 z-1 pointer-events-none" />
         )}
 
         {!props.unclearable && !!value && (

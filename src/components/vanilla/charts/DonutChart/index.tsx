@@ -83,13 +83,9 @@ export default (props: Props) => {
   }
 
   return (
-    <div
-      className={`h-full relative font-embeddable text-sm ${props.title ? 'pt-6' : ''} ${
-        props.showLegend ? '-mb-16' : ''
-      }`}
-    >
-      <Title absolute title={props.title} />
-      <div className="h-full text-sm relative" ref={ref}>
+    <div className="h-full relative font-embeddable text-sm flex flex-col">
+      <Title title={props.title} />
+      <div className="relative grow" ref={ref}>
         <Chart
           className="donut-chart"
           options={{
@@ -134,7 +130,7 @@ export default (props: Props) => {
               position: 'bottom',
               itemMargin: {
                 horizontal: 10,
-                vertical: 10
+                vertical: 5
               },
               fontSize: SMALL_FONT_SIZE
             },

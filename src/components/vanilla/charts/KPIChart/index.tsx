@@ -53,7 +53,7 @@ export default (props: Props) => {
     <div className="h-full flex flex-col justify-start font-embeddable text-sm">
       <Title title={props.title} />
       <div className="relative grow items-center justify-center flex min-h-[40px]">
-        <div className="flex items-center justify-center font-embeddable text-[#333942] text-[48px] font-bold">
+        <div className="flex items-center justify-center font-embeddable text-[#333942] text-[40px] font-bold">
           {props.prefix}
           {n || 0}
           {props.suffix}
