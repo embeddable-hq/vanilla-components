@@ -57,11 +57,18 @@ export const meta = {
   ],
   variables: [
     {
-      name: 'dropdown value',
+      name: 'dropdown choice',
       type: 'string',
       defaultValue: Value.noFilter(),
       inputs: ['defaultValue'],
       events: [{ name: 'onChange', property: 'chosenValue' }]
+    },
+    {
+      name: 'dropdown search',
+      type: 'string',
+      defaultValue: Value.noFilter(),
+      inputs: [],
+      events: [{ name: 'onChange', property: 'search' }]
     }
   ]
 };
@@ -72,7 +79,8 @@ export default defineComponent(Component, meta, {
       ...inputs,
       options: loadData({
         from: inputs.ds,
-        dimensions: [inputs.property]
+        dimensions: [inputs.property],
+        limit: 100
       })
     };
   },
