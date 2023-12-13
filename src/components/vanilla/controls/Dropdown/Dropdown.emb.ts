@@ -63,13 +63,6 @@ export const meta = {
       inputs: ['defaultValue'],
       events: [{ name: 'onChange', property: 'chosenValue' }]
     },
-    {
-      name: 'dropdown search',
-      type: 'string',
-      defaultValue: Value.noFilter(),
-      inputs: [],
-      events: [{ name: 'onChange', property: 'search' }]
-    }
   ]
 };
 
