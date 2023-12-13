@@ -17,9 +17,11 @@ type Props = {
   options: DataResponse;
   unclearable?: boolean;
   inputClassName?: string;
-  onChange: (v: any) => void;
+  onChange: (v: any, v: any) => void;
   property: Partial<Dimension>;
 };
+
+let debounce = null;
 
 export default (props: Props) => {
   const [search, setSearch] = useState('');
@@ -38,10 +40,20 @@ export default (props: Props) => {
     (value: string) => {
       setSearch('');
       setValue(value);
-      props.onChange(value);
+      props.onChange([value, '']);
+      clearTimeout(debounce);
     },
     [setValue, props.onChange, setSearch]
   );
+
+  const performSearch = newSearch => {
+    setSearch(newSearch);
+
+    clearTimeout(debounce);
+    debounce = setTimeout(() => {
+      props.onChange([value, newSearch])
+    }, 500);
+  }
 
   useEffect(() => {
     setValue(props.defaultValue);
@@ -63,7 +75,7 @@ export default (props: Props) => {
       props.options?.data?.reduce((memo, o, i: number) => {
         if (
           search &&
-          `${o[props.property?.name || '']}`?.toLowerCase().indexOf(search.toLowerCase()) !== 0
+          `${o[props.property?.name || '']}`?.toLowerCase().indexOf(search.toLowerCase()) === -1
         ) {
           return memo;
         }
@@ -113,7 +125,7 @@ export default (props: Props) => {
           placeholder={props.placeholder}
           onFocus={() => setFocus(true)}
           onBlur={() => setTriggerBlur(true)}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => performSearch(e.target.value)}
           className="outline-none bg-transparent leading-9 h-9 border-0 px-3 w-full cursor-pointer text-sm"
         />
 
@@ -131,7 +143,7 @@ export default (props: Props) => {
           <div className="flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[#DADCE1] w-full overflow-hidden">
             {list}
             {list?.length === 0 && !!search && (
-              <div className="px-3 py-2 text-black/50 italic cursor-pointer">No results</div>
+              <div className="px-3 py-2 text-black/50 italic cursor-pointer">{'No results'}</div>
             )}
           </div>
         )}

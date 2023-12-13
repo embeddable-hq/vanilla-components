@@ -66,7 +66,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       />
       <Dropdown
         title="test"
-        onChange={() => {}}
+        onChange={([a, b]) => console.log('Dropdown.onChange', {a, b})}
         property={{
           name: 'customers.country',
           title: 'Country',
@@ -338,7 +338,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           ]
         }}
       />
-      <TextInput placeholder="Provide text" onChange={() => {}} value="Chocolate" />
+      <TextInput placeholder="Provide text" onChange={(e) => console.log('text.value', e)} value="Chocolate" />
       <NumberInput placeholder="Provide number" onChange={() => {}} value={12} />
     </div>
   </React.StrictMode>

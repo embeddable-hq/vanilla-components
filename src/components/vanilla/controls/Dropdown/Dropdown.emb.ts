@@ -45,9 +45,13 @@ export const meta = {
       label: 'Change',
       properties: [
         {
-          name: 'defaultValue',
+          name: 'chosenValue',
           type: 'string'
-        }
+        },
+        {
+          name: 'search',
+          type: 'string'
+        },
       ]
     }
   ],
@@ -57,7 +61,7 @@ export const meta = {
       type: 'string',
       defaultValue: Value.noFilter(),
       inputs: ['defaultValue'],
-      events: [{ name: 'onChange', property: 'defaultValue' }]
+      events: [{ name: 'onChange', property: 'chosenValue' }]
     }
   ]
 };
@@ -73,6 +77,12 @@ export default defineComponent(Component, meta, {
     };
   },
   events: {
-    onChange: (defaultValue) => ({ defaultValue: defaultValue || Value.noFilter() })
+    onChange: ([chosenValue, search]) => {
+      console.log('dropdown.onChange', { chosenValue, search})
+      return ({ 
+        chosenValue: chosenValue || Value.noFilter(),
+        search: search || Value.noFilter()
+      })
+    }
   }
 });

@@ -13,10 +13,11 @@ type Props = {
   onChange: (v: any) => void;
 };
 
+let timeout = null;
+
 export default (props: Props) => {
   const ref = useRef<HTMLInputElement | null>(null);
   const [value, setValue] = useState(props.value);
-  let timeout = null;
 
   useFont();
 
