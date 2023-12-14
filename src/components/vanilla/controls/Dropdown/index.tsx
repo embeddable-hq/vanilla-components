@@ -123,6 +123,7 @@ export default (props: Props) => {
         <input
           ref={ref}
           value={search}
+          name="dropdown"
           placeholder={props.placeholder}
           onFocus={() => setFocus(true)}
           onBlur={() => setTriggerBlur(true)}
