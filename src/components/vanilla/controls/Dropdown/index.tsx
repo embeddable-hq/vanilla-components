@@ -17,11 +17,11 @@ type Props = {
   options: DataResponse;
   unclearable?: boolean;
   inputClassName?: string;
-  onChange: (v: any, v: any) => void;
+  onChange: (v: any) => void;
   property: Partial<Dimension>;
 };
 
-let debounce = null;
+let debounce: number | undefined = undefined;
 
 export default (props: Props) => {
   const [search, setSearch] = useState('');
@@ -46,14 +46,15 @@ export default (props: Props) => {
     [setValue, props.onChange, setSearch]
   );
 
-  const performSearch = newSearch => {
+  const performSearch = (newSearch) => {
     setSearch(newSearch);
 
     clearTimeout(debounce);
+
     debounce = setTimeout(() => {
-      props.onChange([value, newSearch])
-    }, 500);
-  }
+      props.onChange([value, newSearch]);
+    }, 500) as any;
+  };
 
   useEffect(() => {
     setValue(props.defaultValue);
@@ -90,7 +91,7 @@ export default (props: Props) => {
             }}
             className={`px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
               value === o[props.property?.name || ''] ? 'bg-black/5' : ''
-            }`}
+            } whitespace-nowrap overflow-hidden text-ellipsis`}
           >
             {o[props.property?.name || '']}
           </div>

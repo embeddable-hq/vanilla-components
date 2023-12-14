@@ -1,9 +1,9 @@
 import { loadData, Value } from '@embeddable.com/core';
-import { defineComponent } from '@embeddable.com/react';
+import { defineComponent, EmbeddedComponentMeta } from '@embeddable.com/react';
 
 import Component from './index';
 
-export const meta = {
+export const meta: EmbeddedComponentMeta = {
   name: 'Dropdown',
   label: 'Dropdown',
   classNames: ['on-top'],
@@ -51,7 +51,7 @@ export const meta = {
         {
           name: 'search',
           type: 'string'
-        },
+        }
       ]
     }
   ],
@@ -62,12 +62,12 @@ export const meta = {
       defaultValue: Value.noFilter(),
       inputs: ['defaultValue'],
       events: [{ name: 'onChange', property: 'chosenValue' }]
-    },
+    }
   ]
 };
 
 export default defineComponent(Component, meta, {
-  props: (inputs) => {
+  props: (inputs: any) => {
     return {
       ...inputs,
       options: loadData({
@@ -79,11 +79,11 @@ export default defineComponent(Component, meta, {
   },
   events: {
     onChange: ([chosenValue, search]) => {
-      console.log('dropdown.onChange', { chosenValue, search})
-      return ({ 
+      console.log('dropdown.onChange', { chosenValue, search });
+      return {
         chosenValue: chosenValue || Value.noFilter(),
         search: search || Value.noFilter()
-      })
+      };
     }
   }
 });
