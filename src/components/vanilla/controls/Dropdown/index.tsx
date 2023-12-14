@@ -89,7 +89,7 @@ export default (props: Props) => {
               setTriggerBlur(false);
               set(o[props.property?.name || ''] || '');
             }}
-            className={`px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
+            className={`min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
               value === o[props.property?.name || ''] ? 'bg-black/5' : ''
             } whitespace-nowrap overflow-hidden text-ellipsis`}
           >
@@ -141,10 +141,12 @@ export default (props: Props) => {
         )}
 
         {focus && (
-          <div className="flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[#DADCE1] w-full overflow-hidden">
+          <div className="flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[#DADCE1] w-full overflow-y-auto overflow-x-hidden max-h-[400px]">
             {list}
             {list?.length === 0 && !!search && (
-              <div className="px-3 py-2 text-black/50 italic cursor-pointer">{'No results'}</div>
+              <div className="px-3 py-2 text-black/50 italic cursor-pointer">
+                No results
+              </div>
             )}
           </div>
         )}
