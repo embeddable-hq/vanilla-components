@@ -5,6 +5,9 @@ import './vanilla/index.css';
 import Dropdown from './vanilla/controls/Dropdown';
 import TextInput from './vanilla/controls/TextInput';
 import DonutChart from './vanilla/charts/DonutChart';
+import BasicPieComponent from './vanilla/charts/BasicPieComponent';
+import BasicLineComponent from './vanilla/charts/BasicLineComponent';
+import BasicTextComponent from './vanilla/charts/BasicTextComponent';
 import BarChart from './vanilla/charts/BarChart';
 import KPIChart from './vanilla/charts/KPIChart';
 import NumberInput from './vanilla/controls/NumberInput';
@@ -14,7 +17,71 @@ import DateRangePicker from './vanilla/controls/DateRangePicker';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <div className="p-8">
+    <div className="p-8 w-[800px]">
+      <div className='w-full h-[500px]'>
+        <BasicTextComponent
+          title="hello"
+          body="my body"
+        />
+      </div>
+
+      <div className='w-full h-[500px]'>
+        <BasicLineComponent
+          title='My first line chart'
+          showLegend={true}
+          ds={false}
+          xAxis={{ name: 'country'}}
+          metrics={[
+            { name: 'count', title: '# of customers'},
+            { name: 'avg', title: 'Average'},
+            ]}
+          yAxisMin={0}
+          showLabels={true}
+          applyFill={true}
+          results={{
+            isLoading: false,
+            error: null,
+            data: [
+              { country: '2023-12-21T00:00:00.000', count: 23 },
+              { country: '2023-10-21T00:00:00.000', count: 38 },
+              { country: '2023-08-21T00:00:00.000', count: 5 },
+              { country: '2023-04-21T00:00:00.000', count: 23 },
+              // { country: '2023-01-21T00:00:00.000', count: 100 },
+              // { country: '2023-12-21T00:00:00.000', count: 50 },
+              // { country: '2023-12-21T00:00:00.000', count: 23 },
+              // { country: '2023-06-21T00:00:00.000', count: 14 },
+              // { country: '2023-03-21T00:00:00.000', count: 5 }
+              // { country: 'UK', count: 10, avg: 11 },
+              // { country: 'US', count: 23, avg: 15 },
+              // { country: 'UK', count: 10, avg: 11 },
+              // { country: 'Germany', count: 5, avg: 7 },
+              // { country: 'Iceland', count: 23, avg: 15 },
+              // { country: 'Finland', count: 100, avg: 11 },
+              // { country: 'Sweden', count: 50, avg: 7 },
+              // { country: 'Spain', count: 23, avg: 15 },
+              // { country: 'Greece', count: 14, avg: 11 },
+              // { country: 'Awesomeland', count: 5, avg: 7 }
+            ]
+          }}
+        />
+      </div>
+      <div className='w-full h-[400px]'>
+        <BasicPieComponent
+            ds={true}
+            slice={{ name: 'country'}}
+            metric={{ name: 'count'}}
+            showLegend={true}
+            results={{
+              isLoading: false,
+              error: null,
+              data: [
+                { country: 'US', count: 23 },
+                { country: 'UK', count: 10 },
+                { country: 'Germany', count: 5 }
+              ]
+            }}
+        />
+      </div>
       <Table
         debug={true}
         tableData={{

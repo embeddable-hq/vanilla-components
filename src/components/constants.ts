@@ -5,8 +5,13 @@ export const FONTS = {
   // 'Open Sans': 'OpenSans.ttf'
 };
 
-export const SMALL_FONT_SIZE = '12px';
 
+//used for labels
+export const SMALL_FONT_SIZE = '12px';
+export const LIGHT_FONT = '#333942';
+
+
+//general chart colors
 export const COLORS = [
   '#2859C5',
   '#F58D02',
