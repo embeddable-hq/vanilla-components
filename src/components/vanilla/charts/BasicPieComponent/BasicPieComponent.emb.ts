@@ -34,6 +34,11 @@ export const meta = {
       type: 'boolean',
       label: 'Turn on the legend',
     },
+    {
+      name: 'maxSegments',
+      type: 'number',
+      label: 'Max legend items',
+    },
   ],
 };
 

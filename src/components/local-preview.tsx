@@ -71,6 +71,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             slice={{ name: 'country'}}
             metric={{ name: 'count'}}
             showLegend={true}
+            title={"TEST PIE!"}
+            maxSegments={2}
             results={{
               isLoading: false,
               error: null,
@@ -78,7 +80,101 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
                 { country: 'US', count: 23 },
                 { country: 'UK', count: 10 },
                 { country: 'Germany', count: 5 }
-              ]
+              ],
+            //   data: [
+            //   {
+            //     'courses_in_progress.full_name': 'SPHERE F BLOCK',
+            //     'courses_in_progress.count': 38
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'Research Skills',
+            //     'courses_in_progress.count': 37
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'Journal Test',
+            //     'courses_in_progress.count': 37
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'Applying for University',
+            //     'courses_in_progress.count': 36
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'Creative Problem Solving',
+            //     'courses_in_progress.count': 36
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'Critical Thinking',
+            //     'courses_in_progress.count': 36
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'CV Writing',
+            //     'courses_in_progress.count': 36
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'Entrepreneurship',
+            //     'courses_in_progress.count': 36
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'Job Interview Skills',
+            //     'courses_in_progress.count': 36
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'Making an Impact',
+            //     'courses_in_progress.count': 36
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'Personal Statement Writing',
+            //     'courses_in_progress.count': 36
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'Preparing for LNAT',
+            //     'courses_in_progress.count': 36
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'Preparing for TSA',
+            //     'courses_in_progress.count': 36
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'Public Speaking',
+            //     'courses_in_progress.count': 36
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'University Interview Skills',
+            //     'courses_in_progress.count': 36
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'Verbal Communication',
+            //     'courses_in_progress.count': 36
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'Writing Skills',
+            //     'courses_in_progress.count': 36
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'Resilience',
+            //     'courses_in_progress.count': 36
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'Preparing for BMAT',
+            //     'courses_in_progress.count': 36
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'SPHERE C Block',
+            //     'courses_in_progress.count': 18
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'Questionnaire Journal',
+            //     'courses_in_progress.count': 5
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'Study Skills',
+            //     'courses_in_progress.count': 2
+            //   },
+            //   {
+            //     'courses_in_progress.full_name': 'SPHERE EtonX Platform Training',
+            //     'courses_in_progress.count': 1
+            //   }
+            // ]
             }}
         />
       </div>

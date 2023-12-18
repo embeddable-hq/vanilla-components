@@ -13,8 +13,8 @@ import {
 import { Pie } from 'react-chartjs-2';
 import { Dimension, Measure, Dataset } from "@embeddable.com/core";
 import { DataResponse } from "@embeddable.com/react";
-import Loading from '../../../util/Loading'
-import Error from '../../../util/Error'
+import ChartContainer from '../../ChartContainer'
+import { COLORS, EMB_FONT, SMALL_FONT_SIZE, LIGHT_FONT } from '../../../constants';
 
 ChartJS.register(
   CategoryScale,
@@ -27,32 +27,71 @@ ChartJS.register(
   Legend
 );
 
-const COLORS = [
-  '#A9DBB0',
-  '#F59E54',
-  '#F77A5F',
-  '#8FCBCF',
-  '#C3B0EA',
-  ];
+ChartJS.defaults.font.size = parseInt(SMALL_FONT_SIZE); 
+ChartJS.defaults.color = LIGHT_FONT; 
+ChartJS.defaults.font.family = EMB_FONT;
+ChartJS.defaults.plugins.tooltip.enabled = true;
+ChartJS.defaults.plugins.tooltip.usePointStyle = true; //https://www.chartjs.org/docs/latest/configuration/tooltip.html
 
 const chartOptions = (showLegend) => ({
   responsive: true,
   maintainAspectRatio: false,
+  animation: {
+    duration: 400,
+    easing: 'linear',
+  },
+  cutout: "45%",
   plugins: {
+    datalabels: {//great resource: https://quickchart.io/documentation/chart-js/custom-pie-doughnut-chart-labels/
+      display: true,
+      backgroundColor: '#fff',
+      borderRadius: 8,
+      font: {
+        weight: "normal"
+      }
+    },
     legend: {
-      display: showLegend
-    }
+      display: showLegend,
+      position: 'bottom',
+      labels: {
+        usePointStyle: true,
+        boxHeight: 8
+      }
+    },
   },
 });
 
-const chartData = (labels, counts) => {
+
+const mergeLongTail = (data, slice, metric, maxSegments) => {
+  const newData = [...data]
+    .sort((a,b) => parseInt(b[metric.name]) - parseInt(a[metric.name]))
+    .slice(0, maxSegments-1);
+  const sumLongTail = [...data]
+    .slice(maxSegments-1)
+    .reduce((accumulator, record) => accumulator + parseInt(record[metric.name]), 0);
+  newData.push({ [slice.name]: 'Other', [metric.name]: sumLongTail })
+  return newData;
+}
+
+const chartData = (data, slice, metric, maxSegments) => {
+
+  const labelsExceedMaxSegments = maxSegments && maxSegments < data.length;
+  const newData = labelsExceedMaxSegments 
+    ? mergeLongTail(data, slice, metric, maxSegments)
+    : [...data];
+  // Chart.js pie expects labels like so: ['US', 'UK', 'Germany']
+  const labels = newData?.map(d => d[slice.name]);
+  // Chart.js pie expects counts like so: [23, 10, 5]
+  const counts = newData?.map(d => d[metric.name]);
+
   return {
     labels,
     datasets: [
       {
         data: counts,
         backgroundColor: COLORS,
-        borderColor: COLORS,
+        borderColor: "#fff",
+        borderWeight: 5,
       }
     ]
   };
@@ -64,26 +103,18 @@ type Props = {
   metric: Measure; // [{ name, title }]
   results: DataResponse; // { isLoading, error, data: [{ <name>: <value>, ... }] }
   showLegend: boolean;
+  title?: string;
+  maxSegments?: number;
 };
 
 export default (props: Props) => {
-  console.log('BasicPieComponent.props', props); 
-  const { slice, metric, showLegend, results } = props;
-  const { isLoading, data, error } = results;
+  const { slice, metric, showLegend, results, title, maxSegments } = props;
+  const { data } = results;
 
-  if(isLoading) {
-    return <Loading />
-  }
-  if(error) {
-    return <Error msg={error}/>;
-  }
-
-  // Chart.js pie expects labels like so: ['US', 'UK', 'Germany']
-  const labels = data.map(d => d[slice.name]);
-
-  // Chart.js pie expects counts like so: [23, 10, 5]
-  const counts = data.map(d => d[metric.name]);
-
-  return <Pie options={chartOptions(showLegend)} 
-              data={chartData(labels, counts)} />
+  return (
+    <ChartContainer title={title} results={results}>
+      <Pie options={chartOptions(showLegend)} 
+              data={chartData(data || [], slice, metric, maxSegments)} />
+    </ChartContainer>
+  )
 };
