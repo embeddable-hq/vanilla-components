@@ -74,14 +74,12 @@ export default defineComponent(Component, meta, {
       ...inputs,
       line: loadData({
         from: inputs.ds,
-        timeDimensions: inputs.xAxis
-          ? [
-              {
-                dimension: inputs.xAxis.name,
-                granularity: inputs.granularity
-              }
-            ]
-          : undefined,
+        timeDimensions: [
+          {
+            dimension: inputs.xAxis?.name,
+            granularity: inputs.granularity
+          }
+        ],
         measures: inputs.metrics
       })
     };
