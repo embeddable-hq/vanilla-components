@@ -4,27 +4,34 @@ import { loadData } from '@embeddable.com/core';
 import Component from './index';
 
 export const meta = {
-  name: 'BasicPieComponent',
-  label: 'Basic Pie',
+  name: 'BasicBarComponent',
+  label: 'Basic Bar',
   classNames: ['inside-card'],
   inputs: [
+    {
+      name: 'title',
+      type: 'string',
+      label: 'Title',
+      description: 'The title for the chart'
+    },
     {
       name: "ds",
       type: "dataset",
       label: "Dataset to display",
     },
     {
-      name: "slice",
-      type: "dimension",
-      label: "Slice",
+      name: 'xAxis',
+      type: 'dimension',
+      label: 'X-Axis',
       config: {
-        dataset: "ds",
-      },
+        dataset: 'ds'
+      }
     },
     {
-      name: "metric",
+      name: "metrics",
       type: "measure",
-      label: "Metric",
+      array: true,
+      label: "Metrics",
       config: {
         dataset: "ds",
       },
@@ -32,17 +39,17 @@ export const meta = {
     {
       name: 'showLegend',
       type: 'boolean',
-      label: 'Turn on the legend',
-    },
-    {
-      name: 'maxSegments',
-      type: 'number',
-      label: 'Max legend items',
+      label: 'Show legend',
     },
     {
       name: 'showLabels',
       type: 'boolean',
       label: 'Show Labels'
+    },
+    {
+      name: 'yAxisMin',
+      type: 'number',
+      label: 'Y-Axis minimum value',
     },
   ],
 };
@@ -53,8 +60,8 @@ export default defineComponent(Component, meta, {
       ...inputs,
       results: loadData({
         from: inputs.ds,
-        dimensions: [inputs.slice],
-        measures: [inputs.metric],
+        dimensions: [inputs.xAxis],
+        measures: inputs.metrics,
       })
     };
   }

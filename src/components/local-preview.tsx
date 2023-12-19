@@ -7,6 +7,8 @@ import TextInput from './vanilla/controls/TextInput';
 import DonutChart from './vanilla/charts/DonutChart';
 import BasicPieComponent from './vanilla/charts/BasicPieComponent';
 import BasicLineComponent from './vanilla/charts/BasicLineComponent';
+import BasicBarComponent from './vanilla/charts/BasicBarComponent';
+import BasicHorizontalBarComponent from './vanilla/charts/BasicHorizontalBarComponent';
 import BasicTextComponent from './vanilla/charts/BasicTextComponent';
 import BarChart from './vanilla/charts/BarChart';
 import KPIChart from './vanilla/charts/KPIChart';
@@ -18,10 +20,88 @@ import DateRangePicker from './vanilla/controls/DateRangePicker';
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <div className="p-8 w-[800px]">
-      <div className='w-full h-[500px]'>
+      <div className='w-full h-[100px]'>
         <BasicTextComponent
           title="hello"
           body="my body"
+        />
+      </div>
+      <div className='w-full h-[500px]'>
+        <BasicHorizontalBarComponent
+          title='My first Horizontal Barchart'
+          showLegend={true}
+          ds={false}
+          xAxis={{ name: 'country'}}
+          metrics={[
+            { name: 'count', title: '# of customers'},
+            { name: 'avg', title: 'Average of customers'},
+            { name: 'sum', title: 'Sum of $'}
+            ]}
+          yAxisMin={0}
+          showLabels={true}
+          results={{
+            isLoading: false,
+            error: null,
+            data: [
+              // { country: '2023-12-21T00:00:00.000', count: 23 },
+              // { country: '2023-10-21T00:00:00.000', count: 38 },
+              // { country: '2023-08-21T00:00:00.000', count: 5 },
+              // { country: '2023-04-21T00:00:00.000', count: 23 },
+              // { country: '2023-01-21T00:00:00.000', count: 100 },
+              // { country: '2023-12-21T00:00:00.000', count: 50 },
+              // { country: '2023-12-21T00:00:00.000', count: 23 },
+              // { country: '2023-06-21T00:00:00.000', count: 14 },
+              // { country: '2023-03-21T00:00:00.000', count: 5 }
+              { country: 'UK', count: '0', avg: '11', sum: '85' },
+              { country: 'US', count: '23', avg: '15', sum: '6' },
+              { country: 'Germany', count: 5, avg: 7, sum: 122 },
+              { country: 'Iceland', count: 23, avg: 15, sum: 1 },
+              { country: 'Finland', count: 100, avg: 11, sum: 22 },
+              { country: 'Sweden', count: 50, avg: 7, sum: 35 },
+              { country: 'Spain', count: 23, avg: 15, sum: 60 },
+              { country: 'Greece', count: 14, avg: 11, sum: 102 },
+              { country: 'Awesomeland', count: 5, avg: 7, sum: 12 }
+            ]
+          }}
+        />
+      </div>
+      <div className='w-full h-[500px]'>
+        <BasicBarComponent
+          title='My first Barchart'
+          showLegend={true}
+          ds={false}
+          xAxis={{ name: 'country'}}
+          metrics={[
+            { name: 'count', title: '# of customers'},
+            { name: 'avg', title: 'Average of customers'},
+            { name: 'sum', title: 'Sum of $'}
+            ]}
+          yAxisMin={0}
+          showLabels={true}
+          results={{
+            isLoading: false,
+            error: null,
+            data: [
+              // { country: '2023-12-21T00:00:00.000', count: 23 },
+              // { country: '2023-10-21T00:00:00.000', count: 38 },
+              // { country: '2023-08-21T00:00:00.000', count: 5 },
+              // { country: '2023-04-21T00:00:00.000', count: 23 },
+              // { country: '2023-01-21T00:00:00.000', count: 100 },
+              // { country: '2023-12-21T00:00:00.000', count: 50 },
+              // { country: '2023-12-21T00:00:00.000', count: 23 },
+              // { country: '2023-06-21T00:00:00.000', count: 14 },
+              // { country: '2023-03-21T00:00:00.000', count: 5 }
+              { country: 'UK', count: '0', avg: '11', sum: '85' },
+              { country: 'US', count: '23', avg: '15', sum: '6' },
+              { country: 'Germany', count: 5, avg: 7, sum: 122 },
+              { country: 'Iceland', count: 23, avg: 15, sum: 1 },
+              { country: 'Finland', count: 100, avg: 11, sum: 22 },
+              { country: 'Sweden', count: 50, avg: 7, sum: 35 },
+              { country: 'Spain', count: 23, avg: 15, sum: 60 },
+              { country: 'Greece', count: 14, avg: 11, sum: 102 },
+              { country: 'Awesomeland', count: 5, avg: 7, sum: 12 }
+            ]
+          }}
         />
       </div>
 
@@ -33,11 +113,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           xAxis={{ name: 'country'}}
           metrics={[
             { name: 'count', title: '# of customers'},
-            { name: 'avg', title: 'Average'},
             ]}
           yAxisMin={0}
           showLabels={true}
-          applyFill={true}
+          applyFill={false}
           results={{
             isLoading: false,
             error: null,
@@ -46,11 +125,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               { country: '2023-10-21T00:00:00.000', count: 38 },
               { country: '2023-08-21T00:00:00.000', count: 5 },
               { country: '2023-04-21T00:00:00.000', count: 23 },
-              // { country: '2023-01-21T00:00:00.000', count: 100 },
-              // { country: '2023-12-21T00:00:00.000', count: 50 },
-              // { country: '2023-12-21T00:00:00.000', count: 23 },
-              // { country: '2023-06-21T00:00:00.000', count: 14 },
-              // { country: '2023-03-21T00:00:00.000', count: 5 }
+              { country: '2023-01-21T00:00:00.000', count: 100 },
+              { country: '2023-12-21T00:00:00.000', count: 50 },
+              { country: '2023-12-21T00:00:00.000', count: 23 },
+              { country: '2023-06-21T00:00:00.000', count: 14 },
+              { country: '2023-03-21T00:00:00.000', count: 5 }
               // { country: 'UK', count: 10, avg: 11 },
               // { country: 'US', count: 23, avg: 15 },
               // { country: 'UK', count: 10, avg: 11 },
@@ -71,8 +150,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             slice={{ name: 'country'}}
             metric={{ name: 'count'}}
             showLegend={true}
+            showLabels={true}
             title={"TEST PIE!"}
-            maxSegments={2}
+            maxSegments={5}
             results={{
               isLoading: false,
               error: null,

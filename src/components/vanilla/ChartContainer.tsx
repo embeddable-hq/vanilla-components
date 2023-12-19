@@ -33,13 +33,13 @@ export default (props: Props) => {
 
   return (
     <div className="h-full relative font-embeddable text-sm flex flex-col">
+      <Spinner show={isLoading}/>
       <Title title={title} />
       <div className="relative grow" ref={ref} style={{height: height+'px'}}>
         {children}
         {results?.isLoading && !results?.data?.length && (
           <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
         )}
-        <Spinner show={isLoading}/>
       </div>
     </div>
   );

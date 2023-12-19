@@ -15,6 +15,7 @@ import { Dimension, Measure, Dataset } from "@embeddable.com/core";
 import { DataResponse } from "@embeddable.com/react";
 import ChartContainer from '../../ChartContainer'
 import { COLORS, EMB_FONT, SMALL_FONT_SIZE, LIGHT_FONT } from '../../../constants';
+import { truncateString } from '../../../util/utilFunctions';
 
 ChartJS.register(
   CategoryScale,
@@ -33,7 +34,7 @@ ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
 ChartJS.defaults.plugins.tooltip.usePointStyle = true; //https://www.chartjs.org/docs/latest/configuration/tooltip.html
 
-const chartOptions = (showLegend) => ({
+const chartOptions = (showLegend, showLabels) => ({
   responsive: true,
   maintainAspectRatio: false,
   animation: {
@@ -43,7 +44,7 @@ const chartOptions = (showLegend) => ({
   cutout: "45%",
   plugins: {
     datalabels: {//great resource: https://quickchart.io/documentation/chart-js/custom-pie-doughnut-chart-labels/
-      display: true,
+      display: showLabels,
       backgroundColor: '#fff',
       borderRadius: 8,
       font: {
@@ -55,7 +56,7 @@ const chartOptions = (showLegend) => ({
       position: 'bottom',
       labels: {
         usePointStyle: true,
-        boxHeight: 8
+        boxHeight: 10
       }
     },
   },
@@ -80,7 +81,7 @@ const chartData = (data, slice, metric, maxSegments) => {
     ? mergeLongTail(data, slice, metric, maxSegments)
     : [...data];
   // Chart.js pie expects labels like so: ['US', 'UK', 'Germany']
-  const labels = newData?.map(d => d[slice.name]);
+  const labels = newData?.map(d => truncateString(d[slice.name]));
   // Chart.js pie expects counts like so: [23, 10, 5]
   const counts = newData?.map(d => d[metric.name]);
 
@@ -105,15 +106,16 @@ type Props = {
   showLegend: boolean;
   title?: string;
   maxSegments?: number;
+  showLabels?: boolean;
 };
 
 export default (props: Props) => {
-  const { slice, metric, showLegend, results, title, maxSegments } = props;
+  const { slice, metric, showLegend, results, title, maxSegments, showLabels } = props;
   const { data } = results;
 
   return (
     <ChartContainer title={title} results={results}>
-      <Pie options={chartOptions(showLegend)} 
+      <Pie options={chartOptions(showLegend, showLabels)} 
               data={chartData(data || [], slice, metric, maxSegments)} />
     </ChartContainer>
   )
