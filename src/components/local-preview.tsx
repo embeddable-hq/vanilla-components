@@ -9,6 +9,7 @@ import BasicPieComponent from './vanilla/charts/BasicPieComponent';
 import BasicLineComponent from './vanilla/charts/BasicLineComponent';
 import BasicBarComponent from './vanilla/charts/BasicBarComponent';
 import BasicHorizontalBarComponent from './vanilla/charts/BasicHorizontalBarComponent';
+import BasicStackedBarComponent from './vanilla/charts/BasicStackedBarComponent';
 import BasicTextComponent from './vanilla/charts/BasicTextComponent';
 import BarChart from './vanilla/charts/BarChart';
 import KPIChart from './vanilla/charts/KPIChart';
@@ -24,6 +25,57 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <BasicTextComponent
           title="hello"
           body="my body"
+        />
+      </div>
+      <div className='w-full h-[500px]'>
+        <BasicStackedBarComponent
+          title='My first Stacked Barchart'
+          stacked={true}
+          showLegend={true}
+          ds={false}
+          xAxis={{ name: 'platform' }}
+          segment={{ name: 'country' }}
+          metrics={[
+            { name: 'users', title: 'total users'},
+            ]}
+          yAxisMin={0}
+          showLabels={true}
+          results={{
+            isLoading: false,
+            error: null,
+            data: [
+              { platform: "Slack", country: "US", users: 10 },
+              { platform: "Slack", country: "UK", users: 15 },
+              { platform: "Slack", country: "Germany", users: 18 },
+              { platform: "Slack", country: "Chile", users: 23 },
+              { platform: "Slack", country: "Australia", users: "1" },
+              { platform: "Salesforce", country: "US", users: '10' },
+              { platform: "Salesforce", country: "UK", users: 15 },
+              { platform: "Salesforce", country: "Ireland", users: 18 },
+              { platform: "Salesforce", country: "Uruguay", users: 23 },
+              { platform: "Salesforce", country: "Australia", users: 10 },
+              { platform: "Netlify", country: "US", users: 10 },
+              { platform: "Netlify", country: "UK", users: 25 },
+              { platform: "Netlify", country: "Ireland", users: 48 },
+              { platform: "Netlify", country: "Belgium", users: 233 },
+              { platform: "Netlify", country: "Canada", users: 10 },
+              { platform: "Notion", country: "US", users: 10 },
+              { platform: "Notion", country: "Argentina", users: 25 },
+              { platform: "Notion", country: "Ireland", users: 48 },
+              { platform: "Notion", country: "Belgium", users: 233 },
+              { platform: "Notion", country: "Canada", users: 10 },
+              { platform: "Tableau", country: "Finland", users: 10 },
+              { platform: "Tableau", country: "UK", users: 25 },
+              { platform: "Tableau", country: "Ireland", users: 48 },
+              { platform: "Tableau", country: "Belgium", users: 23 },
+              { platform: "Tableau", country: "Russia", users: 10 },
+              { platform: "Embeddable", country: "US", users: 10 },
+              { platform: "Embeddable", country: "UK", users: 25 },
+              { platform: "Embeddable", country: "Norway", users: 48 },
+              { platform: "Embeddable", country: "Belgium", users: 3 },
+              { platform: "Embeddable", country: "Canada", users: 10 },
+            ]
+          }}
         />
       </div>
       <div className='w-full h-[500px]'>
@@ -68,7 +120,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <div className='w-full h-[500px]'>
         <BasicBarComponent
           title='My first Barchart'
-          showLegend={true}
+          showLegend={undefined}
           ds={false}
           xAxis={{ name: 'country'}}
           metrics={[

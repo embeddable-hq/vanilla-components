@@ -44,7 +44,7 @@ const chartOptions = (showLegend, showLabels) => ({
   cutout: "45%",
   plugins: {
     datalabels: {//great resource: https://quickchart.io/documentation/chart-js/custom-pie-doughnut-chart-labels/
-      display: showLabels,
+      display: showLabels ? 'auto' : false,
       backgroundColor: '#fff',
       borderRadius: 8,
       font: {

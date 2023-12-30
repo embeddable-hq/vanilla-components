@@ -4,8 +4,8 @@ import { loadData } from '@embeddable.com/core';
 import Component from './index';
 
 export const meta = {
-  name: 'BasicLineComponent',
-  label: 'Basic Line (time-series)',
+  name: 'BasicStackedBarComponent',
+  label: 'Basic Stacked Bar',
   classNames: ['inside-card'],
   inputs: [
     {
@@ -24,19 +24,20 @@ export const meta = {
       type: 'dimension',
       label: 'X-Axis',
       config: {
-        dataset: 'ds',
-        supportedTypes: ['time']
+        dataset: 'ds'
       }
     },
     {
-      name: 'granularity',
-      type: 'granularity',
-      label: 'Granularity'
+      name: 'segment',
+      type: 'dimension',
+      label: 'Segment',
+      config: {
+        dataset: 'ds'
+      }
     },
     {
       name: "metrics",
       type: "measure",
-      array: true,
       label: "Metrics",
       config: {
         dataset: "ds",
@@ -53,11 +54,6 @@ export const meta = {
       label: 'Show Labels'
     },
     {
-      name: 'applyFill',
-      type: 'boolean',
-      label: 'Color fill space under line',
-    },
-    {
       name: 'yAxisMin',
       type: 'number',
       label: 'Y-Axis minimum value',
@@ -65,23 +61,14 @@ export const meta = {
   ],
 };
 
-const timeDimension = (dimension, granularity) => {
-  return ({
-    dimension: dimension.name,
-    granularity: granularity
-  });
-}
-
 export default defineComponent(Component, meta, {
   props: (inputs) => {
     return {
       ...inputs,
       results: loadData({
         from: inputs.ds,
-        timeDimensions: [
-          timeDimension(inputs.xAxis, inputs.granularity)
-        ],
-        measures: inputs.metrics,
+        dimensions: [inputs.xAxis, inputs.segment],
+        measures: [inputs.metrics],
       })
     };
   }

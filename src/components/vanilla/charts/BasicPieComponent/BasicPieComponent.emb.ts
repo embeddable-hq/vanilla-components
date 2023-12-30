@@ -9,6 +9,12 @@ export const meta = {
   classNames: ['inside-card'],
   inputs: [
     {
+      name: 'title',
+      type: 'string',
+      label: 'Title',
+      description: 'The title for the chart'
+    },
+    {
       name: "ds",
       type: "dataset",
       label: "Dataset to display",

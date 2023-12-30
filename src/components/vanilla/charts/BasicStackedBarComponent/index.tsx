@@ -18,11 +18,12 @@ type Props = {
 export default (props: Props) => {
 
   const { results, title } = props;
+  // const { data } = results;
 
   return (
 
       <ChartContainer title={title} results={results}>
-        <BarChart {...props} displayHorizontally/>
+        <BarChart {...props} isBasicStackedComponent/>
       </ChartContainer>
   );
 };

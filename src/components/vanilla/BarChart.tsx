@@ -35,7 +35,7 @@ ChartJS.defaults.color = LIGHT_FONT;
 ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
 
-const chartOptions = (showLegend, showLabels, yAxisMin, displayHorizontally) => ({
+const chartOptions = (showLegend, showLabels, yAxisMin, displayHorizontally, isBasicStackedComponent) => ({
   responsive: true,
   maintainAspectRatio: false,
   indexAxis: displayHorizontally ? 'y' : 'x', //set to 'y' to make a horizontal barchart
@@ -54,6 +54,7 @@ const chartOptions = (showLegend, showLabels, yAxisMin, displayHorizontally) => 
   },
   scales: {
     y: {
+      stacked: isBasicStackedComponent,
       min: yAxisMin, 
       grace: '0%', //add percent to add numbers on the y-axis above and below the max and min values
       grid: {
@@ -61,6 +62,7 @@ const chartOptions = (showLegend, showLabels, yAxisMin, displayHorizontally) => 
       }
     },
     x: {
+      stacked: isBasicStackedComponent,
       grid: {
         display: false, // display grid lines
       }
@@ -87,20 +89,63 @@ const chartOptions = (showLegend, showLabels, yAxisMin, displayHorizontally) => 
   },
 });
 
+const chartStyle = {
+    barPercentage: 0.6,
+    barThickness: 'flex',
+    maxBarThickness: 15,
+    minBarLength: 0,
+    borderRadius: 8
+}
+
+const stackedChartData = (data, xAxis, metrics, segment) => {
+    const labels = [...new Set(data?.map(d => truncateString(d[xAxis.name])))];
+    const segments = [...new Set(data?.map(d => d[segment.name]))];
+
+    const buildResultMap = () => {
+      //populate a reference object like so:
+      // {
+      //   label1: {
+      //     segment1: metric,
+      //     segment2: metric, etc
+      //   }
+      // }
+      const resultMap = {};
+      labels.forEach(label => {
+        const labelRef = {};
+        segments.forEach(s => labelRef[s] = null); //null by default, as each segment needs to be included even if there's no data. 
+        resultMap[label] = labelRef; 
+      }) 
+      data?.forEach(d => resultMap[d[xAxis.name]][d[segment.name]] = parseInt(d[metrics[0].name]));
+      console.log(resultMap);
+      return resultMap;
+    }
+
+  const resultMap = buildResultMap();
+
+
+  return {
+    labels,
+    datasets: segments.map((s, i) =>
+      ({
+        ...chartStyle,
+        label: s,
+        data: labels.map(label => resultMap[label][s]),
+        backgroundColor: COLORS[i % COLORS.length],
+      })
+    ),
+  };
+}
+
 const chartData = (data, xAxis, metrics) => {
   const labels = data?.map(d => truncateString(d[xAxis.name]));
   return {
     labels,
-    datasets: metrics.map((yAxis, i) =>
+    datasets: metrics.map((metric, i) =>
       ({
-        label: yAxis.title,
-        data: data?.map(d => parseInt(d[yAxis.name])),
+        ...chartStyle,
+        label: metric.title,
+        data: data?.map(d => parseInt(d[metric.name])),
         backgroundColor: COLORS[i % COLORS.length],
-        barPercentage: 0.6,
-        barThickness: 'flex',
-        maxBarThickness: 15,
-        minBarLength: 0,
-        borderRadius: 8
       })
     ),
   };
@@ -115,17 +160,21 @@ type Props = {
   results?: DataResponse; // { isLoading, error, data: [{ <name>: <value>, ... }] }
   showLabels?: boolean;
   yAxisMin?:number;
+  isBasicStackedComponent?: boolean;
+  segment?: Dimension;
 };
 
 export default (props: Props) => {
 
-  const { results, xAxis, metrics, showLegend, showLabels, yAxisMin, displayHorizontally } = props;
+  const { results, xAxis, metrics, showLegend, showLabels, yAxisMin, displayHorizontally, isBasicStackedComponent, segment } = props;
   const { data } = results;
 
   return (
     <Bar
-      options={chartOptions(showLegend, showLabels, yAxisMin, displayHorizontally)} 
-      data={chartData(data, xAxis, metrics)} 
+      options={chartOptions(showLegend || false, showLabels || false, yAxisMin, displayHorizontally || false, isBasicStackedComponent || false)} 
+      data={isBasicStackedComponent && segment 
+        ? stackedChartData(data, xAxis, metrics, segment)
+        : chartData(data, xAxis, metrics)} 
     />
   );
 };
