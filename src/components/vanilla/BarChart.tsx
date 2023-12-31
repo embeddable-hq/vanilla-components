@@ -56,7 +56,7 @@ const chartOptions = (showLegend, showLabels, yAxisMin, displayHorizontally, isB
     y: {
       stacked: isBasicStackedComponent,
       min: yAxisMin, 
-      grace: '0%', //add percent to add numbers on the y-axis above and below the max and min values
+      grace: '0%', //add a buffer on the y-axis above and below the max and min values
       grid: {
         display: false, // display grid lines
       }
@@ -81,9 +81,9 @@ const chartOptions = (showLegend, showLabels, yAxisMin, displayHorizontally, isB
         boxHeight: 8
       }
     },
-    datalabels: {
-      anchor: 'end',
-      align: 'end',
+    datalabels: { //https://chartjs-plugin-datalabels.netlify.app/guide/
+      anchor: isBasicStackedComponent ? 'center' : 'end',
+      align: isBasicStackedComponent ?'center' : 'end',
       display: showLabels ? 'auto' : false,
     }
   },
