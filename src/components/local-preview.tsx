@@ -35,9 +35,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           ds={false}
           xAxis={{ name: 'platform' }}
           segment={{ name: 'country' }}
-          metrics={[
-            { name: 'users', title: 'total users'},
-            ]}
+          metrics={{ name: 'users', title: 'total users'}}
           yAxisMin={0}
           showLabels={true}
           results={{

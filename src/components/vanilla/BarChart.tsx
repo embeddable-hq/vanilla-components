@@ -98,9 +98,34 @@ const chartStyle = {
 }
 
 const stackedChartData = (data, xAxis, metrics, segment) => {
-    const labels = [...new Set(data?.map(d => truncateString(d[xAxis.name])))];
-    const segments = [...new Set(data?.map(d => d[segment.name]))];
 
+
+    const maxSegments = 5;
+    const segmentsToInclude = () => {
+      const uniqueSegments = [...new Set(data?.map(d => d[segment.name]))];
+      if (uniqueSegments.length <= maxSegments) {
+        return uniqueSegments;
+      } else {
+        //reduce to maxSegments, with an 'Other' segment merging the longtail
+        const segmentTotals = {};
+        data?.forEach(d => segmentTotals[d[segment.name]] = ((segmentTotals[d[segment.name]] || 0) + parseInt(d[metrics.name])));
+        const summedSegments = Object.keys(segmentTotals).map(item => { 
+          return {
+            name: item, 
+            value: segmentTotals[item] 
+          }
+        }).sort((a, b) => b.value - a.value);
+        const segmentsToInclude = summedSegments.slice(0, maxSegments).map(s => s.name);
+        segmentsToInclude.push('Other');
+        return segmentsToInclude;
+      }      
+    }
+
+
+    const labels = [...new Set(data?.map(d => d[xAxis.name]))];
+    const segments = segmentsToInclude();//[...new Set(data?.map(d => d[segment.name]))];
+
+    
     const buildResultMap = () => {
       //populate a reference object like so:
       // {
@@ -112,19 +137,24 @@ const stackedChartData = (data, xAxis, metrics, segment) => {
       const resultMap = {};
       labels.forEach(label => {
         const labelRef = {};
-        segments.forEach(s => labelRef[s] = null); //null by default, as each segment needs to be included even if there's no data. 
+        segments.forEach(s => labelRef[s] = null); //null by default, as each segment needs to be included even if there's no data.
         resultMap[label] = labelRef; 
       }) 
-      data?.forEach(d => resultMap[d[xAxis.name]][d[segment.name]] = parseInt(d[metrics[0].name]));
+      data?.forEach(d => {
+        if (segments.includes(d[segment.name])) {
+          resultMap[d[xAxis.name]][d[segment.name]] = parseInt(d[metrics.name]);
+        } else {
+          resultMap[d[xAxis.name]]['Other'] = (resultMap[d[xAxis.name]]['Other'] || 0) + parseInt(d[metrics.name]);
+        }
+      });
       console.log(resultMap);
       return resultMap;
     }
 
   const resultMap = buildResultMap();
 
-
   return {
-    labels,
+    labels: labels.map(l => truncateString(l)),
     datasets: segments.map((s, i) =>
       ({
         ...chartStyle,
