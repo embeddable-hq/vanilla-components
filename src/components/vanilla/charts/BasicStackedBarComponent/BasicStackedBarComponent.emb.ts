@@ -47,6 +47,13 @@ export const meta = {
       name: 'showLegend',
       type: 'boolean',
       label: 'Show legend',
+      defaultValue: true,
+    },
+    {
+      name: 'maxSegments',
+      type: 'number',
+      label: 'Max Legend Items',
+      defaultValue: 8,
     },
     {
       name: 'showLabels',
@@ -57,6 +64,12 @@ export const meta = {
       name: 'yAxisMin',
       type: 'number',
       label: 'Y-Axis minimum value',
+      defaultValue: 0,
+    },
+    {
+      name: 'displayHorizontally',
+      type: 'boolean',
+      label: 'Display Horizontally',
     },
   ],
 };

@@ -37,6 +37,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           segment={{ name: 'country' }}
           metrics={{ name: 'users', title: 'total users'}}
           yAxisMin={0}
+          maxSegments={2}
           showLabels={true}
           results={{
             isLoading: false,

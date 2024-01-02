@@ -13,17 +13,18 @@ type Props = {
   results?: DataResponse; // { isLoading, error, data: [{ <name>: <value>, ... }] }
   showLabels?: boolean;
   yAxisMin?:number;
+  displayHorizontally?: boolean;
 };
 
 export default (props: Props) => {
 
-  const { results, title } = props;
+  const { results, title, displayHorizontally } = props;
   // const { data } = results;
 
   return (
 
       <ChartContainer title={title} results={results}>
-        <BarChart {...props}/>
+        <BarChart {...props}  displayHorizontally={displayHorizontally}/>
       </ChartContainer>
   );
 };

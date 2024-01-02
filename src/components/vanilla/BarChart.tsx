@@ -97,16 +97,15 @@ const chartStyle = {
     borderRadius: 8
 }
 
-const stackedChartData = (data, xAxis, metrics, segment) => {
+const stackedChartData = (data, xAxis, metrics, segment, maxSegments) => {
 
-
-    const maxSegments = 5;
     const segmentsToInclude = () => {
+
       const uniqueSegments = [...new Set(data?.map(d => d[segment.name]))];
-      if (uniqueSegments.length <= maxSegments) {
+      if ((uniqueSegments.length <= maxSegments) || !maxSegments || maxSegments < 1) {
         return uniqueSegments;
       } else {
-        //reduce to maxSegments, with an 'Other' segment merging the longtail
+        //reduce to maxSegments, comprising the top segments (by total) and an 'Other' segment merging the longtail segments.
         const segmentTotals = {};
         data?.forEach(d => segmentTotals[d[segment.name]] = ((segmentTotals[d[segment.name]] || 0) + parseInt(d[metrics.name])));
         const summedSegments = Object.keys(segmentTotals).map(item => { 
@@ -196,14 +195,14 @@ type Props = {
 
 export default (props: Props) => {
 
-  const { results, xAxis, metrics, showLegend, showLabels, yAxisMin, displayHorizontally, isBasicStackedComponent, segment } = props;
+  const { results, xAxis, metrics, showLegend, showLabels, yAxisMin, displayHorizontally, isBasicStackedComponent, segment, maxSegments } = props;
   const { data } = results;
 
   return (
     <Bar
       options={chartOptions(showLegend || false, showLabels || false, yAxisMin, displayHorizontally || false, isBasicStackedComponent || false)} 
       data={isBasicStackedComponent && segment 
-        ? stackedChartData(data, xAxis, metrics, segment)
+        ? stackedChartData(data, xAxis, metrics, segment, maxSegments)
         : chartData(data, xAxis, metrics)} 
     />
   );

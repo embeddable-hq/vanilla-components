@@ -51,6 +51,11 @@ export const meta = {
       type: 'number',
       label: 'Y-Axis minimum value',
     },
+    {
+      name: 'displayHorizontally',
+      type: 'boolean',
+      label: 'Display Horizontally',
+    },    
   ],
 };
 
