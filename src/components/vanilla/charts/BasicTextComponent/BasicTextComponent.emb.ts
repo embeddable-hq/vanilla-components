@@ -3,7 +3,7 @@ import Component from './index';
 
 export const meta = {
   name: 'BasicTextComponent',
-  label: 'Basic Text',
+  label: 'Component: Text',
   inputs: [
     {
       name: 'title',

@@ -35,7 +35,7 @@ ChartJS.defaults.color = LIGHT_FONT;
 ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
 
-const chartOptions = (showLegend, showLabels, yAxisMin, displayHorizontally, isBasicStackedComponent) => ({
+const chartOptions = (showLegend, showLabels, yAxisMin, displayHorizontally, isBasicStackedComponent, stackMetrics) => ({
   responsive: true,
   maintainAspectRatio: false,
   indexAxis: displayHorizontally ? 'y' : 'x', //set to 'y' to make a horizontal barchart
@@ -54,7 +54,7 @@ const chartOptions = (showLegend, showLabels, yAxisMin, displayHorizontally, isB
   },
   scales: {
     y: {
-      stacked: isBasicStackedComponent,
+      stacked: isBasicStackedComponent || stackMetrics,
       min: yAxisMin, 
       grace: '0%', //add a buffer on the y-axis above and below the max and min values
       grid: {
@@ -62,7 +62,7 @@ const chartOptions = (showLegend, showLabels, yAxisMin, displayHorizontally, isB
       }
     },
     x: {
-      stacked: isBasicStackedComponent,
+      stacked: isBasicStackedComponent || stackMetrics,
       grid: {
         display: false, // display grid lines
       }
@@ -82,19 +82,21 @@ const chartOptions = (showLegend, showLabels, yAxisMin, displayHorizontally, isB
       }
     },
     datalabels: { //https://chartjs-plugin-datalabels.netlify.app/guide/
-      anchor: isBasicStackedComponent ? 'center' : 'end',
-      align: isBasicStackedComponent ?'center' : 'end',
+      anchor: isBasicStackedComponent || stackMetrics ? 'center' : 'end',
+      align: isBasicStackedComponent || stackMetrics ?'center' : 'end',
       display: showLabels ? 'auto' : false,
     }
   },
 });
 
-const chartStyle = {
+const chartStyle = (isStacked) => {
+  return {
     barPercentage: 0.6,
     barThickness: 'flex',
     maxBarThickness: 15,
     minBarLength: 0,
-    borderRadius: 8
+    borderRadius: isStacked ? 3 : 6
+  }
 }
 
 const stackedChartData = (data, xAxis, metrics, segment, maxSegments) => {
@@ -156,7 +158,7 @@ const stackedChartData = (data, xAxis, metrics, segment, maxSegments) => {
     labels: labels.map(l => truncateString(l)),
     datasets: segments.map((s, i) =>
       ({
-        ...chartStyle,
+        ...chartStyle(true),
         label: s,
         data: labels.map(label => resultMap[label][s]),
         backgroundColor: COLORS[i % COLORS.length],
@@ -171,7 +173,7 @@ const chartData = (data, xAxis, metrics) => {
     labels,
     datasets: metrics.map((metric, i) =>
       ({
-        ...chartStyle,
+        ...chartStyle(false),
         label: metric.title,
         data: data?.map(d => parseInt(d[metric.name])),
         backgroundColor: COLORS[i % COLORS.length],
@@ -191,16 +193,17 @@ type Props = {
   yAxisMin?:number;
   isBasicStackedComponent?: boolean;
   segment?: Dimension;
+  stackMetrics?: boolean;
 };
 
 export default (props: Props) => {
 
-  const { results, xAxis, metrics, showLegend, showLabels, yAxisMin, displayHorizontally, isBasicStackedComponent, segment, maxSegments } = props;
+  const { results, xAxis, metrics, showLegend, showLabels, yAxisMin, displayHorizontally, isBasicStackedComponent, segment, maxSegments, stackMetrics } = props;
   const { data } = results;
 
   return (
     <Bar
-      options={chartOptions(showLegend || false, showLabels || false, yAxisMin, displayHorizontally || false, isBasicStackedComponent || false)} 
+      options={chartOptions(showLegend || false, showLabels || false, yAxisMin, displayHorizontally || false, isBasicStackedComponent || false, stackMetrics)} 
       data={isBasicStackedComponent && segment 
         ? stackedChartData(data, xAxis, metrics, segment, maxSegments)
         : chartData(data, xAxis, metrics)} 

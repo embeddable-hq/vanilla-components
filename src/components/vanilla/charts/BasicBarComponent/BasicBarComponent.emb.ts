@@ -5,7 +5,7 @@ import Component from './index';
 
 export const meta = {
   name: 'BasicBarComponent',
-  label: 'Basic Bar',
+  label: 'Chart: Bar',
   classNames: ['inside-card'],
   inputs: [
     {
@@ -55,7 +55,12 @@ export const meta = {
       name: 'displayHorizontally',
       type: 'boolean',
       label: 'Display Horizontally',
-    },    
+    },  
+    {
+      name: 'stackMetrics',
+      type: 'boolean',
+      label: 'Stack Metrics',
+    },  
   ],
 };
 

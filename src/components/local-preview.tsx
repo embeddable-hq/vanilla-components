@@ -4,15 +4,11 @@ import ReactDOM from 'react-dom/client';
 import './vanilla/index.css';
 import Dropdown from './vanilla/controls/Dropdown';
 import TextInput from './vanilla/controls/TextInput';
-import DonutChart from './vanilla/charts/DonutChart';
 import BasicPieComponent from './vanilla/charts/BasicPieComponent';
 import BasicLineComponent from './vanilla/charts/BasicLineComponent';
 import BasicBarComponent from './vanilla/charts/BasicBarComponent';
-import BasicHorizontalBarComponent from './vanilla/charts/BasicHorizontalBarComponent';
 import BasicStackedBarComponent from './vanilla/charts/BasicStackedBarComponent';
 import BasicTextComponent from './vanilla/charts/BasicTextComponent';
-import BarChart from './vanilla/charts/BarChart';
-import KPIChart from './vanilla/charts/KPIChart';
 import NumberInput from './vanilla/controls/NumberInput';
 import LineChart from './vanilla/charts/LineChart';
 import Table from './vanilla/charts/Table';
@@ -20,7 +16,7 @@ import DateRangePicker from './vanilla/controls/DateRangePicker';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <div className="p-8 w-[800px]">
+    <div className="p-8 w-[1000px]">
       <div className='w-full h-[100px]'>
         <BasicTextComponent
           title="hello"
@@ -78,45 +74,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         />
       </div>
       <div className='w-full h-[500px]'>
-        <BasicHorizontalBarComponent
-          title='My first Horizontal Barchart'
-          showLegend={true}
-          ds={false}
-          xAxis={{ name: 'country'}}
-          metrics={[
-            { name: 'count', title: '# of customers'},
-            { name: 'avg', title: 'Average of customers'},
-            { name: 'sum', title: 'Sum of $'}
-            ]}
-          yAxisMin={0}
-          showLabels={true}
-          results={{
-            isLoading: false,
-            error: null,
-            data: [
-              // { country: '2023-12-21T00:00:00.000', count: 23 },
-              // { country: '2023-10-21T00:00:00.000', count: 38 },
-              // { country: '2023-08-21T00:00:00.000', count: 5 },
-              // { country: '2023-04-21T00:00:00.000', count: 23 },
-              // { country: '2023-01-21T00:00:00.000', count: 100 },
-              // { country: '2023-12-21T00:00:00.000', count: 50 },
-              // { country: '2023-12-21T00:00:00.000', count: 23 },
-              // { country: '2023-06-21T00:00:00.000', count: 14 },
-              // { country: '2023-03-21T00:00:00.000', count: 5 }
-              { country: 'UK', count: '0', avg: '11', sum: '85' },
-              { country: 'US', count: '23', avg: '15', sum: '6' },
-              { country: 'Germany', count: 5, avg: 7, sum: 122 },
-              { country: 'Iceland', count: 23, avg: 15, sum: 1 },
-              { country: 'Finland', count: 100, avg: 11, sum: 22 },
-              { country: 'Sweden', count: 50, avg: 7, sum: 35 },
-              { country: 'Spain', count: 23, avg: 15, sum: 60 },
-              { country: 'Greece', count: 14, avg: 11, sum: 102 },
-              { country: 'Awesomeland', count: 5, avg: 7, sum: 12 }
-            ]
-          }}
-        />
-      </div>
-      <div className='w-full h-[500px]'>
         <BasicBarComponent
           title='My first Barchart'
           showLegend={undefined}
@@ -129,6 +86,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             ]}
           yAxisMin={0}
           showLabels={true}
+          stackMetrics={true}
           results={{
             isLoading: false,
             error: null,
@@ -161,9 +119,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           title='My first line chart'
           showLegend={true}
           ds={false}
-          xAxis={{ name: 'country'}}
+          xAxis={{ name: 'transactions.created_at'}}
           metrics={[
-            { name: 'count', title: '# of customers'},
+            { name: 'products.count', title: '# of customers'},
             ]}
           yAxisMin={0}
           showLabels={true}
@@ -171,16 +129,17 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           results={{
             isLoading: false,
             error: null,
-            data: [
-              { country: '2023-12-21T00:00:00.000', count: 23 },
-              { country: '2023-10-21T00:00:00.000', count: 38 },
-              { country: '2023-08-21T00:00:00.000', count: 5 },
-              { country: '2023-04-21T00:00:00.000', count: 23 },
-              { country: '2023-01-21T00:00:00.000', count: 100 },
-              { country: '2023-12-21T00:00:00.000', count: 50 },
-              { country: '2023-12-21T00:00:00.000', count: 23 },
-              { country: '2023-06-21T00:00:00.000', count: 14 },
-              { country: '2023-03-21T00:00:00.000', count: 5 }
+            data: fakeChartData()
+            // [
+            //   { country: '2023-12-21T00:00:00.000', count: 23 },
+            //   { country: '2023-10-21T00:00:00.000', count: 38 },
+            //   { country: '2023-08-21T00:00:00.000', count: 5 },
+            //   { country: '2023-04-21T00:00:00.000', count: 23 },
+            //   { country: '2023-01-21T00:00:00.000', count: 100 },
+            //   { country: '2023-12-21T00:00:00.000', count: 50 },
+            //   { country: '2023-12-21T00:00:00.000', count: 23 },
+            //   { country: '2023-06-21T00:00:00.000', count: 14 },
+            //   { country: '2023-03-21T00:00:00.000', count: 5 }
               // { country: 'UK', count: 10, avg: 11 },
               // { country: 'US', count: 23, avg: 15 },
               // { country: 'UK', count: 10, avg: 11 },
@@ -191,7 +150,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               // { country: 'Spain', count: 23, avg: 15 },
               // { country: 'Greece', count: 14, avg: 11 },
               // { country: 'Awesomeland', count: 5, avg: 7 }
-            ]
+            //]
           }}
         />
       </div>
@@ -309,55 +268,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             }}
         />
       </div>
-      <Table
-        debug={true}
-        tableData={{
-          isLoading: false,
-          error: '',
-          data: [
-            {
-              'customers.email': 'acouvert1y@csmoncomor.com',
-              'customers.signed_up_at': '2023-10-21T00:00:00.000',
-              'customers.country': 'United States'
-            },
-            {
-              'customers.email': 'aeberdtq@lulu.com',
-              'customers.signed_up_at': '2023-09-21T00:00:00.000',
-              'customers.country': 'United States'
-            },
-            {
-              'customers.email': 'alarchier32@theguardian.com',
-              'customers.signed_up_at': '2023-11-16T00:00:00.000',
-              'customers.country': 'United Kingdom'
-            },
-            {
-              'customers.email': 'anisco3q@pen.io',
-              'customers.signed_up_at': '2023-12-03T12:35:00.030',
-              'customers.country': 'United Kingdom'
-            }
-          ]
-        }}
-        columns={[
-          {
-            name: 'customers.email',
-            title: 'Country Country Country Country Country Country',
-            nativeType: 'string',
-            __type__: 'dimension'
-          },
-          {
-            name: 'customers.signed_up_at',
-            title: 'Country',
-            nativeType: 'time',
-            __type__: 'dimension'
-          },
-          {
-            name: 'customers.country',
-            title: 'Country',
-            nativeType: 'string',
-            __type__: 'dimension'
-          }
-        ]}
-      />
+      
       <Dropdown
         title="test"
         onChange={([a, b]) => console.log('Dropdown.onChange', {a, b})}
@@ -395,205 +306,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         }}
       />
       <DateRangePicker onChange={() => {}} />
-      <div className="h-[500px]">
-        <DonutChart
-          showLabels
-          showLegend
-          maxSegments={4}
-          metric={{
-            name: 'courses_in_progress.count',
-            title: 'Count',
-            description: '',
-            nativeType: 'string',
-            __type__: 'measure'
-          }}
-          title="Courses In Progress"
-          segments={{
-            name: 'courses_in_progress.full_name',
-            title: 'Full Name',
-            description: '',
-            nativeType: 'string',
-            __type__: 'dimension'
-          }}
-          donut={{
-            isLoading: false,
-            data: [
-              {
-                'courses_in_progress.full_name': 'SPHERE F BLOCK',
-                'courses_in_progress.count': 38
-              },
-              {
-                'courses_in_progress.full_name': 'Research Skills',
-                'courses_in_progress.count': 37
-              },
-              {
-                'courses_in_progress.full_name': 'Journal Test',
-                'courses_in_progress.count': 37
-              },
-              {
-                'courses_in_progress.full_name': 'Applying for University',
-                'courses_in_progress.count': 36
-              },
-              {
-                'courses_in_progress.full_name': 'Creative Problem Solving',
-                'courses_in_progress.count': 36
-              },
-              {
-                'courses_in_progress.full_name': 'Critical Thinking',
-                'courses_in_progress.count': 36
-              },
-              {
-                'courses_in_progress.full_name': 'CV Writing',
-                'courses_in_progress.count': 36
-              },
-              {
-                'courses_in_progress.full_name': 'Entrepreneurship',
-                'courses_in_progress.count': 36
-              },
-              {
-                'courses_in_progress.full_name': 'Job Interview Skills',
-                'courses_in_progress.count': 36
-              },
-              {
-                'courses_in_progress.full_name': 'Making an Impact',
-                'courses_in_progress.count': 36
-              },
-              {
-                'courses_in_progress.full_name': 'Personal Statement Writing',
-                'courses_in_progress.count': 36
-              },
-              {
-                'courses_in_progress.full_name': 'Preparing for LNAT',
-                'courses_in_progress.count': 36
-              },
-              {
-                'courses_in_progress.full_name': 'Preparing for TSA',
-                'courses_in_progress.count': 36
-              },
-              {
-                'courses_in_progress.full_name': 'Public Speaking',
-                'courses_in_progress.count': 36
-              },
-              {
-                'courses_in_progress.full_name': 'University Interview Skills',
-                'courses_in_progress.count': 36
-              },
-              {
-                'courses_in_progress.full_name': 'Verbal Communication',
-                'courses_in_progress.count': 36
-              },
-              {
-                'courses_in_progress.full_name': 'Writing Skills',
-                'courses_in_progress.count': 36
-              },
-              {
-                'courses_in_progress.full_name': 'Resilience',
-                'courses_in_progress.count': 36
-              },
-              {
-                'courses_in_progress.full_name': 'Preparing for BMAT',
-                'courses_in_progress.count': 36
-              },
-              {
-                'courses_in_progress.full_name': 'SPHERE C Block',
-                'courses_in_progress.count': 18
-              },
-              {
-                'courses_in_progress.full_name': 'Questionnaire Journal',
-                'courses_in_progress.count': 5
-              },
-              {
-                'courses_in_progress.full_name': 'Study Skills',
-                'courses_in_progress.count': 2
-              },
-              {
-                'courses_in_progress.full_name': 'SPHERE EtonX Platform Training',
-                'courses_in_progress.count': 1
-              }
-            ]
-          }}
-        />
-      </div>
-      <br />
-      <div className="h-[450px]">
-        <BarChart
-          title="Test"
-          showLabels
-          showLegend
-          maxXAxisItems={5}
-          maxLabels={5}
-          xAxisTitle="Countries"
-          yAxisTitle="Amount of products"
-          metric={{
-            name: 'products.count',
-            title: 'Count',
-            description: '',
-            nativeType: 'string',
-            __type__: 'measure'
-          }}
-          xAxis={{
-            name: 'products.size',
-            title: 'Size',
-            description: '',
-            nativeType: 'string',
-            __type__: 'dimension'
-          }}
-          secondXAxis={{
-            name: 'customers.country',
-            title: 'Country',
-            description: '',
-            nativeType: 'string',
-            __type__: 'dimension'
-          }}
-          columns={{
-            isLoading: false,
-            data: fakeColumnData()
-          }}
-        />
-      </div>
-      <div className="h-[400px]">
-        <LineChart
-          title="Test"
-          metrics={[
-            {
-              name: 'products.count',
-              title: 'Count',
-              description: '',
-              nativeType: 'string',
-              __type__: 'measure'
-            }
-          ]}
-          xAxis={{
-            name: 'transactions.created_at',
-            title: 'Created at',
-            description: 'The time when the transaction was created',
-            nativeType: 'string',
-            __type__: 'dimension'
-          }}
-          showLabels={true}
-          showLegend={true}
-          granularity="day"
-          xAxisTitle="Date"
-          yAxisTitle="Product Count"
-          line={{
-            isLoading: false,
-            data: fakeChartData()
-          }}
-        />
-      </div>
-      <div className="h-[500px]">
-        <KPIChart
-          title=""
-          value={{ isLoading: false, data: [] }}
-          metric={{
-            name: '',
-            title: '',
-            description: '',
-            nativeType: 'string',
-            __type__: 'measure'
-          }}
-        />
-      </div>
       <Dropdown
         onChange={() => {}}
         property={{

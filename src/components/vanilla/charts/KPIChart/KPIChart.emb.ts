@@ -5,7 +5,7 @@ import Component from './index';
 
 export const meta = {
   name: 'KPIChart',
-  label: 'KPI',
+  label: 'Chart: Single KPI',
   classNames: ['inside-card'],
   inputs: [
     {

@@ -5,7 +5,7 @@ import Component from './index';
 
 export const meta = {
   name: 'BasicLineComponent',
-  label: 'Basic Line (time-series)',
+  label: 'Chart: Line (time-series)',
   classNames: ['inside-card'],
   inputs: [
     {

@@ -5,7 +5,7 @@ import Component from './index';
 
 export const meta = {
   name: 'BasicStackedBarComponent',
-  label: 'Basic Stacked Bar',
+  label: 'Chart: Stacked Bar',
   classNames: ['inside-card'],
   inputs: [
     {

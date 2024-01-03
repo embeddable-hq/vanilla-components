@@ -5,7 +5,7 @@ import Component from './index';
 
 export const meta = {
   name: 'Table',
-  label: 'Table',
+  label: 'Chart: Table',
   classNames: ['inside-card'],
   inputs: [
     {
