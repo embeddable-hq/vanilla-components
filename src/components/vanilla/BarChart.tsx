@@ -35,7 +35,7 @@ ChartJS.defaults.color = LIGHT_FONT;
 ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
 
-const chartOptions = (showLegend, showLabels, yAxisMin, displayHorizontally, isBasicStackedComponent, stackMetrics) => ({
+const chartOptions = (showLegend, showLabels, yAxisMin, displayHorizontally, isBasicStackedComponent, stackMetrics, displayAsPercentage) => ({
   responsive: true,
   maintainAspectRatio: false,
   indexAxis: displayHorizontally ? 'y' : 'x', //set to 'y' to make a horizontal barchart
@@ -56,9 +56,20 @@ const chartOptions = (showLegend, showLabels, yAxisMin, displayHorizontally, isB
     y: {
       stacked: isBasicStackedComponent || stackMetrics,
       min: yAxisMin, 
-      grace: '0%', //add a buffer on the y-axis above and below the max and min values
+      grace: '0%',
       grid: {
-        display: false, // display grid lines
+        display: false, 
+      },
+      ticks: { //https://www.chartjs.org/docs/latest/axes/labelling.html
+        callback: function(value, index, ticks) {
+           if(displayAsPercentage && !displayHorizontally) {
+            return `${value}%`;
+          } else if (displayHorizontally) {
+            return this.getLabelForValue(value);
+          } else {
+            return value;
+          }
+        },
       }
     },
     x: {
@@ -81,6 +92,20 @@ const chartOptions = (showLegend, showLabels, yAxisMin, displayHorizontally, isB
         boxHeight: 8
       }
     },
+    tooltip: {//https://www.chartjs.org/docs/latest/configuration/tooltip.html
+      callbacks: {
+        label: function(context) {
+          let label = context.dataset.label || '';
+          if (context.parsed.y !== null) {
+            label += `: ${context.parsed[displayHorizontally ? 'x' : 'y']}`;
+            if (displayAsPercentage) {
+              label += "%";
+            }
+          }
+          return label;
+        },
+      },
+    },
     datalabels: { //https://chartjs-plugin-datalabels.netlify.app/guide/
       anchor: isBasicStackedComponent || stackMetrics ? 'center' : 'end',
       align: isBasicStackedComponent || stackMetrics ?'center' : 'end',
@@ -99,7 +124,7 @@ const chartStyle = (isStacked) => {
   }
 }
 
-const stackedChartData = (data, xAxis, metrics, segment, maxSegments) => {
+const stackedChartData = (data, xAxis, metrics, segment, maxSegments, displayAsPercentage) => {
 
     const segmentsToInclude = () => {
 
@@ -107,7 +132,7 @@ const stackedChartData = (data, xAxis, metrics, segment, maxSegments) => {
       if ((uniqueSegments.length <= maxSegments) || !maxSegments || maxSegments < 1) {
         return uniqueSegments;
       } else {
-        //reduce to maxSegments, comprising the top segments (by total) and an 'Other' segment merging the longtail segments.
+        //reduce to maxSegments, comprising the segments with the highest total and an 'Other' segment merging the longtail segments.
         const segmentTotals = {};
         data?.forEach(d => segmentTotals[d[segment.name]] = ((segmentTotals[d[segment.name]] || 0) + parseInt(d[metrics.name])));
         const summedSegments = Object.keys(segmentTotals).map(item => { 
@@ -138,7 +163,7 @@ const stackedChartData = (data, xAxis, metrics, segment, maxSegments) => {
       const resultMap = {};
       labels.forEach(label => {
         const labelRef = {};
-        segments.forEach(s => labelRef[s] = null); //null by default, as each segment needs to be included even if there's no data.
+        segments.forEach(s => labelRef[s] = null); //null by default (not 0, to avoid unwanted chart elements)
         resultMap[label] = labelRef; 
       }) 
       data?.forEach(d => {
@@ -148,6 +173,7 @@ const stackedChartData = (data, xAxis, metrics, segment, maxSegments) => {
           resultMap[d[xAxis.name]]['Other'] = (resultMap[d[xAxis.name]]['Other'] || 0) + parseInt(d[metrics.name]);
         }
       });
+
       console.log(resultMap);
       return resultMap;
     }
@@ -160,7 +186,12 @@ const stackedChartData = (data, xAxis, metrics, segment, maxSegments) => {
       ({
         ...chartStyle(true),
         label: s,
-        data: labels.map(label => resultMap[label][s]),
+        data: labels.map(label => {
+          const segmentValue = resultMap[label][s];
+          return displayAsPercentage && segmentValue !== null //skip null values
+            ? Math.round(((segmentValue * 100) / segments.reduce((accumulator, segment) => resultMap[label][segment] + accumulator,0)))
+            : segmentValue
+        }),
         backgroundColor: COLORS[i % COLORS.length],
       })
     ),
@@ -194,18 +225,19 @@ type Props = {
   isBasicStackedComponent?: boolean;
   segment?: Dimension;
   stackMetrics?: boolean;
+  displayAsPercentage?: boolean;
 };
 
 export default (props: Props) => {
 
-  const { results, xAxis, metrics, showLegend, showLabels, yAxisMin, displayHorizontally, isBasicStackedComponent, segment, maxSegments, stackMetrics } = props;
+  const { results, xAxis, metrics, showLegend, showLabels, yAxisMin, displayHorizontally, isBasicStackedComponent, segment, maxSegments, stackMetrics, displayAsPercentage } = props;
   const { data } = results;
 
   return (
     <Bar
-      options={chartOptions(showLegend || false, showLabels || false, yAxisMin, displayHorizontally || false, isBasicStackedComponent || false, stackMetrics)} 
+      options={chartOptions(showLegend || false, showLabels || false, yAxisMin, displayHorizontally || false, isBasicStackedComponent || false, stackMetrics, displayAsPercentage)} 
       data={isBasicStackedComponent && segment 
-        ? stackedChartData(data, xAxis, metrics, segment, maxSegments)
+        ? stackedChartData(data, xAxis, metrics, segment, maxSegments, displayAsPercentage)
         : chartData(data, xAxis, metrics)} 
     />
   );

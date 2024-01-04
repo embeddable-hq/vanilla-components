@@ -26,15 +26,16 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <div className='w-full h-[500px]'>
         <BasicStackedBarComponent
           title='My first Stacked Barchart'
-          stacked={true}
           showLegend={true}
+          displayHorizontally={true}
           ds={false}
           xAxis={{ name: 'platform' }}
           segment={{ name: 'country' }}
           metrics={{ name: 'users', title: 'total users'}}
           yAxisMin={0}
-          maxSegments={2}
+          maxSegments={5}
           showLabels={true}
+          displayAsPercentage={true}
           results={{
             isLoading: false,
             error: null,
@@ -86,7 +87,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             ]}
           yAxisMin={0}
           showLabels={true}
-          stackMetrics={true}
+          stackMetrics={false}
           results={{
             isLoading: false,
             error: null,

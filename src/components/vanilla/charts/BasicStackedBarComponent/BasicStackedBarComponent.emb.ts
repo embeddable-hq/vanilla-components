@@ -71,6 +71,11 @@ export const meta = {
       type: 'boolean',
       label: 'Display Horizontally',
     },
+    {
+      name: 'displayAsPercentage',
+      type: 'boolean',
+      label: 'Display as Percentages',
+    },
   ],
 };
 
