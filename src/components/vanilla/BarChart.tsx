@@ -76,7 +76,18 @@ const chartOptions = (showLegend, showLabels, yAxisMin, displayHorizontally, isB
       stacked: isBasicStackedComponent || stackMetrics,
       grid: {
         display: false, // display grid lines
-      }
+      },
+      ticks: { //https://www.chartjs.org/docs/latest/axes/labelling.html
+        callback: function(value, index, ticks) {
+           if(displayAsPercentage && displayHorizontally) {
+            return `${value}%`;
+          } else if (!displayHorizontally) {
+            return this.getLabelForValue(value);
+          } else {
+            return value;
+          }
+        },
+      },
     }
   },
   animation: {

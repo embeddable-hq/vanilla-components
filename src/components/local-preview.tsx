@@ -35,7 +35,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           yAxisMin={0}
           maxSegments={5}
           showLabels={true}
-          displayAsPercentage={true}
+          displayAsPercentage={false}
           results={{
             isLoading: false,
             error: null,
