@@ -25,10 +25,10 @@
     "vite-plugin-css-injected-by-js": "^3.1.1"
   },
   "devDependencies": {
-    "@embeddable.com/core": "^2.4.7",
-    "@embeddable.com/react": "^2.4.9",
-    "@embeddable.com/sdk-core": "^2.4.10",
-    "@embeddable.com/sdk-react": "^2.2.9",
+    "@embeddable.com/core": "^2.4.13",
+    "@embeddable.com/react": "^2.4.16",
+    "@embeddable.com/sdk-core": "^2.4.15",
+    "@embeddable.com/sdk-react": "^2.2.15",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^4.0.0",

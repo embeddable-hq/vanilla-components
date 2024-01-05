@@ -9,12 +9,6 @@ export const meta: EmbeddedComponentMeta = {
   classNames: ['on-top'],
   inputs: [
     {
-      name: 'title',
-      type: 'string',
-      label: 'Title',
-      description: 'The title for the chart'
-    },
-    {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset',
@@ -45,13 +39,9 @@ export const meta: EmbeddedComponentMeta = {
       label: 'Change',
       properties: [
         {
-          name: 'chosenValue',
+          name: 'value',
           type: 'string'
         },
-        {
-          name: 'search',
-          type: 'string'
-        }
       ]
     }
   ],
@@ -61,28 +51,36 @@ export const meta: EmbeddedComponentMeta = {
       type: 'string',
       defaultValue: Value.noFilter(),
       inputs: ['defaultValue'],
-      events: [{ name: 'onChange', property: 'chosenValue' }]
+      events: [{ name: 'onChange', property: 'value' }]
     }
   ]
 };
 
 export default defineComponent(Component, meta, {
-  props: (inputs: any) => {
+  props: (inputs: any, [embState]) => {
     return {
       ...inputs,
       options: loadData({
         from: inputs.ds,
         dimensions: [inputs.property],
-        limit: 100
+        limit: 20,
+        filters:
+          embState?.search && inputs.property
+            ? [
+                {
+                  operator: 'contains',
+                  property: inputs.property,
+                  value: embState?.search
+                }
+              ]
+            : undefined
       })
     };
   },
   events: {
-    onChange: ([chosenValue, search]) => {
-      console.log('dropdown.onChange', { chosenValue, search });
+    onChange: (value) => {
       return {
-        chosenValue: chosenValue || Value.noFilter(),
-        search: search || Value.noFilter()
+        value: value || Value.noFilter()
       };
     }
   }
