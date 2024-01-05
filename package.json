@@ -4,13 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "embeddable:build": "embeddable build",
-    "embeddable:push": "embeddable push",
-    "embeddable:login": "embeddable login",
-    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "dev": "embeddable dev",
+    "build": "embeddable build",
+    "push": "embeddable push",
+    "signin": "embeddable login"
   },
   "dependencies": {
     "@cubejs-backend/api-gateway": "^0.34.31",
