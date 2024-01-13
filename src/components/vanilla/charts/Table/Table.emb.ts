@@ -11,14 +11,16 @@ export const meta = {
     {
       name: 'title',
       type: 'string',
-      label: 'Title'
+      label: 'Title',
+      category: 'Configure chart'
     },
     {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset to display',
       description: 'Dataset',
-      defaultValue: false
+      defaultValue: false,
+      category: 'Configure chart'
     },
     {
       name: 'columns',
@@ -27,12 +29,14 @@ export const meta = {
       array: true,
       config: {
         dataset: 'ds'
-      }
+      },
+      category: 'Configure chart'
     },
     {
       name: 'maxPageRows',
       type: 'number',
-      label: 'Max Page Rows'
+      label: 'Max Page Rows',
+      category: 'Chart settings'
     }
   ],
   events: []

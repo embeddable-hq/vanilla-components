@@ -12,14 +12,16 @@ export const meta = {
       name: 'title',
       type: 'string',
       label: 'Title',
-      description: 'The title for the chart'
+      description: 'The title for the chart',
+      category: 'Configure chart'
     },
     {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset',
       description: 'Dataset',
-      defaultValue: false
+      defaultValue: false,
+      category: 'Configure chart'
     },
     {
       name: 'xAxis',
@@ -28,12 +30,14 @@ export const meta = {
       config: {
         dataset: 'ds',
         supportedTypes: ['time']
-      }
+      },
+      category: 'Configure chart'
     },
     {
       name: 'granularity',
       type: 'granularity',
-      label: 'Granularity'
+      label: 'Granularity',
+      category: 'Configure chart'
     },
     {
       name: 'metrics',
@@ -42,27 +46,32 @@ export const meta = {
       array: true,
       config: {
         dataset: 'ds'
-      }
+      },
+      category: 'Configure chart'
     },
     {
       name: 'xAxisTitle',
       type: 'string',
-      label: 'X-Axis Title'
+      label: 'X-Axis Title',
+      category: 'Chart settings'
     },
     {
       name: 'yAxisTitle',
       type: 'string',
-      label: 'Y-Axis Title'
+      label: 'Y-Axis Title',
+      category: 'Chart settings'
     },
     {
       name: 'showLabels',
       type: 'boolean',
-      label: 'Show Labels'
+      label: 'Show Labels',
+      category: 'Chart settings'
     },
     {
       name: 'showLegend',
       type: 'boolean',
-      label: 'Show Legend'
+      label: 'Show Legend',
+      category: 'Chart settings'
     }
   ],
   events: []
