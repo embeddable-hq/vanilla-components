@@ -121,8 +121,8 @@ export default (props: Props) => {
                         key={i}
                         className="bg-white select-none cursor-pointer text-[#333942] p-3"
                       >
-                        <div className="flex items-center justify-start basis-0 grow w-0 h-5 text-[#333942] hover:text-black font-bold text-sm">
-                          <div className="absolute left-0 top-0 h-full w-full flex items-center px-3">
+                        <div className="flex items-center justify-start basis-0 grow h-5 text-[#333942] hover:text-black font-bold text-sm relative w-full">
+                          <div className="absolute left-0 top-0 h-full w-full flex items-center">
                             <span className="block text-ellipsis overflow-hidden">{h?.title}</span>
                             <div
                               className={`${
