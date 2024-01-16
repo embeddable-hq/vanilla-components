@@ -19,14 +19,16 @@ export const meta: EmbeddedComponentMeta = {
     {
       name: 'title',
       type: 'string',
-      label: 'Title'
+      label: 'Title',
+      category: 'Configure chart'
     },
     {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset to display',
       description: 'Dataset',
-      defaultValue: false
+      defaultValue: false,
+      category: 'Configure chart'
     },
     {
       name: 'columns',
@@ -35,12 +37,14 @@ export const meta: EmbeddedComponentMeta = {
       array: true,
       config: {
         dataset: 'ds'
-      }
+      },
+      category: 'Configure chart'
     },
     {
       name: 'maxPageRows',
       type: 'number',
-      label: 'Max Page Rows'
+      label: 'Max Page Rows',
+      category: 'Chart settings'
     }
   ],
   events: []

@@ -12,14 +12,16 @@ export const meta: EmbeddedComponentMeta = {
       name: 'title',
       type: 'string',
       label: 'Title',
-      description: 'The title for the chart'
+      description: 'The title for the chart',
+      category: 'Configure chart'
     },
     {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset',
       description: 'Dataset',
-      defaultValue: false
+      defaultValue: false,
+      category: 'Configure chart'
     },
     {
       name: 'metric',
@@ -27,19 +29,22 @@ export const meta: EmbeddedComponentMeta = {
       label: 'KPI',
       config: {
         dataset: 'ds'
-      }
+      },
+      category: 'Configure chart'
     },
     {
       name: 'prefix',
       type: 'string',
       label: 'Prefix',
-      description: 'Prefix'
+      description: 'Prefix',
+      category: 'Chart settings'
     },
     {
       name: 'suffix',
       type: 'string',
       label: 'Suffix',
-      description: 'Suffix'
+      description: 'Suffix',
+      category: 'Chart settings'
     }
   ],
   events: []

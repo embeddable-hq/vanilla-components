@@ -17,7 +17,8 @@ export const meta: EmbeddedComponentMeta = {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset',
-      description: 'Dataset'
+      description: 'Dataset',
+      category: 'Configure chart'
     },
     {
       name: 'property',
@@ -25,17 +26,20 @@ export const meta: EmbeddedComponentMeta = {
       label: 'Property',
       config: {
         dataset: 'ds'
-      }
+      },
+      category: 'Configure chart'
     },
     {
       name: 'defaultValue',
       type: 'string',
-      label: 'Default value'
+      label: 'Default value',
+      category: 'Chart settings'
     },
     {
       name: 'placeholder',
       type: 'string',
-      label: 'Placeholder'
+      label: 'Placeholder',
+      category: 'Chart settings'
     }
   ],
   events: [

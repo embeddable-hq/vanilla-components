@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "embeddable dev",
-    "build": "embeddable build",
-    "push": "embeddable push",
-    "signin": "embeddable login"
+    "embeddable:dev": "embeddable dev",
+    "embeddable:build": "embeddable build",
+    "embeddable:push": "embeddable push",
+    "embeddable:login": "embeddable login"
   },
   "dependencies": {
     "@cubejs-backend/api-gateway": "^0.34.31",
@@ -22,10 +22,10 @@
     "vite-plugin-css-injected-by-js": "^3.1.1"
   },
   "devDependencies": {
-    "@embeddable.com/core": "^2.4.13",
-    "@embeddable.com/react": "^2.4.16",
-    "@embeddable.com/sdk-core": "^2.4.15",
-    "@embeddable.com/sdk-react": "^2.2.15",
+    "@embeddable.com/core": "^2.4.16",
+    "@embeddable.com/react": "^2.4.19",
+    "@embeddable.com/sdk-core": "^2.4.18",
+    "@embeddable.com/sdk-react": "^2.2.18",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^4.0.0",

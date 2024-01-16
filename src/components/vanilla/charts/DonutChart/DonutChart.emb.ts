@@ -12,14 +12,16 @@ export const meta: EmbeddedComponentMeta = {
       name: 'title',
       type: 'string',
       label: 'Title',
-      description: 'The title for the chart'
+      description: 'The title for the chart',
+      category: 'Configure chart'
     },
     {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset',
       description: 'Dataset',
-      defaultValue: false
+      defaultValue: false,
+      category: 'Configure chart'
     },
     {
       name: 'segments',
@@ -27,7 +29,8 @@ export const meta: EmbeddedComponentMeta = {
       label: 'Segments',
       config: {
         dataset: 'ds'
-      }
+      },
+      category: 'Configure chart'
     },
     {
       name: 'metric',
@@ -35,27 +38,32 @@ export const meta: EmbeddedComponentMeta = {
       label: 'Metric',
       config: {
         dataset: 'ds'
-      }
+      },
+      category: 'Configure chart'
     },
     {
       name: 'showPercentages',
       type: 'boolean',
-      label: 'Show as Percentage'
+      label: 'Show as Percentage',
+      category: 'Chart settings'
     },
     {
       name: 'showLabels',
       type: 'boolean',
-      label: 'Show Labels'
+      label: 'Show Labels',
+      category: 'Chart settings'
     },
     {
       name: 'showLegend',
       type: 'boolean',
-      label: 'Show Legend'
+      label: 'Show Legend',
+      category: 'Chart settings'
     },
     {
       name: 'maxSegments',
       type: 'number',
-      label: 'Max Legend Items'
+      label: 'Max Legend Items',
+      category: 'Chart settings'
     }
   ]
 };
