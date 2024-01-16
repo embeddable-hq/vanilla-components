@@ -1,9 +1,9 @@
-import { loadData } from '@embeddable.com/core';
-import { defineComponent } from '@embeddable.com/react';
+import { Dataset, Dimension, Measure, loadData } from '@embeddable.com/core';
+import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
 
-export const meta = {
+export const meta: EmbeddedComponentMeta = {
   name: 'BarChart',
   label: 'Bar Chart',
   classNames: ['inside-card'],
@@ -29,14 +29,14 @@ export const meta = {
         dataset: 'ds'
       }
     },
-    // {
-    //   name: 'label',
-    //   type: 'dimension',
-    //   label: '2nd dimension',
-    //   config: {
-    //     dataset: 'ds'
-    //   }
-    // },
+    {
+      name: 'secondXAxis',
+      type: 'dimension',
+      label: 'Second X-Axis',
+      config: {
+        dataset: 'ds'
+      }
+    },
     {
       name: 'metric',
       type: 'measure',
@@ -70,15 +70,29 @@ export const meta = {
       type: 'number',
       label: 'Max X-Axis Items'
     },
-    // {
-    //   name: 'maxLabels',
-    //   type: 'number',
-    //   label: 'Max Labels'
-    // }
-  ],
+    {
+      name: 'maxLabels',
+      type: 'number',
+      label: 'Max Labels'
+    }
+  ]
 };
 
-export default defineComponent(Component, meta, {
+export type Inputs = {
+  title?: string;
+  ds: Dataset;
+  xAxis: Dimension;
+  secondXAxis?: Dimension;
+  metric: Measure;
+  xAxisTitle?: string;
+  yAxisTitle?: string;
+  showLabels?: boolean;
+  showLegend?: boolean;
+  maxXAxisItems?: number;
+  maxLabels?: number;
+};
+
+export default defineComponent<Inputs>(Component, meta, {
   props: (inputs) => {
     return {
       ...inputs,

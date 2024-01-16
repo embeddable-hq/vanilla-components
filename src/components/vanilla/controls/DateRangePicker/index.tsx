@@ -1,16 +1,15 @@
+import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser';
 import { format, getYear } from 'date-fns';
-import 'react-day-picker/dist/style.css';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
-import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser';
+import 'react-day-picker/dist/style.css';
 
 import useFont from '../../../hooks/useFont';
-
-import '../../index.css';
 import Title from '../../Title';
 import { CalendarIcon, ChevronLeft, ChevronRight } from '../../icons';
-
+import '../../index.css';
 import Dropdown from '../Dropdown';
+import { Inputs } from './DateRangePicker.emb';
 
 const ranges = [
   'Today',
@@ -30,9 +29,7 @@ type TimeRange = {
   relativeTimeString?: string;
 };
 
-type Props = {
-  value?: TimeRange;
-  title?: string;
+type Props = Inputs & {
   onChange: (v?: TimeRange) => void;
 };
 
@@ -54,10 +51,6 @@ export default (props: Props) => {
 
     return () => clearTimeout(timeout);
   }, [triggerBlur]);
-
-  useEffect(() => {
-    console.log('DateRangePicker props', props);
-  }, [props]);
 
   useEffect(() => {
     if (!props.value?.relativeTimeString) return;
@@ -88,6 +81,7 @@ export default (props: Props) => {
       <Title title={props.title} />
       <div className="relative inline-flex h-10 w-full text-[#101010] text-sm">
         <Dropdown
+          ds={{ embeddableId: '', datasetId: '', variableValues: {} }}
           unclearable
           className="relative w-full max-w-[120px] sm:max-w-[140px]"
           inputClassName="relative rounded-l-xl w-full h-10 border border-[#DADCE1] flex items-center"
@@ -107,7 +101,7 @@ export default (props: Props) => {
             isLoading: false,
             data: ranges.map((value) => ({ value }))
           }}
-          property={{ name: 'value' }}
+          property={{ name: 'value', title: '', nativeType: 'string', __type__: 'dimension' }}
         />
         <div className="grow flex items-center p-4 hover:bg-[#f3f4f6] cursor-pointer relative text-sm border-y border-r rounded-r-xl border-[#d8dad9]">
           <input

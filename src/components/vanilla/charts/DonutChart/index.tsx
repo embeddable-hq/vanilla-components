@@ -1,37 +1,25 @@
-import Chart from 'react-apexcharts';
 import { DataResponse } from '@embeddable.com/react';
-import { Dimension, Measure } from '@embeddable.com/core';
-import React, { useMemo, useRef, useEffect } from 'react';
+import React, { useMemo, useRef } from 'react';
+import Chart from 'react-apexcharts';
 
+import { COLORS, EMB_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import useFont from '../../../hooks/useFont';
 import useResize from '../../../hooks/useResize';
-import { COLORS, EMB_FONT, SMALL_FONT_SIZE } from '../../../constants';
-
-import '../../index.css';
-import Title from '../../Title';
 import Spinner from '../../Spinner';
+import Title from '../../Title';
 import { WarningIcon } from '../../icons';
+import '../../index.css';
+import { Inputs } from './DonutChart.emb';
 
-type Props = {
-  title?: string;
+type Props = Inputs & {
   donut: DataResponse;
-  metric?: Measure;
-  segments: Dimension;
-  showPercentages?: boolean;
-  showLabels?: boolean;
-  showLegend?: boolean;
-  maxSegments?: number;
 };
 
 export default (props: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
-  const [width, height] = useResize(ref);
+  const [width] = useResize(ref);
 
   useFont();
-
-  useEffect(() => {
-    console.log('DonutChart props', props);
-  }, [props]);
 
   const { labels, series } = useMemo(() => {
     const labels =

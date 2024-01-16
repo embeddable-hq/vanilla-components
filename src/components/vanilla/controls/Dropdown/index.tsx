@@ -1,24 +1,20 @@
-import { Dimension } from '@embeddable.com/core';
 import { DataResponse, useEmbeddableState } from '@embeddable.com/react';
 import React, { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import useFont from '../../../hooks/useFont';
-import { WarningIcon, ChevronDown, ClearIcon } from '../../icons';
-import '../../index.css';
 import Spinner from '../../Spinner';
 import Title from '../../Title';
+import { ChevronDown, ClearIcon, WarningIcon } from '../../icons';
+import '../../index.css';
+import { Inputs } from './Dropdown.emb';
 
-type Props = {
-  title?: string;
+type Props = Inputs & {
   icon?: ReactNode;
   className?: string;
-  placeholder?: string;
-  defaultValue?: string;
   options: DataResponse;
   unclearable?: boolean;
   inputClassName?: string;
   onChange: (v: any) => void;
-  property: Partial<Dimension>;
   searchProperty?: string;
 };
 

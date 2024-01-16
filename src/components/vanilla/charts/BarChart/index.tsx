@@ -1,29 +1,18 @@
-import Chart from 'react-apexcharts';
 import { DataResponse } from '@embeddable.com/react';
-import { Dimension, Measure } from '@embeddable.com/core';
-import React, { useMemo, useRef, useEffect } from 'react';
+import React, { useMemo, useRef } from 'react';
+import Chart from 'react-apexcharts';
 
+import { COLORS, EMB_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import useFont from '../../../hooks/useFont';
 import useResize from '../../../hooks/useResize';
-import { COLORS, EMB_FONT, SMALL_FONT_SIZE } from '../../../constants';
-
-import '../../index.css';
-import Title from '../../Title';
 import Spinner from '../../Spinner';
+import Title from '../../Title';
 import { WarningIcon } from '../../icons';
+import '../../index.css';
+import { Inputs } from './BarChart.emb';
 
-type Props = {
-  title?: string;
+type Props = Inputs & {
   columns: DataResponse;
-  metric: Measure;
-  xAxis: Dimension;
-  secondXAxis?: Dimension;
-  maxXAxisItems?: number;
-  maxLabels?: number;
-  xAxisTitle?: string;
-  yAxisTitle?: string;
-  showLabels?: boolean;
-  showLegend?: boolean;
 };
 
 export default (props: Props) => {
@@ -31,10 +20,6 @@ export default (props: Props) => {
   const [width, height] = useResize(ref);
 
   useFont();
-
-  useEffect(() => {
-    console.log('BarChart props', props);
-  }, [props]);
 
   const { labels, series, maxCount } = useMemo(() => {
     type Memo = {

@@ -1,9 +1,9 @@
-import { loadData } from '@embeddable.com/core';
-import { defineComponent } from '@embeddable.com/react';
+import { Dataset, Dimension, Measure, loadData } from '@embeddable.com/core';
+import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
 
-export const meta = {
+export const meta: EmbeddedComponentMeta = {
   name: 'DonutChart',
   label: 'Donut Chart',
   classNames: ['inside-card'],
@@ -57,10 +57,21 @@ export const meta = {
       type: 'number',
       label: 'Max Legend Items'
     }
-  ],
+  ]
 };
 
-export default defineComponent(Component, meta, {
+export type Inputs = {
+  title?: string;
+  ds: Dataset;
+  segments: Dimension;
+  metric: Measure;
+  showPercentages?: boolean;
+  showLabels?: boolean;
+  showLegend?: boolean;
+  maxSegments?: number;
+};
+
+export default defineComponent<Inputs>(Component, meta, {
   props: (inputs) => {
     return {
       ...inputs,

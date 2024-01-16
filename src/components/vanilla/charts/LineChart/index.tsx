@@ -1,17 +1,15 @@
-import Chart from 'react-apexcharts';
-import { format, parseJSON } from 'date-fns';
 import { DataResponse } from '@embeddable.com/react';
-import React, { useMemo, useRef, useEffect } from 'react';
-import { Dimension, Measure } from '@embeddable.com/core';
+import { format, parseJSON } from 'date-fns';
+import React, { useEffect, useMemo, useRef } from 'react';
+import Chart from 'react-apexcharts';
 
-import useFont from '../../../hooks/useFont';
-import useResize from '../../../hooks/useResize';
 import { COLORS, EMB_FONT, SMALL_FONT_SIZE } from '../../../constants';
-
-import '../../index.css';
-import Title from '../../Title';
+import useFont from '../../../hooks/useFont';
 import Spinner from '../../Spinner';
+import Title from '../../Title';
 import { WarningIcon } from '../../icons';
+import '../../index.css';
+import { Inputs } from './LineChart.emb';
 
 const granularityFormats = {
   second: 'hh:mm.ss d MMM',
@@ -24,21 +22,12 @@ const granularityFormats = {
   year: 'yy'
 };
 
-type Props = {
-  title?: string;
-  granularity?: string;
+type Props = Inputs & {
   line: DataResponse;
-  metrics: Measure[];
-  xAxis?: Dimension;
-  xAxisTitle?: string;
-  yAxisTitle?: string;
-  showLabels?: boolean;
-  showLegend?: boolean;
 };
 
 export default (props: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
-  const [width, height] = useResize(ref);
 
   useFont();
 

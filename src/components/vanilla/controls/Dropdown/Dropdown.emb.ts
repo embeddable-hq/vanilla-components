@@ -1,5 +1,5 @@
-import { loadData, Value } from '@embeddable.com/core';
-import { defineComponent, EmbeddedComponentMeta } from '@embeddable.com/react';
+import { Dataset, Dimension, Value, loadData } from '@embeddable.com/core';
+import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
 
@@ -8,6 +8,11 @@ export const meta: EmbeddedComponentMeta = {
   label: 'Dropdown',
   classNames: ['on-top'],
   inputs: [
+    {
+      name: 'title',
+      type: 'string',
+      label: 'Title'
+    },
     {
       name: 'ds',
       type: 'dataset',
@@ -41,7 +46,7 @@ export const meta: EmbeddedComponentMeta = {
         {
           name: 'value',
           type: 'string'
-        },
+        }
       ]
     }
   ],
@@ -56,8 +61,16 @@ export const meta: EmbeddedComponentMeta = {
   ]
 };
 
-export default defineComponent(Component, meta, {
-  props: (inputs: any, [embState]) => {
+export type Inputs = {
+  title?: string;
+  property: Dimension;
+  ds: Dataset;
+  defaultValue?: string;
+  placeholder?: string;
+};
+
+export default defineComponent<Inputs>(Component, meta, {
+  props: (inputs, [embState]) => {
     return {
       ...inputs,
       options: loadData({

@@ -1,5 +1,5 @@
-import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 import { Value } from '@embeddable.com/core';
+import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
 
@@ -49,9 +49,9 @@ export const meta : EmbeddedComponentMeta = {
   ]
 };
 
-type Inputs = {
-  title: string;
-  value: string;
+export type Inputs = {
+  title?: string;
+  value?: string;
   placeholder: string;
 }
 
