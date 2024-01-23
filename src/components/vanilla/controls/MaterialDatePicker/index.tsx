@@ -51,7 +51,7 @@ export default (props: Props) => {
   }, []);
 
   return (
-    <div ref={ref} className="w-full font-embeddable text-sm">
+    <div ref={ref} className="w-full">
       {cache && theme && (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <CacheProvider value={cache}>
