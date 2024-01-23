@@ -3,8 +3,8 @@ import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 import Component from './index';
 
 export const meta: EmbeddedComponentMeta = {
-  name: 'DatePicker',
-  label: 'Date Picker',
+  name: 'MaterialDatePicker',
+  label: 'Material Date Picker',
   inputs: [],
   events: [],
   variables: []
