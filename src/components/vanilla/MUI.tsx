@@ -13,10 +13,12 @@ export default (props: { children: ReactNode }) => {
   useLayoutEffect(() => {
     if (ref.current === null) return;
 
+    const container = ref.current.parentElement as Element;
+
     const cache = createCache({
       key: 'css',
       prepend: false,
-      container: ref.current
+      container
     });
 
     setCache(cache);
@@ -25,17 +27,17 @@ export default (props: { children: ReactNode }) => {
       components: {
         MuiPopover: {
           defaultProps: {
-            container: ref.current
+            container
           }
         },
         MuiPopper: {
           defaultProps: {
-            container: ref.current
+            container
           }
         },
         MuiModal: {
           defaultProps: {
-            container: ref.current
+            container
           }
         }
       }
@@ -44,15 +46,13 @@ export default (props: { children: ReactNode }) => {
     setTheme(theme);
   }, []);
 
+  if (!cache || !theme) return <div ref={ref} />;
+
   return (
-    <div ref={ref} className="w-full">
-      {cache && theme && (
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <CacheProvider value={cache}>
-            <ThemeProvider theme={theme}>{props.children}</ThemeProvider>
-          </CacheProvider>
-        </LocalizationProvider>
-      )}
-    </div>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <CacheProvider value={cache}>
+        <ThemeProvider theme={theme}>{props.children}</ThemeProvider>
+      </CacheProvider>
+    </LocalizationProvider>
   );
 };
