@@ -6,14 +6,20 @@ Hello and welcome to your custom repository built just for you by the Embeddable
 
 `npm i` # requires node 18 or later
 
-### Local Development
-
-`npm run dev`
-
 ### Build & Deploy
+This is how you push code changes to your Embeddable workspace
 
-`npm run signin`
+`npm run embeddable:login`
 
-`npm run build`
+`npm run embeddable:build`
 
-`npm run push`
+`npm run embeddable:push`
+
+`open https://app.embeddable.com`
+
+### Local Development
+This is a "Preview workspace" (local to you) that allows you make changes locally and see them instantly without needing to "Build and Deploy".
+
+`npm run embeddable:login`
+
+`npm run embeddable:dev` # opens a "Preview" workspace, that uses your local components and models
