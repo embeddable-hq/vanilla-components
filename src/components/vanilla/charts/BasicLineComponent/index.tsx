@@ -15,7 +15,6 @@ import { Line } from 'react-chartjs-2';
 import { Dimension, Measure, Dataset } from "@embeddable.com/core";
 import { DataResponse } from "@embeddable.com/react";
 import { COLORS, EMB_FONT, SMALL_FONT_SIZE, LIGHT_FONT } from '../../../constants';
-import Title from '../../Title';
 import ChartContainer from '../../ChartContainer'
 import { truncateString } from '../../../util/utilFunctions';
 
