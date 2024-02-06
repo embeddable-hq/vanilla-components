@@ -5,7 +5,7 @@ import Component from './index';
 
 export const meta: EmbeddedComponentMeta = {
   name: 'WorldChart',
-  label: 'Webflow World Chart',
+  label: 'World Chart',
   inputs: [
     {
       name: 'title',
