@@ -1,6 +1,5 @@
 import { DimensionOrMeasure, OrderBy, OrderDirection } from '@embeddable.com/core';
 import { DataResponse, useEmbeddableState } from '@embeddable.com/react';
-import { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from '@tremor/react';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import useFont from '../../../hooks/useFont';
@@ -109,14 +108,14 @@ export default (props: Props) => {
           ref={ref}
         >
           {!!meta && !(props.tableData?.isLoading && !props.tableData?.data?.length) && (
-            <Table className="overflow-visible">
-              <TableHead className="border-y border-[#B8BDC6]">
-                <TableRow>
+            <table className="overflow-visible">
+              <thead className="border-y border-[#B8BDC6]">
+                <tr>
                   {columns?.map((h, i) => {
                     const sortIndex = meta?.sort?.findIndex((c) => c.property.name === h.name) || 0;
 
                     return (
-                      <TableHeaderCell
+                      <th
                         onClick={() => updateSort(h)}
                         key={i}
                         className="bg-white select-none cursor-pointer text-[#333942] p-3"
@@ -137,17 +136,17 @@ export default (props: Props) => {
                             </div>
                           </div>
                         </div>
-                      </TableHeaderCell>
+                      </th>
                     );
                   })}
-                </TableRow>
-              </TableHead>
+                </tr>
+              </thead>
 
-              <TableBody>
+              <tbody>
                 {rows.map((row, index) => (
-                  <TableRow key={index} className="hover:bg-gray-400/5">
+                  <tr key={index} className="hover:bg-gray-400/5">
                     {row.map((c, i) => (
-                      <TableCell key={i} className="text-sm text-dark p-3">
+                      <td key={i} className="text-sm text-dark p-3">
                         <span className="text-overflow-dynamic-container">
                           <span
                             className="text-overflow-dynamic-ellipsis"
@@ -156,12 +155,12 @@ export default (props: Props) => {
                             {format(c, columns[i])}
                           </span>
                         </span>
-                      </TableCell>
+                      </td>
                     ))}
-                  </TableRow>
+                  </tr>
                 ))}
-              </TableBody>
-            </Table>
+              </tbody>
+            </table>
           )}
 
           {(!meta || (props.tableData?.isLoading && !props.tableData?.data?.length)) && (
