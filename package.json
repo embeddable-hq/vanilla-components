@@ -14,9 +14,11 @@
   },
   "dependencies": {
     "@cubejs-backend/api-gateway": "^0.34.31",
+    "@headlessui/tailwindcss": "^0.2.0",
     "@types/react-simple-maps": "^3.0.4",
     "apexcharts": "^3.44.0",
     "chrono-node": "^2.7.3",
+    "d3-scale": "^4.0.2",
     "date-fns": "^2.30.0",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
