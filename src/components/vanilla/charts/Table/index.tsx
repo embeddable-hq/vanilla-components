@@ -1,41 +1,25 @@
-import { DataResponse } from '@embeddable.com/react';
-import { DimensionOrMeasure } from '@embeddable.com/core';
-
-import { useEmbeddableState } from '@embeddable.com/react';
-
-const getEmbeddableState = (debug) => {
-  if (debug) {
-    return (initialState) => [initialState, (newState) => (initialState = newState)];
-  }
-  return useEmbeddableState;
-};
-
-import { OrderBy, OrderDirection } from '@embeddable.com/core';
+import { DimensionOrMeasure, OrderBy, OrderDirection } from '@embeddable.com/core';
+import { DataResponse, useEmbeddableState } from '@embeddable.com/react';
+import { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from '@tremor/react';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { Table, TableRow, TableBody, TableCell, TableHead, TableHeaderCell } from '@tremor/react';
 
 import useFont from '../../../hooks/useFont';
 import useResize from '../../../hooks/useResize';
-
-import Title from '../../Title';
 import Spinner from '../../Spinner';
-import { ChevronRight, ChevronLeft, SortDown, SortUp, WarningIcon } from '../../icons';
+import Title from '../../Title';
+import { ChevronLeft, ChevronRight, SortDown, SortUp, WarningIcon } from '../../icons';
+import { Inputs } from './Table.emb';
 
-type Props = {
-  title?: string;
+type Props = Inputs & {
   limit?: number;
-  columns: DimensionOrMeasure[];
-  maxPageRows?: number;
   tableData: DataResponse;
   defaultSort?: OrderBy[];
-  debug: boolean;
 };
 
 export default (props: Props) => {
   const { columns, tableData } = props;
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, height] = useResize(ref);
-  const embeddableState = getEmbeddableState(props.debug);
 
   const format = (text, column) => {
     if (typeof text === 'number') {
@@ -52,11 +36,7 @@ export default (props: Props) => {
 
   useFont();
 
-  useEffect(() => {
-    console.log('Table props', props);
-  }, [props]);
-
-  const [meta, setMeta] = embeddableState({
+  const [meta, setMeta] = useEmbeddableState({
     page: 0,
     maxRowsFit: 0,
     sort: props.defaultSort
@@ -141,8 +121,8 @@ export default (props: Props) => {
                         key={i}
                         className="bg-white select-none cursor-pointer text-[#333942] p-3"
                       >
-                        <div className="flex items-center justify-start basis-0 grow w-0 h-5 text-[#333942] hover:text-black font-bold text-sm">
-                          <div className="absolute left-0 top-0 h-full w-full flex items-center px-3">
+                        <div className="flex items-center justify-start basis-0 grow h-5 text-[#333942] hover:text-black font-bold text-sm relative w-full">
+                          <div className="absolute left-0 top-0 h-full w-full flex items-center">
                             <span className="block text-ellipsis overflow-hidden">{h?.title}</span>
                             <div
                               className={`${

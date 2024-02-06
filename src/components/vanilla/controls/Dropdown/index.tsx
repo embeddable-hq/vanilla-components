@@ -1,64 +1,62 @@
-import { Dimension } from '@embeddable.com/core';
-import { DataResponse } from '@embeddable.com/react';
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { DataResponse, useEmbeddableState } from '@embeddable.com/react';
+import React, { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import useFont from '../../../hooks/useFont';
-
-import '../../index.css';
-import Title from '../../Title';
 import Spinner from '../../Spinner';
+import Title from '../../Title';
 import { ChevronDown, ClearIcon, WarningIcon } from '../../icons';
+import '../../index.css';
+import { Inputs } from './Dropdown.emb';
 
-type Props = {
-  title?: string;
+type Props = Inputs & {
+  icon?: ReactNode;
   className?: string;
-  placeholder?: string;
-  defaultValue: string;
   options: DataResponse;
   unclearable?: boolean;
   inputClassName?: string;
   onChange: (v: any) => void;
-  property: Partial<Dimension>;
+  searchProperty?: string;
 };
 
 let debounce: number | undefined = undefined;
 
 export default (props: Props) => {
-  const [search, setSearch] = useState('');
   const [focus, setFocus] = useState(false);
   const ref = useRef<HTMLInputElement | null>(null);
   const [triggerBlur, setTriggerBlur] = useState(false);
   const [value, setValue] = useState(props.defaultValue);
+  const [search, setSearch] = useState('');
+  const [_, setServerSearch] = useEmbeddableState({
+    [props.searchProperty || 'search']: ''
+  }) as any;
 
   useFont();
 
-  useEffect(() => {
-    console.log('Dropdown props', props);
-  }, [props]);
+  const performSearch = useCallback(
+    (newSearch: string) => {
+      setSearch(newSearch);
+
+      clearTimeout(debounce);
+
+      debounce = setTimeout(() => {
+        setServerSearch((s: any) => ({ ...s, [props.searchProperty || 'search']: newSearch }));
+      }, 500) as any;
+    },
+    [setSearch, setServerSearch]
+  );
 
   const set = useCallback(
     (value: string) => {
-      setSearch('');
+      performSearch('');
+
       setValue(value);
-      props.onChange([value, '']);
+
+      props.onChange(value);
+
       clearTimeout(debounce);
     },
-    [setValue, props.onChange, setSearch]
+    [setValue, props.onChange, setSearch, performSearch]
   );
-
-  const performSearch = (newSearch) => {
-    setSearch(newSearch);
-
-    clearTimeout(debounce);
-
-    debounce = setTimeout(() => {
-      props.onChange([value, newSearch]);
-    }, 500) as any;
-  };
-
-  useEffect(() => {
-    setValue(props.defaultValue);
-  }, [props.defaultValue]);
 
   useLayoutEffect(() => {
     if (!triggerBlur) return;
@@ -74,13 +72,6 @@ export default (props: Props) => {
   const list = useMemo(
     () =>
       props.options?.data?.reduce((memo, o, i: number) => {
-        if (
-          search &&
-          `${o[props.property?.name || '']}`?.toLowerCase().indexOf(search.toLowerCase()) === -1
-        ) {
-          return memo;
-        }
-
         memo.push(
           <div
             key={i}
@@ -89,7 +80,7 @@ export default (props: Props) => {
               setTriggerBlur(false);
               set(o[props.property?.name || ''] || '');
             }}
-            className={`px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
+            className={`min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
               value === o[props.property?.name || ''] ? 'bg-black/5' : ''
             } whitespace-nowrap overflow-hidden text-ellipsis`}
           >
@@ -99,14 +90,16 @@ export default (props: Props) => {
 
         return memo;
       }, []),
-    [props, search, value, set]
+    [props, value, set]
   );
 
   if (props.options?.error) {
     return (
-      <div className="h-full flex items-center justify-center">
+      <div className="h-full flex items-center justify-center font-embeddable text-sm">
         <WarningIcon />
-        <div className="whitespace-pre-wrap p-4 max-w-sm text-xs">{props.options?.error}</div>
+        <div className="whitespace-pre-wrap px-2 max-h-full overflow-hidden max-w-sm text-xs">
+          {props.options?.error}
+        </div>
       </div>
     );
   }
@@ -123,6 +116,7 @@ export default (props: Props) => {
         <input
           ref={ref}
           value={search}
+          name="dropdown"
           placeholder={props.placeholder}
           onFocus={() => setFocus(true)}
           onBlur={() => setTriggerBlur(true)}
@@ -141,10 +135,10 @@ export default (props: Props) => {
         )}
 
         {focus && (
-          <div className="flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[#DADCE1] w-full overflow-hidden">
+          <div className="flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[#DADCE1] w-full overflow-y-auto overflow-x-hidden max-h-[400px]">
             {list}
             {list?.length === 0 && !!search && (
-              <div className="px-3 py-2 text-black/50 italic cursor-pointer">{'No results'}</div>
+              <div className="px-3 py-2 text-black/50 italic cursor-pointer">No results</div>
             )}
           </div>
         )}

@@ -1,28 +1,19 @@
-import React, { useMemo, useEffect } from 'react';
-import { Measure } from '@embeddable.com/core';
 import { DataResponse } from '@embeddable.com/react';
+import React, { useMemo } from 'react';
 
 import useFont from '../../../hooks/useFont';
-
-import '../../index.css';
-import Title from '../../Title';
 import Spinner from '../../Spinner';
+import Title from '../../Title';
 import { WarningIcon } from '../../icons';
+import '../../index.css';
+import { Inputs } from './KPIChart.emb';
 
-type Props = {
-  title?: string;
+type Props = Inputs & {
   value: DataResponse;
-  metric: Measure;
-  suffix?: string;
-  prefix?: string;
 };
 
 export default (props: Props) => {
   useFont();
-
-  useEffect(() => {
-    console.log('KPIChart props', props);
-  }, [props]);
 
   const n = useMemo(() => {
     if (!props.value?.data?.length) return;

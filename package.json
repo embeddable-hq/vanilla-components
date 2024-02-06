@@ -4,17 +4,18 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "embeddable:dev": "embeddable dev",
     "embeddable:build": "embeddable build",
     "embeddable:push": "embeddable push",
     "embeddable:login": "embeddable login",
-    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "dev": "embeddable dev",
+    "build": "embeddable build",
+    "push": "embeddable push"
   },
   "dependencies": {
     "@cubejs-backend/api-gateway": "^0.34.31",
     "@tremor/react": "^3.2.1",
+    "@types/react-simple-maps": "^3.0.4",
     "apexcharts": "^3.44.0",
     "chart.js": "^4.4.1",
     "chartjs-plugin-datalabels": "^2.2.0",
@@ -25,13 +26,15 @@
     "react-chartjs-2": "^5.2.0",
     "react-day-picker": "^8.9.1",
     "react-dom": "^18.2.0",
+    "react-simple-maps": "^3.0.0",
     "vite-plugin-css-injected-by-js": "^3.1.1"
   },
   "devDependencies": {
-    "@embeddable.com/core": "^2.4.13",
-    "@embeddable.com/react": "^2.4.16",
-    "@embeddable.com/sdk-core": "^2.4.15",
-    "@embeddable.com/sdk-react": "^2.2.15",
+    "@embeddable.com/core": "^2.4.19",
+    "@embeddable.com/react": "^2.4.19",
+    "@embeddable.com/sdk-core": "^2.4.18",
+    "@embeddable.com/sdk-react": "^2.2.18",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^4.0.0",
@@ -41,6 +44,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
     "postcss": "^8.4.24",
+    "prettier": "3.1.1",
     "tailwindcss": "^3.3.2",
     "tailwindcss-themer": "^3.1.0",
     "tw-colors": "^2.2.0",
@@ -85,6 +89,15 @@
     "singleQuote": true,
     "printWidth": 100,
     "trailingComma": "none",
-    "endOfLine": "auto"
+    "endOfLine": "auto",
+    "plugins": [
+      "@trivago/prettier-plugin-sort-imports"
+    ],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true,
+    "importOrder": [
+      "^(?!@/)(?!\\.).+",
+      "."
+    ]
   }
 }

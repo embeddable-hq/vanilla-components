@@ -1,15 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import useFont from '../../../hooks/useFont';
-
-import '../../index.css';
 import Title from '../../Title';
 import { ClearIcon } from '../../icons';
+import '../../index.css';
+import { Inputs } from './NumberInput.emb';
 
-type Props = {
-  value: number;
-  title?: string;
-  placeholder?: string;
+type Props = Inputs & {
   onChange: (v: any) => void;
 };
 

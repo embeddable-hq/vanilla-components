@@ -1,5 +1,5 @@
-import { loadData, Value } from '@embeddable.com/core';
-import { defineComponent, EmbeddedComponentMeta } from '@embeddable.com/react';
+import { Dataset, Dimension, Value, loadData } from '@embeddable.com/core';
+import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
 
@@ -11,14 +11,14 @@ export const meta: EmbeddedComponentMeta = {
     {
       name: 'title',
       type: 'string',
-      label: 'Title',
-      description: 'The title for the chart'
+      label: 'Title'
     },
     {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset',
-      description: 'Dataset'
+      description: 'Dataset',
+      category: 'Configure chart'
     },
     {
       name: 'property',
@@ -26,17 +26,20 @@ export const meta: EmbeddedComponentMeta = {
       label: 'Property',
       config: {
         dataset: 'ds'
-      }
+      },
+      category: 'Configure chart'
     },
     {
       name: 'defaultValue',
       type: 'string',
-      label: 'Default value'
+      label: 'Default value',
+      category: 'Chart settings'
     },
     {
       name: 'placeholder',
       type: 'string',
-      label: 'Placeholder'
+      label: 'Placeholder',
+      category: 'Chart settings'
     }
   ],
   events: [
@@ -45,11 +48,7 @@ export const meta: EmbeddedComponentMeta = {
       label: 'Change',
       properties: [
         {
-          name: 'chosenValue',
-          type: 'string'
-        },
-        {
-          name: 'search',
+          name: 'value',
           type: 'string'
         }
       ]
@@ -61,28 +60,44 @@ export const meta: EmbeddedComponentMeta = {
       type: 'string',
       defaultValue: Value.noFilter(),
       inputs: ['defaultValue'],
-      events: [{ name: 'onChange', property: 'chosenValue' }]
+      events: [{ name: 'onChange', property: 'value' }]
     }
   ]
 };
 
-export default defineComponent(Component, meta, {
-  props: (inputs: any) => {
+export type Inputs = {
+  title?: string;
+  property: Dimension;
+  ds: Dataset;
+  defaultValue?: string;
+  placeholder?: string;
+};
+
+export default defineComponent<Inputs>(Component, meta, {
+  props: (inputs, [embState]) => {
     return {
       ...inputs,
       options: loadData({
         from: inputs.ds,
         dimensions: [inputs.property],
-        limit: 100
+        limit: 20,
+        filters:
+          embState?.search && inputs.property
+            ? [
+                {
+                  operator: 'contains',
+                  property: inputs.property,
+                  value: embState?.search
+                }
+              ]
+            : undefined
       })
     };
   },
   events: {
-    onChange: ([chosenValue, search]) => {
-      console.log('dropdown.onChange', { chosenValue, search });
+    onChange: (value) => {
       return {
-        chosenValue: chosenValue || Value.noFilter(),
-        search: search || Value.noFilter()
+        value: value || Value.noFilter()
       };
     }
   }
