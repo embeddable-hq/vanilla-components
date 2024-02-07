@@ -1,30 +1,21 @@
+import { Dataset, Dimension, Measure } from '@embeddable.com/core';
+import { DataResponse } from '@embeddable.com/react';
 import React from 'react';
-import Title from '../../Title';
-import ChartContainer from '../../ChartContainer'
-import BarChart from '../../BarChart'
 
+import BarChart from '../../BarChart';
+import ChartContainer from '../../ChartContainer';
+import { Inputs } from './BasicBarComponent.emb';
 
-type Props = {
-  title?: string;
-  showLegend?: boolean;
-  ds?: Dataset;
-  xAxis?: Dimension; // { name, title }
-  metrics?: Measure; // [{ name, title }]
-  results?: DataResponse; // { isLoading, error, data: [{ <name>: <value>, ... }] }
-  showLabels?: boolean;
-  yAxisMin?:number;
-  displayHorizontally?: boolean;
+type Props = Inputs & {
+  results: DataResponse;
 };
 
 export default (props: Props) => {
-
-  const { results, title, displayHorizontally } = props;
-  // const { data } = results;
+  const { results, title } = props;
 
   return (
-
-      <ChartContainer title={title} results={results}>
-        <BarChart {...props}  displayHorizontally={displayHorizontally}/>
-      </ChartContainer>
+    <ChartContainer title={title} results={results}>
+      <BarChart {...props} />
+    </ChartContainer>
   );
 };

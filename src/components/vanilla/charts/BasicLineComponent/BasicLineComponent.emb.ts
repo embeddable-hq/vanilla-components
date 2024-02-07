@@ -97,6 +97,7 @@ export type Inputs = {
   yAxisMin?: number;
   xAxisTitle?: string;
   yAxisTitle?: string;
+  applyFill?: boolean;
   showLabels?: boolean;
   showLegend?: boolean;
 };
