@@ -108,7 +108,7 @@ export default (props: Props) => {
           ref={ref}
         >
           {!!meta && !(props.tableData?.isLoading && !props.tableData?.data?.length) && (
-            <table className="overflow-visible">
+            <table className="overflow-visible w-full">
               <thead className="border-y border-[#B8BDC6]">
                 <tr>
                   {columns?.map((h, i) => {
