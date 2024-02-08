@@ -1,10 +1,14 @@
 import React from 'react';
+import { twMerge } from 'tailwind-merge';
 
 export default ({ show, className }: { show?: boolean; className?: string }) => (
   <svg
-    className={`${className || 'absolute right-2 top-2 z-1 pointer-events-none'} spinner ${
-      show ? 'opacity-100' : 'opacity-0'
-    }`}
+    className={twMerge(
+      `absolute right-2 top-2 z-1 pointer-events-none spinner ${
+        show ? 'opacity-100' : 'opacity-0'
+      }`,
+      className
+    )}
     width="24"
     height="24"
     viewBox="0 0 24 24"

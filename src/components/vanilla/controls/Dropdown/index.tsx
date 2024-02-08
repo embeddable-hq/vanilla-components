@@ -1,5 +1,6 @@
 import { DataResponse, useEmbeddableState } from '@embeddable.com/react';
 import React, { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 import useFont from '../../../hooks/useFont';
 import Spinner from '../../Spinner';
@@ -105,13 +106,15 @@ export default (props: Props) => {
   }
 
   return (
-    <div className={`dropdown font-embeddable text-sm ${props.className || 'relative w-full'}`}>
+    <div
+      className={twMerge(`dropdown font-embeddable text-sm relative w-full`, props.className || '')}
+    >
       <Title title={props.title} />
       <div
-        className={
-          props.inputClassName ||
-          'relative rounded-xl w-full h-10 border border-[#DADCE1] flex items-center'
-        }
+        className={twMerge(
+          'relative rounded-xl w-full h-10 border border-[#DADCE1] flex items-center',
+          props.inputClassName
+        )}
       >
         <input
           ref={ref}
