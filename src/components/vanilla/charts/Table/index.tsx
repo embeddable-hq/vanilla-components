@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import useFont from '../../../hooks/useFont';
 import useResize from '../../../hooks/useResize';
+import ChartContainer from '../../ChartContainer';
 import Spinner from '../../Spinner';
 import Title from '../../Title';
 import { ChevronLeft, ChevronRight, SortDown, SortUp, WarningIcon } from '../../icons';
@@ -14,6 +15,8 @@ type Props = Inputs & {
   tableData: DataResponse;
   defaultSort?: OrderBy[];
 };
+
+type Record = { [p: string]: string };
 
 export default (props: Props) => {
   const { columns, tableData } = props;
@@ -77,7 +80,7 @@ export default (props: Props) => {
   const rows = useMemo(
     () =>
       tableData?.data?.map(
-        (record) =>
+        (record: Record) =>
           columns?.map((prop) => {
             if (!prop) return '';
 
@@ -89,18 +92,8 @@ export default (props: Props) => {
     [tableData]
   );
 
-  if (props.tableData?.error) {
-    return (
-      <div className="h-full flex items-center justify-center font-embeddable text-sm">
-        <WarningIcon />
-        <div className="whitespace-pre-wrap p-4 max-w-sm text-xs">{props.tableData?.error}</div>
-      </div>
-    );
-  }
-
   return (
-    <div className="h-full relative flex flex-col">
-      <Title title={props.title} />
+    <ChartContainer title={props.title} results={props.tableData}>
       <div className="grow flex flex-col justify-start w-full overflow-x-auto font-embeddable text-sm">
         <div
           className="grow overflow-hidden relative"
@@ -188,7 +181,6 @@ export default (props: Props) => {
           }`}
         />
       </div>
-      <Spinner show={!meta || props.tableData?.isLoading} />
-    </div>
+    </ChartContainer>
   );
 };

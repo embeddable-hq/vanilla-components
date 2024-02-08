@@ -18,6 +18,7 @@ import { Line } from 'react-chartjs-2';
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import ChartContainer from '../../ChartContainer';
 import { Inputs } from './BasicLineComponent.emb';
+import useFont from '../../../hooks/useFont';
 
 ChartJS.register(
   CategoryScale,
@@ -44,6 +45,8 @@ export default (props: Props) => {
   const { results, xAxis, metrics, title, showLegend, applyFill, showLabels, yAxisMin } = props;
   const { data } = results;
 
+  useFont();
+  
   return (
     <ChartContainer title={title} results={results}>
       <Line

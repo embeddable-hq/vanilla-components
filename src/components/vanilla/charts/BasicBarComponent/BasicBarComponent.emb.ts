@@ -43,34 +43,38 @@ export const meta: EmbeddedComponentMeta = {
       category: 'Configure chart'
     },
     {
-      name: 'showLegend',
-      type: 'boolean',
-      label: 'Show as Percentage',
-      category: 'Chart settings'
-    },
-    {
-      name: 'showLabels',
-      type: 'boolean',
-      label: 'Show Labels',
-      category: 'Chart settings'
-    },
-    {
       name: 'yAxisMin',
       type: 'number',
       label: 'Y-Axis minimum value',
       category: 'Chart settings'
     },
     {
+      name: 'showLegend',
+      type: 'boolean',
+      label: 'Show as Percentage',
+      category: 'Chart settings',
+      defaultValue: false
+    },
+    {
+      name: 'showLabels',
+      type: 'boolean',
+      label: 'Show Labels',
+      category: 'Chart settings',
+      defaultValue: false
+    },
+    {
       name: 'displayHorizontally',
       type: 'boolean',
       label: 'Display Horizontally',
-      category: 'Chart settings'
+      category: 'Chart settings',
+      defaultValue: false
     },
     {
       name: 'stackMetrics',
       type: 'boolean',
       label: 'Stack Metrics',
-      category: 'Chart settings'
+      category: 'Chart settings',
+      defaultValue: false
     }
   ]
 };

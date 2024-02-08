@@ -2,6 +2,7 @@ import { DataResponse } from '@embeddable.com/react';
 import React, { useMemo } from 'react';
 
 import useFont from '../../../hooks/useFont';
+import ChartContainer from '../../ChartContainer';
 import Spinner from '../../Spinner';
 import Title from '../../Title';
 import { WarningIcon } from '../../icons';
@@ -41,19 +42,14 @@ export default (props: Props) => {
   }
 
   return (
-    <div className="h-full flex flex-col justify-start font-embeddable text-sm">
-      <Title title={props.title} />
+    <ChartContainer title={props.title}>
       <div className="relative grow items-center justify-center flex min-h-[40px]">
         <div className="flex items-center justify-center font-embeddable text-[#333942] text-[40px] font-bold">
           {props.prefix}
           {n || 0}
           {props.suffix}
         </div>
-        {props.value?.isLoading && !props.value?.data?.length && (
-          <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
-        )}
-        <Spinner show={props.value?.isLoading} />
       </div>
-    </div>
+    </ChartContainer>
   );
 };

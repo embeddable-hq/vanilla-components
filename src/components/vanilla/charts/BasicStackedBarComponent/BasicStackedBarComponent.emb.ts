@@ -1,9 +1,9 @@
-import { defineComponent } from '@embeddable.com/react';
-import { loadData } from '@embeddable.com/core';
+import { Dataset, Dimension, Measure, loadData } from '@embeddable.com/core';
+import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
 
-export const meta = {
+export const meta: EmbeddedComponentMeta = {
   name: 'BasicStackedBarComponent',
   label: 'Chart: Stacked Bar',
   classNames: ['inside-card'],
@@ -15,9 +15,9 @@ export const meta = {
       description: 'The title for the chart'
     },
     {
-      name: "ds",
-      type: "dataset",
-      label: "Dataset to display",
+      name: 'ds',
+      type: 'dataset',
+      label: 'Dataset to display'
     },
     {
       name: 'xAxis',
@@ -36,57 +36,73 @@ export const meta = {
       }
     },
     {
-      name: "metrics",
-      type: "measure",
-      label: "Metrics",
+      name: 'metric',
+      type: 'measure',
+      label: 'Metric',
       config: {
-        dataset: "ds",
-      },
+        dataset: 'ds'
+      }
     },
     {
       name: 'showLegend',
       type: 'boolean',
       label: 'Show legend',
-      defaultValue: true,
+      defaultValue: true
     },
     {
       name: 'maxSegments',
       type: 'number',
       label: 'Max Legend Items',
-      defaultValue: 8,
+      defaultValue: 8
     },
     {
       name: 'showLabels',
       type: 'boolean',
-      label: 'Show Labels'
+      label: 'Show Labels',
+      defaultValue: false
     },
     {
       name: 'yAxisMin',
       type: 'number',
       label: 'Y-Axis minimum value',
-      defaultValue: 0,
+      defaultValue: 0
     },
     {
       name: 'displayHorizontally',
       type: 'boolean',
       label: 'Display Horizontally',
+      defaultValue: false
     },
     {
       name: 'displayAsPercentage',
       type: 'boolean',
       label: 'Display as Percentages',
-    },
-  ],
+      defaultValue: false
+    }
+  ]
 };
 
-export default defineComponent(Component, meta, {
+export type Inputs = {
+  title?: string;
+  ds: Dataset;
+  xAxis: Dimension;
+  segment: Dimension;
+  metric: Measure;
+  displayHorizontally?: boolean;
+  displayAsPercentage?: boolean;
+  showLabels?: boolean;
+  showLegend?: boolean;
+  maxSegments?: number;
+};
+
+export default defineComponent<Inputs>(Component, meta, {
   props: (inputs) => {
     return {
       ...inputs,
       results: loadData({
         from: inputs.ds,
         dimensions: [inputs.xAxis, inputs.segment],
-        measures: [inputs.metrics],
+        measures: [inputs.metric]
       })
     };
   }

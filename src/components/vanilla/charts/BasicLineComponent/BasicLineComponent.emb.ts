@@ -65,13 +65,15 @@ export const meta: EmbeddedComponentMeta = {
       name: 'showLabels',
       type: 'boolean',
       label: 'Show Labels',
-      category: 'Chart settings'
+      category: 'Chart settings',
+      defaultValue: false
     },
     {
       name: 'applyFill',
       type: 'boolean',
       label: 'Color fill space under line',
-      category: 'Chart settings'
+      category: 'Chart settings',
+      defaultValue: false
     },
     {
       name: 'yAxisMin',
@@ -83,7 +85,8 @@ export const meta: EmbeddedComponentMeta = {
       name: 'showLegend',
       type: 'boolean',
       label: 'Show Legend',
-      category: 'Chart settings'
+      category: 'Chart settings',
+      defaultValue: false
     }
   ]
 };

@@ -4,8 +4,8 @@ import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 import Component from './index';
 
 export const meta: EmbeddedComponentMeta = {
-  name: 'WorldChart',
-  label: 'World Chart',
+  name: 'MapChart',
+  label: 'Map Chart',
   inputs: [
     {
       name: 'title',
@@ -39,7 +39,7 @@ export const meta: EmbeddedComponentMeta = {
   ]
 };
 
-type Inputs = {
+export type Inputs = {
   title: string;
   ds: Dataset;
   segments: Dimension;

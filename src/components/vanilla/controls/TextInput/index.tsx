@@ -19,10 +19,6 @@ export default (props: Props) => {
   useFont();
 
   useEffect(() => {
-    console.log('TextInput props', props);
-  }, [props]);
-
-  useEffect(() => {
     setValue(props.value);
   }, [props.value]);
 

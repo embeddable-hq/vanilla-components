@@ -38,7 +38,8 @@ export const meta: EmbeddedComponentMeta = {
     {
       name: 'showLegend',
       type: 'boolean',
-      label: 'Turn on the legend'
+      label: 'Turn on the legend',
+      defaultValue: false
     },
     {
       name: 'maxSegments',
@@ -48,7 +49,8 @@ export const meta: EmbeddedComponentMeta = {
     {
       name: 'showLabels',
       type: 'boolean',
-      label: 'Show Labels'
+      label: 'Show Labels',
+      defaultValue: false
     }
   ]
 };

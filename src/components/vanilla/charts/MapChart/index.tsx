@@ -1,17 +1,18 @@
 import { Dimension, Measure } from '@embeddable.com/core';
 import { DataResponse } from '@embeddable.com/react';
 import { scaleLinear } from 'd3-scale';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 
 import useFont from '../../../hooks/useFont';
+import ChartContainer from '../../ChartContainer';
 import Spinner from '../../Spinner';
 import Title from '../../Title';
-import { WarningIcon } from '../../icons';
 import '../../index.css';
+import { Inputs } from './MapChart.emb';
 import geography from './geography.json';
 
-type Props = {
+type Props = Inputs & {
   title?: string;
   db: DataResponse;
   segments?: Dimension;
@@ -33,10 +34,6 @@ export default (props: Props) => {
   const tooltip = useRef<HTMLDivElement | null>(null);
 
   useFont();
-
-  useEffect(() => {
-    console.log('MapChart props', props);
-  }, [props]);
 
   const [data, maxMetric] = useMemo((): [{ [segment: string]: number }, number] => {
     let maxMetric = 0;
@@ -65,21 +62,10 @@ export default (props: Props) => {
       .range([lowColor, highColor] as any);
   }, [maxMetric]);
 
-  const noData = !props.db?.isLoading && !props.db.data?.length;
-
-  if (props.db?.error || noData) {
-    return (
-      <div className="h-full flex items-center justify-center font-embeddable text-sm">
-        <WarningIcon />
-        <div className="whitespace-pre-wrap p-4 max-w-sm text-xs">{props.db?.error}</div>
-      </div>
-    );
-  }
-
   return (
-    <div className="h-full relative font-embeddable text-sm flex flex-col">
-      <Title title={props.title} />
-      {!props.db?.error && !noData && (
+    <ChartContainer title={props.title} results={props.db}>
+      <div className="h-full relative font-embeddable text-sm flex flex-col">
+        <Title title={props.title} />
         <div className="relative aspect-[1.87] overflow-hidden cursor-pointer">
           <div
             ref={box}
@@ -149,7 +135,7 @@ export default (props: Props) => {
             className="absolute right-[9px] top-[6px] h-5 pointer-events-none"
           />
         </div>
-      )}
-    </div>
+      </div>
+    </ChartContainer>
   );
 };

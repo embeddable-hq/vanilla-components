@@ -18,10 +18,6 @@ export default (props: Props) => {
   useFont();
 
   useEffect(() => {
-    console.log('NumberInput props', props);
-  }, [props]);
-
-  useEffect(() => {
     setValue(`${props.value}`);
   }, [props.value]);
 
