@@ -19,6 +19,8 @@ type Props = Inputs & {
   metric?: Measure;
 };
 
+type Record = { [p: string]: string };
+
 const formatter = new Intl.NumberFormat();
 
 const defaultColor = '#F5F4F6';
@@ -39,7 +41,7 @@ export default (props: Props) => {
     let maxMetric = 0;
 
     const data =
-      props.db.data?.reduce((memo: { [segment: string]: number }, record: any) => {
+      props.db.data?.reduce((memo: { [segment: string]: number }, record: Record) => {
         if (!props.segments || !props.metric) return memo;
 
         const segment: string = record[props.segments.name];
@@ -57,9 +59,7 @@ export default (props: Props) => {
   }, [props]);
 
   const colorScale = useMemo(() => {
-    return scaleLinear()
-      .domain([0, maxMetric])
-      .range([lowColor, highColor] as any);
+    return scaleLinear().domain([0, maxMetric]).range([lowColor, highColor]);
   }, [maxMetric]);
 
   return (

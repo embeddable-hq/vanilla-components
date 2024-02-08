@@ -1,9 +1,5 @@
 import React from 'react';
 
-export default () => {
-  return (
-      <div>
-        Loading...
-      </div>
-    )
+export default function Loading() {
+  return <div>Loading...</div>;
 }

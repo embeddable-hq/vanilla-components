@@ -20,7 +20,7 @@ export default (ref: MutableRefObject<HTMLDivElement | null>) => {
     return () => {
       ro.disconnect();
     };
-  }, []);
+  }, [ref]);
 
   return [width, Math.max(height - 15, 100)];
 };

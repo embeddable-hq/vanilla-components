@@ -12,7 +12,7 @@ type Props = {
   children?: ReactNode;
 };
 
-export default (props: Props) => {
+export default function ChartContainer(props: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, height] = useResize(ref);
 
@@ -42,4 +42,4 @@ export default (props: Props) => {
       </div>
     </div>
   );
-};
+}

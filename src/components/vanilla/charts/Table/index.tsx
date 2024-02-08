@@ -16,6 +16,8 @@ type Props = Inputs & {
   defaultSort?: OrderBy[];
 };
 
+type Meta = { page: number; maxRowsFit: number; sort: OrderBy[] };
+
 type Record = { [p: string]: string };
 
 export default (props: Props) => {
@@ -42,7 +44,7 @@ export default (props: Props) => {
     page: 0,
     maxRowsFit: 0,
     sort: props.defaultSort
-  }) as any;
+  }) as [Meta, (f: (m: Meta) => Meta) => void];
 
   const updateSort = useCallback(
     (column: DimensionOrMeasure) => {
@@ -69,7 +71,7 @@ export default (props: Props) => {
       const heightWithoutHead = height - 40;
       const maxRowsFit = Math.floor(heightWithoutHead / 45);
 
-      setMeta({ ...meta, maxRowsFit });
+      setMeta((meta) => ({ ...meta, maxRowsFit }));
     }, 100);
 
     return () => {
@@ -89,7 +91,7 @@ export default (props: Props) => {
             return `${parsed}` === record[prop.name] ? parsed : record[prop.name] || '';
           }) || []
       ) || [],
-    [tableData]
+    [tableData, columns]
   );
 
   return (
@@ -177,7 +179,9 @@ export default (props: Props) => {
             setMeta({ ...meta, page: (meta?.page || 0) + 1 });
           }}
           className={`cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center ${
-            props.limit ? rows.length < props.limit : false ? 'opacity-50 pointer-events-none' : ''
+            (props.limit ? rows.length < props.limit : false)
+              ? 'opacity-50 pointer-events-none'
+              : ''
           }`}
         />
       </div>

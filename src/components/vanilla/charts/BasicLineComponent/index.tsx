@@ -16,9 +16,9 @@ import React from 'react';
 import { Line } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
+import useFont from '../../../hooks/useFont';
 import ChartContainer from '../../ChartContainer';
 import { Inputs } from './BasicLineComponent.emb';
-import useFont from '../../../hooks/useFont';
 
 ChartJS.register(
   CategoryScale,
@@ -46,7 +46,7 @@ export default (props: Props) => {
   const { data } = results;
 
   useFont();
-  
+
   return (
     <ChartContainer title={title} results={results}>
       <Line
@@ -85,7 +85,8 @@ function format(text: string) {
 
 //convert hex to rgb and add opacity. Used when a color-fill is applied beneath the chart line(s).
 function hexToRgb(hex: string) {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+
   return result
     ? `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(
         result[3],

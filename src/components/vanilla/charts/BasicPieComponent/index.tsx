@@ -86,7 +86,7 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
 function mergeLongTail({ results, slice, metric, maxSegments }: Props) {
   if (!maxSegments || !metric || !slice) return results?.data;
 
-  const newData = [...results?.data]
+  const newData = [...(results?.data || [])]
     .sort((a, b) => parseInt(b[metric.name]) - parseInt(a[metric.name]))
     .slice(0, maxSegments - 1);
 

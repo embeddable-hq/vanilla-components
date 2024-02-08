@@ -10,12 +10,15 @@
     "embeddable:login": "embeddable login",
     "dev": "embeddable dev",
     "build": "embeddable build",
-    "push": "embeddable push"
+    "push": "embeddable push",
+    "lint": "npx eslint . --ext .ts --ext .tsx"
   },
   "dependencies": {
     "@cubejs-backend/api-gateway": "^0.34.31",
     "@headlessui/tailwindcss": "^0.2.0",
     "@types/react-simple-maps": "^3.0.4",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "apexcharts": "^3.44.0",
     "chart.js": "^4.4.1",
     "chartjs-plugin-datalabels": "^2.2.0",
@@ -49,6 +52,7 @@
     "prettier": "3.1.1",
     "tailwindcss": "^3.3.2",
     "tw-colors": "^2.2.0",
+    "typescript": "^5.3.3",
     "vite": "^4.3.9",
     "vite-plugin-singlefile": "^0.13.5"
   },
@@ -61,23 +65,26 @@
       "eslint:recommended",
       "plugin:react/recommended",
       "plugin:react/jsx-runtime",
-      "plugin:react-hooks/recommended"
+      "plugin:react-hooks/recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended"
     ],
-    "parserOptions": {
-      "ecmaVersion": "latest",
-      "sourceType": "module"
-    },
+    "parser": "@typescript-eslint/parser",
     "settings": {
       "react": {
         "version": "18.2"
       }
     },
     "plugins": [
-      "react-refresh"
+      "react-refresh",
+      "@typescript-eslint"
     ],
     "rules": {
-      "react-refresh/only-export-components": "warn",
-      "react/prop-types": "off"
+      "react/display-name": "off",
+      "react/prop-types": "off",
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "react-refresh/only-export-components": "off"
     }
   },
   "postcss": {
