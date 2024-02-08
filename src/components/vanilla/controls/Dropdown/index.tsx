@@ -1,5 +1,13 @@
 import { DataResponse, useEmbeddableState } from '@embeddable.com/react';
-import React, { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import useFont from '../../../hooks/useFont';
@@ -30,6 +38,10 @@ export default (props: Props) => {
   const [_, setServerSearch] = useEmbeddableState({
     [props.searchProperty || 'search']: ''
   }) as any;
+
+  useEffect(() => {
+    setValue(props.defaultValue);
+  }, [props.defaultValue]);
 
   useFont();
 
