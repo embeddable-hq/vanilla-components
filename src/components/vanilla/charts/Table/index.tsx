@@ -59,7 +59,7 @@ export default (props: Props) => {
         sort.unshift(newOrder);
       }
 
-      setMeta({ ...meta, sort, page: 0 });
+      setMeta((meta) => ({ ...meta, sort, page: 0 }));
     },
     [meta, setMeta]
   );
@@ -165,7 +165,7 @@ export default (props: Props) => {
       <div className="flex mt-2 items-center justify-center text-[12px] font-bold text-[#333942] select-none">
         <ChevronLeft
           onClick={() => {
-            setMeta({ ...meta, page: Math.max(0, (meta?.page || 0) - 1) });
+            setMeta((meta) => ({ ...meta, page: Math.max(0, (meta?.page || 0) - 1) }));
           }}
           className={`cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center ${
             meta?.page === 0 ? 'opacity-50 pointer-events-none' : ''
@@ -174,7 +174,7 @@ export default (props: Props) => {
         <span className="mx-4">Page {(meta?.page || 0) + 1}</span>
         <ChevronRight
           onClick={() => {
-            setMeta({ ...meta, page: (meta?.page || 0) + 1 });
+            setMeta((meta) => ({ ...meta, page: (meta?.page || 0) + 1 }));
           }}
           className={`cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center ${
             (props.limit ? rows.length < props.limit : false)

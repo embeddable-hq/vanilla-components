@@ -3,8 +3,6 @@ import React, { useMemo } from 'react';
 
 import useFont from '../../../hooks/useFont';
 import ChartContainer from '../../ChartContainer';
-import Spinner from '../../Spinner';
-import Title from '../../Title';
 import { WarningIcon } from '../../icons';
 import '../../index.css';
 import { Inputs } from './KPIChart.emb';

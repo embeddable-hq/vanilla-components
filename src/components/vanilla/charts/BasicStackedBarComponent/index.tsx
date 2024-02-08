@@ -56,9 +56,7 @@ export default (props: Props) => {
 
 function chartData(props: Props): ChartData<'bar'> {
   const { results, xAxis, metric, segment, maxSegments, displayAsPercentage } = props;
-  const labels = [
-    ...new Set(results?.data?.map((d: { [p: string]: string }) => d[xAxis?.name || '']))
-  ] as string[];
+  const labels = [...new Set(results?.data?.map((d: Record) => d[xAxis?.name || '']))] as string[];
   const segments = segmentsToInclude();
   const resultMap = {};
 
