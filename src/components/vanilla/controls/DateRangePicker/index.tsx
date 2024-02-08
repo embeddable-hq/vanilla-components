@@ -53,6 +53,10 @@ export default (props: Props) => {
   }, [triggerBlur]);
 
   useEffect(() => {
+    if (!props.value.from && !props.value.to && !props.value.relativeTimeString) {
+      return setRange(props.value);
+    }
+
     if (!props.value?.relativeTimeString) return;
 
     const [from, to] = dateParser(props.value?.relativeTimeString, 'UTC');
