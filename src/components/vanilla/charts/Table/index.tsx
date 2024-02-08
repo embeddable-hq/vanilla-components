@@ -5,9 +5,7 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import useFont from '../../../hooks/useFont';
 import useResize from '../../../hooks/useResize';
 import ChartContainer from '../../ChartContainer';
-import Spinner from '../../Spinner';
-import Title from '../../Title';
-import { ChevronLeft, ChevronRight, SortDown, SortUp, WarningIcon } from '../../icons';
+import { ChevronLeft, ChevronRight, SortDown, SortUp } from '../../icons';
 import { Inputs } from './Table.emb';
 
 type Props = Inputs & {

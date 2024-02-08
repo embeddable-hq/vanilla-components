@@ -7,10 +7,10 @@ import '../../index.css';
 import { Inputs } from './TextInput.emb';
 
 type Props = Inputs & {
-  onChange: (v: any) => void;
+  onChange: (v: string) => void;
 };
 
-let timeout = null;
+let timeout: number | null = null;
 
 export default (props: Props) => {
   const ref = useRef<HTMLInputElement | null>(null);
@@ -36,9 +36,9 @@ export default (props: Props) => {
             if (timeout) {
               clearTimeout(timeout);
             }
-            timeout = setTimeout(() => {
+            timeout = window.setTimeout(() => {
               props.onChange(e.target.value);
-            }, 1000) as any;
+            }, 1000);
           }}
           defaultValue={value}
         />

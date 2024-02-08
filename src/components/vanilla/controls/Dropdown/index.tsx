@@ -23,9 +23,11 @@ type Props = Inputs & {
   options: DataResponse;
   unclearable?: boolean;
   inputClassName?: string;
-  onChange: (v: any) => void;
+  onChange: (v: string) => void;
   searchProperty?: string;
 };
+
+type Record = { [p: string]: string };
 
 let debounce: number | undefined = undefined;
 
@@ -37,7 +39,7 @@ export default (props: Props) => {
   const [search, setSearch] = useState('');
   const [_, setServerSearch] = useEmbeddableState({
     [props.searchProperty || 'search']: ''
-  }) as any;
+  }) as [Record, (f: (m: Record) => Record) => void];
 
   useEffect(() => {
     setValue(props.defaultValue);
@@ -51,11 +53,11 @@ export default (props: Props) => {
 
       clearTimeout(debounce);
 
-      debounce = setTimeout(() => {
-        setServerSearch((s: any) => ({ ...s, [props.searchProperty || 'search']: newSearch }));
-      }, 500) as any;
+      debounce = window.setTimeout(() => {
+        setServerSearch((s) => ({ ...s, [props.searchProperty || 'search']: newSearch }));
+      }, 500);
     },
-    [setSearch, setServerSearch]
+    [setSearch, setServerSearch, props.searchProperty]
   );
 
   const set = useCallback(
@@ -68,7 +70,7 @@ export default (props: Props) => {
 
       clearTimeout(debounce);
     },
-    [setValue, props.onChange, setSearch, performSearch]
+    [setValue, props, performSearch]
   );
 
   useLayoutEffect(() => {
