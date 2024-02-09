@@ -112,7 +112,7 @@ export default (props: Props) => {
                       >
                         <div className="flex items-center justify-start basis-0 grow h-5 text-[#333942] hover:text-black font-bold text-sm relative w-full">
                           <div className="absolute left-0 top-0 h-full w-full flex items-center">
-                            <span className="block text-ellipsis overflow-hidden">{h?.title}</span>
+                            <span className="block text-ellipsis overflow-hidden whitespace-nowrap">{h?.title}</span>
                             <div
                               className={`${
                                 sortIndex === 0 ? 'text-[#FF6B6C]' : 'text-[#333942]'
