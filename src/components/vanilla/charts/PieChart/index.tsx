@@ -39,6 +39,8 @@ type Props = Inputs & {
   results: DataResponse;
 };
 
+type Record = { [p: string]: string };
+
 export default (props: Props) => {
   const { results, title } = props;
 
@@ -89,7 +91,7 @@ function mergeLongTail({ results, slice, metric, maxSegments }: Props) {
 
   const sumLongTail = results?.data
     .slice(maxSegments - 1)
-    .reduce((accumulator, record) => accumulator + parseInt(record[metric.name]), 0);
+    .reduce((accumulator, record: Record) => accumulator + parseInt(record[metric.name]), 0);
 
   newData.push({ [slice.name]: 'Other', [metric.name]: sumLongTail });
 
@@ -98,7 +100,7 @@ function mergeLongTail({ results, slice, metric, maxSegments }: Props) {
 
 function chartData(props: Props) {
   const { maxSegments, results, metric, slice } = props;
-  const labelsExceedMaxSegments = maxSegments && maxSegments < results?.data.length;
+  const labelsExceedMaxSegments = maxSegments && maxSegments < results?.data?.length;
   const newData = labelsExceedMaxSegments ? mergeLongTail(props) : results.data;
 
   // Chart.js pie expects labels like so: ['US', 'UK', 'Germany']
@@ -109,7 +111,7 @@ function chartData(props: Props) {
   });
 
   // Chart.js pie expects counts like so: [23, 10, 5]
-  const counts = newData?.map((d) => d[metric.name]);
+  const counts = newData?.map((d: Record) => d[metric.name]);
 
   return {
     labels,
