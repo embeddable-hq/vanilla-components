@@ -6,15 +6,12 @@
   -webkit-font-smoothing: antialiased;
 }
 
-.apexcharts-xaxis-label tspan {
-  fill: #959ca8;
-}
-
 :host(.on-top) {
   z-index: 1;
 }
+
 :host(.inside-card) {
-/*  box-shadow: 0px 1px 4px rgba(28, 28, 33, 0.2);*/
+  /*  box-shadow: 0px 1px 4px rgba(28, 28, 33, 0.2);*/
   border-radius: 8px;
   padding: 15px !important;
   border: 1px solid #ddd;
@@ -60,81 +57,6 @@
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
-}
-
-.apexcharts-legend.apexcharts-align-center.apx-legend-position-bottom {
-  padding-left: 35px;
-}
-
-.apexcharts-tooltip {
-  border: 0 !important;
-  box-shadow: none !important;
-  overflow: visible !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  background: transparent !important;
-  position: absolute !important;
-}
-
-.apexcharts-tooltip.apexcharts-theme-dark {
-  background: transparent !important;
-}
-
-.donut-chart .apexcharts-datalabels text {
-  fill: #333942;
-}
-
-.bar-chart .apexcharts-datalabels text {
-  fill: #333942;
-  transform: translateY(-20px);
-}
-
-.chart-tooltip {
-  position: absolute;
-  border-radius: 2px;
-  display: flex;
-  flex-direction: column;
-  justify-items: center;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1);
-  border-radius: 6px;
-  background: #fff;
-  color: #333942;
-}
-
-.chart-tooltip strong {
-  display: flex;
-  align-items: center;
-  background: #333942;
-  padding: 0 16px;
-  height: 36px;
-  width: 100%;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
-  color: white;
-}
-
-.chart-tooltip div {
-  padding: 0 16px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-  border: 1px solid #e4e6ea;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-  width: 100%;
-}
-
-.chart-tooltip b {
-  width: 8px;
-  height: 8px;
-  display: inline-block;
-  border-radius: 50%;
-  margin-right: 8px;
 }
 
 ::-webkit-scrollbar {
@@ -196,6 +118,7 @@
   display: flex;
   vertical-align: text-bottom !important;
 }
+
 .text-overflow-dynamic-ellipsis {
   position: absolute;
   white-space: nowrap;
@@ -210,6 +133,7 @@
   top: 0;
   left: 0;
 }
+
 .text-overflow-dynamic-container:after,
 .text-overflow-dynamic-ellipsis:after {
   content: '-';
