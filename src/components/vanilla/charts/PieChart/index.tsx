@@ -15,9 +15,8 @@ import React from 'react';
 import { Pie } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
-import useFont from '../../../hooks/useFont';
-import ChartContainer from '../../ChartContainer';
-import { Inputs } from './BasicPieComponent.emb';
+import Container from '../../Container';
+import { Inputs } from './PieChart.emb';
 
 ChartJS.register(
   CategoryScale,
@@ -43,12 +42,10 @@ type Props = Inputs & {
 export default (props: Props) => {
   const { results, title } = props;
 
-  useFont();
-
   return (
-    <ChartContainer title={title} results={results}>
+    <Container title={title} results={results}>
       <Pie options={chartOptions(props)} data={chartData(props)} />
-    </ChartContainer>
+    </Container>
   );
 };
 

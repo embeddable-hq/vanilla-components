@@ -7,17 +7,19 @@ export default function getBarChartOptions({
   displayHorizontally = false,
   stacked = false,
   stackMetrics = false,
-  displayAsPercentage = false
+  displayAsPercentage = false,
+  yAxisTitle = '',
+  xAxisTitle = ''
 }): ChartOptions<'bar'> {
   return {
     responsive: true,
     maintainAspectRatio: false,
-    indexAxis: displayHorizontally ? ('y' as const) : ('x' as const), //set to 'y' to make a horizontal barchart
+    indexAxis: displayHorizontally ? ('y' as const) : ('x' as const),
     layout: {
       padding: {
         left: 0,
         right: 0,
-        top: showLabels ? 20 : 0, //Added so the highest data labels fits
+        top: showLabels ? 20 : 0, // Added so the highest data labels fits
         bottom: 0
       }
     },
@@ -32,7 +34,7 @@ export default function getBarChartOptions({
         ticks: {
           precision: 0,
           //https://www.chartjs.org/docs/latest/axes/labelling.html
-          callback: function (value, index, ticks) {
+          callback: function (value) {
             if (displayAsPercentage && !displayHorizontally) {
               return `${value}%`;
             }
@@ -43,24 +45,34 @@ export default function getBarChartOptions({
 
             return value;
           }
+        },
+        title: {
+          display: !!yAxisTitle,
+          text: yAxisTitle
         }
       },
       x: {
         stacked: stacked || stackMetrics,
         grid: {
-          display: false // display grid lines
+          display: false
         },
         ticks: {
           //https://www.chartjs.org/docs/latest/axes/labelling.html
-          callback: function (value, index, ticks) {
+          callback: function (value) {
             if (displayAsPercentage && displayHorizontally) {
               return `${value}%`;
-            } else if (!displayHorizontally) {
-              return this.getLabelForValue(parseFloat(`${value}`));
-            } else {
-              return value;
             }
+
+            if (!displayHorizontally) {
+              return this.getLabelForValue(parseFloat(`${value}`));
+            }
+
+            return value;
           }
+        },
+        title: {
+          display: !!xAxisTitle,
+          text: xAxisTitle
         }
       }
     },

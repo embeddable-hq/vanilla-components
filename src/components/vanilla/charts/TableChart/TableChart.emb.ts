@@ -12,7 +12,7 @@ import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 import Component from './index';
 
 export const meta: EmbeddedComponentMeta = {
-  name: 'Table',
+  name: 'TableChart',
   label: 'Chart: Table',
   classNames: ['inside-card'],
   inputs: [

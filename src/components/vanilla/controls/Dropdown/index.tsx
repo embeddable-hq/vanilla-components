@@ -10,11 +10,9 @@ import React, {
 } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import useFont from '../../../hooks/useFont';
+import Container from '../../Container';
 import Spinner from '../../Spinner';
-import Title from '../../Title';
-import { ChevronDown, ClearIcon, WarningIcon } from '../../icons';
-import '../../index.css';
+import { ChevronDown, ClearIcon } from '../../icons';
 import { Inputs } from './Dropdown.emb';
 
 type Props = Inputs & {
@@ -44,8 +42,6 @@ export default (props: Props) => {
   useEffect(() => {
     setValue(props.defaultValue);
   }, [props.defaultValue]);
-
-  useFont();
 
   const performSearch = useCallback(
     (newSearch: string) => {
@@ -108,26 +104,12 @@ export default (props: Props) => {
     [props, value, set]
   );
 
-  if (props.options?.error) {
-    return (
-      <div className="h-full flex items-center justify-center font-embeddable text-sm">
-        <WarningIcon />
-        <div className="whitespace-pre-wrap px-2 max-h-full overflow-hidden max-w-sm text-xs">
-          {props.options?.error}
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div
-      className={twMerge(`dropdown font-embeddable text-sm relative w-full`, props.className || '')}
-    >
-      <Title title={props.title} />
+    <Container title={props.title} results={props.options}>
       <div
         className={twMerge(
           'relative rounded-xl w-full h-10 border border-[#DADCE1] flex items-center',
-          props.inputClassName
+          props.className
         )}
       >
         <input
@@ -177,6 +159,6 @@ export default (props: Props) => {
           </div>
         )}
       </div>
-    </div>
+    </Container>
   );
 };

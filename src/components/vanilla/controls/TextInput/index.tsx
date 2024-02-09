@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import useFont from '../../../hooks/useFont';
-import Title from '../../Title';
+import Container from '../../Container';
 import { ClearIcon } from '../../icons';
-import '../../index.css';
 import { Inputs } from './TextInput.emb';
 
 type Props = Inputs & {
@@ -16,16 +14,12 @@ export default (props: Props) => {
   const ref = useRef<HTMLInputElement | null>(null);
   const [value, setValue] = useState(props.value);
 
-  useFont();
-
   useEffect(() => {
     setValue(props.value);
   }, [props.value]);
 
   return (
-    <div className="w-full font-embeddable text-sm">
-      <Title title={props.title} />
-
+    <Container title={props.title}>
       <div className="w-full relative rounded-xl bg-white border border-[#DADCE1] pr-8 h-10">
         <input
           ref={ref}
@@ -56,6 +50,6 @@ export default (props: Props) => {
           </div>
         )}
       </div>
-    </div>
+    </Container>
   );
 };

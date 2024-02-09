@@ -4,10 +4,8 @@ import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 're
 import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
-import useFont from '../../../hooks/useFont';
-import Title from '../../Title';
+import Container from '../../Container';
 import { CalendarIcon, ChevronLeft, ChevronRight } from '../../icons';
-import '../../index.css';
 import Dropdown from '../Dropdown';
 import { Inputs } from './DateRangePicker.emb';
 
@@ -38,8 +36,6 @@ export default (props: Props) => {
   const ref = useRef<HTMLInputElement | null>(null);
   const [triggerBlur, setTriggerBlur] = useState(false);
   const [range, setRange] = useState<TimeRange | undefined>(props.value);
-
-  useFont();
 
   useLayoutEffect(() => {
     if (!triggerBlur) return;
@@ -81,14 +77,12 @@ export default (props: Props) => {
   );
 
   return (
-    <div className="w-full font-embeddable text-sm">
-      <Title title={props.title} />
+    <Container title={props.title}>
       <div className="relative inline-flex h-10 w-full text-[#101010] text-sm">
         <Dropdown
           ds={{ embeddableId: '', datasetId: '', variableValues: {} }}
           unclearable
-          className="relative w-full max-w-[120px] sm:max-w-[140px]"
-          inputClassName="relative rounded-l-xl w-full h-10 border border-[#DADCE1] flex items-center"
+          className="max-w-[120px] sm:max-w-[140px] relative rounded-r-none w-full h-10 border border-[#DADCE1] flex items-center"
           defaultValue={range?.relativeTimeString || ''}
           onChange={(relativeTimeString) => {
             const [from, to] = dateParser(relativeTimeString, 'UTC');
@@ -152,7 +146,7 @@ export default (props: Props) => {
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 

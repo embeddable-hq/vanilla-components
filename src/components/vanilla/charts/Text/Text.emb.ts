@@ -3,7 +3,7 @@ import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 import Component from './index';
 
 export const meta: EmbeddedComponentMeta = {
-  name: 'BasicTextComponent',
+  name: 'Text',
   label: 'Component: Text',
   inputs: [
     {

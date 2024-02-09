@@ -1,11 +1,11 @@
-import { Dataset, Dimension, Measure, loadData } from '@embeddable.com/core';
+import { Dataset, Dimension, Granularity, Measure, loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
 
 export const meta: EmbeddedComponentMeta = {
-  name: 'BasicBarComponent',
-  label: 'Chart: Bar',
+  name: 'LineChart',
+  label: 'Chart: Line (time-series)',
   classNames: ['inside-card'],
   inputs: [
     {
@@ -28,8 +28,15 @@ export const meta: EmbeddedComponentMeta = {
       type: 'dimension',
       label: 'X-Axis',
       config: {
-        dataset: 'ds'
+        dataset: 'ds',
+        supportedTypes: ['time']
       },
+      category: 'Configure chart'
+    },
+    {
+      name: 'granularity',
+      type: 'granularity',
+      label: 'Granularity',
       category: 'Configure chart'
     },
     {
@@ -43,17 +50,16 @@ export const meta: EmbeddedComponentMeta = {
       category: 'Configure chart'
     },
     {
-      name: 'yAxisMin',
-      type: 'number',
-      label: 'Y-Axis minimum value',
+      name: 'xAxisTitle',
+      type: 'string',
+      label: 'X-Axis Title',
       category: 'Chart settings'
     },
     {
-      name: 'showLegend',
-      type: 'boolean',
-      label: 'Show as Percentage',
-      category: 'Chart settings',
-      defaultValue: false
+      name: 'yAxisTitle',
+      type: 'string',
+      label: 'Y-Axis Title',
+      category: 'Chart settings'
     },
     {
       name: 'showLabels',
@@ -63,16 +69,22 @@ export const meta: EmbeddedComponentMeta = {
       defaultValue: false
     },
     {
-      name: 'displayHorizontally',
+      name: 'applyFill',
       type: 'boolean',
-      label: 'Display Horizontally',
+      label: 'Color fill space under line',
       category: 'Chart settings',
       defaultValue: false
     },
     {
-      name: 'stackMetrics',
+      name: 'yAxisMin',
+      type: 'number',
+      label: 'Y-Axis minimum value',
+      category: 'Chart settings'
+    },
+    {
+      name: 'showLegend',
       type: 'boolean',
-      label: 'Stack Metrics',
+      label: 'Show Legend',
       category: 'Chart settings',
       defaultValue: false
     }
@@ -83,11 +95,14 @@ export type Inputs = {
   title?: string;
   ds: Dataset;
   xAxis: Dimension;
+  granularity: Granularity;
   metrics: Measure[];
-  showPercentages?: boolean;
+  yAxisMin?: number;
+  xAxisTitle?: string;
+  yAxisTitle?: string;
+  applyFill?: boolean;
   showLabels?: boolean;
   showLegend?: boolean;
-  maxSegments?: number;
 };
 
 export default defineComponent<Inputs>(Component, meta, {
@@ -96,7 +111,12 @@ export default defineComponent<Inputs>(Component, meta, {
       ...inputs,
       results: loadData({
         from: inputs.ds,
-        dimensions: [inputs.xAxis],
+        timeDimensions: [
+          {
+            dimension: inputs.xAxis?.name,
+            granularity: inputs.granularity
+          }
+        ],
         measures: inputs.metrics
       })
     };

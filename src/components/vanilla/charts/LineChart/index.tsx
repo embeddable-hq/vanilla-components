@@ -1,6 +1,7 @@
 import { DataResponse } from '@embeddable.com/react';
 import {
   CategoryScale,
+  ChartData,
   Chart as ChartJS,
   ChartOptions,
   Filler,
@@ -16,9 +17,8 @@ import React from 'react';
 import { Line } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
-import useFont from '../../../hooks/useFont';
-import ChartContainer from '../../ChartContainer';
-import { Inputs } from './BasicLineComponent.emb';
+import Container from '../../Container';
+import { Inputs } from './LineChart.emb';
 
 ChartJS.register(
   CategoryScale,
@@ -41,34 +41,31 @@ type Props = Inputs & {
   results: DataResponse;
 };
 
-export default (props: Props) => {
-  const { results, xAxis, metrics, title, showLegend, applyFill, showLabels, yAxisMin } = props;
-  const { data } = results;
+type Record = { [p: string]: string };
 
-  useFont();
+export default (props: Props) => {
+  const { results, title } = props;
 
   return (
-    <ChartContainer title={title} results={results}>
-      <Line
-        options={chartOptions(showLegend, showLabels, yAxisMin)}
-        data={chartData(data, xAxis, metrics, applyFill)}
-      />
-    </ChartContainer>
+    <Container title={title} results={results}>
+      <Line options={chartOptions(props)} data={chartData(props)} />
+    </Container>
   );
 };
 
-function chartData(data, xAxis, metrics, applyFill) {
-  const labels = data?.map((d) => format(d[xAxis.name]));
+function chartData(props: Props): ChartData<'line'> {
+  const { results, xAxis, metrics, applyFill } = props;
+  const labels = results?.data?.map((d) => format(d[xAxis.name]));
 
   return {
     labels,
     datasets: metrics.map((yAxis, i) => ({
       label: yAxis.title,
-      data: data?.map((d) => d[yAxis.name]),
+      data: results?.data?.map((d: Record) => d[yAxis.name]),
       backgroundColor: applyFill ? hexToRgb(COLORS[i % COLORS.length]) : COLORS[i % COLORS.length],
       borderColor: COLORS[i % COLORS.length],
       fill: applyFill,
-      cubicInterpolationMode: 'monotone'
+      cubicInterpolationMode: 'monotone' as const
     }))
   };
 }
@@ -83,8 +80,8 @@ function format(text: string) {
   return new Date(text).toLocaleString();
 }
 
-//convert hex to rgb and add opacity. Used when a color-fill is applied beneath the chart line(s).
-function hexToRgb(hex: string) {
+// Convert hex to rgb and add opacity. Used when a color-fill is applied beneath the chart line(s).
+function hexToRgb(hex: string): string {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 
   return result
@@ -92,10 +89,10 @@ function hexToRgb(hex: string) {
         result[3],
         16
       )}, 0.3)`
-    : null;
+    : '';
 }
 
-function chartOptions(showLegend, showLabels, yAxisMin): ChartOptions<'line'> {
+function chartOptions(props: Props): ChartOptions<'line'> {
   return {
     responsive: true,
     maintainAspectRatio: false,
@@ -103,24 +100,32 @@ function chartOptions(showLegend, showLabels, yAxisMin): ChartOptions<'line'> {
       padding: {
         left: 0,
         right: 0,
-        top: showLabels ? 20 : 0, //Added so the highest data labels fits
+        top: props.showLabels ? 20 : 0, // Added so the highest data labels fits
         bottom: 0
       }
     },
     scales: {
       y: {
-        min: yAxisMin,
-        grace: '0%', //add percent to add numbers on the y-axis above and below the max and min values
+        min: props.yAxisMin,
+        grace: '0%', // Add percent to add numbers on the y-axis above and below the max and min values
         grid: {
-          display: false // display grid lines
+          display: false
         },
         ticks: {
-          precision: 0 //rounding for y-axis values
+          precision: 0
+        },
+        title: {
+          display: !!props.yAxisTitle,
+          text: props.yAxisTitle
         }
       },
       x: {
         grid: {
-          display: false // display grid lines
+          display: false
+        },
+        title: {
+          display: !!props.xAxisTitle,
+          text: props.xAxisTitle
         }
       }
     },
@@ -130,7 +135,7 @@ function chartOptions(showLegend, showLabels, yAxisMin): ChartOptions<'line'> {
     },
     plugins: {
       legend: {
-        display: showLegend,
+        display: props.showLegend,
         position: 'bottom',
         labels: {
           usePointStyle: true,
@@ -139,7 +144,7 @@ function chartOptions(showLegend, showLabels, yAxisMin): ChartOptions<'line'> {
       },
       datalabels: {
         align: 'top',
-        display: showLabels ? 'auto' : false
+        display: props.showLabels ? 'auto' : false
       }
     }
   };

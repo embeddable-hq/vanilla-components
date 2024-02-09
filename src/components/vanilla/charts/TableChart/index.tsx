@@ -2,11 +2,10 @@ import { DimensionOrMeasure, OrderBy, OrderDirection } from '@embeddable.com/cor
 import { DataResponse, useEmbeddableState } from '@embeddable.com/react';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 
-import useFont from '../../../hooks/useFont';
 import useResize from '../../../hooks/useResize';
-import ChartContainer from '../../ChartContainer';
+import Container from '../../Container';
 import { ChevronLeft, ChevronRight, SortDown, SortUp } from '../../icons';
-import { Inputs } from './Table.emb';
+import { Inputs } from './TableChart.emb';
 
 type Props = Inputs & {
   limit?: number;
@@ -35,8 +34,6 @@ export default (props: Props) => {
     }
     return text;
   };
-
-  useFont();
 
   const [meta, setMeta] = useEmbeddableState({
     page: 0,
@@ -93,7 +90,7 @@ export default (props: Props) => {
   );
 
   return (
-    <ChartContainer title={props.title} results={props.tableData}>
+    <Container title={props.title} results={props.tableData}>
       <div className="grow flex flex-col justify-start w-full overflow-x-auto font-embeddable text-sm">
         <div
           className="grow overflow-hidden relative"
@@ -183,6 +180,6 @@ export default (props: Props) => {
           }`}
         />
       </div>
-    </ChartContainer>
+    </Container>
   );
 };

@@ -4,11 +4,9 @@ import { scaleLinear } from 'd3-scale';
 import React, { useMemo, useRef } from 'react';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 
-import useFont from '../../../hooks/useFont';
-import ChartContainer from '../../ChartContainer';
+import Container from '../../Container';
 import Spinner from '../../Spinner';
 import Title from '../../Title';
-import '../../index.css';
 import { Inputs } from './MapChart.emb';
 import geography from './geography.json';
 
@@ -34,8 +32,6 @@ const hoverColor = '#0957cb';
 export default (props: Props) => {
   const box = useRef<HTMLDivElement | null>(null);
   const tooltip = useRef<HTMLDivElement | null>(null);
-
-  useFont();
 
   const [data, maxMetric] = useMemo((): [{ [segment: string]: number }, number] => {
     let maxMetric = 0;
@@ -63,7 +59,7 @@ export default (props: Props) => {
   }, [maxMetric]);
 
   return (
-    <ChartContainer title={props.title} results={props.db}>
+    <Container title={props.title} results={props.db}>
       <div className="h-full relative font-embeddable text-sm flex flex-col">
         <Title title={props.title} />
         <div className="relative aspect-[1.87] overflow-hidden cursor-pointer">
@@ -136,6 +132,6 @@ export default (props: Props) => {
           />
         </div>
       </div>
-    </ChartContainer>
+    </Container>
   );
 };

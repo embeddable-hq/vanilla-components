@@ -4,7 +4,7 @@ import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 import Component from './index';
 
 export const meta: EmbeddedComponentMeta = {
-  name: 'BasicPieComponent',
+  name: 'PieChart',
   label: 'Chart: Pie',
   classNames: ['inside-card'],
   inputs: [

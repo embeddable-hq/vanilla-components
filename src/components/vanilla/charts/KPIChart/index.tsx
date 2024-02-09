@@ -1,10 +1,8 @@
 import { DataResponse } from '@embeddable.com/react';
 import React, { useMemo } from 'react';
 
-import useFont from '../../../hooks/useFont';
-import ChartContainer from '../../ChartContainer';
+import Container from '../../Container';
 import { WarningIcon } from '../../icons';
-import '../../index.css';
 import { Inputs } from './KPIChart.emb';
 
 type Props = Inputs & {
@@ -12,8 +10,6 @@ type Props = Inputs & {
 };
 
 export default (props: Props) => {
-  useFont();
-
   const n = useMemo(() => {
     if (!props.value?.data?.length) return;
 
@@ -40,7 +36,7 @@ export default (props: Props) => {
   }
 
   return (
-    <ChartContainer title={props.title}>
+    <Container title={props.title}>
       <div className="relative grow items-center justify-center flex min-h-[40px]">
         <div className="flex items-center justify-center font-embeddable text-[#333942] text-[40px] font-bold">
           {props.prefix}
@@ -48,6 +44,6 @@ export default (props: Props) => {
           {props.suffix}
         </div>
       </div>
-    </ChartContainer>
+    </Container>
   );
 };

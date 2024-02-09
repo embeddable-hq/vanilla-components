@@ -1,10 +1,12 @@
 import { DataResponse } from '@embeddable.com/react';
 import React, { ReactNode, useRef } from 'react';
 
+import useFont from '../hooks/useFont';
 import useResize from '../hooks/useResize';
 import Spinner from './Spinner';
 import Title from './Title';
 import { WarningIcon } from './icons';
+import './index.css';
 
 type Props = {
   title?: string;
@@ -12,14 +14,14 @@ type Props = {
   children?: ReactNode;
 };
 
-export default function ChartContainer(props: Props) {
+export default (props: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, height] = useResize(ref);
-
   const { results, title, children } = props;
   const { isLoading, error, data } = results || {};
+  const noData = results && !isLoading && !data?.length;
 
-  const noData = !isLoading && !data?.length;
+  useFont();
 
   if (error || noData) {
     return (
@@ -42,4 +44,4 @@ export default function ChartContainer(props: Props) {
       </div>
     </div>
   );
-}
+};
