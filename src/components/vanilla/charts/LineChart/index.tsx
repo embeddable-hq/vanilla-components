@@ -1,188 +1,151 @@
 import { DataResponse } from '@embeddable.com/react';
-import { format, parseJSON } from 'date-fns';
-import React, { useEffect, useMemo, useRef } from 'react';
-import Chart from 'react-apexcharts';
+import {
+  CategoryScale,
+  ChartData,
+  Chart as ChartJS,
+  ChartOptions,
+  Filler,
+  Legend,
+  LineElement,
+  LinearScale,
+  PointElement,
+  Title,
+  Tooltip
+} from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import React from 'react';
+import { Line } from 'react-chartjs-2';
 
-import { COLORS, EMB_FONT, SMALL_FONT_SIZE } from '../../../constants';
-import useFont from '../../../hooks/useFont';
-import Spinner from '../../Spinner';
-import Title from '../../Title';
-import { WarningIcon } from '../../icons';
-import '../../index.css';
+import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
+import Container from '../../Container';
 import { Inputs } from './LineChart.emb';
 
-const granularityFormats = {
-  second: 'hh:mm.ss d MMM',
-  minute: 'hh:mm d MMM',
-  hour: 'hh:mm d MMM',
-  day: 'd MMM',
-  week: 'd MMM',
-  month: 'LLL yy',
-  quarter: 'qqq yy',
-  year: 'yy'
-};
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler,
+  ChartDataLabels
+);
+
+ChartJS.defaults.font.size = parseInt(SMALL_FONT_SIZE);
+ChartJS.defaults.color = LIGHT_FONT;
+ChartJS.defaults.font.family = EMB_FONT;
+ChartJS.defaults.plugins.tooltip.enabled = true;
 
 type Props = Inputs & {
-  line: DataResponse;
+  results: DataResponse;
 };
+
+type Record = { [p: string]: string };
 
 export default (props: Props) => {
-  const ref = useRef<HTMLDivElement | null>(null);
-
-  useFont();
-
-  useEffect(() => {
-    console.log('LineChart props', props);
-  }, [props]);
-
-  const { labels, series } = useMemo(() => {
-    type Memo = {
-      labels: string[];
-      grouped: { [a: string]: { [b: string]: number } };
-    };
-
-    if (!props.line?.data || !props.metrics?.length || !props.xAxis?.name) {
-      return { labels: [], series: [] };
-    }
-
-    const { grouped, labels } = props.line.data.reduce(
-      (memo: Memo, record) => {
-        const date = record[props.xAxis?.name || ''] as string;
-
-        if (!date) return memo;
-
-        const formatted = format(parseJSON(date), granularityFormats[props.granularity || 'day']);
-
-        props.metrics.forEach((m) => {
-          memo.grouped[m.name] = memo.grouped[m.name] || {};
-
-          memo.grouped[m.name][formatted] = parseInt(`${record[m.name] || 0}`, 10);
-        });
-
-        if (!memo.labels.includes(formatted)) memo.labels.push(formatted);
-
-        return memo;
-      },
-      { labels: [], grouped: {} }
-    );
-
-    const series = Object.keys(grouped).map((name) => ({
-      name: props.metrics.find((m) => m.name === name)?.title || '',
-      data: labels.map((label) => grouped[name][label] || 0)
-    }));
-
-    return { labels, series };
-  }, [props]);
-
-  if (props.line?.error) {
-    return (
-      <div className="h-full flex items-center justify-center font-embeddable text-sm">
-        <WarningIcon />
-        <div className="whitespace-pre-wrap p-4 max-w-sm text-xs">{props.line?.error}</div>
-      </div>
-    );
-  }
+  const { results, title } = props;
 
   return (
-    <div className="h-full relative font-embeddable text-sm flex flex-col">
-      <Title title={props.title} />
-      <div className="relative grow" ref={ref}>
-        <Chart
-          className="line-chart"
-          height="100%"
-          options={{
-            colors: COLORS,
-            chart: {
-              type: 'line',
-              toolbar: {
-                show: false
-              },
-              zoom: {
-                enabled: false
-              },
-              parentHeightOffset: 0,
-              fontFamily: EMB_FONT
-            },
-            grid: {
-              show: false,
-              padding: { left: 0, right: 0, top: 0, bottom: 0 }
-            },
-            xaxis: {
-              type: 'category',
-              categories: labels,
-              title: { text: props.xAxisTitle, style: { color: '#333942' } },
-              labels: {
-                style: { fontSize: SMALL_FONT_SIZE, colors: ['#959CA8'] },
-                hideOverlappingLabels: true
-              },
-              overwriteCategories: labels,
-              crosshairs: { show: false }
-            },
-            yaxis: {
-              title: { text: props.yAxisTitle, style: { color: '#333942' } },
-              crosshairs: { show: false },
-              labels: { style: { fontSize: SMALL_FONT_SIZE, colors: ['#959CA8'] } }
-            },
-            tooltip: {
-              custom: (opt) => {
-                const left = opt.w.globals.clientX - 50;
-                const top = opt.w.globals.clientY - 120;
-                const color = opt.w.config.colors[opt.seriesIndex];
-                const label = series[opt.seriesIndex]?.name || '';
-                const value = opt.series[opt.seriesIndex][opt.dataPointIndex];
-                const offsets = opt.w.globals.dom.baseEl.getBoundingClientRect();
-
-                return `<div style="font-size: ${SMALL_FONT_SIZE}; left: ${
-                  left - offsets.left
-                }px; top: ${top - offsets.top}px;" class="chart-tooltip">
-                  <strong>${value}</strong>
-                  <div><b style="background-color:${color}"></b>${label}</div>
-                </div>`;
-              },
-              style: {
-                fontSize: '9px'
-              }
-            },
-            legend: {
-              show: !!props.showLegend,
-              showForSingleSeries: true,
-              position: 'bottom',
-              markers: {
-                radius: 100
-              },
-              itemMargin: {
-                horizontal: 10,
-                vertical: 5
-              },
-              fontSize: SMALL_FONT_SIZE
-            },
-            dataLabels: {
-              enabled: !!props.showLabels,
-              dropShadow: { enabled: false },
-              background: { enabled: false },
-              offsetY: -6,
-              style: { colors: ['##333942'], fontSize: SMALL_FONT_SIZE }
-            },
-            stroke: {
-              show: true,
-              width: 3,
-              curve: 'smooth'
-            },
-            plotOptions: {
-              bar: {
-                borderRadius: 5,
-                columnWidth: 22
-              }
-            }
-          }}
-          series={series}
-          type="line"
-        />
-        {props.line?.isLoading && !props.line?.data?.length && (
-          <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
-        )}
-        <Spinner show={props.line?.isLoading} />
-      </div>
-    </div>
+    <Container title={title} results={results}>
+      <Line options={chartOptions(props)} data={chartData(props)} />
+    </Container>
   );
 };
+
+function chartData(props: Props): ChartData<'line'> {
+  const { results, xAxis, metrics, applyFill } = props;
+  const labels = results?.data?.map((d) => format(d[xAxis.name]));
+
+  return {
+    labels,
+    datasets: metrics.map((yAxis, i) => ({
+      label: yAxis.title,
+      data: results?.data?.map((d: Record) => d[yAxis.name]),
+      backgroundColor: applyFill ? hexToRgb(COLORS[i % COLORS.length]) : COLORS[i % COLORS.length],
+      borderColor: COLORS[i % COLORS.length],
+      fill: applyFill,
+      cubicInterpolationMode: 'monotone' as const
+    }))
+  };
+}
+
+function format(text: string) {
+  if (!text) return text;
+
+  if (text.endsWith('T00:00:00.000')) {
+    return new Intl.DateTimeFormat().format(new Date(text));
+  }
+
+  return new Date(text).toLocaleString();
+}
+
+// Convert hex to rgb and add opacity. Used when a color-fill is applied beneath the chart line(s).
+function hexToRgb(hex: string): string {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+
+  return result
+    ? `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(
+        result[3],
+        16
+      )}, 0.3)`
+    : '';
+}
+
+function chartOptions(props: Props): ChartOptions<'line'> {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    layout: {
+      padding: {
+        left: 0,
+        right: 0,
+        top: props.showLabels ? 20 : 0, // Added so the highest data labels fits
+        bottom: 0
+      }
+    },
+    scales: {
+      y: {
+        min: props.yAxisMin,
+        grace: '0%', // Add percent to add numbers on the y-axis above and below the max and min values
+        grid: {
+          display: false
+        },
+        ticks: {
+          precision: 0
+        },
+        title: {
+          display: !!props.yAxisTitle,
+          text: props.yAxisTitle
+        }
+      },
+      x: {
+        grid: {
+          display: false
+        },
+        title: {
+          display: !!props.xAxisTitle,
+          text: props.xAxisTitle
+        }
+      }
+    },
+    animation: {
+      duration: 400,
+      easing: 'linear'
+    },
+    plugins: {
+      legend: {
+        display: props.showLegend,
+        position: 'bottom',
+        labels: {
+          usePointStyle: true,
+          boxHeight: 8
+        }
+      },
+      datalabels: {
+        align: 'top',
+        display: props.showLabels ? 'auto' : false
+      }
+    }
+  };
+}

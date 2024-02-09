@@ -2,18 +2,20 @@ import { DimensionOrMeasure, OrderBy, OrderDirection } from '@embeddable.com/cor
 import { DataResponse, useEmbeddableState } from '@embeddable.com/react';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 
-import useFont from '../../../hooks/useFont';
 import useResize from '../../../hooks/useResize';
-import Spinner from '../../Spinner';
-import Title from '../../Title';
-import { ChevronLeft, ChevronRight, SortDown, SortUp, WarningIcon } from '../../icons';
-import { Inputs } from './Table.emb';
+import Container from '../../Container';
+import { ChevronLeft, ChevronRight, SortDown, SortUp } from '../../icons';
+import { Inputs } from './TableChart.emb';
 
 type Props = Inputs & {
   limit?: number;
   tableData: DataResponse;
   defaultSort?: OrderBy[];
 };
+
+type Meta = { page: number; maxRowsFit: number; sort: OrderBy[] };
+
+type Record = { [p: string]: string };
 
 export default (props: Props) => {
   const { columns, tableData } = props;
@@ -33,13 +35,11 @@ export default (props: Props) => {
     return text;
   };
 
-  useFont();
-
   const [meta, setMeta] = useEmbeddableState({
     page: 0,
     maxRowsFit: 0,
     sort: props.defaultSort
-  }) as any;
+  }) as [Meta, (f: (m: Meta) => Meta) => void];
 
   const updateSort = useCallback(
     (column: DimensionOrMeasure) => {
@@ -56,7 +56,7 @@ export default (props: Props) => {
         sort.unshift(newOrder);
       }
 
-      setMeta({ ...meta, sort, page: 0 });
+      setMeta((meta) => ({ ...meta, sort, page: 0 }));
     },
     [meta, setMeta]
   );
@@ -66,7 +66,7 @@ export default (props: Props) => {
       const heightWithoutHead = height - 40;
       const maxRowsFit = Math.floor(heightWithoutHead / 45);
 
-      setMeta({ ...meta, maxRowsFit });
+      setMeta((meta) => ({ ...meta, maxRowsFit }));
     }, 100);
 
     return () => {
@@ -77,7 +77,7 @@ export default (props: Props) => {
   const rows = useMemo(
     () =>
       tableData?.data?.map(
-        (record) =>
+        (record: Record) =>
           columns?.map((prop) => {
             if (!prop) return '';
 
@@ -86,21 +86,11 @@ export default (props: Props) => {
             return `${parsed}` === record[prop.name] ? parsed : record[prop.name] || '';
           }) || []
       ) || [],
-    [tableData]
+    [tableData, columns]
   );
 
-  if (props.tableData?.error) {
-    return (
-      <div className="h-full flex items-center justify-center font-embeddable text-sm">
-        <WarningIcon />
-        <div className="whitespace-pre-wrap p-4 max-w-sm text-xs">{props.tableData?.error}</div>
-      </div>
-    );
-  }
-
   return (
-    <div className="h-full relative flex flex-col">
-      <Title title={props.title} />
+    <Container title={props.title} results={props.tableData}>
       <div className="grow flex flex-col justify-start w-full overflow-x-auto font-embeddable text-sm">
         <div
           className="grow overflow-hidden relative"
@@ -122,7 +112,7 @@ export default (props: Props) => {
                       >
                         <div className="flex items-center justify-start basis-0 grow h-5 text-[#333942] hover:text-black font-bold text-sm relative w-full">
                           <div className="absolute left-0 top-0 h-full w-full flex items-center">
-                            <span className="block text-ellipsis overflow-hidden">{h?.title}</span>
+                            <span className="block text-ellipsis overflow-hidden whitespace-nowrap">{h?.title}</span>
                             <div
                               className={`${
                                 sortIndex === 0 ? 'text-[#FF6B6C]' : 'text-[#333942]'
@@ -172,7 +162,7 @@ export default (props: Props) => {
       <div className="flex mt-2 items-center justify-center text-[12px] font-bold text-[#333942] select-none">
         <ChevronLeft
           onClick={() => {
-            setMeta({ ...meta, page: Math.max(0, (meta?.page || 0) - 1) });
+            setMeta((meta) => ({ ...meta, page: Math.max(0, (meta?.page || 0) - 1) }));
           }}
           className={`cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center ${
             meta?.page === 0 ? 'opacity-50 pointer-events-none' : ''
@@ -181,14 +171,15 @@ export default (props: Props) => {
         <span className="mx-4">Page {(meta?.page || 0) + 1}</span>
         <ChevronRight
           onClick={() => {
-            setMeta({ ...meta, page: (meta?.page || 0) + 1 });
+            setMeta((meta) => ({ ...meta, page: (meta?.page || 0) + 1 }));
           }}
           className={`cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center ${
-            props.limit ? rows.length < props.limit : false ? 'opacity-50 pointer-events-none' : ''
+            (props.limit ? rows.length < props.limit : false)
+              ? 'opacity-50 pointer-events-none'
+              : ''
           }`}
         />
       </div>
-      <Spinner show={!meta || props.tableData?.isLoading} />
-    </div>
+    </Container>
   );
 };

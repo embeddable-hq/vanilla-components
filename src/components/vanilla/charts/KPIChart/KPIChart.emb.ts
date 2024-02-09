@@ -5,7 +5,9 @@ import Component from './index';
 
 export const meta: EmbeddedComponentMeta = {
   name: 'KPIChart',
-  label: 'KPI',
+  label: 'Chart: Single KPI',
+  defaultWidth: 200,
+  defaultHeight: 150,
   classNames: ['inside-card'],
   inputs: [
     {

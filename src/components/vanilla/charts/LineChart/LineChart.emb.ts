@@ -5,7 +5,7 @@ import Component from './index';
 
 export const meta: EmbeddedComponentMeta = {
   name: 'LineChart',
-  label: 'Line chart (time-series)',
+  label: 'Chart: Line (time-series)',
   classNames: ['inside-card'],
   inputs: [
     {
@@ -42,8 +42,8 @@ export const meta: EmbeddedComponentMeta = {
     {
       name: 'metrics',
       type: 'measure',
-      label: 'Metrics',
       array: true,
+      label: 'Metrics',
       config: {
         dataset: 'ds'
       },
@@ -65,16 +65,30 @@ export const meta: EmbeddedComponentMeta = {
       name: 'showLabels',
       type: 'boolean',
       label: 'Show Labels',
+      category: 'Chart settings',
+      defaultValue: false
+    },
+    {
+      name: 'applyFill',
+      type: 'boolean',
+      label: 'Color fill space under line',
+      category: 'Chart settings',
+      defaultValue: false
+    },
+    {
+      name: 'yAxisMin',
+      type: 'number',
+      label: 'Y-Axis minimum value',
       category: 'Chart settings'
     },
     {
       name: 'showLegend',
       type: 'boolean',
       label: 'Show Legend',
-      category: 'Chart settings'
+      category: 'Chart settings',
+      defaultValue: false
     }
-  ],
-  events: []
+  ]
 };
 
 export type Inputs = {
@@ -83,8 +97,10 @@ export type Inputs = {
   xAxis: Dimension;
   granularity: Granularity;
   metrics: Measure[];
+  yAxisMin?: number;
   xAxisTitle?: string;
   yAxisTitle?: string;
+  applyFill?: boolean;
   showLabels?: boolean;
   showLegend?: boolean;
 };
@@ -93,7 +109,7 @@ export default defineComponent<Inputs>(Component, meta, {
   props: (inputs) => {
     return {
       ...inputs,
-      line: loadData({
+      results: loadData({
         from: inputs.ds,
         timeDimensions: [
           {

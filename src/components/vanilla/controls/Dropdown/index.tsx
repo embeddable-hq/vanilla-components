@@ -8,12 +8,11 @@ import React, {
   useRef,
   useState
 } from 'react';
+import { twMerge } from 'tailwind-merge';
 
-import useFont from '../../../hooks/useFont';
+import Container from '../../Container';
 import Spinner from '../../Spinner';
-import Title from '../../Title';
-import { ChevronDown, ClearIcon, WarningIcon } from '../../icons';
-import '../../index.css';
+import { ChevronDown, ClearIcon } from '../../icons';
 import { Inputs } from './Dropdown.emb';
 
 type Props = Inputs & {
@@ -22,9 +21,11 @@ type Props = Inputs & {
   options: DataResponse;
   unclearable?: boolean;
   inputClassName?: string;
-  onChange: (v: any) => void;
+  onChange: (v: string) => void;
   searchProperty?: string;
 };
+
+type Record = { [p: string]: string };
 
 let debounce: number | undefined = undefined;
 
@@ -36,13 +37,11 @@ export default (props: Props) => {
   const [search, setSearch] = useState('');
   const [_, setServerSearch] = useEmbeddableState({
     [props.searchProperty || 'search']: ''
-  }) as any;
+  }) as [Record, (f: (m: Record) => Record) => void];
 
   useEffect(() => {
     setValue(props.defaultValue);
   }, [props.defaultValue]);
-
-  useFont();
 
   const performSearch = useCallback(
     (newSearch: string) => {
@@ -50,11 +49,11 @@ export default (props: Props) => {
 
       clearTimeout(debounce);
 
-      debounce = setTimeout(() => {
-        setServerSearch((s: any) => ({ ...s, [props.searchProperty || 'search']: newSearch }));
-      }, 500) as any;
+      debounce = window.setTimeout(() => {
+        setServerSearch((s) => ({ ...s, [props.searchProperty || 'search']: newSearch }));
+      }, 500);
     },
-    [setSearch, setServerSearch]
+    [setSearch, setServerSearch, props.searchProperty]
   );
 
   const set = useCallback(
@@ -67,7 +66,7 @@ export default (props: Props) => {
 
       clearTimeout(debounce);
     },
-    [setValue, props.onChange, setSearch, performSearch]
+    [setValue, props, performSearch]
   );
 
   useLayoutEffect(() => {
@@ -105,25 +104,13 @@ export default (props: Props) => {
     [props, value, set]
   );
 
-  if (props.options?.error) {
-    return (
-      <div className="h-full flex items-center justify-center font-embeddable text-sm">
-        <WarningIcon />
-        <div className="whitespace-pre-wrap px-2 max-h-full overflow-hidden max-w-sm text-xs">
-          {props.options?.error}
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className={`dropdown font-embeddable text-sm ${props.className || 'relative w-full'}`}>
-      <Title title={props.title} />
+    <Container title={props.title} results={props.options}>
       <div
-        className={
-          props.inputClassName ||
-          'relative rounded-xl w-full h-10 border border-[#DADCE1] flex items-center'
-        }
+        className={twMerge(
+          'relative rounded-xl w-full h-10 border border-[#DADCE1] flex items-center',
+          props.className
+        )}
       >
         <input
           ref={ref}
@@ -172,6 +159,6 @@ export default (props: Props) => {
           </div>
         )}
       </div>
-    </div>
+    </Container>
   );
 };

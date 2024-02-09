@@ -4,33 +4,28 @@ import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 import Component from './index';
 
 export const meta: EmbeddedComponentMeta = {
-  name: 'DonutChart',
-  label: 'Donut Chart',
+  name: 'PieChart',
+  label: 'Chart: Pie',
   classNames: ['inside-card'],
   inputs: [
     {
       name: 'title',
       type: 'string',
       label: 'Title',
-      description: 'The title for the chart',
-      category: 'Configure chart'
+      description: 'The title for the chart'
     },
     {
       name: 'ds',
       type: 'dataset',
-      label: 'Dataset',
-      description: 'Dataset',
-      defaultValue: false,
-      category: 'Configure chart'
+      label: 'Dataset to display'
     },
     {
-      name: 'segments',
+      name: 'slice',
       type: 'dimension',
-      label: 'Segments',
+      label: 'Slice',
       config: {
         dataset: 'ds'
-      },
-      category: 'Configure chart'
+      }
     },
     {
       name: 'metric',
@@ -38,32 +33,24 @@ export const meta: EmbeddedComponentMeta = {
       label: 'Metric',
       config: {
         dataset: 'ds'
-      },
-      category: 'Configure chart'
+      }
     },
     {
-      name: 'showPercentages',
+      name: 'showLegend',
       type: 'boolean',
-      label: 'Show as Percentage',
-      category: 'Chart settings'
+      label: 'Turn on the legend',
+      defaultValue: false
+    },
+    {
+      name: 'maxSegments',
+      type: 'number',
+      label: 'Max legend items'
     },
     {
       name: 'showLabels',
       type: 'boolean',
       label: 'Show Labels',
-      category: 'Chart settings'
-    },
-    {
-      name: 'showLegend',
-      type: 'boolean',
-      label: 'Show Legend',
-      category: 'Chart settings'
-    },
-    {
-      name: 'maxSegments',
-      type: 'number',
-      label: 'Max Legend Items',
-      category: 'Chart settings'
+      defaultValue: false
     }
   ]
 };
@@ -71,21 +58,20 @@ export const meta: EmbeddedComponentMeta = {
 export type Inputs = {
   title?: string;
   ds: Dataset;
-  segments: Dimension;
+  slice: Dimension;
   metric: Measure;
-  showPercentages?: boolean;
+  maxSegments?: number;
   showLabels?: boolean;
   showLegend?: boolean;
-  maxSegments?: number;
 };
 
 export default defineComponent<Inputs>(Component, meta, {
   props: (inputs) => {
     return {
       ...inputs,
-      donut: loadData({
+      results: loadData({
         from: inputs.ds,
-        dimensions: [inputs.segments],
+        dimensions: [inputs.slice],
         measures: [inputs.metric]
       })
     };
