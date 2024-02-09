@@ -1,5 +1,5 @@
 import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser';
-import { format, getYear } from 'date-fns';
+import { endOfDay, format, getYear } from 'date-fns';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
@@ -139,6 +139,8 @@ export default (props: Props) => {
                 setFocus(false);
 
                 setTriggerBlur(false);
+
+                range.to = endOfDay(range.to);
 
                 props.onChange(range);
               }}
