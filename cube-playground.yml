@@ -1,0 +1,14 @@
+version: "2.2"
+ 
+services:
+  cube:
+    image: cubejs/cube:latest
+    ports:
+      - 4000:4000
+      - 15432:15432
+      - 13306:13306
+    environment:
+      - CUBEJS_DEV_MODE=true
+      - CUBEJS_SCHEMA_PATH=src/models
+    volumes:
+      - .:/cube/conf

@@ -4,10 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "embeddable:dev": "embeddable dev",
     "embeddable:build": "embeddable build",
     "embeddable:push": "embeddable push",
     "embeddable:login": "embeddable login",
+    "embeddable:dev": "embeddable dev",
+    "cube:playground": "docker-compose -f ./cube-playground.yml up",
+    "cube:cubestore": "mysql -h 127.0.0.1 -P 13306 --user=cubestore -pcubestore",
     "dev": "embeddable dev",
     "build": "embeddable build",
     "push": "embeddable push",

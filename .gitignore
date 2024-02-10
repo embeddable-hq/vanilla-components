@@ -13,6 +13,10 @@ dist-ssr
 *.local
 .embeddable-build
 
+# cube
+.env
+.cubestore
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
