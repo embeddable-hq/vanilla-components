@@ -9,6 +9,6 @@ services:
       - 13306:13306
     environment:
       - CUBEJS_DEV_MODE=true
-      - CUBEJS_SCHEMA_PATH=src/models
+      - CUBEJS_SCHEMA_PATH=models
     volumes:
       - .:/cube/conf

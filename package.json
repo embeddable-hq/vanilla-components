@@ -8,7 +8,7 @@
     "embeddable:push": "embeddable push",
     "embeddable:login": "embeddable login",
     "embeddable:dev": "NODE_OPTIONS='--max-old-space-size=4096' embeddable dev",
-    "cube:playground": "docker-compose -f ./cube-playground.yml up",
+    "cube:playground": "docker-compose -f ./src/cube-playground.yml up",
     "cube:cubestore": "mysql -h 127.0.0.1 -P 13306 --user=cubestore -pcubestore",
     "dev": "NODE_OPTIONS='--max-old-space-size=4096' embeddable dev",
     "build": "embeddable build",

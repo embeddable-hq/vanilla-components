@@ -3,7 +3,10 @@ cubes:
     title: My customers
     sql_table: public.customers 
 
-    # sql: select * from public.customers where ... # alternative to sql_table
+    # sql: >
+    #   select * 
+    #   from public.customers 
+    #   where country = '{COMPILE_CONTEXT.securityContext.country}' 
 
     dimensions:
       - name: id
