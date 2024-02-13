@@ -62,12 +62,6 @@ export const meta: EmbeddedComponentMeta = {
       defaultValue: false
     },
     {
-      name: 'yAxisMin',
-      type: 'number',
-      label: 'Y-Axis minimum value',
-      defaultValue: 0
-    },
-    {
       name: 'displayHorizontally',
       type: 'boolean',
       label: 'Display Horizontally',

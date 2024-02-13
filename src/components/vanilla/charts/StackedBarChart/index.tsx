@@ -97,12 +97,14 @@ function chartData(props: Props): ChartData<'bar'> {
       data: labels.map((label) => {
         const segmentValue = resultMap[label][s];
         return displayAsPercentage && segmentValue !== null //skip null values
-          ? Math.round(
-              (segmentValue * 100) /
+          ? parseFloat(
+              (
+                (segmentValue * 100) /
                 segments.reduce(
                   (accumulator, segment) => resultMap[label][segment] + accumulator,
                   0
                 )
+              ).toFixed(2)
             )
           : segmentValue;
       }),

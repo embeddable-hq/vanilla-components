@@ -5,7 +5,7 @@ import Component from './index';
 
 export const meta: EmbeddedComponentMeta = {
   name: 'Dropdown',
-  label: 'Dropdown',
+  label: 'Control: Dropdown',
   classNames: ['on-top'],
   inputs: [
     {

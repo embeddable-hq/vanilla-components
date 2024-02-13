@@ -3,7 +3,6 @@ import { ChartOptions } from 'chart.js';
 export default function getBarChartOptions({
   showLegend = false,
   showLabels = false,
-  yAxisMin = 0,
   displayHorizontally = false,
   stacked = false,
   stackMetrics = false,
@@ -26,11 +25,11 @@ export default function getBarChartOptions({
     scales: {
       y: {
         stacked: stacked || stackMetrics,
-        min: yAxisMin,
         grace: '0%',
         grid: {
           display: false
         },
+        max: displayAsPercentage ? 100 : undefined,
         ticks: {
           precision: 0,
           //https://www.chartjs.org/docs/latest/axes/labelling.html

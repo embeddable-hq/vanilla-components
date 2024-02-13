@@ -39,12 +39,13 @@ export const meta: EmbeddedComponentMeta = {
       name: 'showLegend',
       type: 'boolean',
       label: 'Turn on the legend',
-      defaultValue: false
+      defaultValue: true
     },
     {
       name: 'maxSegments',
       type: 'number',
-      label: 'Max legend items'
+      label: 'Max Legend items',
+      defaultValue: 8
     },
     {
       name: 'showLabels',

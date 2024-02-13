@@ -43,17 +43,11 @@ export const meta: EmbeddedComponentMeta = {
       category: 'Configure chart'
     },
     {
-      name: 'yAxisMin',
-      type: 'number',
-      label: 'Y-Axis minimum value',
-      category: 'Chart settings'
-    },
-    {
       name: 'showLegend',
       type: 'boolean',
-      label: 'Show as Percentage',
+      label: 'Show Legend',
       category: 'Chart settings',
-      defaultValue: false
+      defaultValue: true
     },
     {
       name: 'showLabels',
@@ -96,7 +90,6 @@ export type Inputs = {
   ds: Dataset;
   xAxis: Dimension;
   metrics: Measure[];
-  showPercentages?: boolean;
   showLabels?: boolean;
   showLegend?: boolean;
   maxSegments?: number;

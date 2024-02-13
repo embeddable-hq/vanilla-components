@@ -5,7 +5,7 @@ import Component from './index';
 
 export const meta: EmbeddedComponentMeta = {
   name: 'NumberInput',
-  label: 'Number Input',
+  label: 'Control: Number',
   inputs: [
     {
       name: 'title',
