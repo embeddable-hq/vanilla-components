@@ -16,6 +16,7 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
+import format from '../../../util/format';
 import getBarChartOptions from '../../../util/getBarChartOptions';
 import Container from '../../Container';
 import { Inputs } from './StackedBarChart.emb';
@@ -86,7 +87,7 @@ function chartData(props: Props): ChartData<'bar'> {
   });
 
   return {
-    labels: labels.map((l) => (l?.length > 15 ? `${l.substring(0, 15)}...` : l)),
+    labels: labels.map((l) => format(l, { truncate: 15, meta: xAxis?.meta })),
     datasets: segments.map((s, i) => ({
       barPercentage: 0.6,
       barThickness: 'flex',

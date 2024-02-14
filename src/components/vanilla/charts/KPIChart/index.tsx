@@ -1,6 +1,7 @@
 import { DataResponse } from '@embeddable.com/react';
 import React, { useMemo } from 'react';
 
+import format from '../../../util/format';
 import Container from '../../Container';
 import { WarningIcon } from '../../icons';
 import { Inputs } from './KPIChart.emb';
@@ -21,9 +22,10 @@ export default (props: Props) => {
 
     if (n !== `${num}`) return n;
 
-    const formatter = new Intl.NumberFormat();
-
-    return formatter.format(num);
+    return format(n, {
+      type: 'number',
+      meta: props.metric?.meta
+    });
   }, [props]);
 
   if (props.value?.error) {

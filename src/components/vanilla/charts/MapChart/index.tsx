@@ -4,6 +4,7 @@ import { scaleLinear } from 'd3-scale';
 import React, { useMemo, useRef } from 'react';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 
+import format from '../../../util/format';
 import Container from '../../Container';
 import Spinner from '../../Spinner';
 import Title from '../../Title';
@@ -18,8 +19,6 @@ type Props = Inputs & {
 };
 
 type Record = { [p: string]: string };
-
-const formatter = new Intl.NumberFormat();
 
 const defaultColor = '#F5F4F6';
 
@@ -92,8 +91,9 @@ export default (props: Props) => {
                     return (
                       <Geography
                         onMouseEnter={() => {
-                          tooltip.current!.innerHTML = `${geo.properties.name}: ${formatter.format(
-                            value || 0
+                          tooltip.current!.innerHTML = `${geo.properties.name}: ${format(
+                            `${value || 0}`,
+                            { type: 'number', meta: props.metric?.meta }
                           )}`;
                         }}
                         onMouseLeave={() => {

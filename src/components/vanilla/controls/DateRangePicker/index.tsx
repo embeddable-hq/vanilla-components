@@ -1,9 +1,10 @@
 import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser';
-import { endOfDay, format, getYear } from 'date-fns';
+import { endOfDay, getYear } from 'date-fns';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
+import format from '../../../util/format';
 import Container from '../../Container';
 import { CalendarIcon, ChevronLeft, ChevronRight } from '../../icons';
 import Dropdown from '../Dropdown';
@@ -111,7 +112,10 @@ export default (props: Props) => {
           />
           <CalendarIcon className="mr-2 hidden sm:block" />
           {!!range?.from && !!range?.to
-            ? `${format(range.from, formatFrom)} - ${format(range.to, formatTo)}`
+            ? `${format(range.from.toJSON(), { dateFormat: formatFrom })} - ${format(
+                range.to.toJSON(),
+                { dateFormat: formatTo }
+              )}`
             : 'Select'}
           <div
             onClick={() => {
@@ -164,7 +168,9 @@ const CustomCaption = (props: CaptionProps) => {
       >
         <ChevronLeft />
       </button>
-      <span className="mx-auto text-sm">{format(props.displayMonth, 'MMMM yyy')}</span>
+      <span className="mx-auto text-sm">
+        {format(props.displayMonth.toJSON(), { dateFormat: 'MMMM yyy' })}
+      </span>
       <button
         className="w-7 h-7 bg-white rounded shadow border border-slate-500 justify-center items-center inline-flex"
         disabled={!nextMonth}
