@@ -12,12 +12,14 @@ export const meta: EmbeddedComponentMeta = {
       name: 'title',
       type: 'string',
       label: 'Title',
-      description: 'The title for the chart'
+      description: 'The title for the chart',
+      category: 'Configure chart'
     },
     {
       name: 'ds',
       type: 'dataset',
-      label: 'Dataset to display'
+      label: 'Dataset to display',
+      category: 'Configure chart'
     },
     {
       name: 'slice',
@@ -25,7 +27,8 @@ export const meta: EmbeddedComponentMeta = {
       label: 'Slice',
       config: {
         dataset: 'ds'
-      }
+      },
+      category: 'Configure chart'
     },
     {
       name: 'metric',
@@ -33,25 +36,29 @@ export const meta: EmbeddedComponentMeta = {
       label: 'Metric',
       config: {
         dataset: 'ds'
-      }
+      },
+      category: 'Configure chart'
     },
     {
       name: 'showLegend',
       type: 'boolean',
       label: 'Turn on the legend',
-      defaultValue: true
+      defaultValue: true,
+      category: 'Chart settings'
     },
     {
       name: 'maxSegments',
       type: 'number',
       label: 'Max Legend items',
-      defaultValue: 8
+      defaultValue: 8,
+      category: 'Chart settings'
     },
     {
       name: 'showLabels',
       type: 'boolean',
       label: 'Show Labels',
-      defaultValue: false
+      defaultValue: false,
+      category: 'Chart settings'
     }
   ]
 };

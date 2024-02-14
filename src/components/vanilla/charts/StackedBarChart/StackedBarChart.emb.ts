@@ -12,12 +12,14 @@ export const meta: EmbeddedComponentMeta = {
       name: 'title',
       type: 'string',
       label: 'Title',
-      description: 'The title for the chart'
+      description: 'The title for the chart',
+      category: 'Configure chart'
     },
     {
       name: 'ds',
       type: 'dataset',
-      label: 'Dataset to display'
+      label: 'Dataset to display',
+      category: 'Configure chart'
     },
     {
       name: 'xAxis',
@@ -25,7 +27,8 @@ export const meta: EmbeddedComponentMeta = {
       label: 'X-Axis',
       config: {
         dataset: 'ds'
-      }
+      },
+      category: 'Configure chart'
     },
     {
       name: 'segment',
@@ -33,7 +36,8 @@ export const meta: EmbeddedComponentMeta = {
       label: 'Segment',
       config: {
         dataset: 'ds'
-      }
+      },
+      category: 'Configure chart'
     },
     {
       name: 'metric',
@@ -41,37 +45,43 @@ export const meta: EmbeddedComponentMeta = {
       label: 'Metric',
       config: {
         dataset: 'ds'
-      }
+      },
+      category: 'Configure chart'
     },
     {
       name: 'showLegend',
       type: 'boolean',
       label: 'Show legend',
-      defaultValue: true
+      defaultValue: true,
+      category: 'Chart settings'
     },
     {
       name: 'maxSegments',
       type: 'number',
       label: 'Max Legend Items',
-      defaultValue: 8
+      defaultValue: 8,
+      category: 'Chart settings'
     },
     {
       name: 'showLabels',
       type: 'boolean',
       label: 'Show Labels',
-      defaultValue: false
+      defaultValue: false,
+      category: 'Chart settings'
     },
     {
       name: 'displayHorizontally',
       type: 'boolean',
       label: 'Display Horizontally',
-      defaultValue: false
+      defaultValue: false,
+      category: 'Chart settings'
     },
     {
       name: 'displayAsPercentage',
       type: 'boolean',
       label: 'Display as Percentages',
-      defaultValue: false
+      defaultValue: false,
+      category: 'Chart settings'
     }
   ]
 };

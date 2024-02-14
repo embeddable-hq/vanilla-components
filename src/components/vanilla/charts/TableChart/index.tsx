@@ -1,6 +1,6 @@
 import { DimensionOrMeasure, OrderBy, OrderDirection } from '@embeddable.com/core';
 import { DataResponse, useEmbeddableState } from '@embeddable.com/react';
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import useResize from '../../../hooks/useResize';
 import format from '../../../util/format';
@@ -19,14 +19,35 @@ type Meta = { page: number; maxRowsFit: number; sort: OrderBy[] };
 type Record = { [p: string]: string };
 
 export default (props: Props) => {
-  const { columns, tableData } = props;
   const ref = useRef<HTMLDivElement | null>(null);
-  const [width, height] = useResize(ref);
+  const { columns, tableData } = props;
+  const [maxRowsFit, setMaxRowFit] = useState(0);
+
+  useLayoutEffect(() => {
+    let val = 0;
+
+    const interval = setInterval(() => {
+      const elem = ref.current?.parentElement;
+      const heightWithoutHead = (elem?.clientHeight || 80) - 80;
+      const maxRowsFit = Math.floor(heightWithoutHead / 44);
+
+      if (maxRowsFit === val) return;
+
+      setMaxRowFit((val = maxRowsFit));
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const [meta, setMeta] = useEmbeddableState({
     page: 0,
     maxRowsFit: 0,
     sort: props.defaultSort
   }) as [Meta, (f: (m: Meta) => Meta) => void];
+
+  useEffect(() => {
+    setMeta((meta) => ({ ...meta, maxRowsFit }));
+  }, [maxRowsFit, setMeta]);
 
   const updateSort = useCallback(
     (column: DimensionOrMeasure) => {
@@ -48,19 +69,6 @@ export default (props: Props) => {
     [meta, setMeta]
   );
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      const heightWithoutHead = height - 40;
-      const maxRowsFit = Math.floor(heightWithoutHead / 45);
-
-      setMeta((meta) => ({ ...meta, maxRowsFit }));
-    }, 100);
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [height, setMeta]);
-
   const rows = useMemo(
     () =>
       tableData?.data?.map(
@@ -77,12 +85,11 @@ export default (props: Props) => {
   );
 
   return (
-    <Container title={props.title} results={props.tableData}>
+    <Container innerRef={ref} title={props.title} results={props.tableData}>
       <div className="grow flex flex-col justify-start w-full overflow-x-auto font-embeddable text-sm">
         <div
           className="grow overflow-hidden relative"
           style={{ minWidth: `${columns.length * 100}px` }}
-          ref={ref}
         >
           {!!meta && !(props.tableData?.isLoading && !props.tableData?.data?.length) && (
             <table className="overflow-visible w-full">
@@ -122,7 +129,7 @@ export default (props: Props) => {
               </thead>
 
               <tbody>
-                {rows.map((row, index) => (
+                {rows.slice(0, maxRowsFit).map((row, index) => (
                   <tr key={index} className="hover:bg-gray-400/5">
                     {row.map((c, i) => (
                       <td key={i} className="text-sm text-dark p-3">

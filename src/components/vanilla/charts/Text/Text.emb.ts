@@ -10,13 +10,15 @@ export const meta: EmbeddedComponentMeta = {
       name: 'title',
       type: 'string',
       label: 'Title',
-      description: 'The title text'
+      description: 'The title text',
+      category: 'Configure chart'
     },
     {
       name: 'body',
       type: 'string',
       label: 'Body',
-      description: 'The body text'
+      description: 'The body text',
+      category: 'Configure chart'
     }
   ]
 };

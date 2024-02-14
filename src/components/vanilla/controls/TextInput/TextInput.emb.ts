@@ -6,8 +6,8 @@ import Component from './index';
 export const meta: EmbeddedComponentMeta = {
   name: 'TextInput',
   label: 'Control: Text',
-  defaultHeight: 50,
-  defaultWidth: 400,
+  defaultWidth: 300,
+  defaultHeight: 40,
   inputs: [
     {
       name: 'title',

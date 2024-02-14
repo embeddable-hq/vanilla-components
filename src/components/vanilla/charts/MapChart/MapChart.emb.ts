@@ -11,14 +11,16 @@ export const meta: EmbeddedComponentMeta = {
       name: 'title',
       type: 'string',
       label: 'Title',
-      description: 'The title for the chart'
+      description: 'The title for the chart',
+      category: 'Configure chart'
     },
     {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset',
       description: 'Dataset',
-      defaultValue: false
+      defaultValue: false,
+      category: 'Configure chart'
     },
     {
       name: 'segments',
@@ -26,7 +28,8 @@ export const meta: EmbeddedComponentMeta = {
       label: 'Segments',
       config: {
         dataset: 'ds'
-      }
+      },
+      category: 'Configure chart'
     },
     {
       name: 'metric',
@@ -34,7 +37,8 @@ export const meta: EmbeddedComponentMeta = {
       label: 'Metric',
       config: {
         dataset: 'ds'
-      }
+      },
+      category: 'Configure chart'
     }
   ]
 };
@@ -44,7 +48,7 @@ export type Inputs = {
   ds: Dataset;
   segments: Dimension;
   metric: Measure;
-}
+};
 
 export default defineComponent<Inputs>(Component, meta, {
   props: (inputs) => {

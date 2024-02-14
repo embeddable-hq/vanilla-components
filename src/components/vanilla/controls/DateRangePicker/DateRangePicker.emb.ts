@@ -6,6 +6,8 @@ import Component from './index';
 export const meta: EmbeddedComponentMeta = {
   name: 'DateRangePicker',
   label: 'Control: Date Range',
+  defaultWidth: 300,
+  defaultHeight: 40,
   classNames: ['on-top'],
   inputs: [
     {

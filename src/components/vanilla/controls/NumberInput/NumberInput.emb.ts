@@ -6,6 +6,8 @@ import Component from './index';
 export const meta: EmbeddedComponentMeta = {
   name: 'NumberInput',
   label: 'Control: Number',
+  defaultWidth: 300,
+  defaultHeight: 40,
   inputs: [
     {
       name: 'title',
