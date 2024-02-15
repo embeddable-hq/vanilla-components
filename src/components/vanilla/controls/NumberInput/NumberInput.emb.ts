@@ -7,7 +7,7 @@ export const meta: EmbeddedComponentMeta = {
   name: 'NumberInput',
   label: 'Control: Number',
   defaultWidth: 300,
-  defaultHeight: 40,
+  defaultHeight: 80,
   inputs: [
     {
       name: 'title',

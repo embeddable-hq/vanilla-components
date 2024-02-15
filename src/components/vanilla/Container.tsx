@@ -1,5 +1,5 @@
 import { DataResponse } from '@embeddable.com/react';
-import React, { Fragment, MutableRefObject, ReactNode, useRef } from 'react';
+import React, { ReactNode, useRef } from 'react';
 
 import useFont from '../hooks/useFont';
 import useResize from '../hooks/useResize';
@@ -9,7 +9,6 @@ import { WarningIcon } from './icons';
 import './index.css';
 
 type Props = {
-  innerRef?: MutableRefObject<HTMLDivElement | null>;
   title?: string;
   results?: DataResponse;
   children?: ReactNode;
@@ -21,8 +20,6 @@ export default (props: Props) => {
   const { results, title, children } = props;
   const { isLoading, error, data } = results || {};
   const noData = results && !isLoading && !data?.length;
-
-  if (props.innerRef) props.innerRef.current = ref.current;
 
   useFont();
 
@@ -39,8 +36,12 @@ export default (props: Props) => {
     <div className="h-full relative font-embeddable text-sm flex flex-col">
       <Spinner show={isLoading} />
       <Title title={title} />
-      <div className="relative grow flex flex-col overflow-hidden" ref={ref}>
-        <div style={{ height: `${height || 100}px` }}>{children}</div>
+      <div className="relative grow flex flex-col" ref={ref}>
+        {!!height && (
+          <div className="flex flex-col" style={{ height: `${height}px` }}>
+            {children}
+          </div>
+        )}
         {results?.isLoading && !results?.data?.length && (
           <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
         )}

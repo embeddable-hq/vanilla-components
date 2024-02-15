@@ -7,7 +7,7 @@ export const meta: EmbeddedComponentMeta = {
   name: 'Dropdown',
   label: 'Control: Dropdown',
   defaultWidth: 300,
-  defaultHeight: 40,
+  defaultHeight: 80,
   classNames: ['on-top'],
   inputs: [
     {
@@ -81,7 +81,7 @@ export default defineComponent<Inputs>(Component, meta, {
       ...inputs,
       options: loadData({
         from: inputs.ds,
-        dimensions: [inputs.property],
+        dimensions: inputs.property ? [inputs.property] : [],
         limit: 20,
         filters:
           embState?.search && inputs.property

@@ -11,6 +11,7 @@ import {
   Title,
   Tooltip
 } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React from 'react';
 import { Pie } from 'react-chartjs-2';
 
@@ -20,6 +21,7 @@ import Container from '../../Container';
 import { Inputs } from './PieChart.emb';
 
 ChartJS.register(
+  ChartDataLabels,
   CategoryScale,
   LinearScale,
   PointElement,
@@ -47,7 +49,7 @@ export default (props: Props) => {
 
   return (
     <Container title={title} results={results}>
-      <Pie options={chartOptions(props)} data={chartData(props)} />
+      <Pie height="100%" options={chartOptions(props)} data={chartData(props)} />
     </Container>
   );
 };

@@ -7,7 +7,7 @@ export const meta: EmbeddedComponentMeta = {
   name: 'DateRangePicker',
   label: 'Control: Date Range',
   defaultWidth: 300,
-  defaultHeight: 40,
+  defaultHeight: 80,
   classNames: ['on-top'],
   inputs: [
     {

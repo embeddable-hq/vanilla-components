@@ -47,7 +47,11 @@ export default (props: Props) => {
 
   return (
     <Container title={title} results={results}>
-      <Bar options={getBarChartOptions({ ...props, stacked: false })} data={chartData(props)} />
+      <Bar
+        height="100%"
+        options={getBarChartOptions({ ...props, stacked: false })}
+        data={chartData(props)}
+      />
     </Container>
   );
 };

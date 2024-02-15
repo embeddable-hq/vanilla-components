@@ -7,7 +7,7 @@ export const meta: EmbeddedComponentMeta = {
   name: 'TextInput',
   label: 'Control: Text',
   defaultWidth: 300,
-  defaultHeight: 40,
+  defaultHeight: 80,
   inputs: [
     {
       name: 'title',

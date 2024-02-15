@@ -2,7 +2,6 @@ import { DimensionOrMeasure, OrderBy, OrderDirection } from '@embeddable.com/cor
 import { DataResponse, useEmbeddableState } from '@embeddable.com/react';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import useResize from '../../../hooks/useResize';
 import format from '../../../util/format';
 import Container from '../../Container';
 import { ChevronLeft, ChevronRight, SortDown, SortUp } from '../../icons';
@@ -27,7 +26,7 @@ export default (props: Props) => {
     let val = 0;
 
     const interval = setInterval(() => {
-      const elem = ref.current?.parentElement;
+      const elem = ref.current?.parentElement?.parentElement?.parentElement;
       const heightWithoutHead = (elem?.clientHeight || 80) - 80;
       const maxRowsFit = Math.floor(heightWithoutHead / 44);
 
@@ -47,7 +46,7 @@ export default (props: Props) => {
 
   useEffect(() => {
     setMeta((meta) => ({ ...meta, maxRowsFit }));
-  }, [maxRowsFit, setMeta]);
+  }, [props.columns, maxRowsFit, setMeta]);
 
   const updateSort = useCallback(
     (column: DimensionOrMeasure) => {
@@ -85,8 +84,11 @@ export default (props: Props) => {
   );
 
   return (
-    <Container innerRef={ref} title={props.title} results={props.tableData}>
-      <div className="grow flex flex-col justify-start w-full overflow-x-auto font-embeddable text-sm">
+    <Container title={props.title} results={props.tableData}>
+      <div
+        ref={ref}
+        className="grow flex flex-col justify-start w-full overflow-x-auto font-embeddable text-sm"
+      >
         <div
           className="grow overflow-hidden relative"
           style={{ minWidth: `${columns.length * 100}px` }}

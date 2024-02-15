@@ -108,7 +108,7 @@ export default (props: Props) => {
             onChange={() => {}}
             onFocus={() => setFocus(true)}
             onBlur={() => setTriggerBlur(true)}
-            className="absolute left-0 top-0 h-full w-full opacity-0"
+            className="absolute left-0 top-0 h-full w-full opacity-0 cursor-pointer"
           />
           <CalendarIcon className="mr-2 hidden sm:block" />
           {!!range?.from && !!range?.to

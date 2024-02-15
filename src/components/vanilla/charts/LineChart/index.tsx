@@ -49,7 +49,7 @@ export default (props: Props) => {
 
   return (
     <Container title={title} results={results}>
-      <Line options={chartOptions(props)} data={chartData(props)} />
+      <Line height="100%" options={chartOptions(props)} data={chartData(props)} />
     </Container>
   );
 };
@@ -62,14 +62,17 @@ function chartData(props: Props): ChartData<'line'> {
 
   return {
     labels,
-    datasets: metrics.map((yAxis, i) => ({
-      label: yAxis.title,
-      data: results?.data?.map((d: Record) => d[yAxis.name]),
-      backgroundColor: applyFill ? hexToRgb(COLORS[i % COLORS.length]) : COLORS[i % COLORS.length],
-      borderColor: COLORS[i % COLORS.length],
-      fill: applyFill,
-      cubicInterpolationMode: 'monotone' as const
-    }))
+    datasets:
+      metrics?.map((yAxis, i) => ({
+        label: yAxis.title,
+        data: results?.data?.map((d: Record) => d[yAxis.name]),
+        backgroundColor: applyFill
+          ? hexToRgb(COLORS[i % COLORS.length])
+          : COLORS[i % COLORS.length],
+        borderColor: COLORS[i % COLORS.length],
+        fill: applyFill,
+        cubicInterpolationMode: 'monotone' as const
+      })) || []
   };
 }
 

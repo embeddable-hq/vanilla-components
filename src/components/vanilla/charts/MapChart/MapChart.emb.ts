@@ -6,6 +6,8 @@ import Component from './index';
 export const meta: EmbeddedComponentMeta = {
   name: 'MapChart',
   label: 'Map Chart',
+  defaultHeight: 650,
+  defaultWidth: 1130,
   inputs: [
     {
       name: 'title',
