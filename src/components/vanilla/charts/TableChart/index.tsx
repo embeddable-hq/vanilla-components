@@ -84,7 +84,7 @@ export default (props: Props) => {
   );
 
   return (
-    <Container className="overflow-hidden" title={props.title} results={props.tableData}>
+    <Container className="overflow-y-hidden" title={props.title} results={props.tableData}>
       <div
         ref={ref}
         className="grow flex flex-col justify-start w-full overflow-x-auto font-embeddable text-sm"

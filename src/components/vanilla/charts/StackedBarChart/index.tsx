@@ -46,7 +46,7 @@ export default (props: Props) => {
   const { results, title } = props;
 
   return (
-    <Container title={title} results={results}>
+    <Container className="overflow-y-hidden" title={title} results={results}>
       <Bar
         height="100%"
         options={getBarChartOptions({ ...props, stacked: true })}

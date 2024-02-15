@@ -48,7 +48,7 @@ export default (props: Props) => {
   const { results, title } = props;
 
   return (
-    <Container title={title} results={results}>
+    <Container className="overflow-y-hidden" title={title} results={results}>
       <Line height="100%" options={chartOptions(props)} data={chartData(props)} />
     </Container>
   );

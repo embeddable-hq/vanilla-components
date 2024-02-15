@@ -53,7 +53,7 @@ export default (props: Props) => {
   }, [maxMetric]);
 
   return (
-    <Container title={props.title} results={props.db}>
+    <Container className="overflow-y-hidden" title={props.title} results={props.db}>
       <div className="relative aspect-[1.87] overflow-hidden cursor-pointer">
         <div
           ref={box}
