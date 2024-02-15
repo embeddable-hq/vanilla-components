@@ -1,7 +1,7 @@
 import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser';
 import { Dimension, Granularity, TimeRange } from '@embeddable.com/core';
 import { DataResponse } from '@embeddable.com/react';
-import { endOfDay } from 'date-fns';
+import { differenceInSeconds, endOfDay } from 'date-fns';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import Container from '../../Container';
@@ -14,6 +14,17 @@ const granularityProperty: Dimension = {
   name: 'value',
   nativeType: 'string',
   title: 'Value'
+};
+
+const minDuration = {
+  second: 2,
+  minute: 120,
+  hour: 7200,
+  day: 172800,
+  week: 1209600,
+  month: 5257000,
+  quarter: 15770000,
+  year: 63083930
 };
 
 export type Props = Inputs & {
@@ -29,30 +40,20 @@ export default (props: Props) => {
 
   const granularityOptions: DataResponse = useMemo(() => {
     const data: { value: Granularity }[] = [];
-    const granularities: Granularity[] = [
-      'second',
-      'minute',
-      'hour',
-      'day',
-      'week',
-      'month',
-      'quarter',
-      'year'
-    ];
+    const granularities = Object.keys(minDuration);
+    const difference = differenceInSeconds(period?.to || new Date(), period?.from || new Date());
 
-    while (granularities.length) {
-      const value = granularities.shift();
+    granularities.forEach((value) => {
+      if (minDuration[value] > difference) return;
 
-      if (!value) continue;
-
-      data.push({ value });
-    }
+      data.push({ value: value as Granularity });
+    });
 
     return {
       isLoading: false,
       data
     };
-  }, []);
+  }, [[period]]);
 
   useEffect(() => {
     if (
