@@ -13,14 +13,15 @@ export const meta: EmbeddedComponentMeta = {
     {
       name: 'title',
       type: 'string',
-      label: 'Title'
+      label: 'Title',
+      category: 'Configuration'
     },
     {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset',
       description: 'Dataset',
-      category: 'Configure chart'
+      category: 'Configuration'
     },
     {
       name: 'property',
@@ -29,19 +30,19 @@ export const meta: EmbeddedComponentMeta = {
       config: {
         dataset: 'ds'
       },
-      category: 'Configure chart'
+      category: 'Configuration'
     },
     {
       name: 'defaultValue',
       type: 'string',
       label: 'Default value',
-      category: 'Chart settings'
+      category: 'Settings'
     },
     {
       name: 'placeholder',
       type: 'string',
       label: 'Placeholder',
-      category: 'Chart settings'
+      category: 'Settings'
     }
   ],
   events: [
@@ -69,14 +70,16 @@ export const meta: EmbeddedComponentMeta = {
 
 export type Inputs = {
   title?: string;
-  property: Dimension;
-  ds: Dataset;
+  property?: Dimension;
+  ds?: Dataset;
   defaultValue?: string;
   placeholder?: string;
 };
 
 export default defineComponent<Inputs>(Component, meta, {
   props: (inputs, [embState]) => {
+    if (!inputs.ds) return inputs;
+
     return {
       ...inputs,
       options: loadData({

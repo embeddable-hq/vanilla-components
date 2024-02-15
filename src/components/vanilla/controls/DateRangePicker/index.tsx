@@ -50,7 +50,7 @@ export default (props: Props) => {
   }, [triggerBlur]);
 
   useEffect(() => {
-    if (!props.value.from && !props.value.to && !props.value.relativeTimeString) {
+    if (!props.value?.from && !props.value?.to && !props.value?.relativeTimeString) {
       return setRange(props.value);
     }
 

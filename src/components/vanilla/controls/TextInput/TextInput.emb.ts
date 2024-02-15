@@ -13,17 +13,20 @@ export const meta: EmbeddedComponentMeta = {
       name: 'title',
       type: 'string',
       label: 'Title',
-      description: 'The title'
+      description: 'The title',
+      category: 'Configuration'
     },
     {
       name: 'value',
       type: 'string',
-      label: 'Initial value'
+      label: 'Initial value',
+      category: 'Settings'
     },
     {
       name: 'placeholder',
       type: 'string',
-      label: 'Placeholder'
+      label: 'Placeholder',
+      category: 'Settings'
     }
   ],
   events: [
