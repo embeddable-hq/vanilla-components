@@ -29,6 +29,7 @@ type TimeRange = {
 };
 
 type Props = Inputs & {
+  placeholder?: string;
   onChange: (v?: TimeRange) => void;
 };
 
@@ -83,6 +84,7 @@ export default (props: Props) => {
         <Dropdown
           ds={{ embeddableId: '', datasetId: '', variableValues: {} }}
           unclearable
+          placeholder={props.placeholder}
           className="max-w-[120px] sm:max-w-[140px] relative rounded-r-none w-full h-10 border border-[#DADCE1] flex items-center"
           defaultValue={range?.relativeTimeString || ''}
           onChange={(relativeTimeString) => {
