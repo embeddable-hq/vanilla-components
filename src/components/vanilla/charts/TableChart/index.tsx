@@ -26,8 +26,8 @@ export default (props: Props) => {
     let val = 0;
 
     const interval = setInterval(() => {
-      const elem = ref.current?.parentElement?.parentElement?.parentElement;
-      const heightWithoutHead = (elem?.clientHeight || 80) - 80;
+      const elem = ref.current?.parentElement?.parentElement;
+      const heightWithoutHead = (elem?.clientHeight || 72) - 72;
       const maxRowsFit = Math.floor(heightWithoutHead / 44);
 
       if (maxRowsFit === val) return;
@@ -84,7 +84,7 @@ export default (props: Props) => {
   );
 
   return (
-    <Container title={props.title} results={props.tableData}>
+    <Container className="overflow-hidden" title={props.title} results={props.tableData}>
       <div
         ref={ref}
         className="grow flex flex-col justify-start w-full overflow-x-auto font-embeddable text-sm"
