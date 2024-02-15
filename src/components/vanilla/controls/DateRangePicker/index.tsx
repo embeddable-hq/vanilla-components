@@ -1,9 +1,10 @@
 import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser';
-import { endOfDay, format, getYear } from 'date-fns';
+import { endOfDay, getYear } from 'date-fns';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
+import format from '../../../util/format';
 import Container from '../../Container';
 import { CalendarIcon, ChevronLeft, ChevronRight } from '../../icons';
 import Dropdown from '../Dropdown';
@@ -28,6 +29,7 @@ type TimeRange = {
 };
 
 type Props = Inputs & {
+  placeholder?: string;
   onChange: (v?: TimeRange) => void;
 };
 
@@ -49,7 +51,7 @@ export default (props: Props) => {
   }, [triggerBlur]);
 
   useEffect(() => {
-    if (!props.value.from && !props.value.to && !props.value.relativeTimeString) {
+    if (!props.value?.from && !props.value?.to && !props.value?.relativeTimeString) {
       return setRange(props.value);
     }
 
@@ -82,6 +84,7 @@ export default (props: Props) => {
         <Dropdown
           ds={{ embeddableId: '', datasetId: '', variableValues: {} }}
           unclearable
+          placeholder={props.placeholder}
           className="max-w-[120px] sm:max-w-[140px] relative rounded-r-none w-full h-10 border border-[#DADCE1] flex items-center"
           defaultValue={range?.relativeTimeString || ''}
           onChange={(relativeTimeString) => {
@@ -107,11 +110,14 @@ export default (props: Props) => {
             onChange={() => {}}
             onFocus={() => setFocus(true)}
             onBlur={() => setTriggerBlur(true)}
-            className="absolute left-0 top-0 h-full w-full opacity-0"
+            className="absolute left-0 top-0 h-full w-full opacity-0 cursor-pointer"
           />
           <CalendarIcon className="mr-2 hidden sm:block" />
           {!!range?.from && !!range?.to
-            ? `${format(range.from, formatFrom)} - ${format(range.to, formatTo)}`
+            ? `${format(range.from.toJSON(), { dateFormat: formatFrom })} - ${format(
+                range.to.toJSON(),
+                { dateFormat: formatTo }
+              )}`
             : 'Select'}
           <div
             onClick={() => {
@@ -164,7 +170,9 @@ const CustomCaption = (props: CaptionProps) => {
       >
         <ChevronLeft />
       </button>
-      <span className="mx-auto text-sm">{format(props.displayMonth, 'MMMM yyy')}</span>
+      <span className="mx-auto text-sm">
+        {format(props.displayMonth.toJSON(), { dateFormat: 'MMMM yyy' })}
+      </span>
       <button
         className="w-7 h-7 bg-white rounded shadow border border-slate-500 justify-center items-center inline-flex"
         disabled={!nextMonth}

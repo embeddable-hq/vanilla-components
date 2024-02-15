@@ -1,8 +1,8 @@
 import { MutableRefObject, useLayoutEffect, useState } from 'react';
 
 export default (ref: MutableRefObject<HTMLDivElement | null>) => {
-  const [width, setWidth] = useState(10);
-  const [height, setHeight] = useState(10);
+  const [width, setWidth] = useState<undefined | number>(undefined);
+  const [height, setHeight] = useState<undefined | number>(undefined);
 
   useLayoutEffect(() => {
     const ro = new ResizeObserver((entries) => {
@@ -22,5 +22,5 @@ export default (ref: MutableRefObject<HTMLDivElement | null>) => {
     };
   }, [ref]);
 
-  return [width, Math.max(height - 15, 100)];
+  return [width, height];
 };

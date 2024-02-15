@@ -1,6 +1,7 @@
 import { DataResponse } from '@embeddable.com/react';
 import React, { useMemo } from 'react';
 
+import format from '../../../util/format';
 import Container from '../../Container';
 import { WarningIcon } from '../../icons';
 import { Inputs } from './KPIChart.emb';
@@ -21,9 +22,10 @@ export default (props: Props) => {
 
     if (n !== `${num}`) return n;
 
-    const formatter = new Intl.NumberFormat();
-
-    return formatter.format(num);
+    return format(n, {
+      type: 'number',
+      meta: props.metric?.meta
+    });
   }, [props]);
 
   if (props.value?.error) {
@@ -36,7 +38,7 @@ export default (props: Props) => {
   }
 
   return (
-    <Container title={props.title}>
+    <Container className="overflow-y-hidden" title={props.title} results={props.value}>
       <div className="relative grow items-center justify-center flex min-h-[40px]">
         <div className="flex items-center justify-center font-embeddable text-[#333942] text-[40px] font-bold">
           {props.prefix}

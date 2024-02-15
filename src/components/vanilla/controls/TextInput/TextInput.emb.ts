@@ -3,27 +3,30 @@ import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
 
-export const meta : EmbeddedComponentMeta = {
+export const meta: EmbeddedComponentMeta = {
   name: 'TextInput',
-  label: 'Text Input',
-  defaultHeight: 50,
-  defaultWidth: 400,
+  label: 'Control: Text',
+  defaultWidth: 300,
+  defaultHeight: 80,
   inputs: [
     {
       name: 'title',
       type: 'string',
       label: 'Title',
-      description: 'The title'
+      description: 'The title',
+      category: 'Configuration'
     },
     {
       name: 'value',
       type: 'string',
-      label: 'Initial value'
+      label: 'Initial value',
+      category: 'Settings'
     },
     {
       name: 'placeholder',
       type: 'string',
-      label: 'Placeholder'
+      label: 'Placeholder',
+      category: 'Settings'
     }
   ],
   events: [
@@ -53,7 +56,7 @@ export type Inputs = {
   title?: string;
   value?: string;
   placeholder: string;
-}
+};
 
 export default defineComponent<Inputs>(Component, meta, {
   props: (inputs) => ({

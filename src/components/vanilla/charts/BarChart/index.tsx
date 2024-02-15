@@ -16,6 +16,7 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
+import format from '../../../util/format';
 import getBarChartOptions from '../../../util/getBarChartOptions';
 import Container from '../../Container';
 import { Inputs } from './BarChart.emb';
@@ -45,8 +46,12 @@ export default (props: Props) => {
   const { results, title } = props;
 
   return (
-    <Container title={title} results={results}>
-      <Bar options={getBarChartOptions({ ...props, stacked: false })} data={chartData(props)} />
+    <Container className="overflow-y-hidden" title={title} results={results}>
+      <Bar
+        height="100%"
+        options={getBarChartOptions({ ...props, stacked: false })}
+        data={chartData(props)}
+      />
     </Container>
   );
 };
@@ -56,10 +61,9 @@ function chartData(props: Props): ChartData<'bar'> {
 
   const labels = [
     ...new Set(
-      results?.data?.map((d: { [p: string]: string }) => {
-        const l = d[xAxis?.name || ''] || '';
-        return l?.length > 15 ? `${l.substring(0, 15)}...` : l;
-      })
+      results?.data?.map((d: { [p: string]: string }) =>
+        format(d[xAxis?.name || ''], { truncate: 15, meta: xAxis.meta })
+      )
     )
   ] as string[];
 

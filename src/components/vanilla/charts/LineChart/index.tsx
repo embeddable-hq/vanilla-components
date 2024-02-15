@@ -17,6 +17,7 @@ import React from 'react';
 import { Line } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
+import format from '../../../util/format';
 import Container from '../../Container';
 import { Inputs } from './LineChart.emb';
 
@@ -47,37 +48,32 @@ export default (props: Props) => {
   const { results, title } = props;
 
   return (
-    <Container title={title} results={results}>
-      <Line options={chartOptions(props)} data={chartData(props)} />
+    <Container className="overflow-y-hidden" title={title} results={results}>
+      <Line height="100%" options={chartOptions(props)} data={chartData(props)} />
     </Container>
   );
 };
 
 function chartData(props: Props): ChartData<'line'> {
   const { results, xAxis, metrics, applyFill } = props;
-  const labels = results?.data?.map((d) => format(d[xAxis.name]));
+  const labels = results?.data?.map((d) =>
+    format(d[xAxis.name], { type: 'date', meta: xAxis?.meta })
+  );
 
   return {
     labels,
-    datasets: metrics.map((yAxis, i) => ({
-      label: yAxis.title,
-      data: results?.data?.map((d: Record) => d[yAxis.name]),
-      backgroundColor: applyFill ? hexToRgb(COLORS[i % COLORS.length]) : COLORS[i % COLORS.length],
-      borderColor: COLORS[i % COLORS.length],
-      fill: applyFill,
-      cubicInterpolationMode: 'monotone' as const
-    }))
+    datasets:
+      metrics?.map((yAxis, i) => ({
+        label: yAxis.title,
+        data: results?.data?.map((d: Record) => d[yAxis.name]),
+        backgroundColor: applyFill
+          ? hexToRgb(COLORS[i % COLORS.length])
+          : COLORS[i % COLORS.length],
+        borderColor: COLORS[i % COLORS.length],
+        fill: applyFill,
+        cubicInterpolationMode: 'monotone' as const
+      })) || []
   };
-}
-
-function format(text: string) {
-  if (!text) return text;
-
-  if (text.endsWith('T00:00:00.000')) {
-    return new Intl.DateTimeFormat().format(new Date(text));
-  }
-
-  return new Date(text).toLocaleString();
 }
 
 // Convert hex to rgb and add opacity. Used when a color-fill is applied beneath the chart line(s).

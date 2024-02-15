@@ -16,6 +16,7 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
+import format from '../../../util/format';
 import getBarChartOptions from '../../../util/getBarChartOptions';
 import Container from '../../Container';
 import { Inputs } from './StackedBarChart.emb';
@@ -45,8 +46,12 @@ export default (props: Props) => {
   const { results, title } = props;
 
   return (
-    <Container title={title} results={results}>
-      <Bar options={getBarChartOptions({ ...props, stacked: true })} data={chartData(props)} />
+    <Container className="overflow-y-hidden" title={title} results={results}>
+      <Bar
+        height="100%"
+        options={getBarChartOptions({ ...props, stacked: true })}
+        data={chartData(props)}
+      />
     </Container>
   );
 };
@@ -86,7 +91,7 @@ function chartData(props: Props): ChartData<'bar'> {
   });
 
   return {
-    labels: labels.map((l) => (l?.length > 15 ? `${l.substring(0, 15)}...` : l)),
+    labels: labels.map((l) => format(l, { truncate: 15, meta: xAxis?.meta })),
     datasets: segments.map((s, i) => ({
       barPercentage: 0.6,
       barThickness: 'flex',
@@ -97,12 +102,14 @@ function chartData(props: Props): ChartData<'bar'> {
       data: labels.map((label) => {
         const segmentValue = resultMap[label][s];
         return displayAsPercentage && segmentValue !== null //skip null values
-          ? Math.round(
-              (segmentValue * 100) /
+          ? parseFloat(
+              (
+                (segmentValue * 100) /
                 segments.reduce(
                   (accumulator, segment) => resultMap[label][segment] + accumulator,
                   0
                 )
+              ).toFixed(2)
             )
           : segmentValue;
       }),

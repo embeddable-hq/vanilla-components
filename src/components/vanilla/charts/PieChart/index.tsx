@@ -11,14 +11,17 @@ import {
   Title,
   Tooltip
 } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React from 'react';
 import { Pie } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
+import format from '../../../util/format';
 import Container from '../../Container';
 import { Inputs } from './PieChart.emb';
 
 ChartJS.register(
+  ChartDataLabels,
   CategoryScale,
   LinearScale,
   PointElement,
@@ -45,8 +48,8 @@ export default (props: Props) => {
   const { results, title } = props;
 
   return (
-    <Container title={title} results={results}>
-      <Pie options={chartOptions(props)} data={chartData(props)} />
+    <Container className="overflow-y-hidden" title={title} results={results}>
+      <Pie height="100%" options={chartOptions(props)} data={chartData(props)} />
     </Container>
   );
 };
@@ -104,11 +107,7 @@ function chartData(props: Props) {
   const newData = labelsExceedMaxSegments ? mergeLongTail(props) : results.data;
 
   // Chart.js pie expects labels like so: ['US', 'UK', 'Germany']
-  const labels = newData?.map((d) => {
-    const l = d[slice.name] || '';
-
-    return l?.length > 15 ? `${l.substring(0, 15)}...` : l;
-  });
+  const labels = newData?.map((d) => format(d[slice.name], { truncate: 15, meta: slice?.meta }));
 
   // Chart.js pie expects counts like so: [23, 10, 5]
   const counts = newData?.map((d: Record) => d[metric.name]);

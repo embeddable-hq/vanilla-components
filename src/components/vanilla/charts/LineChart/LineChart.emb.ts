@@ -86,7 +86,7 @@ export const meta: EmbeddedComponentMeta = {
       type: 'boolean',
       label: 'Show Legend',
       category: 'Chart settings',
-      defaultValue: false
+      defaultValue: true
     }
   ]
 };

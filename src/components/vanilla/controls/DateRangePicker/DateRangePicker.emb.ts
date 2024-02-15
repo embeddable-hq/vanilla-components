@@ -5,18 +5,22 @@ import Component from './index';
 
 export const meta: EmbeddedComponentMeta = {
   name: 'DateRangePicker',
-  label: 'Date Range Picker',
+  label: 'Control: Date Range',
+  defaultWidth: 300,
+  defaultHeight: 80,
   classNames: ['on-top'],
   inputs: [
     {
       name: 'title',
       type: 'string',
-      label: 'Title'
+      label: 'Title',
+      category: 'Configuration'
     },
     {
       name: 'value',
       type: 'timeRange',
-      label: 'Initial value'
+      label: 'Initial value',
+      category: 'Settings'
     }
   ],
   events: [
@@ -45,7 +49,7 @@ export const meta: EmbeddedComponentMeta = {
 
 export type Inputs = {
   title?: string;
-  value: TimeRange;
+  value?: Partial<TimeRange>;
 };
 
 export default defineComponent<Inputs>(Component, meta, {
