@@ -1,0 +1,7 @@
+- name: Example customer 1
+  securityContext:
+    country: United States
+    
+- name: Example customer 2
+  securityContext:
+    country: Germany
