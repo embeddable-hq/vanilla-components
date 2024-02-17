@@ -344,22 +344,22 @@
     "@cubejs-backend/shared" "0.33.20"
     source-map-support "^0.5.21"
 
-"@embeddable.com/core@*", "@embeddable.com/core@^2.4.25":
-  version "2.4.25"
-  resolved "https://registry.npmjs.org/@embeddable.com/core/-/core-2.4.25.tgz"
-  integrity sha512-uQyPZ6N3xM98+9VQERutx9R2RXDR+tjLfA22ptigxQnoUl0nROAC4/wQBvsQ5B7W/WELbO5wn57sr7ShRB04Jw==
+"@embeddable.com/core@*", "@embeddable.com/core@^2.4.27":
+  version "2.4.27"
+  resolved "https://registry.npmjs.org/@embeddable.com/core/-/core-2.4.27.tgz"
+  integrity sha512-2Jm2GupihtnTgv562txU8c+ufctH6MXGs6FplH0P5go32U4N+kxoG1XdYHVx5OyT8jmU4aZwaPBtlViyosg1Rg==
 
-"@embeddable.com/react@*", "@embeddable.com/react@^2.4.26":
-  version "2.4.26"
-  resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.4.26.tgz"
-  integrity sha512-J63UYherZuinsjVXRT9JUcmwkgKL1WstI2cKaCCtEWr+RTqrUAmz7WeVj9ertx7WLc5eDXiREr5yc2not5JEBg==
+"@embeddable.com/react@*", "@embeddable.com/react@^2.4.28":
+  version "2.4.28"
+  resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.4.28.tgz"
+  integrity sha512-6/t2esAuwhYkq8AJtHdChXl842N/XKQd4XitWXT+Z+vHv5G9wg0SPqNJEE6olFvOnW5d3Emg9+t3op1rFPQvvQ==
   dependencies:
     "@embeddable.com/core" "*"
 
-"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@^2.4.29":
-  version "2.4.29"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-2.4.29.tgz"
-  integrity sha512-BBOQn6pBymFblU9XTthF3mtsV3MsB97iivsDC9v+b28kVku1+uAfC+NOFpm2EId3EJlLD+LPZCxVFMd7ogrpQQ==
+"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@^2.4.31":
+  version "2.4.31"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-2.4.31.tgz"
+  integrity sha512-h+YqdLfOUuLj44aCqMdoxdJrM7zbdGy7N4JYp6QXoWWKRXrrir0v6KUoaMZv2AGBDaKDdDijZNRX6j460Sdh+A==
   dependencies:
     "@embeddable.com/sdk-utils" "*"
     "@inquirer/select" "^1.3.0"
@@ -377,10 +377,10 @@
     ws "^8.16.0"
     yaml "^2.3.3"
 
-"@embeddable.com/sdk-react@^2.2.29":
-  version "2.2.29"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-2.2.29.tgz"
-  integrity sha512-w1+gQgWcvdkDb+ayJSswibv498FhAx8auwWFYXXkWiiguXD7iPQRPHJsDrX46/2eJyj2s0q3VtnDLMJ9nLq3dg==
+"@embeddable.com/sdk-react@^2.2.31":
+  version "2.2.31"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-2.2.31.tgz"
+  integrity sha512-zY0GlW5qrZ7V6z8n1mNtZ+PsrPCU5N6sDnz88/cog9tYrw2NmUQlP8OmwoPSI8BpdBakye2cVs58MgEwqtnljg==
   dependencies:
     "@babel/generator" "^7.23.0"
     "@babel/parser" "^7.23.0"
@@ -402,10 +402,10 @@
     ora "^7.0.1"
     zod "^3.22.4"
 
-"@esbuild/linux-x64@0.18.20":
+"@esbuild/darwin-arm64@0.18.20":
   version "0.18.20"
-  resolved "https://registry.npmjs.org/@esbuild/linux-x64/-/linux-x64-0.18.20.tgz"
-  integrity sha512-UYqiqemphJcNsFEskc73jQ7B9jgwjWrSayxawS6UVFZGWrAAtkzjxSqnoclCXxWtfwLdzU+vTpcNYhpn43uP1w==
+  resolved "https://registry.npmjs.org/@esbuild/darwin-arm64/-/darwin-arm64-0.18.20.tgz"
+  integrity sha512-bxRHW5kHU38zS2lPTPOyuyTm+S+eobPUnTNkdJEfAddYgEcll4xkT8DB9d2008DtTbl7uJag2HuE5NZAZgnNEA==
 
 "@eslint-community/eslint-utils@^4.2.0", "@eslint-community/eslint-utils@^4.4.0":
   version "4.4.0"
@@ -597,15 +597,10 @@
   resolved "https://registry.npmjs.org/@pkgjs/parseargs/-/parseargs-0.11.0.tgz"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
-"@rollup/rollup-linux-x64-gnu@4.10.0":
+"@rollup/rollup-darwin-arm64@4.10.0":
   version "4.10.0"
-  resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.10.0.tgz"
-  integrity sha512-w/5OpT2EnI/Xvypw4FIhV34jmNqU5PZjZue2l2Y3ty1Ootm3SqhI+AmfhlUYGBTd9JnpneZCDnt3uNOiOBkMyw==
-
-"@rollup/rollup-linux-x64-musl@4.10.0":
-  version "4.10.0"
-  resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-musl/-/rollup-linux-x64-musl-4.10.0.tgz"
-  integrity sha512-q/meftEe3QlwQiGYxD9rWwB21DoKQ9Q8wA40of/of6yGHhZuGfZO0c3WYkN9dNlopHlNT3mf5BPsUSxoPuVQaw==
+  resolved "https://registry.npmjs.org/@rollup/rollup-darwin-arm64/-/rollup-darwin-arm64-4.10.0.tgz"
+  integrity sha512-uFpayx8I8tyOvDkD7X6n0PriDRWxcqEjqgtlxnUA/G9oS93ur9aZ8c8BEpzFmsed1TH5WZNG5IONB8IiW90TQg==
 
 "@sideway/address@^4.1.5":
   version "4.1.5"
@@ -2494,6 +2489,11 @@ fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   integrity sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==
+
+fsevents@~2.3.2:
+  version "2.3.3"
+  resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
+  integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
 function-bind@^1.1.1, function-bind@^1.1.2:
   version "1.1.2"
