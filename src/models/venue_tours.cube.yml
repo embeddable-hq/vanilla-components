@@ -1,0 +1,77 @@
+cubes:
+- name: venue_tours
+  sql_table: smartify-cc94e.report_venue.venue_tourtrack_table
+
+  dimensions:
+    - name: date
+      type: time
+      sql: timestamp(partition_date)
+    - name: event_name
+      type: string
+      sql: event_name
+    - name: country
+      type: string
+      sql: geo_country
+    - name: city
+      type: string
+      sql: geo_city
+    - name: stream
+      type: string
+      sql: stream_id
+    - name: venue_id
+      type: string
+      sql: venue_sid
+    - name: organisation_id
+      type: string
+      sql: organisation_sid
+    - name: user_location_type
+      type: string
+      sql: case when venue_sid = nearby_venue_id then "Onsite User" when user_location_access = "false" then "Unknown" else "Offsite User" end
+    - name: platform_device
+      type: string
+      sql: case when platform = "IOS" then "iOS" when platform = "ANDROID" then "Android" when (platform = "WEB" and device_category = "desktop") then "Desktop" else "Webapp" end
+    - name: tour_name
+      type: string
+      sql: tour_name
+    - name: track_name
+      type: string
+      sql: track_name
+    - name: track_audio_language
+      type: string
+      sql: track_audio_language
+    
+  measures:
+    - name: total_events
+      type: count
+      title: Total Events
+    - name: users
+      sql: user_pseudo_id
+      type: count_distinct
+      title: Total Users
+    - name: onsite_users
+      type: count_distinct
+      sql: case when venue_sid = nearby_venue_id then user_pseudo_id else null end
+    - name: registered_users
+      type: count_distinct
+      sql: user_id
+    - name: tour_view
+      type: sum
+      sql: tour_view
+    - name: track_play
+      type: sum
+      sql: track_play      
+    - name: track_complete
+      type: sum
+      sql: track_complete
+    - name: tour_view_users
+      type: count_distinct
+      sql: case when tour_view > 0 then user_pseudo_id else null end
+    - name: track_play_users
+      type: count_distinct
+      sql: case when track_play > 0 then user_pseudo_id else null end
+    - name: track_complete_users
+      type: count_distinct
+      sql: case when track_complete > 0 then user_pseudo_id else null end
+    - name: track_completion_rate
+      type: sum
+      sql: sum(track_complete) / sum(track_play)

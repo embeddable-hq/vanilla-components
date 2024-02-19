@@ -1,0 +1,77 @@
+cubes:
+- name: venue_objects
+  sql_table: smartify-cc94e.report_venue.venue_object_table
+
+  dimensions:
+    - name: date
+      type: time
+      sql: timestamp(partition_date)
+    - name: event_name
+      type: string
+      sql: event_name
+    - name: country
+      type: string
+      sql: geo_country
+    - name: city
+      type: string
+      sql: geo_city
+    - name: stream
+      type: string
+      sql: stream_id
+    - name: venue_id
+      type: string
+      sql: venue_sid
+    - name: organisation_id
+      type: string
+      sql: organisation_sid
+    - name: user_location_type
+      type: string
+      sql: case when venue_sid = nearby_venue_id then "Onsite User" when user_location_access = "false" then "Unknown" else "Offsite User" end
+    - name: platform_device
+      type: string
+      sql: case when platform = "IOS" then "iOS" when platform = "ANDROID" then "Android" when (platform = "WEB" and device_category = "desktop") then "Desktop" else "Webapp" end
+    - name: art_sid
+      type: string
+      sql: art_sid
+    - name: art_name
+      type: string
+      sql: art_name
+    - name: artist_sid
+      type: string
+      sql: artist_sid
+    - name: artist_name
+      type: string
+      sql: artist_name
+    
+  measures:
+    - name: total_events
+      type: count
+      title: Total Events
+    - name: users
+      sql: user_pseudo_id
+      type: count_distinct
+      title: Total Users
+    - name: onsite_users
+      type: count_distinct
+      sql: case when venue_sid = nearby_venue_id then user_pseudo_id else null end
+    - name: registered_users
+      type: count_distinct
+      sql: user_id
+    - name: object_view
+      type: sum
+      sql: object_view
+    - name: object_scan
+      type: sum
+      sql: object_scan      
+    - name: object_favorite
+      type: sum
+      sql: object_favorite
+    - name: object_view_users
+      type: count_distinct
+      sql: case when object_view > 0 then user_pseudo_id else null end
+    - name: object_scan_users
+      type: count_distinct
+      sql: case when object_scan > 0 then user_pseudo_id else null end
+    - name: object_favorite_users
+      type: count_distinct
+      sql: case when object_favorite > 0 then user_pseudo_id else null end

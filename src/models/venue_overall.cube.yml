@@ -1,0 +1,64 @@
+cubes:
+- name: venue_overall
+  sql_table: smartify-cc94e.report_venue.venue_overall_table
+
+  dimensions:
+    - name: date
+      type: time
+      sql: timestamp(partition_date)
+    - name: event_name
+      type: string
+      sql: event_name
+    - name: country
+      type: string
+      sql: geo_country
+    - name: city
+      type: string
+      sql: geo_city
+    - name: stream
+      type: string
+      sql: stream_id
+    - name: venue_id
+      type: string
+      sql: venue_sid
+    - name: organisation_id
+      type: string
+      sql: organisation_sid
+    - name: user_location_type
+      type: string
+      sql: case when venue_sid = nearby_venue_id then "Onsite User" when user_location_access = "false" then "Unknown" else "Offsite User" end
+    - name: platform_device
+      type: string
+      sql: case when platform = "IOS" then "iOS" when platform = "ANDROID" then "Android" when (platform = "WEB" and device_category = "desktop") then "Desktop" else "Webapp" end
+    - name: user_gender
+      type: string
+      sql: case when user_gender IN ( 'Male', 'Männlich', 'Mann', 'Homme', 'Hombre', '男性', 'Man', 'Mand', 'Masculino', 'זכר', 'MALE' ) then 'Male' when user_gender IN ( 'Female', 'Woman', 'Femme', 'Mujer', 'Vrouw', 'Weiblich', 'Frau', 'Feminino', '女性', 'Donna', 'Kvinde' ) then 'Female' when user_gender IN ('Unspecified', 'Non spécifié', 'Sin especificar') then 'Unspecified' when user_gender IN ('Other', 'Autre') then 'Other' else null end
+    - name: user_age
+      type: string
+      sql: case when cast(user_age as INT64) < 18 then "- 18" when cast(user_age as INT64) >= 18 and cast(user_age as INT64) < 25 then "18 - 24" when cast(user_age as INT64) >= 25 and cast(user_age as INT64) < 35 then "25 - 34" when cast(user_age as INT64) >= 35 and cast(user_age as INT64) < 45 then "35 - 44" when cast(user_age as INT64) >= 45 and cast(user_age as INT64) < 55 then "45 - 54" when cast(user_age as INT64) >= 55 and cast(user_age as INT64) < 65 then "55 - 64" when cast(user_age as INT64) >= 65 and cast(user_age as INT64) < 71 then "65 - 70" when cast(user_age as INT64) >= 71 then "71 +" end
+    - name: user_language
+      type: string
+      sql: user_language
+
+  measures:
+    - name: total_events
+      type: count
+      title: Total Events
+
+    - name: users
+      sql: user_pseudo_id
+      type: count_distinct
+      title: Total Users
+
+    - name: onsite_users
+      type: count_distinct
+      sql: case when venue_sid = nearby_venue_id then user_pseudo_id else null end
+
+    - name: registered_users
+      type: count_distinct
+      sql: user_id
+
+    - name: events_per_user
+      title: Events per User
+      type: number
+      sql: "{total_events} / {users}"
