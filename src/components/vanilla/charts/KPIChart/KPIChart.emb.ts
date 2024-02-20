@@ -90,7 +90,6 @@ export type Inputs = {
 
 export default defineComponent<Inputs>(Component, meta, {
   props: (inputs) => {
-    console.log(55, inputs.timeFilter, inputs.timeProperty);
     return {
       ...inputs,
       value: loadData({
