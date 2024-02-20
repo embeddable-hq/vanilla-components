@@ -33,7 +33,7 @@ export default (props: Props) => {
       })
     };
   }, [props]);
-  console.log(1111, percentage, n, props);
+
   if (props.value?.error) {
     return (
       <div className="h-full flex items-center justify-center font-embeddable text-sm">
@@ -48,13 +48,13 @@ export default (props: Props) => {
       <div className="relative grow items-center justify-center flex min-h-[40px]">
         <div className="flex items-center justify-center font-embeddable text-[#333942] text-[40px] font-bold relative">
           {percentage !== null && (
-            <i
-              className="absolute left-0 -bottom-7 text-xs flex items-center"
+            <span
+              className="absolute left-0 -bottom-[50px] w-full justify-center flex items-center text-[24px]"
               style={{ color: percentage < 0 ? '#FF6B6C' : '#3BA99C' }}
             >
-              <Chevron className={`${percentage < 0 ? '' : 'rotate-180'} -mx-1`} />
+              <Chevron className={`${percentage < 0 ? 'rotate-180' : ''} min-w-[15px] mr-1.5`} />
               {percentage === Infinity ? '∞' : Math.abs(percentage)}%
-            </i>
+            </span>
           )}
           {props.prefix}
           {n || 0}
@@ -68,16 +68,14 @@ export default (props: Props) => {
 export const Chevron = ({ className }: { className?: string }) => (
   <svg
     className={className || ''}
-    width="20"
-    height="20"
-    viewBox="0 0 20 20"
+    width="16"
+    height="14"
+    viewBox="0 0 16 14"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M5.29289 7.29289C5.68342 6.90237 6.31658 6.90237 6.70711 7.29289L10 10.5858L13.2929 7.29289C13.6834 6.90237 14.3166 6.90237 14.7071 7.29289C15.0976 7.68342 15.0976 8.31658 14.7071 8.70711L10.7071 12.7071C10.3166 13.0976 9.68342 13.0976 9.29289 12.7071L5.29289 8.70711C4.90237 8.31658 4.90237 7.68342 5.29289 7.29289Z"
+      d="M7.14028 0.753268C7.5422 0.0998221 8.4578 0.099822 8.85972 0.753268L15.8366 12.0964C16.2727 12.8054 15.7846 13.7369 14.9769 13.7369H1.02308C0.215416 13.7369 -0.272737 12.8054 0.163359 12.0964L7.14028 0.753268Z"
       fill="currentcolor"
     />
   </svg>
