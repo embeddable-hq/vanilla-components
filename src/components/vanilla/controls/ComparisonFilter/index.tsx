@@ -1,7 +1,17 @@
 import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser';
 import { Dimension, Granularity, TimeRange } from '@embeddable.com/core';
 import { DataResponse } from '@embeddable.com/react';
-import { differenceInSeconds, endOfDay } from 'date-fns';
+import {
+  differenceInCalendarDays,
+  differenceInSeconds,
+  endOfDay,
+  format,
+  getYear,
+  subDays,
+  subMonths,
+  subQuarters,
+  subYears
+} from 'date-fns';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import Container from '../../Container';
@@ -9,7 +19,7 @@ import DateRangePicker from '../DateRangePicker';
 import Dropdown from '../Dropdown';
 import { Inputs } from './ComparisonFilter.emb';
 
-const granularityProperty: Dimension = {
+const valueProp: Dimension = {
   __type__: 'dimension',
   name: 'value',
   nativeType: 'string',
@@ -35,7 +45,8 @@ export type Props = Inputs & {
 
 export default (props: Props) => {
   const [period, setPeriod] = useState(props.defaultPeriod);
-  const [comparison, setComparison] = useState(props.defaultComparison);
+  const [compareOption, setCompareOption] = useState('No comparison');
+  const [comparison, setComparison] = useState<TimeRange | null>(null);
   const [granularity, setGranularity] = useState(props.defaultGranularity);
 
   const granularityOptions: DataResponse = useMemo(() => {
@@ -54,6 +65,47 @@ export default (props: Props) => {
       data
     };
   }, [[period]]);
+
+  const comparisonOptions: DataResponse = useMemo(() => {
+    if (!period?.from || !period?.to) {
+      return {
+        isLoading: false,
+        data: [{ value: 'No comparison' }]
+      };
+    }
+
+    const days = Math.abs(differenceInCalendarDays(period.from, period.to)) + 1;
+
+    return {
+      isLoading: false,
+      data: [
+        { value: 'No comparison' },
+        {
+          value: 'Previous period',
+          note: getNote(subDays(period.from, days), endOfDay(subDays(period.to, days)))
+        },
+        {
+          value: 'Previous month',
+          note: getNote(subMonths(period.from, 1), endOfDay(subMonths(period.to, 1)))
+        },
+        {
+          value: 'Previous quarter',
+          note: getNote(subQuarters(period.from, 1), endOfDay(subQuarters(period.to, 1)))
+        },
+        {
+          value: 'Previous year',
+          note: getNote(subYears(period.from, 1), endOfDay(subYears(period.to, 1)))
+        }
+      ]
+    };
+
+    function getNote(from: Date, to: Date) {
+      return `${format(
+        from,
+        getYear(from) === getYear(new Date()) ? 'd MMM' : 'd MMM yyyy'
+      )} - ${format(to, getYear(to) === getYear(new Date()) ? 'd MMM' : 'd MMM yyyy')}`;
+    }
+  }, [period?.from, period?.to]);
 
   useEffect(() => {
     if (
@@ -81,22 +133,102 @@ export default (props: Props) => {
               setPeriod(period as TimeRange);
 
               props.onChangePeriod((period as TimeRange) || null);
+
+              const days = Math.abs(
+                differenceInCalendarDays(period?.from || new Date(), period?.to || new Date())
+              );
+
+              let g: Granularity = 'hour';
+              if (days > 168) g = 'month';
+              else if (days > 59) g = 'week';
+              else if (days > 2) g = 'day';
+
+              if (granularity === g) return;
+
+              setGranularity(g);
+
+              props.onChangeGranularity(g);
             }}
           />
         </div>
         <div className="shrink whitespace-nowrap text-[14px] font-semibold text-[#505775] mx-3 leading-none">
           compare to
         </div>
-        <div className="grow basis-0 max-w-96 h-full">
-          <DateRangePicker
-            value={comparison}
-            onChange={(comparison) => {
-              if (comparison?.to) comparison.to = endOfDay(comparison.to);
+        <div className="grow basis-0 max-w-44 h-full">
+          <Dropdown
+            minDropdownWidth={320}
+            defaultValue={compareOption}
+            options={comparisonOptions}
+            placeholder="Comparison"
+            onChange={(value) => {
+              setCompareOption(value);
 
-              setComparison(comparison as TimeRange);
+              if (value === 'No comparison') {
+                setComparison(null);
 
-              props.onChangePeriod((comparison as TimeRange) || null);
+                props.onChangeComparison(null);
+
+                return;
+              }
+
+              if (!period?.from || !period?.to) return;
+
+              if (value === 'Previous month') {
+                const update = {
+                  relativeTimeString: '',
+                  from: subMonths(period.from, 1),
+                  to: endOfDay(subMonths(period.to, 1))
+                };
+
+                setComparison(update);
+
+                props.onChangeComparison(update);
+
+                return;
+              }
+
+              if (value === 'Previous quarter') {
+                const update = {
+                  relativeTimeString: '',
+                  from: subQuarters(period.from, 1),
+                  to: endOfDay(subQuarters(period.to, 1))
+                };
+
+                setComparison(update);
+
+                props.onChangeComparison(update);
+
+                return;
+              }
+
+              if (value === 'Previous year') {
+                const update = {
+                  relativeTimeString: '',
+                  from: subYears(period.from, 1),
+                  to: endOfDay(subYears(period.to, 1))
+                };
+
+                setComparison(update);
+
+                props.onChangeComparison(update);
+
+                return;
+              }
+
+              // Previous period
+              const days = Math.abs(differenceInCalendarDays(period.from, period.to)) + 1;
+
+              const update = {
+                relativeTimeString: '',
+                from: subDays(period.from, days),
+                to: endOfDay(subDays(period.to, days))
+              };
+
+              setComparison(update);
+
+              props.onChangeComparison(update);
             }}
+            property={valueProp}
           />
         </div>
         {!!props.showGranularity && (
@@ -104,7 +236,7 @@ export default (props: Props) => {
             <Dropdown
               defaultValue={granularity}
               options={granularityOptions}
-              property={granularityProperty}
+              property={valueProp}
               placeholder="Granularity"
               onChange={(c) => {
                 const value = c as Granularity;
