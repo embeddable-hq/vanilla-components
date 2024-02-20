@@ -12,7 +12,7 @@ import {
   subQuarters,
   subYears
 } from 'date-fns';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Container from '../../Container';
 import DateRangePicker from '../DateRangePicker';
@@ -56,9 +56,8 @@ export type Props = Inputs & {
 
 export default (props: Props) => {
   const [period, setPeriod] = useState(props.defaultPeriod);
-  const [compareOption, setCompareOption] = useState('No comparison');
-  const [comparison, setComparison] = useState<TimeRange | null>(null);
   const [granularity, setGranularity] = useState(props.defaultGranularity);
+  const [compareOption, setCompareOption] = useState(props.defaultComparison);
 
   const granularityOptions: DataResponse = useMemo(() => {
     const data: { value: Granularity }[] = [];
@@ -120,7 +119,77 @@ export default (props: Props) => {
     }
   }, [period?.from, period?.to]);
 
+  const changeComparisonOption = useCallback(
+    (value: string) => {
+      setCompareOption(value);
+
+      if (value === 'No comparison') {
+        props.onChangeComparison(null);
+
+        return;
+      }
+
+      if (!period?.from || !period?.to) return;
+
+      if (value === 'Previous month') {
+        props.onChangeComparison({
+          relativeTimeString: '',
+          from: subMonths(period.from, 1),
+          to: endOfDay(subMonths(period.to, 1))
+        });
+
+        return;
+      }
+
+      if (value === 'Previous quarter') {
+        props.onChangeComparison({
+          relativeTimeString: '',
+          from: subQuarters(period.from, 1),
+          to: endOfDay(subQuarters(period.to, 1))
+        });
+
+        return;
+      }
+
+      if (value === 'Previous year') {
+        props.onChangeComparison({
+          relativeTimeString: '',
+          from: subYears(period.from, 1),
+          to: endOfDay(subYears(period.to, 1))
+        });
+
+        return;
+      }
+
+      // Previous period
+      const days = Math.abs(differenceInCalendarDays(period.from, period.to)) + 1;
+
+      props.onChangeComparison({
+        relativeTimeString: '',
+        from: subDays(period.from, days),
+        to: endOfDay(subDays(period.to, days))
+      });
+    },
+    [props.onChangeComparison, period, setCompareOption]
+  );
+
   useEffect(() => {
+    if (!props.defaultGranularity) return;
+
+    setGranularity(props.defaultGranularity);
+  }, [props.defaultGranularity]);
+
+  useEffect(() => {
+    if (!props.defaultComparison) return;
+
+    setCompareOption(props.defaultComparison);
+
+    changeComparisonOption(props.defaultComparison);
+  }, [props.defaultComparison, changeComparisonOption]);
+
+  useEffect(() => {
+    if (!props.defaultPeriod) return;
+
     if (
       !props.defaultPeriod?.from &&
       !props.defaultPeriod?.to &&
@@ -133,8 +202,12 @@ export default (props: Props) => {
       props.defaultPeriod.from = new Date(from);
 
       props.defaultPeriod.to = new Date(to);
+
+      return;
     }
-  }, [props]);
+
+    setPeriod(props.defaultPeriod);
+  }, [props.defaultPeriod]);
 
   return (
     <Container title={props.title}>
@@ -164,7 +237,7 @@ export default (props: Props) => {
             }}
           />
         </div>
-        <div className="shrink whitespace-nowrap text-[14px] font-semibold text-[#505775] mx-3 leading-none">
+        <div className="shrink whitespace-nowrap text-[14px] font-normal text-[#101010] mx-3 leading-none">
           compare to
         </div>
         <div className="grow basis-0 max-w-[150px] h-full">
@@ -174,74 +247,7 @@ export default (props: Props) => {
             defaultValue={compareOption}
             options={comparisonOptions}
             placeholder="Comparison"
-            onChange={(value) => {
-              setCompareOption(value);
-
-              if (value === 'No comparison') {
-                setComparison(null);
-
-                props.onChangeComparison(null);
-
-                return;
-              }
-
-              if (!period?.from || !period?.to) return;
-
-              if (value === 'Previous month') {
-                const update = {
-                  relativeTimeString: '',
-                  from: subMonths(period.from, 1),
-                  to: endOfDay(subMonths(period.to, 1))
-                };
-
-                setComparison(update);
-
-                props.onChangeComparison(update);
-
-                return;
-              }
-
-              if (value === 'Previous quarter') {
-                const update = {
-                  relativeTimeString: '',
-                  from: subQuarters(period.from, 1),
-                  to: endOfDay(subQuarters(period.to, 1))
-                };
-
-                setComparison(update);
-
-                props.onChangeComparison(update);
-
-                return;
-              }
-
-              if (value === 'Previous year') {
-                const update = {
-                  relativeTimeString: '',
-                  from: subYears(period.from, 1),
-                  to: endOfDay(subYears(period.to, 1))
-                };
-
-                setComparison(update);
-
-                props.onChangeComparison(update);
-
-                return;
-              }
-
-              // Previous period
-              const days = Math.abs(differenceInCalendarDays(period.from, period.to)) + 1;
-
-              const update = {
-                relativeTimeString: '',
-                from: subDays(period.from, days),
-                to: endOfDay(subDays(period.to, days))
-              };
-
-              setComparison(update);
-
-              props.onChangeComparison(update);
-            }}
+            onChange={changeComparisonOption}
             property={valueProp}
           />
         </div>

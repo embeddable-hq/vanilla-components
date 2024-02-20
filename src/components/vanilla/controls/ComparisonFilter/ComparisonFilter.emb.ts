@@ -1,6 +1,7 @@
 import { Granularity, TimeRange, Value } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 
+import TimeComparisonType from '../../../../types/TimeComparison.type.emb.js';
 import Component from './index';
 
 export const meta: EmbeddedComponentMeta = {
@@ -24,8 +25,9 @@ export const meta: EmbeddedComponentMeta = {
     },
     {
       name: 'defaultComparison',
-      type: 'timeRange',
-      label: 'Default comparison',
+      type: TimeComparisonType,
+      label: 'Default comparison option',
+      defaultValue: 'No comparison',
       category: 'Settings'
     },
     {
@@ -102,7 +104,7 @@ export const meta: EmbeddedComponentMeta = {
 export type Inputs = {
   title?: string;
   defaultPeriod?: TimeRange;
-  defaultComparison?: TimeRange;
+  defaultComparison?: string;
   defaultGranularity?: Granularity;
   showGranularity?: boolean;
 };

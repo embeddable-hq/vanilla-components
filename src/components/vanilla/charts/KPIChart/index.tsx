@@ -46,14 +46,18 @@ export default (props: Props) => {
   return (
     <Container className="overflow-y-hidden" title={props.title} results={props.value}>
       <div className="relative grow items-center justify-center flex min-h-[40px]">
-        <div className="flex items-center justify-center font-embeddable text-[#333942] text-[40px] font-bold relative">
+        <div className="flex items-center justify-center font-embeddable text-[#333942] text-[44px] font-bold relative -mt-[10px]">
           {percentage !== null && (
             <span
-              className="absolute left-0 -bottom-[50px] w-full justify-center flex items-center text-[24px]"
+              className="absolute left-0 -bottom-[50px] w-full justify-center flex items-center text-[16px]"
               style={{ color: percentage < 0 ? '#FF6B6C' : '#3BA99C' }}
             >
-              <Chevron className={`${percentage < 0 ? 'rotate-180' : ''} min-w-[15px] mr-1.5`} />
-              {percentage === Infinity ? '∞' : Math.abs(percentage)}%
+              <Chevron
+                className={`${
+                  percentage < 0 ? 'rotate-180' : ''
+                } h-[20px] w-[9px] min-w-[9px] mr-1.5`}
+              />
+              {percentage === Infinity ? '∞' : format(`${Math.abs(percentage)}`, 'number')}%
             </span>
           )}
           {props.prefix}

@@ -124,12 +124,14 @@ export default (props: Props) => {
           onFocus={() => setFocus(true)}
           onBlur={() => setTriggerBlur(true)}
           onChange={(e) => performSearch(e.target.value)}
-          className="outline-none bg-transparent leading-9 h-9 border-0 px-3 w-full cursor-pointer text-sm"
+          className={`outline-none bg-transparent leading-9 h-9 border-0 px-3 w-full cursor-pointer text-sm ${
+            focus || !value ? '' : 'opacity-0'
+          }`}
         />
 
         {!!value && (
           <span
-            className={`absolute w-[calc(100%-2rem)] rounded-xl left-3 top-1 h-8 leading-8 block pointer-events-none bg-white text-sm ${
+            className={`absolute w-[calc(100%-2rem)] rounded-xl left-3 top-1 h-8 leading-8 block pointer-events-none text-sm ${
               focus ? 'hidden' : ''
             }`}
           >
