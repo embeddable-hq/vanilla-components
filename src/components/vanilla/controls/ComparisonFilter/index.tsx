@@ -37,6 +37,17 @@ const minDuration = {
   year: 63083930
 };
 
+const maxDuration = {
+  second: 90000,
+  minute: 60000,
+  hour: 3600000,
+  day: 86400000,
+  week: 604800000,
+  month: 2628500000,
+  quarter: 7885000000,
+  year: 31541965000
+};
+
 export type Props = Inputs & {
   onChangePeriod: (v: TimeRange | null) => void;
   onChangeComparison: (v: TimeRange | null) => void;
@@ -56,6 +67,8 @@ export default (props: Props) => {
 
     granularities.forEach((value) => {
       if (minDuration[value] > difference) return;
+
+      if (maxDuration[value] < difference) return;
 
       data.push({ value: value as Granularity });
     });
@@ -154,8 +167,9 @@ export default (props: Props) => {
         <div className="shrink whitespace-nowrap text-[14px] font-semibold text-[#505775] mx-3 leading-none">
           compare to
         </div>
-        <div className="grow basis-0 max-w-44 h-full">
+        <div className="grow basis-0 max-w-[150px] h-full">
           <Dropdown
+            unclearable
             minDropdownWidth={320}
             defaultValue={compareOption}
             options={comparisonOptions}
@@ -232,8 +246,9 @@ export default (props: Props) => {
           />
         </div>
         {!!props.showGranularity && (
-          <div className="grow basis-0 max-w-44 h-full ml-3">
+          <div className="grow basis-0 max-w-[115px] h-full ml-3">
             <Dropdown
+              unclearable
               defaultValue={granularity}
               options={granularityOptions}
               property={valueProp}
