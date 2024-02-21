@@ -182,10 +182,8 @@ export default (props: Props) => {
   useEffect(() => {
     if (!props.defaultComparison) return;
 
-    setCompareOption(props.defaultComparison);
-
     changeComparisonOption(props.defaultComparison);
-  }, [props.defaultComparison, changeComparisonOption]);
+  }, [changeComparisonOption]);
 
   useEffect(() => {
     if (!props.defaultPeriod) return;

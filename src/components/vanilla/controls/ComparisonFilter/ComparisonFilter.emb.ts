@@ -18,16 +18,16 @@ export const meta: EmbeddedComponentMeta = {
       category: 'Configuration'
     },
     {
-      name: 'defaultPeriod',
-      type: 'timeRange',
-      label: 'Default period',
-      category: 'Settings'
-    },
-    {
       name: 'defaultComparison',
       type: TimeComparisonType,
       label: 'Default comparison option',
       defaultValue: 'No comparison',
+      category: 'Settings'
+    },
+    {
+      name: 'defaultPeriod',
+      type: 'timeRange',
+      label: 'Default period',
       category: 'Settings'
     },
     {
@@ -83,6 +83,7 @@ export const meta: EmbeddedComponentMeta = {
     {
       name: 'period',
       type: 'timeRange',
+      inputs: ['defaultPeriod'],
       defaultValue: Value.noFilter(),
       events: [{ name: 'onChangePeriod', property: 'value' }]
     },
@@ -95,6 +96,7 @@ export const meta: EmbeddedComponentMeta = {
     {
       name: 'granularity',
       type: 'granularity',
+      inputs: ['defaultGranularity'],
       defaultValue: Value.noFilter(),
       events: [{ name: 'onChangeGranularity', property: 'value' }]
     }

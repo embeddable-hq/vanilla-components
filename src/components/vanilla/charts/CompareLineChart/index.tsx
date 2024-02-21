@@ -2,8 +2,10 @@ import { DataResponse } from '@embeddable.com/react';
 import {
   CategoryScale,
   ChartData,
+  ChartDataset,
   Chart as ChartJS,
   ChartOptions,
+  DefaultDataPoint,
   Filler,
   Legend,
   LineElement,
@@ -58,13 +60,9 @@ export default (props: Props) => {
 };
 
 function chartData(props: Props): ChartData<'line'> {
-  const { results, prevResults, xAxis, metrics, applyFill } = props;
+  const { results, prevResults, metrics, applyFill } = props;
 
-  const labels = results?.data?.map((d) =>
-    format(d[xAxis.name], { type: 'date', meta: xAxis?.meta })
-  );
-
-  const lines =
+  const lines: ChartDataset<'line', DefaultDataPoint<'line'>>[] =
     metrics?.map((yAxis, i) => ({
       xAxisID: 'period',
       label: yAxis.title,
@@ -78,105 +76,51 @@ function chartData(props: Props): ChartData<'line'> {
   const datasets = [
     ...lines,
     ...lines.map((d, i) => {
-      const c = saturate(COLORS[i % COLORS.length], 20);
+      const c = hexToRgb(COLORS[i % COLORS.length], 0.5);
 
-      return {
+      const update: ChartDataset<'line', DefaultDataPoint<'line'>> = {
         ...d,
         xAxisID: 'comparison',
+        label: `Previous ${metrics[i].title}`,
         data: prevResults?.data?.map((d: Record) => d[metrics[i].name]),
-        backgroundColor: applyFill ? hexToRgb(c) : c,
-        borderColor: c
+        backgroundColor: applyFill ? hexToRgb(COLORS[i % COLORS.length], 0.05) : c,
+        borderColor: c,
+        segment: {
+          borderDash: [10, 5]
+        }
       };
+
+      return update;
     })
   ];
 
   console.log(222, results, prevResults);
 
   return {
-    labels,
     datasets
   };
 }
 
-function saturate(hex: string, saturationPercent: number) {
-  if (!/^#([0-9a-f]{6})$/i.test(hex)) {
-    throw 'Unexpected color format';
-  }
-
-  if (saturationPercent < 0 || saturationPercent > 100) {
-    throw 'Unexpected color format';
-  }
-
-  let saturationFloat = saturationPercent / 100,
-    rgbIntensityFloat = [
-      parseInt(hex.substr(1, 2), 16) / 255,
-      parseInt(hex.substr(3, 2), 16) / 255,
-      parseInt(hex.substr(5, 2), 16) / 255
-    ];
-
-  let rgbIntensityFloatSorted = rgbIntensityFloat.slice(0).sort(function (a, b) {
-      return a - b;
-    }),
-    maxIntensityFloat = rgbIntensityFloatSorted[2],
-    mediumIntensityFloat = rgbIntensityFloatSorted[1],
-    minIntensityFloat = rgbIntensityFloatSorted[0];
-
-  if (maxIntensityFloat == minIntensityFloat) {
-    // All colors have same intensity, which means
-    // the original color is gray, so we can't change saturation.
-    return hex;
-  }
-
-  // New color max intensity wont change. Lets find medium and weak intensities.
-  let newMediumIntensityFloat,
-    newMinIntensityFloat = maxIntensityFloat * (1 - saturationFloat);
-
-  if (mediumIntensityFloat == minIntensityFloat) {
-    // Weak colors have equal intensity.
-    newMediumIntensityFloat = newMinIntensityFloat;
-  } else {
-    // Calculate medium intensity with respect to original intensity proportion.
-    let intensityProportion =
-      (maxIntensityFloat - mediumIntensityFloat) / (mediumIntensityFloat - minIntensityFloat);
-    newMediumIntensityFloat =
-      (intensityProportion * newMinIntensityFloat + maxIntensityFloat) / (intensityProportion + 1);
-  }
-
-  let newRgbIntensityFloat: any = [],
-    newRgbIntensityFloatSorted = [newMinIntensityFloat, newMediumIntensityFloat, maxIntensityFloat];
-
-  // We've found new intensities, but we have then sorted from min to max.
-  // Now we have to restore original order.
-  rgbIntensityFloat.forEach(function (originalRgb) {
-    let rgbSortedIndex = rgbIntensityFloatSorted.indexOf(originalRgb);
-    newRgbIntensityFloat.push(newRgbIntensityFloatSorted[rgbSortedIndex]);
-  });
-
-  let floatToHex = function (val) {
-      return ('0' + Math.round(val * 255).toString(16)).substr(-2);
-    },
-    rgb2hex = function (rgb) {
-      return '#' + floatToHex(rgb[0]) + floatToHex(rgb[1]) + floatToHex(rgb[2]);
-    };
-
-  let newHex = rgb2hex(newRgbIntensityFloat);
-
-  return newHex;
-}
-
 // Convert hex to rgb and add opacity. Used when a color-fill is applied beneath the chart line(s).
-function hexToRgb(hex: string): string {
+function hexToRgb(hex: string, alpha?: number): string {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 
   return result
-    ? `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(
-        result[3],
-        16
-      )}, 0.3)`
+    ? `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}, ${
+        alpha || `0.3`
+      })`
     : '';
 }
 
 function chartOptions(props: Props): ChartOptions<'line'> {
+  const labels = props.results?.data?.map((d) =>
+    format(d[props.xAxis.name], { type: 'date', meta: props.xAxis?.meta })
+  );
+
+  const prevLabels = props.prevResults?.data?.map((d) =>
+    format(d[props.xAxis.name], { type: 'date', meta: props.xAxis?.meta })
+  );
+
   return {
     responsive: true,
     maintainAspectRatio: false,
@@ -204,6 +148,7 @@ function chartOptions(props: Props): ChartOptions<'line'> {
         }
       },
       period: {
+        labels,
         grid: {
           display: false
         },
@@ -213,6 +158,7 @@ function chartOptions(props: Props): ChartOptions<'line'> {
         }
       },
       comparison: {
+        labels: prevLabels,
         display: false,
         grid: {
           display: false
