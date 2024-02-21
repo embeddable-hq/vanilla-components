@@ -1,4 +1,11 @@
-import { Dataset, Dimension, Granularity, Measure, loadData } from '@embeddable.com/core';
+import {
+  Dataset,
+  Dimension,
+  Granularity,
+  Measure,
+  TimeRange,
+  loadData
+} from '@embeddable.com/core';
 import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
@@ -50,6 +57,20 @@ export const meta: EmbeddedComponentMeta = {
       category: 'Configure chart'
     },
     {
+      name: 'timeFilter',
+      type: 'timeRange',
+      label: 'Time Filter',
+      description: 'Date range',
+      category: 'Chart settings'
+    },
+    {
+      name: 'prevTimeFilter',
+      type: 'timeRange',
+      label: 'Previous Time Filter',
+      description: 'Date range',
+      category: 'Chart settings'
+    },
+    {
       name: 'xAxisTitle',
       type: 'string',
       label: 'X-Axis Title',
@@ -97,6 +118,8 @@ export type Inputs = {
   xAxis: Dimension;
   granularity: Granularity;
   metrics: Measure[];
+  timeFilter?: TimeRange;
+  prevTimeFilter?: TimeRange;
   yAxisMin?: number;
   xAxisTitle?: string;
   yAxisTitle?: string;
@@ -117,7 +140,37 @@ export default defineComponent<Inputs>(Component, meta, {
             granularity: inputs.granularity
           }
         ],
-        measures: inputs.metrics
+        measures: inputs.metrics,
+        filters:
+          inputs.timeFilter?.from && inputs.xAxis
+            ? [
+                {
+                  property: inputs.xAxis,
+                  operator: 'inDateRange',
+                  value: inputs.timeFilter
+                }
+              ]
+            : undefined
+      }),
+      prevResults: loadData({
+        from: inputs.ds,
+        timeDimensions: [
+          {
+            dimension: inputs.xAxis?.name,
+            granularity: inputs.granularity
+          }
+        ],
+        measures: inputs.metrics,
+        filters:
+          inputs.prevTimeFilter?.from && inputs.xAxis
+            ? [
+                {
+                  property: inputs.xAxis,
+                  operator: 'inDateRange',
+                  value: inputs.prevTimeFilter
+                }
+              ]
+            : undefined
       })
     };
   }

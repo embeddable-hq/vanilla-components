@@ -113,12 +113,14 @@ export default (props: Props) => {
             className="absolute left-0 top-0 h-full w-full opacity-0 cursor-pointer"
           />
           <CalendarIcon className="mr-2 hidden sm:block" />
-          {!!range?.from && !!range?.to
-            ? `${format(range.from.toJSON(), { dateFormat: formatFrom })} - ${format(
-                range.to.toJSON(),
-                { dateFormat: formatTo }
-              )}`
-            : 'Select'}
+          <span className="overflow-hidden truncate">
+            {!!range?.from && !!range?.to
+              ? `${format(range.from.toJSON(), { dateFormat: formatFrom })} - ${format(
+                  range.to.toJSON(),
+                  { dateFormat: formatTo }
+                )}`
+              : 'Select'}
+          </span>
           <div
             onClick={() => {
               setTriggerBlur(false);

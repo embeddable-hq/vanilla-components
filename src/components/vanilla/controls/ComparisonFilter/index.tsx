@@ -203,6 +203,10 @@ export default (props: Props) => {
 
       props.defaultPeriod.to = new Date(to);
 
+      setPeriod(props.defaultPeriod);
+
+      props.onChangePeriod(props.defaultPeriod as TimeRange);
+
       return;
     }
 

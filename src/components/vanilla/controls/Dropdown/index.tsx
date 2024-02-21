@@ -131,7 +131,7 @@ export default (props: Props) => {
 
         {!!value && (
           <span
-            className={`absolute w-[calc(100%-2rem)] rounded-xl left-3 top-1 h-8 leading-8 block pointer-events-none text-sm ${
+            className={`absolute w-[calc(100%-2rem)] whitespace-nowrap overflow-hidden truncate rounded-xl left-3 top-1 h-8 leading-8 block pointer-events-none text-sm ${
               focus ? 'hidden' : ''
             }`}
           >
