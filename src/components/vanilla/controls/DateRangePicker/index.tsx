@@ -82,10 +82,11 @@ export default (props: Props) => {
     <Container title={props.title}>
       <div className="relative inline-flex h-10 w-full text-[#101010] text-sm">
         <Dropdown
+          minDropdownWidth={120}
           ds={{ embeddableId: '', datasetId: '', variableValues: {} }}
           unclearable
           placeholder={props.placeholder}
-          className="max-w-[120px] sm:max-w-[140px] relative rounded-r-none w-full h-10 border border-[#DADCE1] flex items-center"
+          className="max-w-[120px] min-w-[80px] sm:max-w-[140px] relative rounded-r-none w-full h-10 border border-[#DADCE1] flex items-center"
           defaultValue={range?.relativeTimeString || ''}
           onChange={(relativeTimeString) => {
             const [from, to] = dateParser(relativeTimeString, 'UTC');
@@ -113,7 +114,7 @@ export default (props: Props) => {
             className="absolute left-0 top-0 h-full w-full opacity-0 cursor-pointer"
           />
           <CalendarIcon className="mr-2 hidden sm:block" />
-          <span className="overflow-hidden truncate">
+          <span className="overflow-hidden truncate hidden md:inline-block">
             {!!range?.from && !!range?.to
               ? `${format(range.from.toJSON(), { dateFormat: formatFrom })} - ${format(
                   range.to.toJSON(),

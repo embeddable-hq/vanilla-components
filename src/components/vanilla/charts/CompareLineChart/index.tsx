@@ -50,8 +50,6 @@ type Record = { [p: string]: string };
 export default (props: Props) => {
   const { results, title } = props;
 
-  console.log(props.timeFilter, props.prevTimeFilter);
-
   return (
     <Container className="overflow-y-hidden" title={title} results={results}>
       <Line height="100%" options={chartOptions(props)} data={chartData(props)} />
@@ -75,16 +73,21 @@ function chartData(props: Props): ChartData<'line'> {
 
   const datasets = [
     ...lines,
-    ...lines.map((d, i) => {
+    ...lines.map((_, i) => {
       const c = hexToRgb(COLORS[i % COLORS.length], 0.5);
 
       const update: ChartDataset<'line', DefaultDataPoint<'line'>> = {
-        ...d,
+        cubicInterpolationMode: 'monotone' as const,
+        showLine: !!props.prevTimeFilter?.from,
         xAxisID: 'comparison',
         label: `Previous ${metrics[i].title}`,
-        data: prevResults?.data?.map((d: Record) => d[metrics[i].name]),
+        data: !!props.prevTimeFilter?.from
+          ? prevResults?.data?.map((d: Record) => d[metrics[i].name])
+          : [],
         backgroundColor: applyFill ? hexToRgb(COLORS[i % COLORS.length], 0.05) : c,
         borderColor: c,
+        pointRadius: !!props.prevTimeFilter?.from ? undefined : 0,
+        fill: applyFill && !!props.prevTimeFilter?.from,
         segment: {
           borderDash: [10, 5]
         }
@@ -93,8 +96,6 @@ function chartData(props: Props): ChartData<'line'> {
       return update;
     })
   ];
-
-  console.log(222, results, prevResults);
 
   return {
     datasets
