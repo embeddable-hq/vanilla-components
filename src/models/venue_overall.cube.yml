@@ -33,14 +33,27 @@ cubes:
     - name: user_gender
       type: string
       sql: case when user_gender IN ( 'Male', 'Männlich', 'Mann', 'Homme', 'Hombre', '男性', 'Man', 'Mand', 'Masculino', 'זכר', 'MALE' ) then 'Male' when user_gender IN ( 'Female', 'Woman', 'Femme', 'Mujer', 'Vrouw', 'Weiblich', 'Frau', 'Feminino', '女性', 'Donna', 'Kvinde' ) then 'Female' when user_gender IN ('Unspecified', 'Non spécifié', 'Sin especificar') then 'Unspecified' when user_gender IN ('Other', 'Autre') then 'Other' else null end
-    - name: user_age
+    - name: user_age_range
       type: string
       sql: case when cast(user_age as INT64) < 18 then "- 18" when cast(user_age as INT64) >= 18 and cast(user_age as INT64) < 25 then "18 - 24" when cast(user_age as INT64) >= 25 and cast(user_age as INT64) < 35 then "25 - 34" when cast(user_age as INT64) >= 35 and cast(user_age as INT64) < 45 then "35 - 44" when cast(user_age as INT64) >= 45 and cast(user_age as INT64) < 55 then "45 - 54" when cast(user_age as INT64) >= 55 and cast(user_age as INT64) < 65 then "55 - 64" when cast(user_age as INT64) >= 65 and cast(user_age as INT64) < 71 then "65 - 70" when cast(user_age as INT64) >= 71 then "71 +" end
     - name: user_language
       type: string
       sql: user_language
+    - name: host_join
+      type: string
+      sql: host_join
 
   measures:
+    - name: object_scan_users
+      type: count_distinct
+      title: Object Scan Users
+      sql: case when event_name in ('scan_recognition_hit') and venue_sid is not null then user_pseudo_id else null end
+    
+    - name: object_scan
+      type: count_distinct
+      title: Object Scan Total
+      sql: case when event_name in ('scan_recognition_hit') then 1 when (event_name = "object_scan" and partition_date <= DATE(2023,05,05)) then 1 when (event_name = "artwork_recognised" and partition_date <= DATE(2022,11,11)) then 1 else 0 end
+    
     - name: total_events
       type: count
       title: Total Events
@@ -61,4 +74,4 @@ cubes:
     - name: events_per_user
       title: Events per User
       type: number
-      sql: "{total_events} / {users}"
+      sql: "ROUND({total_events} / {users}, 2)"
