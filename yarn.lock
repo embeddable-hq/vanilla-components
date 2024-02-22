@@ -356,10 +356,10 @@
   dependencies:
     "@embeddable.com/core" "*"
 
-"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@^2.4.31":
-  version "2.4.31"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-2.4.31.tgz"
-  integrity sha512-h+YqdLfOUuLj44aCqMdoxdJrM7zbdGy7N4JYp6QXoWWKRXrrir0v6KUoaMZv2AGBDaKDdDijZNRX6j460Sdh+A==
+"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@^2.4.32":
+  version "2.4.32"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-2.4.32.tgz"
+  integrity sha512-O/FEfjIGjlDGxwCY4Xq4fvzPET88akqA5ws5iZH1FZjn+AhjNwSRwPdYwKhPn5tKDmMSgBCoYiztm15vPTsNBQ==
   dependencies:
     "@embeddable.com/sdk-utils" "*"
     "@inquirer/select" "^1.3.0"
