@@ -12,7 +12,7 @@ import {
   subQuarters,
   subYears
 } from 'date-fns';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import Container from '../../Container';
 import DateRangePicker from '../DateRangePicker';
@@ -55,9 +55,21 @@ export type Props = Inputs & {
 };
 
 export default (props: Props) => {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [hideDate, setHideDate] = useState(false);
   const [period, setPeriod] = useState(props.defaultPeriod);
   const [granularity, setGranularity] = useState(props.defaultGranularity);
   const [compareOption, setCompareOption] = useState(props.defaultComparison);
+
+  useLayoutEffect(() => {
+    const interval = setInterval(() => {
+      const width = ref.current?.clientWidth;
+
+      if (width) setHideDate(width < 250);
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const granularityOptions: DataResponse = useMemo(() => {
     const data: { value: Granularity }[] = [];
@@ -214,8 +226,9 @@ export default (props: Props) => {
   return (
     <Container title={props.title}>
       <div className="flex items-center h-10">
-        <div className="grow basis-0 max-w-96 h-full">
+        <div ref={ref} className="grow basis-0 max-w-96 h-full">
           <DateRangePicker
+            hideDate={hideDate}
             value={period}
             onChange={(period) => {
               setPeriod(period as TimeRange);

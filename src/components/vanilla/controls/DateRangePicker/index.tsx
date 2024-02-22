@@ -29,6 +29,7 @@ type TimeRange = {
 };
 
 type Props = Inputs & {
+  hideDate?: boolean;
   placeholder?: string;
   onChange: (v?: TimeRange) => void;
 };
@@ -105,7 +106,7 @@ export default (props: Props) => {
           }}
           property={{ name: 'value', title: '', nativeType: 'string', __type__: 'dimension' }}
         />
-        <div className="grow flex items-center p-4 hover:bg-[#f3f4f6] cursor-pointer relative text-sm border-y border-r rounded-r-xl border-[#d8dad9]">
+        <div className="grow flex items-center p-4 hover:bg-[#f3f4f6] cursor-pointer relative text-sm border-y border-r rounded-r-xl border-[#d8dad9] min-w-[60px]">
           <input
             ref={ref}
             onChange={() => {}}
@@ -114,14 +115,16 @@ export default (props: Props) => {
             className="absolute left-0 top-0 h-full w-full opacity-0 cursor-pointer"
           />
           <CalendarIcon className="mr-2 hidden sm:block" />
-          <span className="overflow-hidden truncate hidden md:inline-block">
-            {!!range?.from && !!range?.to
-              ? `${format(range.from.toJSON(), { dateFormat: formatFrom })} - ${format(
-                  range.to.toJSON(),
-                  { dateFormat: formatTo }
-                )}`
-              : 'Select'}
-          </span>
+          {!props.hideDate && (
+            <span className="overflow-hidden truncate">
+              {!!range?.from && !!range?.to
+                ? `${format(range.from.toJSON(), { dateFormat: formatFrom })} - ${format(
+                    range.to.toJSON(),
+                    { dateFormat: formatTo }
+                  )}`
+                : 'Select'}
+            </span>
+          )}
           <div
             onClick={() => {
               setTriggerBlur(false);
