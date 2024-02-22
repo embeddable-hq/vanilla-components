@@ -12,7 +12,7 @@ import Component from './index';
 
 export const meta: EmbeddedComponentMeta = {
   name: 'CompareLineChart',
-  label: 'Chart: Compare Line',
+  label: 'Chart: Line (time-series) comparison',
   classNames: ['inside-card'],
   inputs: [
     {
@@ -160,6 +160,7 @@ export default defineComponent<Inputs>(Component, meta, {
             granularity: inputs.granularity
           }
         ],
+        limit: !inputs.prevTimeFilter?.from ? 0 : undefined,
         measures: inputs.metrics,
         filters:
           inputs.prevTimeFilter?.from && inputs.xAxis

@@ -239,7 +239,7 @@ export default (props: Props) => {
             }}
           />
         </div>
-        <div className="shrink whitespace-nowrap text-[14px] font-normal text-[#101010] mx-3 leading-none">
+        <div className="shrink whitespace-nowrap text-[14px] font-normal text-[#101010] mx-1.5 leading-none">
           compare to
         </div>
         <div className="grow basis-0 max-w-[150px] h-full">
@@ -257,6 +257,7 @@ export default (props: Props) => {
           <div className="grow basis-0 max-w-[115px] h-full ml-3">
             <Dropdown
               unclearable
+              minDropdownWidth={80}
               defaultValue={granularity}
               options={granularityOptions}
               property={valueProp}

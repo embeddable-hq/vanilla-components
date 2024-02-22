@@ -111,16 +111,16 @@ export default defineComponent<Inputs>(Component, meta, {
         loadData({
           from: inputs.ds,
           measures: [inputs.metric],
-          filters:
-            inputs.prevTimeFilter?.from && inputs.timeProperty
-              ? [
-                  {
-                    property: inputs.timeProperty,
-                    operator: 'inDateRange',
-                    value: inputs.prevTimeFilter
-                  }
-                ]
-              : undefined
+          limit: !inputs.prevTimeFilter?.from ? 0 : undefined,
+          filters: inputs.prevTimeFilter?.from
+            ? [
+                {
+                  property: inputs.timeProperty,
+                  operator: 'inDateRange',
+                  value: inputs.prevTimeFilter
+                }
+              ]
+            : undefined
         })
     };
   }

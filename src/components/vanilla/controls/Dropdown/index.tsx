@@ -112,7 +112,7 @@ export default (props: Props) => {
     <Container title={props.title}>
       <div
         className={twMerge(
-          'relative rounded-xl w-full h-10 border border-[#DADCE1] flex items-center',
+          'relative rounded-xl w-full min-w-[50px] h-10 border border-[#DADCE1] flex items-center',
           props.className
         )}
       >
