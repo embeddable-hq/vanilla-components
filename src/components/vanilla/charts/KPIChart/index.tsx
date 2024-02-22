@@ -49,7 +49,7 @@ export default (props: Props) => {
         <div className="flex items-center justify-center font-embeddable text-[#333942] text-[44px] font-bold relative -mt-[10px]">
           {percentage !== null && (
             <span
-              className="absolute left-0 -bottom-[50px] w-full justify-center flex items-center text-[16px]"
+              className="absolute left-0 -bottom-[38px] w-full justify-center flex items-center text-[16px]"
               style={{ color: percentage < 0 ? '#FF6B6C' : '#3BA99C' }}
             >
               <Chevron
