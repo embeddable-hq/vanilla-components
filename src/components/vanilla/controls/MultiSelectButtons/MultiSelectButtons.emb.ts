@@ -1,4 +1,4 @@
-import { loadData, Value } from '@embeddable.com/core';
+import { Value } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
@@ -8,24 +8,24 @@ export const meta: EmbeddedComponentMeta = {
   label: 'Control: Multiselect Buttons',
   defaultWidth: 400,
   defaultHeight: 80,
-  inputs: [    
+  inputs: [
     {
-      name: "title",
-      type: "string",
-      label: "Title",
+      name: 'title',
+      type: 'string',
+      label: 'Title'
     },
     {
       name: 'values',
-      type: "string",
+      type: 'string',
       array: true,
-      label: "Value"
-    }, 
+      label: 'Value'
+    },
     {
       name: 'defaultValue',
       type: 'string',
       array: true,
-      label: 'Default value',
-    },   
+      label: 'Default value'
+    }
   ],
   events: [
     {
@@ -47,7 +47,7 @@ export const meta: EmbeddedComponentMeta = {
       array: true,
       defaultValue: Value.noFilter(),
       inputs: ['defaultValue'],
-      events: [{ name: 'onChange', property: 'value'}]
+      events: [{ name: 'onChange', property: 'value' }]
     }
   ]
 };
@@ -56,13 +56,13 @@ type Inputs = {
   title: string;
   values: Array<string>;
   defaultValue: string;
-}
+};
 
 export default defineComponent<Inputs>(Component, meta, {
   props: (inputs) => {
     return {
-      ...inputs,
-    }
+      ...inputs
+    };
   },
   events: {
     onChange: (value) => ({ value: value.length > 0 ? value : Value.noFilter() })

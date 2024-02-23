@@ -149,6 +149,8 @@ function chartOptions(props: Props): ChartOptions<'line'> {
         }
       },
       period: {
+        min: props.timeFilter?.from?.toJSON(),
+        max: props.timeFilter?.to?.toJSON(),
         labels,
         grid: {
           display: false
@@ -159,6 +161,8 @@ function chartOptions(props: Props): ChartOptions<'line'> {
         }
       },
       comparison: {
+        min: props.prevTimeFilter?.from?.toJSON(),
+        max: props.prevTimeFilter?.to?.toJSON(),
         labels: prevLabels,
         display: false,
         grid: {
