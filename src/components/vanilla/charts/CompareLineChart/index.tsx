@@ -14,12 +14,14 @@ import {
   Title,
   Tooltip
 } from 'chart.js';
+import 'chart.js/auto';
+import 'chartjs-adapter-date-fns';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { parseJSON } from 'date-fns';
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
-import format from '../../../util/format';
 import Container from '../../Container';
 import { Inputs } from './CompareLineChart.emb';
 
@@ -48,10 +50,12 @@ type Props = Inputs & {
 type Record = { [p: string]: string };
 
 export default (props: Props) => {
-  const { results, title } = props;
+  props.granularity = props.granularity || 'day';
+
+  console.log(props);
 
   return (
-    <Container className="overflow-y-hidden" title={title} results={results}>
+    <Container className="overflow-y-hidden" title={props.title} results={props.results}>
       <Line height="100%" options={chartOptions(props)} data={chartData(props)} />
     </Container>
   );
@@ -64,7 +68,10 @@ function chartData(props: Props): ChartData<'line'> {
     metrics?.map((yAxis, i) => ({
       xAxisID: 'period',
       label: yAxis.title,
-      data: results?.data?.map((d: Record) => d[yAxis.name]),
+      data: results?.data?.map((d: Record) => ({
+        y: parseFloat(d[yAxis.name]),
+        x: parseJSON(d[props.xAxis?.name || ''])
+      })),
       backgroundColor: applyFill ? hexToRgb(COLORS[i % COLORS.length]) : COLORS[i % COLORS.length],
       borderColor: COLORS[i % COLORS.length],
       fill: applyFill,
@@ -82,7 +89,10 @@ function chartData(props: Props): ChartData<'line'> {
         xAxisID: 'comparison',
         label: `Previous ${metrics[i].title}`,
         data: !!props.prevTimeFilter?.from
-          ? prevResults?.data?.map((d: Record) => d[metrics[i].name])
+          ? prevResults?.data?.map((d: Record) => ({
+              y: parseFloat(d[metrics[i].name]),
+              x: parseJSON(d[props.xAxis?.name || ''])
+            }))
           : [],
         backgroundColor: applyFill ? hexToRgb(COLORS[i % COLORS.length], 0.05) : c,
         borderColor: c,
@@ -114,14 +124,6 @@ function hexToRgb(hex: string, alpha?: number): string {
 }
 
 function chartOptions(props: Props): ChartOptions<'line'> {
-  const labels = props.results?.data?.map((d) =>
-    format(d[props.xAxis.name], { type: 'date', meta: props.xAxis?.meta })
-  );
-
-  const prevLabels = props.prevResults?.data?.map((d) =>
-    format(d[props.xAxis.name], { type: 'date', meta: props.xAxis?.meta })
-  );
-
   return {
     responsive: true,
     maintainAspectRatio: false,
@@ -151,9 +153,21 @@ function chartOptions(props: Props): ChartOptions<'line'> {
       period: {
         min: props.timeFilter?.from?.toJSON(),
         max: props.timeFilter?.to?.toJSON(),
-        labels,
         grid: {
           display: false
+        },
+        type: 'time',
+        time: {
+          round: props.granularity,
+          displayFormats: {
+            month: 'MMM',
+            day: 'd MMM',
+            week: 'd MMM',
+            hour: 'HH:mm',
+            minute: 'HH:mm',
+            second: 'HH:mm:ss'
+          },
+          unit: props.granularity
         },
         title: {
           display: !!props.xAxisTitle,
@@ -163,10 +177,22 @@ function chartOptions(props: Props): ChartOptions<'line'> {
       comparison: {
         min: props.prevTimeFilter?.from?.toJSON(),
         max: props.prevTimeFilter?.to?.toJSON(),
-        labels: prevLabels,
-        display: false,
+        // display: false,
         grid: {
           display: false
+        },
+        type: 'time',
+        time: {
+          round: props.granularity,
+          displayFormats: {
+            month: 'MMM',
+            day: 'd MMM',
+            hour: 'HH:mm',
+            week: 'd MMM',
+            minute: 'HH:mm',
+            second: 'HH:mm:ss'
+          },
+          unit: props.granularity
         },
         title: {
           display: false

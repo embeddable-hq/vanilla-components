@@ -160,7 +160,7 @@ export default defineComponent<Inputs>(Component, meta, {
             granularity: inputs.granularity
           }
         ],
-        limit: !inputs.prevTimeFilter?.from ? 0 : undefined,
+        limit: !inputs.prevTimeFilter?.from ? 1 : undefined,
         measures: inputs.metrics,
         filters:
           inputs.prevTimeFilter?.from && inputs.xAxis

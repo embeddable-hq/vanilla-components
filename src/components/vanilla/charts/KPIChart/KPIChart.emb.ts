@@ -111,7 +111,7 @@ export default defineComponent<Inputs>(Component, meta, {
         loadData({
           from: inputs.ds,
           measures: [inputs.metric],
-          limit: !inputs.prevTimeFilter?.from ? 0 : undefined,
+          limit: !inputs.prevTimeFilter?.from ? 1 : undefined,
           filters: inputs.prevTimeFilter?.from
             ? [
                 {

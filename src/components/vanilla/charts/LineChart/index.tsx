@@ -12,12 +12,14 @@ import {
   Title,
   Tooltip
 } from 'chart.js';
+import 'chart.js/auto';
+import 'chartjs-adapter-date-fns';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { parseJSON } from 'date-fns';
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
-import format from '../../../util/format';
 import Container from '../../Container';
 import { Inputs } from './LineChart.emb';
 
@@ -55,17 +57,16 @@ export default (props: Props) => {
 };
 
 function chartData(props: Props): ChartData<'line'> {
-  const { results, xAxis, metrics, applyFill } = props;
-  const labels = results?.data?.map((d) =>
-    format(d[xAxis.name], { type: 'date', meta: xAxis?.meta })
-  );
+  const { results, metrics, applyFill } = props;
 
   return {
-    labels,
     datasets:
       metrics?.map((yAxis, i) => ({
         label: yAxis.title,
-        data: results?.data?.map((d: Record) => d[yAxis.name]),
+        data: results?.data?.map((d: Record) => ({
+          y: parseFloat(d[yAxis.name]),
+          x: parseJSON(d[props.xAxis?.name || ''])
+        })),
         backgroundColor: applyFill
           ? hexToRgb(COLORS[i % COLORS.length])
           : COLORS[i % COLORS.length],
@@ -122,6 +123,19 @@ function chartOptions(props: Props): ChartOptions<'line'> {
         title: {
           display: !!props.xAxisTitle,
           text: props.xAxisTitle
+        },
+        type: 'time',
+        time: {
+          round: props.granularity,
+          displayFormats: {
+            month: 'MMM',
+            day: 'd MMM',
+            week: 'd MMM',
+            hour: 'HH:mm',
+            minute: 'HH:mm',
+            second: 'HH:mm:ss'
+          },
+          unit: props.granularity
         }
       }
     },
