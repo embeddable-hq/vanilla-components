@@ -1,7 +1,7 @@
-- name: Example customer 1
+- name: Belvedere User
   securityContext:
-    country: United States
+    organisation_id: org_belvedere
     
-- name: Example customer 2
+- name: National Gallery User
   securityContext:
-    country: Germany
+    organisation_id: org_ng

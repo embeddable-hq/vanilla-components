@@ -1,6 +1,10 @@
 cubes:
 - name: venue_objects
-  sql_table: smartify-cc94e.report_venue.venue_object_table
+ # sql_table: smartify-cc94e.report_venue.venue_object_table
+  sql: >
+    SELECT *
+    FROM `smartify-cc94e.report_venue.venue_object_table`
+    WHERE organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
 
   dimensions:
     - name: date
