@@ -1,11 +1,14 @@
 import { Granularity, TimeRange, Value } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 
+import TimeComparisonType from '../../../../types/TimeComparison.type.emb.js';
 import Component from './index';
 
 export const meta: EmbeddedComponentMeta = {
   name: 'ComparisonFilter',
   label: 'Control: Comparison Filter',
+  defaultWidth: 920,
+  defaultHeight: 80,
   classNames: ['on-top'],
   inputs: [
     {
@@ -15,15 +18,16 @@ export const meta: EmbeddedComponentMeta = {
       category: 'Configuration'
     },
     {
-      name: 'defaultPeriod',
-      type: 'timeRange',
-      label: 'Default period',
+      name: 'defaultComparison',
+      type: TimeComparisonType,
+      label: 'Default comparison option',
+      defaultValue: 'No comparison',
       category: 'Settings'
     },
     {
-      name: 'defaultComparison',
+      name: 'defaultPeriod',
       type: 'timeRange',
-      label: 'Default comparison',
+      label: 'Default period',
       category: 'Settings'
     },
     {
@@ -79,6 +83,7 @@ export const meta: EmbeddedComponentMeta = {
     {
       name: 'period',
       type: 'timeRange',
+      inputs: ['defaultPeriod'],
       defaultValue: Value.noFilter(),
       events: [{ name: 'onChangePeriod', property: 'value' }]
     },
@@ -91,6 +96,7 @@ export const meta: EmbeddedComponentMeta = {
     {
       name: 'granularity',
       type: 'granularity',
+      inputs: ['defaultGranularity'],
       defaultValue: Value.noFilter(),
       events: [{ name: 'onChangeGranularity', property: 'value' }]
     }
@@ -100,7 +106,7 @@ export const meta: EmbeddedComponentMeta = {
 export type Inputs = {
   title?: string;
   defaultPeriod?: TimeRange;
-  defaultComparison?: TimeRange;
+  defaultComparison?: string;
   defaultGranularity?: Granularity;
   showGranularity?: boolean;
 };

@@ -1,4 +1,4 @@
-import { Dataset, Measure, loadData } from '@embeddable.com/core';
+import { Dataset, Dimension, Measure, TimeRange, loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
@@ -47,6 +47,31 @@ export const meta: EmbeddedComponentMeta = {
       label: 'Suffix',
       description: 'Suffix',
       category: 'Chart settings'
+    },
+    {
+      name: 'timeProperty',
+      type: 'dimension',
+      label: 'Time Property',
+      description: 'Used by time filters',
+      config: {
+        dataset: 'ds',
+        supportedTypes: ['time']
+      },
+      category: 'Chart settings'
+    },
+    {
+      name: 'timeFilter',
+      type: 'timeRange',
+      label: 'Time Filter',
+      description: 'Date range',
+      category: 'Chart settings'
+    },
+    {
+      name: 'prevTimeFilter',
+      type: 'timeRange',
+      label: 'Previous Time Filter',
+      description: 'Date range',
+      category: 'Chart settings'
     }
   ],
   events: []
@@ -58,6 +83,9 @@ export type Inputs = {
   metric: Measure;
   prefix?: string;
   suffix?: string;
+  timeProperty?: Dimension;
+  timeFilter?: TimeRange;
+  prevTimeFilter?: TimeRange;
 };
 
 export default defineComponent<Inputs>(Component, meta, {
@@ -66,8 +94,34 @@ export default defineComponent<Inputs>(Component, meta, {
       ...inputs,
       value: loadData({
         from: inputs.ds,
-        measures: [inputs.metric]
-      })
+        measures: [inputs.metric],
+        filters:
+          inputs.timeFilter?.from && inputs.timeProperty
+            ? [
+                {
+                  property: inputs.timeProperty,
+                  operator: 'inDateRange',
+                  value: inputs.timeFilter
+                }
+              ]
+            : undefined
+      }),
+      prevValue:
+        inputs.timeProperty &&
+        loadData({
+          from: inputs.ds,
+          measures: [inputs.metric],
+          limit: !inputs.prevTimeFilter?.from ? 0 : undefined,
+          filters: inputs.prevTimeFilter?.from
+            ? [
+                {
+                  property: inputs.timeProperty,
+                  operator: 'inDateRange',
+                  value: inputs.prevTimeFilter
+                }
+              ]
+            : undefined
+        })
     };
   }
 });
