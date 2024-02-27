@@ -22,6 +22,7 @@ import React from 'react';
 import { Line } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
+import useTimezone from '../../../hooks/useTimezone';
 import Container from '../../Container';
 import { Inputs } from './CompareLineChart.emb';
 
@@ -52,11 +53,15 @@ type Record = { [p: string]: string };
 export default (props: Props) => {
   props.granularity = props.granularity || 'day';
 
-  console.log(props);
+  const fixTimezoneProps = useTimezone(props);
 
   return (
     <Container className="overflow-y-hidden" title={props.title} results={props.results}>
-      <Line height="100%" options={chartOptions(props)} data={chartData(props)} />
+      <Line
+        height="100%"
+        options={chartOptions(fixTimezoneProps)}
+        data={chartData(fixTimezoneProps)}
+      />
     </Container>
   );
 };
@@ -127,6 +132,10 @@ function chartOptions(props: Props): ChartOptions<'line'> {
   return {
     responsive: true,
     maintainAspectRatio: false,
+    interaction: {
+      mode: 'index',
+      intersect: false
+    },
     layout: {
       padding: {
         left: 0,
@@ -177,7 +186,7 @@ function chartOptions(props: Props): ChartOptions<'line'> {
       comparison: {
         min: props.prevTimeFilter?.from?.toJSON(),
         max: props.prevTimeFilter?.to?.toJSON(),
-        // display: false,
+        display: false,
         grid: {
           display: false
         },
