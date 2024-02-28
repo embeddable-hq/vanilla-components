@@ -165,7 +165,8 @@ function chartOptions(props: Props): ChartOptions<'line'> {
       },
       datalabels: {
         align: 'top',
-        display: props.showLabels ? 'auto' : false
+        display: props.showLabels ? 'auto' : false,
+        formatter: (v) => v.y
       }
     }
   };
