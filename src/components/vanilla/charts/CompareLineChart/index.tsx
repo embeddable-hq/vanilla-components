@@ -17,7 +17,7 @@ import {
 import 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { parseJSON } from 'date-fns';
+import { format, parseJSON } from 'date-fns';
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 
@@ -42,6 +42,11 @@ ChartJS.defaults.font.size = parseInt(SMALL_FONT_SIZE);
 ChartJS.defaults.color = LIGHT_FONT;
 ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
+ChartJS.defaults.plugins.tooltip.callbacks.title = (lines: any[]) => {
+  return [...new Set(lines.map((line) => line.raw.x.valueOf()))].map((date) =>
+    format(new Date(date), 'dd MMM yyyy')
+  );
+};
 
 type Props = Inputs & {
   results: DataResponse;
