@@ -43,9 +43,9 @@ ChartJS.defaults.color = LIGHT_FONT;
 ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
 ChartJS.defaults.plugins.tooltip.callbacks.title = (lines: any[]) => {
-  return [...new Set(lines.map((line) => line.raw.x.valueOf()))].map((date) =>
-    format(new Date(date), 'dd MMM yyyy')
-  );
+  return [...new Set(lines.map((line) => line?.raw?.x?.valueOf()))]
+    .map((date) => format(new Date(date), 'dd MMM yyyy'))
+    .filter((v) => !!v);
 };
 
 type Props = Inputs & {
