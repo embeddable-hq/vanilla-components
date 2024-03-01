@@ -72,23 +72,8 @@ export default (props: Props) => {
   }, []);
 
   const granularityOptions: DataResponse = useMemo(() => {
-    const data: { value: Granularity }[] = [];
-    const granularities = Object.keys(minDuration);
-    const difference = differenceInSeconds(period?.to || new Date(), period?.from || new Date());
-
-    granularities.forEach((value) => {
-      if (minDuration[value] > difference) return;
-
-      if (maxDuration[value] < difference) return;
-
-      data.push({ value: value as Granularity });
-    });
-
-    return {
-      isLoading: false,
-      data
-    };
-  }, [[period]]);
+    return calculateGranularityOptions(period);
+  }, [period]);
 
   const comparisonOptions: DataResponse = useMemo(() => {
     if (!period?.from || !period?.to) {
@@ -186,18 +171,6 @@ export default (props: Props) => {
   );
 
   useEffect(() => {
-    if (!props.defaultGranularity) return;
-
-    setGranularity(props.defaultGranularity);
-  }, [props.defaultGranularity]);
-
-  useEffect(() => {
-    if (!props.defaultComparison) return;
-
-    changeComparisonOption(props.defaultComparison);
-  }, [changeComparisonOption]);
-
-  useEffect(() => {
     if (!props.defaultPeriod) return;
 
     if (
@@ -234,6 +207,10 @@ export default (props: Props) => {
               setPeriod(period as TimeRange);
 
               props.onChangePeriod((period as TimeRange) || null);
+
+              const options = calculateGranularityOptions(period as TimeRange);
+
+              if (options?.data?.find((record) => record?.value === granularity)) return;
 
               const days = Math.abs(
                 differenceInCalendarDays(period?.from || new Date(), period?.to || new Date())
@@ -287,3 +264,22 @@ export default (props: Props) => {
     </Container>
   );
 };
+
+function calculateGranularityOptions(period?: TimeRange): DataResponse {
+  const data: { value: Granularity }[] = [];
+  const granularities = Object.keys(minDuration);
+  const difference = differenceInSeconds(period?.to || new Date(), period?.from || new Date());
+
+  granularities.forEach((value) => {
+    if (minDuration[value] > difference) return;
+
+    if (maxDuration[value] < difference) return;
+
+    data.push({ value: value as Granularity });
+  });
+
+  return {
+    isLoading: false,
+    data
+  };
+}
