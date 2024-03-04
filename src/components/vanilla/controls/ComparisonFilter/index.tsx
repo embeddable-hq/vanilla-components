@@ -14,6 +14,7 @@ import {
 } from 'date-fns';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
+import { timeRangeToUTC } from '../../../hooks/useTimezone';
 import Container from '../../Container';
 import DateRangePicker from '../DateRangePicker';
 import Dropdown from '../Dropdown';
@@ -57,7 +58,7 @@ export type Props = Inputs & {
 export default (props: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [hideDate, setHideDate] = useState(false);
-  const [period, setPeriod] = useState(props.defaultPeriod);
+  const [period, setPeriod] = useState(timeRangeToUTC(props.defaultPeriod as TimeRange));
   const [granularity, setGranularity] = useState(props.defaultGranularity);
   const [compareOption, setCompareOption] = useState(props.defaultComparison);
 

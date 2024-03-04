@@ -2,6 +2,7 @@ import { Granularity, TimeRange, Value } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 
 import TimeComparisonType from '../../../../types/TimeComparison.type.emb.js';
+import { timeRangeToUTC } from '../../../hooks/useTimezone.js';
 import Component from './index';
 
 export const meta: EmbeddedComponentMeta = {
@@ -114,10 +115,14 @@ export type Inputs = {
 export default defineComponent<Inputs>(Component, meta, {
   props: (inputs) => inputs,
   events: {
-    onChangePeriod: (value) => {
+    onChangePeriod: (v) => {
+      const value = timeRangeToUTC(v);
+
       return { value: value || Value.noFilter() };
     },
-    onChangeComparison: (value) => {
+    onChangeComparison: (v) => {
+      const value = timeRangeToUTC(v);
+
       return { value: value || Value.noFilter() };
     },
     onChangeGranularity: (value) => {

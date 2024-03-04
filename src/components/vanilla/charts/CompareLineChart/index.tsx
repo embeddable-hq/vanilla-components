@@ -22,7 +22,7 @@ import React from 'react';
 import { Line } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
-import useTimezone from '../../../hooks/useTimezone';
+import useTimezone, { timeRangeToLocal } from '../../../hooks/useTimezone';
 import Container from '../../Container';
 import { Inputs } from './CompareLineChart.emb';
 
@@ -134,6 +134,14 @@ function hexToRgb(hex: string, alpha?: number): string {
 }
 
 function chartOptions(props: Props): ChartOptions<'line'> {
+  const bounds = {
+    period: timeRangeToLocal(props.timeFilter),
+    comparison: timeRangeToLocal(props.prevTimeFilter)
+  };
+
+  console.log('period.from', bounds.period?.from?.toJSON());
+  console.log('period.to', bounds.period?.to?.toJSON());
+
   return {
     responsive: true,
     maintainAspectRatio: false,
@@ -165,8 +173,8 @@ function chartOptions(props: Props): ChartOptions<'line'> {
         }
       },
       period: {
-        min: props.timeFilter?.from?.toJSON(),
-        max: props.timeFilter?.to?.toJSON(),
+        min: bounds.period?.from?.toJSON(),
+        max: bounds.period?.to?.toJSON(),
         grid: {
           display: false
         },
@@ -189,8 +197,8 @@ function chartOptions(props: Props): ChartOptions<'line'> {
         }
       },
       comparison: {
-        min: props.prevTimeFilter?.from?.toJSON(),
-        max: props.prevTimeFilter?.to?.toJSON(),
+        min: bounds.comparison?.from?.toJSON(),
+        max: bounds.comparison?.to?.toJSON(),
         display: false,
         grid: {
           display: false
