@@ -1,0 +1,3 @@
+[submodule "submodules/burt-poc"]
+	path = submodules/burt-poc
+	url = https://github.com/fsgsmartbuildings/burt-poc.git
