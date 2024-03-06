@@ -4,7 +4,6 @@ import { DataResponse } from '@embeddable.com/react';
 import {
   differenceInCalendarDays,
   differenceInSeconds,
-  endOfDay,
   format,
   getYear,
   subDays,
@@ -14,7 +13,7 @@ import {
 } from 'date-fns';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import { timeRangeToUTC } from '../../../hooks/useTimezone';
+import { timeRangeToLocal, toLocal } from '../../../hooks/useTimezone';
 import Container from '../../Container';
 import DateRangePicker from '../DateRangePicker';
 import Dropdown from '../Dropdown';
@@ -41,7 +40,7 @@ const minDuration = {
 const maxDuration = {
   second: 90000,
   minute: 60000,
-  hour: 3600000,
+  hour: 604800, // 7 days
   day: 86400000,
   week: 604800000,
   month: 2628500000,
@@ -58,7 +57,8 @@ export type Props = Inputs & {
 export default (props: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [hideDate, setHideDate] = useState(false);
-  const [period, setPeriod] = useState(timeRangeToUTC(props.defaultPeriod as TimeRange));
+  const [recalcComparison, setRecalcComparison] = useState(false);
+  const [period, setPeriod] = useState(props.defaultPeriod);
   const [granularity, setGranularity] = useState(props.defaultGranularity);
   const [compareOption, setCompareOption] = useState(props.defaultComparison);
 
@@ -92,19 +92,19 @@ export default (props: Props) => {
         { value: 'No comparison' },
         {
           value: 'Previous period',
-          note: getNote(subDays(period.from, days), endOfDay(subDays(period.to, days)))
+          note: getNote(subDays(period.from, days), subDays(period.to, days))
         },
         {
           value: 'Previous month',
-          note: getNote(subMonths(period.from, 1), endOfDay(subMonths(period.to, 1)))
+          note: getNote(subMonths(period.from, 1), subMonths(period.to, 1))
         },
         {
           value: 'Previous quarter',
-          note: getNote(subQuarters(period.from, 1), endOfDay(subQuarters(period.to, 1)))
+          note: getNote(subQuarters(period.from, 1), subQuarters(period.to, 1))
         },
         {
           value: 'Previous year',
-          note: getNote(subYears(period.from, 1), endOfDay(subYears(period.to, 1)))
+          note: getNote(subYears(period.from, 1), subYears(period.to, 1))
         }
       ]
     };
@@ -133,7 +133,7 @@ export default (props: Props) => {
         props.onChangeComparison({
           relativeTimeString: '',
           from: subMonths(period.from, 1),
-          to: endOfDay(subMonths(period.to, 1))
+          to: subMonths(period.to, 1)
         });
 
         return;
@@ -143,7 +143,7 @@ export default (props: Props) => {
         props.onChangeComparison({
           relativeTimeString: '',
           from: subQuarters(period.from, 1),
-          to: endOfDay(subQuarters(period.to, 1))
+          to: subQuarters(period.to, 1)
         });
 
         return;
@@ -153,7 +153,7 @@ export default (props: Props) => {
         props.onChangeComparison({
           relativeTimeString: '',
           from: subYears(period.from, 1),
-          to: endOfDay(subYears(period.to, 1))
+          to: subYears(period.to, 1)
         });
 
         return;
@@ -162,14 +162,22 @@ export default (props: Props) => {
       // Previous period
       const days = Math.abs(differenceInCalendarDays(period.from, period.to)) + 1;
 
-      props.onChangeComparison({
-        relativeTimeString: '',
-        from: subDays(period.from, days),
-        to: endOfDay(subDays(period.to, days))
-      });
+      props.onChangeComparison(
+        timeRangeToLocal({
+          relativeTimeString: '',
+          from: subDays(period.from, days),
+          to: subDays(period.to, days)
+        }) || null
+      );
     },
     [props.onChangeComparison, period, setCompareOption]
   );
+
+  useEffect(() => {
+    if (!recalcComparison) return;
+
+    if (compareOption) changeComparisonOption(compareOption);
+  }, [compareOption, recalcComparison, changeComparisonOption]);
 
   useEffect(() => {
     if (!props.defaultPeriod) return;
@@ -179,7 +187,7 @@ export default (props: Props) => {
       !props.defaultPeriod?.to &&
       props.defaultPeriod?.relativeTimeString
     ) {
-      const [from, to] = dateParser(props.defaultPeriod?.relativeTimeString, 'UTC');
+      const [from, to] = dateParser(props.defaultPeriod?.relativeTimeString, '');
 
       if (!from || !to) return;
 
@@ -208,6 +216,8 @@ export default (props: Props) => {
               setPeriod(period as TimeRange);
 
               props.onChangePeriod((period as TimeRange) || null);
+
+              setRecalcComparison(true);
 
               const options = calculateGranularityOptions(period as TimeRange);
 

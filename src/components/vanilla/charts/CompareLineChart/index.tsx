@@ -18,7 +18,7 @@ import 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { format, parseJSON } from 'date-fns';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
@@ -42,11 +42,6 @@ ChartJS.defaults.font.size = parseInt(SMALL_FONT_SIZE);
 ChartJS.defaults.color = LIGHT_FONT;
 ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
-ChartJS.defaults.plugins.tooltip.callbacks.title = (lines: any[]) => {
-  return [...new Set(lines.map((line) => line?.raw?.x?.valueOf()))]
-    .map((date) => format(new Date(date), 'dd MMM yyyy'))
-    .filter((v) => !!v);
-};
 
 type Props = Inputs & {
   results: DataResponse;
@@ -59,6 +54,23 @@ export default (props: Props) => {
   props.granularity = props.granularity || 'day';
 
   const fixTimezoneProps = useTimezone(props);
+
+  useEffect(() => {
+    ChartJS.defaults.plugins.tooltip.callbacks.title = (lines: any[]) => {
+      const definedFormat = {
+        month: 'MMM',
+        day: 'd MMM',
+        week: 'd MMM',
+        hour: 'eee HH:mm',
+        minute: 'eee HH:mm',
+        second: 'HH:mm:ss'
+      };
+
+      return [...new Set(lines.map((line) => line?.raw?.x?.valueOf()))]
+        .map((date) => format(new Date(date), definedFormat[props.granularity]))
+        .filter((v) => !!v);
+    };
+  }, [props.granularity]);
 
   return (
     <Container className="overflow-y-hidden" title={props.title} results={props.results}>
@@ -139,9 +151,6 @@ function chartOptions(props: Props): ChartOptions<'line'> {
     comparison: timeRangeToLocal(props.prevTimeFilter)
   };
 
-  console.log('period.from', bounds.period?.from?.toJSON());
-  console.log('period.to', bounds.period?.to?.toJSON());
-
   return {
     responsive: true,
     maintainAspectRatio: false,
@@ -185,8 +194,8 @@ function chartOptions(props: Props): ChartOptions<'line'> {
             month: 'MMM',
             day: 'd MMM',
             week: 'd MMM',
-            hour: 'HH:mm',
-            minute: 'HH:mm',
+            hour: 'eee HH:mm',
+            minute: 'eee HH:mm',
             second: 'HH:mm:ss'
           },
           unit: props.granularity
@@ -209,9 +218,9 @@ function chartOptions(props: Props): ChartOptions<'line'> {
           displayFormats: {
             month: 'MMM',
             day: 'd MMM',
-            hour: 'HH:mm',
             week: 'd MMM',
-            minute: 'HH:mm',
+            hour: 'eee HH:mm',
+            minute: 'eee HH:mm',
             second: 'HH:mm:ss'
           },
           unit: props.granularity
@@ -237,7 +246,7 @@ function chartOptions(props: Props): ChartOptions<'line'> {
       datalabels: {
         align: 'top',
         display: props.showLabels ? 'auto' : false,
-        formatter: (v) => v.y
+        formatter: (v) => v?.y
       }
     }
   };
