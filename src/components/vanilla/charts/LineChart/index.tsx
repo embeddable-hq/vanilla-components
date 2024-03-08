@@ -20,7 +20,6 @@ import React from 'react';
 import { Line } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
-import useTimezone from '../../../hooks/useTimezone';
 import Container from '../../Container';
 import { Inputs } from './LineChart.emb';
 
@@ -50,15 +49,9 @@ type Record = { [p: string]: string };
 export default (props: Props) => {
   const { results, title } = props;
 
-  const fixTimezoneProps = useTimezone(props);
-
   return (
     <Container className="overflow-y-hidden" title={title} results={results}>
-      <Line
-        height="100%"
-        options={chartOptions(fixTimezoneProps)}
-        data={chartData(fixTimezoneProps)}
-      />
+      <Line height="100%" options={chartOptions(props)} data={chartData(props)} />
     </Container>
   );
 };

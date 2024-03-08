@@ -7,6 +7,7 @@ import {
   loadData
 } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
+import { addMilliseconds } from 'date-fns';
 
 import Component from './index';
 
@@ -142,12 +143,16 @@ export default defineComponent<Inputs>(Component, meta, {
         ],
         measures: inputs.metrics,
         filters:
-          inputs.timeFilter?.from && inputs.xAxis
+          inputs.timeFilter?.to && inputs.xAxis
             ? [
                 {
                   property: inputs.xAxis,
                   operator: 'inDateRange',
-                  value: inputs.timeFilter
+                  value: {
+                    from: inputs.timeFilter.from,
+                    to: addMilliseconds(inputs.timeFilter.to, 1),
+                    relativeTimeString: ''
+                  }
                 }
               ]
             : undefined

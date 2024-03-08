@@ -1,35 +1,5 @@
-import { TimeRange, TimeRangeDeserializedValue } from '@embeddable.com/core';
-import { DataResponse } from '@embeddable.com/react';
+import { TimeRange } from '@embeddable.com/core';
 import { addMinutes, subMinutes } from 'date-fns';
-import { useMemo } from 'react';
-
-export default (props: any) => {
-  const update = useMemo(() => {
-    return {
-      ...props,
-      results: fix(props.results),
-      prevResults: fix(props.prevResults)
-    };
-
-    function fix(results: DataResponse): DataResponse | void {
-      if (!results) return;
-
-      return {
-        ...results,
-        data: results?.data?.map((r) => {
-          if (!r[props.xAxis?.name]) return r;
-
-          return {
-            ...r,
-            [props.xAxis?.name]: toLocal(r[props.xAxis?.name])
-          };
-        })
-      };
-    }
-  }, [props]);
-
-  return update;
-};
 
 const offset = new Date().getTimezoneOffset();
 

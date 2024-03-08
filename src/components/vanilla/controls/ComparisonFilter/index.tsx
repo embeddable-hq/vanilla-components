@@ -162,13 +162,11 @@ export default (props: Props) => {
       // Previous period
       const days = Math.abs(differenceInCalendarDays(period.from, period.to)) + 1;
 
-      props.onChangeComparison(
-        timeRangeToLocal({
-          relativeTimeString: '',
-          from: subDays(period.from, days),
-          to: subDays(period.to, days)
-        }) || null
-      );
+      props.onChangeComparison({
+        relativeTimeString: '',
+        from: subDays(period.from, days),
+        to: subDays(period.to, days)
+      });
     },
     [props.onChangeComparison, period, setCompareOption]
   );

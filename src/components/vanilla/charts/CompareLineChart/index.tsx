@@ -22,7 +22,7 @@ import React, { useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
-import useTimezone, { timeRangeToLocal } from '../../../hooks/useTimezone';
+import { timeRangeToLocal } from '../../../hooks/useTimezone';
 import Container from '../../Container';
 import { Inputs } from './CompareLineChart.emb';
 
@@ -53,8 +53,6 @@ type Record = { [p: string]: string };
 export default (props: Props) => {
   props.granularity = props.granularity || 'day';
 
-  const fixTimezoneProps = useTimezone(props);
-
   useEffect(() => {
     ChartJS.defaults.plugins.tooltip.callbacks.title = (lines: any[]) => {
       const definedFormat = {
@@ -74,11 +72,7 @@ export default (props: Props) => {
 
   return (
     <Container className="overflow-y-hidden" title={props.title} results={props.results}>
-      <Line
-        height="100%"
-        options={chartOptions(fixTimezoneProps)}
-        data={chartData(fixTimezoneProps)}
-      />
+      <Line height="100%" options={chartOptions(props)} data={chartData(props)} />
     </Container>
   );
 };
@@ -91,7 +85,7 @@ function chartData(props: Props): ChartData<'line'> {
       xAxisID: 'period',
       label: yAxis.title,
       data: results?.data?.map((d: Record) => ({
-        y: parseFloat(d[yAxis.name]),
+        y: parseFloat(d[yAxis.name] || '0'),
         x: parseJSON(d[props.xAxis?.name || ''])
       })),
       backgroundColor: applyFill ? hexToRgb(COLORS[i % COLORS.length]) : COLORS[i % COLORS.length],
@@ -112,7 +106,7 @@ function chartData(props: Props): ChartData<'line'> {
         label: `Previous ${metrics[i].title}`,
         data: !!props.prevTimeFilter?.from
           ? prevResults?.data?.map((d: Record) => ({
-              y: parseFloat(d[metrics[i].name]),
+              y: parseFloat(d[metrics[i].name] || '0'),
               x: parseJSON(d[props.xAxis?.name || ''])
             }))
           : [],

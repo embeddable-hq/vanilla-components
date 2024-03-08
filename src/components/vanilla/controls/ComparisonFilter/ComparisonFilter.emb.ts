@@ -124,11 +124,7 @@ export default defineComponent<Inputs>(Component, meta, {
       return { value: value };
     },
     onChangeComparison: (v) => {
-      if (!v) return { value: Value.noFilter() };
-
-      const value = timeRangeToUTC({ ...v, from: startOfDay(v.from), to: endOfDay(v.to) });
-
-      return { value: value };
+      return { value: v || Value.noFilter() };
     },
     onChangeGranularity: (value) => {
       return { value: value || Value.noFilter() };
