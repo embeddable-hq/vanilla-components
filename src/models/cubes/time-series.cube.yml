@@ -1,0 +1,32 @@
+cubes:
+  - name: time_series
+    title: Time series
+    sql_table: public.time_series 
+
+    dimensions:
+      - name: id
+        sql: id
+        type: string
+        primary_key: true
+
+      - name: day
+        sql: day
+        type: time
+
+      - name: number
+        sql: number
+        type: number
+
+    measures:
+      - name: count
+        type: count
+      - name: sum
+        type: sum
+        sql: number
+      - name: avg
+        type: avg
+        sql: number
+        
+    pre_aggregations:
+    # Pre-aggregation definitions go here.
+    # Learn more in the documentation: https://cube.dev/docs/caching/pre-aggregations/getting-started
