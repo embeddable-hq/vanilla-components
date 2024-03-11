@@ -53,29 +53,38 @@ cubes:
       type: count_distinct
       title: Total Users
     - name: onsite_users
+      title: Onsite Users
       type: count_distinct
       sql: case when venue_sid = nearby_venue_id then user_pseudo_id else null end
     - name: registered_users
+      title: Registered Users
       type: count_distinct
       sql: user_id
     - name: tour_view
+      title: Tour View
       type: sum
       sql: tour_view
     - name: track_play
+      title: Track Play
       type: sum
       sql: track_play      
     - name: track_complete
+      title: Track Complete
       type: sum
       sql: track_complete
     - name: tour_view_users
+      title: Tour View Users
       type: count_distinct
       sql: case when tour_view > 0 then user_pseudo_id else null end
     - name: track_play_users
+      title: Track Play Users
       type: count_distinct
       sql: case when track_play > 0 then user_pseudo_id else null end
     - name: track_complete_users
+      title: Track Complete Users
       type: count_distinct
       sql: case when track_complete > 0 then user_pseudo_id else null end
     - name: track_completion_rate
-      type: sum
-      sql: sum(track_complete) / sum(track_play)
+      title: Track Completion Rate
+      type: number
+      sql: CASE WHEN {track_play} = 0 THEN 0 ELSE ROUND(({track_complete} / NULLIF({track_play}, 0) * 100), 2) END

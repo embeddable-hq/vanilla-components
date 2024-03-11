@@ -22,6 +22,9 @@ cubes:
     - name: stream
       type: string
       sql: stream_id
+    - name: device_language
+      type: string
+      sql: device_language
     - name: venue_id
       type: string
       sql: venue_sid
