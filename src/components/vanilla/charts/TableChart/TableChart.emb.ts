@@ -3,16 +3,17 @@ import {
   Dimension,
   DimensionOrMeasure,
   Measure,
+  OrderBy,
   isDimension,
   isMeasure,
   loadData
 } from '@embeddable.com/core';
-import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
+import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import SortDirectionType from '../../../../types/SortDirection.type.emb.js';
-import Component from './index';
+import Component, { Props } from './index';
 
-export const meta: EmbeddedComponentMeta = {
+export const meta = {
   name: 'TableChart',
   label: 'Chart: Table',
   defaultHeight: 300,
@@ -60,26 +61,20 @@ export const meta: EmbeddedComponentMeta = {
     },
     {
       name: 'defaultSortDirection',
-      type: SortDirectionType,
+      type: SortDirectionType as never,
       defaultValue: 'Ascending',
       label: 'Default Sort Direction',
       category: 'Chart settings'
     }
-  ],
-  events: []
-};
+  ]
+} as const satisfies EmbeddedComponentMeta;
 
-export type Inputs = {
-  title?: string;
-  ds: Dataset;
-  columns: DimensionOrMeasure[];
-  maxPageRows?: number;
-  defaultSort?: DimensionOrMeasure;
-  defaultSortDirection?: 'Ascending' | 'Descending';
-};
-
-export default defineComponent<Inputs>(Component, meta, {
-  props: (inputs, [state]) => {
+export default defineComponent<
+  Props,
+  typeof meta,
+  { maxRowsFit: number; sort: OrderBy[]; page: number }
+>(Component, meta, {
+  props: (inputs: Inputs<typeof meta>, [state]) => {
     const limit =
       inputs.maxPageRows || state?.maxRowsFit
         ? Math.min(inputs.maxPageRows || 1000, state?.maxRowsFit || 1000)

@@ -1,9 +1,9 @@
-import { TimeRange, Value } from '@embeddable.com/core';
+import { Value } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
 
-export const meta: EmbeddedComponentMeta = {
+export const meta = {
   name: 'DateRangePicker',
   label: 'Control: Date Range',
   defaultWidth: 300,
@@ -45,14 +45,9 @@ export const meta: EmbeddedComponentMeta = {
       events: [{ name: 'onChange', property: 'value' }]
     }
   ]
-};
+} as const satisfies EmbeddedComponentMeta;
 
-export type Inputs = {
-  title?: string;
-  value?: Partial<TimeRange>;
-};
-
-export default defineComponent<Inputs>(Component, meta, {
+export default defineComponent(Component, meta, {
   props: (inputs) => ({
     ...inputs
   }),

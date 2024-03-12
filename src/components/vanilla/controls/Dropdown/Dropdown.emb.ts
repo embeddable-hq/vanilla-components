@@ -1,9 +1,9 @@
-import { Dataset, Dimension, Value, loadData } from '@embeddable.com/core';
-import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
+import { Value, loadData } from '@embeddable.com/core';
+import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
-import Component from './index';
+import Component, { Props } from './index';
 
-export const meta: EmbeddedComponentMeta = {
+export const meta = {
   name: 'Dropdown',
   label: 'Control: Dropdown',
   defaultWidth: 300,
@@ -66,18 +66,10 @@ export const meta: EmbeddedComponentMeta = {
       events: [{ name: 'onChange', property: 'value' }]
     }
   ]
-};
+} as const satisfies EmbeddedComponentMeta;
 
-export type Inputs = {
-  title?: string;
-  property?: Dimension;
-  ds?: Dataset;
-  defaultValue?: string;
-  placeholder?: string;
-};
-
-export default defineComponent<Inputs>(Component, meta, {
-  props: (inputs, [embState]) => {
+export default defineComponent<Props, typeof meta, { search: string }>(Component, meta, {
+  props: (inputs: Inputs<typeof meta>, [embState]) => {
     if (!inputs.ds) return inputs;
 
     return {

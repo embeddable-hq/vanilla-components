@@ -1,16 +1,17 @@
-import { DimensionOrMeasure, OrderBy, OrderDirection } from '@embeddable.com/core';
-import { DataResponse, useEmbeddableState } from '@embeddable.com/react';
+import { DataResponse, DimensionOrMeasure, OrderBy, OrderDirection } from '@embeddable.com/core';
+import { useEmbeddableState } from '@embeddable.com/react';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import format from '../../../util/format';
 import Container from '../../Container';
 import { ChevronLeft, ChevronRight, SortDown, SortUp } from '../../icons';
-import { Inputs } from './TableChart.emb';
 
-type Props = Inputs & {
+export type Props = {
   limit?: number;
   tableData: DataResponse;
-  defaultSort?: OrderBy[];
+  defaultSort?: { property: DimensionOrMeasure; direction: string }[];
+  columns: DimensionOrMeasure[];
+  title: string;
 };
 
 type Meta = { page: number; maxRowsFit: number; sort: OrderBy[] };

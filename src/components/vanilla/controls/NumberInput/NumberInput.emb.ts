@@ -1,7 +1,10 @@
 import { Value } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
 
+
+
 import Component from './index';
+
 
 export const meta: EmbeddedComponentMeta = {
   name: 'NumberInput',
@@ -50,15 +53,9 @@ export const meta: EmbeddedComponentMeta = {
       events: [{ name: 'onChange', property: 'value' }]
     }
   ]
-};
+} as const satisfies EmbeddedComponentMeta;
 
-export type Inputs = {
-  title?: string;
-  value?: string;
-  placeholder?: string;
-};
-
-export default defineComponent<Inputs>(Component, meta, {
+export default defineComponent(Component, meta, {
   props: (inputs) => ({
     ...inputs
   }),

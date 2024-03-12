@@ -1,9 +1,9 @@
-import { Dataset, Measure, loadData } from '@embeddable.com/core';
-import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
+import { loadData } from '@embeddable.com/core';
+import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
 
-export const meta: EmbeddedComponentMeta = {
+export const meta = {
   name: 'KPIChart',
   label: 'Chart: Single KPI',
   defaultWidth: 200,
@@ -48,20 +48,11 @@ export const meta: EmbeddedComponentMeta = {
       description: 'Suffix',
       category: 'Chart settings'
     }
-  ],
-  events: []
-};
+  ]
+} as const satisfies EmbeddedComponentMeta;
 
-export type Inputs = {
-  title?: string;
-  ds: Dataset;
-  metric: Measure;
-  prefix?: string;
-  suffix?: string;
-};
-
-export default defineComponent<Inputs>(Component, meta, {
-  props: (inputs) => {
+export default defineComponent(Component, meta, {
+  props: (inputs: Inputs<typeof meta>) => {
     return {
       ...inputs,
       value: loadData({
