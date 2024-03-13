@@ -1,13 +1,16 @@
-import { DataResponse } from '@embeddable.com/react';
+import { DataResponse } from '@embeddable.com/core';
 import React, { useMemo } from 'react';
 
 import format from '../../../util/format';
 import Container from '../../Container';
 import { WarningIcon } from '../../icons';
-import { Inputs } from './KPIChart.emb';
 
-type Props = Inputs & {
+type Props = {
   value: DataResponse;
+  title: string;
+  prefix: string;
+  suffix: string;
+  metric: { name: string; meta?: object };
 };
 
 export default (props: Props) => {

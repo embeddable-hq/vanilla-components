@@ -2,10 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import Container from '../../Container';
 import { ClearIcon } from '../../icons';
-import { Inputs } from './TextInput.emb';
 
-type Props = Inputs & {
+type Props = {
   onChange: (v: string) => void;
+  title?: string;
+  value?: string;
+  placeholder: string;
 };
 
 let timeout: number | null = null;
