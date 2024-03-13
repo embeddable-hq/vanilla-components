@@ -1,4 +1,4 @@
-import { DataResponse } from '@embeddable.com/react';
+import { DataResponse } from '@embeddable.com/core';
 import {
   BarElement,
   CategoryScale,
@@ -19,7 +19,6 @@ import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constant
 import format from '../../../util/format';
 import getBarChartOptions from '../../../util/getBarChartOptions';
 import Container from '../../Container';
-import { Inputs } from './BarChart.emb';
 
 ChartJS.register(
   CategoryScale,
@@ -38,8 +37,14 @@ ChartJS.defaults.color = LIGHT_FONT;
 ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
 
-type Props = Inputs & {
+type Props = {
   results: DataResponse;
+  title: string;
+  xAxis: {
+    name: string;
+    meta?: object;
+  };
+  metrics: { name: string; title: string }[];
 };
 
 export default (props: Props) => {
@@ -77,7 +82,7 @@ function chartData(props: Props): ChartData<'bar'> {
         minBarLength: 0,
         borderRadius: 6,
         label: metric.title,
-        data: results?.data?.map((d) => parseInt(d[metric.name])),
+        data: results?.data?.map((d) => parseInt(d[metric.name])) || [],
         backgroundColor: COLORS[i % COLORS.length]
       })) || []
   };

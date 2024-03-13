@@ -344,22 +344,22 @@
     "@cubejs-backend/shared" "0.33.20"
     source-map-support "^0.5.21"
 
-"@embeddable.com/core@*", "@embeddable.com/core@^2.4.27":
-  version "2.4.27"
-  resolved "https://registry.npmjs.org/@embeddable.com/core/-/core-2.4.27.tgz"
-  integrity sha512-2Jm2GupihtnTgv562txU8c+ufctH6MXGs6FplH0P5go32U4N+kxoG1XdYHVx5OyT8jmU4aZwaPBtlViyosg1Rg==
+"@embeddable.com/core@*", "@embeddable.com/core@^2.5.2":
+  version "2.5.2"
+  resolved "https://registry.npmjs.org/@embeddable.com/core/-/core-2.5.2.tgz"
+  integrity sha512-tahw9InuJNX7gDwBNKSGOd9b38TkWb9av7eCfHcn3o9Q8AJV2KxAjPZD3jNLVlyEhW0VkYZYCI9OjtUm9Vw4yw==
 
-"@embeddable.com/react@*", "@embeddable.com/react@^2.4.28":
-  version "2.4.28"
-  resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.4.28.tgz"
-  integrity sha512-6/t2esAuwhYkq8AJtHdChXl842N/XKQd4XitWXT+Z+vHv5G9wg0SPqNJEE6olFvOnW5d3Emg9+t3op1rFPQvvQ==
+"@embeddable.com/react@*", "@embeddable.com/react@^2.5.2":
+  version "2.5.2"
+  resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.5.2.tgz"
+  integrity sha512-VIEplg6c87p6I2YvZc+YapLcElyyI2EkH24Yz0X9kV6/iqUcHNQhaL75zQawr0QzXtByiooT8MTrL4Chw48Tmg==
   dependencies:
     "@embeddable.com/core" "*"
 
-"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@^2.4.32":
-  version "2.4.32"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-2.4.32.tgz"
-  integrity sha512-O/FEfjIGjlDGxwCY4Xq4fvzPET88akqA5ws5iZH1FZjn+AhjNwSRwPdYwKhPn5tKDmMSgBCoYiztm15vPTsNBQ==
+"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@^2.5.2":
+  version "2.5.2"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-2.5.2.tgz"
+  integrity sha512-YtGx3/OBQpYkdI8fyAZoc++oNrh7PTfVS1/p6neXnW6rShQ66h4jwT/fb4rqV6yjsz85XXZA8y5YPh5Ucr8BMw==
   dependencies:
     "@embeddable.com/sdk-utils" "*"
     "@inquirer/select" "^1.3.0"
@@ -377,10 +377,10 @@
     ws "^8.16.0"
     yaml "^2.3.3"
 
-"@embeddable.com/sdk-react@^2.2.31":
-  version "2.2.31"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-2.2.31.tgz"
-  integrity sha512-zY0GlW5qrZ7V6z8n1mNtZ+PsrPCU5N6sDnz88/cog9tYrw2NmUQlP8OmwoPSI8BpdBakye2cVs58MgEwqtnljg==
+"@embeddable.com/sdk-react@^2.3.2":
+  version "2.3.2"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-2.3.2.tgz"
+  integrity sha512-oPXR7u+hG5jC8Sj1PL/UMJAmnBFHwaBjr67ROOMH3kF1EKT4bT3dplX31v/TkYb0LJBxlAGFN8SdTLaanB94+w==
   dependencies:
     "@babel/generator" "^7.23.0"
     "@babel/parser" "^7.23.0"
@@ -395,9 +395,9 @@
     zod "^3.22.4"
 
 "@embeddable.com/sdk-utils@*":
-  version "0.2.10"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-utils/-/sdk-utils-0.2.10.tgz"
-  integrity sha512-YdvsKuGQCIRxawYC9lDegYCycdtcO5LmlGNv9nUaN58wZ87Bs1oIwS/Q0YODER/3xul5AQAPyVosMtynkt4VdQ==
+  version "0.3.3"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-utils/-/sdk-utils-0.3.3.tgz"
+  integrity sha512-Jh285Fkud0+GISkD40+XufpZKhnydl4dc4VUYxlswglCqWaA/Vnon6ESZcjmR2kCSkzIeqadQrERCxuPRfFgwQ==
   dependencies:
     ora "^7.0.1"
     zod "^3.22.4"
@@ -620,9 +620,9 @@
   integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
 
 "@stencil/core@^4.6.0":
-  version "4.12.1"
-  resolved "https://registry.npmjs.org/@stencil/core/-/core-4.12.1.tgz"
-  integrity sha512-l7UUCEV+4Yr1i6BL2DGSQPAzM3x/V4Fx9n9Z0/gdAgX11I25xY0MnH5jbQ69ug6ms/8KUV6SouS1R7MjjM/JnQ==
+  version "4.12.6"
+  resolved "https://registry.npmjs.org/@stencil/core/-/core-4.12.6.tgz"
+  integrity sha512-15JO2TdaxGVKNdLZb/2TtDa+juj3XGD/V0y/disgdzYYSnajgSh06nwODfdHz9eTUh1Hisz+KIo857I1rCZrfg==
 
 "@tootallnate/once@1":
   version "1.1.2"
@@ -3621,9 +3621,9 @@ npm-run-path@^4.0.1:
     path-key "^3.0.0"
 
 npm-run-path@^5.1.0:
-  version "5.2.0"
-  resolved "https://registry.npmjs.org/npm-run-path/-/npm-run-path-5.2.0.tgz"
-  integrity sha512-W4/tgAXFqFA0iL7fk0+uQ3g7wkL8xJmx3XdK0VGb4cHW//eZTtKGvFBBoRKVTpY7n6ze4NL9ly7rgXcHufqXKg==
+  version "5.3.0"
+  resolved "https://registry.npmjs.org/npm-run-path/-/npm-run-path-5.3.0.tgz"
+  integrity sha512-ppwTtiJZq0O/ai0z7yfudtBpWIoxM8yE6nHi1X47eFR2EWORqfbu6CnPlNsjeN683eT0qG6H/Pyf9fCcvjnnnQ==
   dependencies:
     path-key "^4.0.0"
 
