@@ -24,13 +24,13 @@ export const meta: EmbeddedComponentMeta = {
       type: TimeComparisonType,
       label: 'Default comparison option',
       defaultValue: 'No comparison',
-      category: 'Settings'
+      category: 'Configuration'
     },
     {
       name: 'defaultPeriod',
       type: 'timeRange',
       label: 'Default period',
-      category: 'Settings'
+      category: 'Configuration'
     },
     {
       name: 'defaultGranularity',
