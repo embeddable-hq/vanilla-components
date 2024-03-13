@@ -4,8 +4,8 @@ import Component from './index';
 
 
 export const meta: EmbeddedComponentMeta = {
-    name: 'SmartifySeparator',
-    label: 'Smartify Separator Spacing',
+    name: 'SmartifySpacing',
+    label: 'Smartify Spacing',
     inputs: [
         {
             name: 'spacing',
@@ -13,23 +13,6 @@ export const meta: EmbeddedComponentMeta = {
             label: 'Margin Top and Bottom',
             description: 'Total pixels that will be added above and below the separator line',
             category: 'Configure chart'
-        },
-        {
-            name: 'thickness',
-            type: 'number',
-            label: 'Thickness of the line',
-            description: 'How thick should be the separator line',
-            category: 'Configure chart'
-<<<<<<< Updated upstream
-=======
-        },
-        {
-            name: 'color',
-            type: 'string',
-            label: 'Color of the line',
-            description: 'You got it right...',
-            category: 'Configure chart'
->>>>>>> Stashed changes
         }
     ]
 };
@@ -37,10 +20,6 @@ export const meta: EmbeddedComponentMeta = {
 export type Inputs = {
     spacing?: number;
     thickness?: number;
-<<<<<<< Updated upstream
-=======
-    color?: string;
->>>>>>> Stashed changes
 };
 
 export default defineComponent<Inputs>(Component, meta, {

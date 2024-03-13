@@ -6,9 +6,16 @@ interface SpacingComponentProps {
 }
 
 export default (props: Inputs) => {
+<<<<<<< Updated upstream
     const {thickness, spacing} = props;
     
     return (
         <div style={{ marginTop: `${spacing}px`, marginBottom: `${spacing}px`, borderBottom: `${thickness}px solid grey`, boxShadow: '0 2px 5px rgba(0,0,0,0.5)' }}></div>
+=======
+    const {thickness, spacing, color} = props;
+    
+    return (
+        <div style={{ marginTop: `${spacing}px`, marginBottom: `${spacing}px`, borderBottom: `${thickness}px solid ${color || 'grey'}` }}></div>
+>>>>>>> Stashed changes
     )
 };

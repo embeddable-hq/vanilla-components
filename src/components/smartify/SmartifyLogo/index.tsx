@@ -11,7 +11,11 @@ export default (props: Inputs) => {
   const { logoUrl } = props;
 
   return (
+<<<<<<< Updated upstream
     <div className="logo-container">
+=======
+    <div className="logo-container" style={{display: 'flex'}}>
+>>>>>>> Stashed changes
       <img src={logoUrl} alt="Smartify Logo" />
     </div>
   );
