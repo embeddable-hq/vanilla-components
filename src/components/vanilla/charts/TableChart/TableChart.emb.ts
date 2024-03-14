@@ -1,7 +1,5 @@
 import {
-  Dataset,
   Dimension,
-  DimensionOrMeasure,
   Measure,
   OrderBy,
   isDimension,

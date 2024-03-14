@@ -1,4 +1,4 @@
-import { DataResponse } from '@embeddable.com/react';
+import { DataResponse } from '@embeddable.com/core';
 import {
   ArcElement,
   CategoryScale,
@@ -18,7 +18,6 @@ import { Pie } from 'react-chartjs-2';
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import format from '../../../util/format';
 import Container from '../../Container';
-import { Inputs } from './PieChart.emb';
 
 ChartJS.register(
   ChartDataLabels,
@@ -38,8 +37,14 @@ ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
 ChartJS.defaults.plugins.tooltip.usePointStyle = true;
 
-type Props = Inputs & {
+type Props = {
   results: DataResponse;
+  title: string;
+  slice: { name: string; meta: object };
+  metric: { name: string; title: string };
+  showLabels: boolean;
+  showLegend: boolean;
+  maxSegments: number;
 };
 
 type Record = { [p: string]: string };
@@ -93,7 +98,7 @@ function mergeLongTail({ results, slice, metric, maxSegments }: Props) {
     .slice(0, maxSegments - 1);
 
   const sumLongTail = results?.data
-    .slice(maxSegments - 1)
+    ?.slice(maxSegments - 1)
     .reduce((accumulator, record: Record) => accumulator + parseInt(record[metric.name]), 0);
 
   newData.push({ [slice.name]: 'Other', [metric.name]: sumLongTail });
@@ -103,7 +108,7 @@ function mergeLongTail({ results, slice, metric, maxSegments }: Props) {
 
 function chartData(props: Props) {
   const { maxSegments, results, metric, slice } = props;
-  const labelsExceedMaxSegments = maxSegments && maxSegments < results?.data?.length;
+  const labelsExceedMaxSegments = maxSegments && maxSegments < (results?.data?.length || 0);
   const newData = labelsExceedMaxSegments ? mergeLongTail(props) : results.data;
 
   // Chart.js pie expects labels like so: ['US', 'UK', 'Germany']

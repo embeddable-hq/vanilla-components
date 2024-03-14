@@ -70,7 +70,11 @@ export const meta = {
 
 export default defineComponent<Props, typeof meta, { search: string }>(Component, meta, {
   props: (inputs: Inputs<typeof meta>, [embState]) => {
-    if (!inputs.ds) return inputs;
+    if (!inputs.ds)
+      return {
+        ...inputs,
+        options: [] as never
+      };
 
     return {
       ...inputs,

@@ -1,9 +1,15 @@
 import React from 'react';
 
-import Container from '../../Container';
-import { Inputs } from './Text.emb';
 
-export default (props: Inputs) => {
+
+import Container from '../../Container';
+
+type Props = {
+  title: string;
+  body: string;
+};
+
+export default (props: Props) => {
   const { title, body } = props;
 
   return <Container title={title}>{body}</Container>;
