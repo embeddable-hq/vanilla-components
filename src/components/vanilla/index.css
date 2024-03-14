@@ -31,7 +31,7 @@ h1 {
 }
 
 .logo-container img {
-  max-width: 100px; /* Adjust based on your logo's size */
+  max-width: 500px; /* Adjust based on your logo's size */
   height: auto;
 }
 

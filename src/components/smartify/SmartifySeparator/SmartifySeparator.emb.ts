@@ -20,8 +20,6 @@ export const meta: EmbeddedComponentMeta = {
             label: 'Thickness of the line',
             description: 'How thick should be the separator line',
             category: 'Configure chart'
-<<<<<<< Updated upstream
-=======
         },
         {
             name: 'color',
@@ -29,7 +27,6 @@ export const meta: EmbeddedComponentMeta = {
             label: 'Color of the line',
             description: 'You got it right...',
             category: 'Configure chart'
->>>>>>> Stashed changes
         }
     ]
 };
@@ -37,10 +34,7 @@ export const meta: EmbeddedComponentMeta = {
 export type Inputs = {
     spacing?: number;
     thickness?: number;
-<<<<<<< Updated upstream
-=======
     color?: string;
->>>>>>> Stashed changes
 };
 
 export default defineComponent<Inputs>(Component, meta, {

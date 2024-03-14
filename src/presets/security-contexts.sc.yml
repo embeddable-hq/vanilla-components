@@ -9,3 +9,7 @@
 - name: Tower Bridge User
   securityContext:
     organisation_id: org_towerbridge
+
+- name: Smithsonian User
+  securityContext:
+    organisation_id: org_smithsonian

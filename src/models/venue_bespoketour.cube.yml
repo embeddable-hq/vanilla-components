@@ -1,0 +1,138 @@
+cubes:
+- name: venue_bespoke_tours
+  #sql_table: smartify-cc94e.report_venue.venue_bespoketour_table
+  sql: >
+    SELECT *
+    FROM `smartify-cc94e.report_venue.venue_bespoketour_table`
+    WHERE organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+
+  dimensions:
+    - name: date
+      type: time
+      sql: timestamp(partition_date)
+    
+    - name: event_name
+      type: string
+      sql: event_name
+    
+    - name: page_path
+      type: string
+      sql: page_path
+    
+    - name: country
+      type: string
+      sql: geo_country
+    
+    - name: city
+      type: string
+      sql: geo_city
+    
+    - name: stream
+      type: string
+      sql: stream_id
+    
+    - name: venue_id
+      type: string
+      sql: venue_sid
+    
+    - name: organisation_id
+      type: string
+      sql: organisation_sid
+    
+    - name: user_location_type
+      type: string
+      sql: case when venue_sid = nearby_venue_id then "Onsite User" when user_location_access = "false" then "Unknown" else "Offsite User" end
+    
+    - name: platform_device
+      type: string
+      sql: case when platform = "IOS" then "iOS" when platform = "ANDROID" then "Android" when (platform = "WEB" and device_category = "desktop") then "Desktop" else "Webapp" end
+    
+    - name: progress_step
+      type: string
+      sql: progress_step
+    
+    - name: event_label
+      type: string
+      sql: event_label
+    
+    - name: experience_name
+      type: string
+      sql: case when experience_id = "exp_Q9H3NrZMRqj6lZTx4UhN" then "Smithsonian American Art Museum & National Portrait Gallery Experience" when experience_id = "exp_QUMJJKxfx1zkA4XQUuRz" then "Belvedere 21 & Unteres Belvedere & Oberes Belvedere Experience" when experience_id = "exp_rvqL549U8sMkJOKbojIc" then "Oberes Belvedere Experience" when experience_id = "exp_4qsbFbW9zRwun56ScBDT" then "SAAM & NPG - Bespoke Tours" when experience_id = "exp_xtzuUybUQ6KXCU4xyhl7" then "Smithsonian American Art Museum" when experience_id = "exp_aIhgx2zkEzFVqj4yAABV" then "National Galleries Scotland National Experience" else experience_id end
+    
+    - name: tour_type
+      type: string
+      sql: case when STARTS_WITH(tour_sid,"ptour_") then "Bespoke Tours" when STARTS_WITH(tour_sid,"tour_") then "Venue Tours" else null end
+
+    - name: tour_id
+      type: string
+      sql: tour_sid
+    
+    - name: ptour_id
+      type: string
+      sql: case when STARTS_WITH(tour_sid,"ptour_") then tour_sid else null end
+  
+  measures:
+    - name: total_events
+      type: count
+      title: Total Events
+    
+    - name: users
+      title: Total Users
+      type: count_distinct
+      sql: user_pseudo_id
+      
+    
+    - name: onsite_users
+      title: Onsite Users
+      type: count_distinct
+      sql: case when venue_sid = nearby_venue_id then user_pseudo_id else null end
+    
+    - name: registered_users
+      title: Registered Users
+      type: count_distinct
+      sql: user_id
+    
+    - name: tour_view
+      title: Total Tour View
+      type: sum
+      sql: tour_view
+
+    - name: ptour_created
+      title: Bespoke Tour Created
+      type: count_distinct
+      sql: case when STARTS_WITH(tour_sid,"ptour_") then tour_sid else null end
+    
+    - name: ptour_users
+      title: Bespoke Tour Users
+      type: count_distinct
+      sql: case when STARTS_WITH(tour_sid,"ptour_") then user_pseudo_id else null end
+    
+    - name: ptour_views
+      title: Bespoke Tour Views
+      type: sum
+      sql: case when STARTS_WITH(tour_sid,"ptour_") then tour_view else null end
+
+    - name: bespoke_page_language
+      title: Bespoke Language
+      type: sum
+      sql: case when event_name in ('page_view','screen_view') and page_path = "/create-tour/language" then 1 else 0 end
+
+    - name: bespoke_page_topics
+      title: Bespoke Topics
+      type: sum
+      sql: case when event_name in ('page_view','screen_view') and page_path = "/create-tour/tiles" then 1 else 0 end
+
+    - name: bespoke_page_stops
+      title: Bespoke Stops
+      type: sum
+      sql: case when event_name in ('page_view','screen_view') and page_path = "/create-tour/stops" then 1 else 0 end
+
+    - name: bespoke_page_duration
+      title: Bespoke Duration
+      type: sum
+      sql: case when event_name in ('page_view','screen_view') and page_path = "/create-tour/duration" then 1 else 0 end
+
+    - name: bespoke_page_save
+      title: Bespoke Save Tour
+      type: sum
+      sql: case when event_name in ('page_view','screen_view') and page_path = "/create-tour/save-tour" then 1 else 0 end
