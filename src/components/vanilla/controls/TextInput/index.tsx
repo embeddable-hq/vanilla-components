@@ -20,6 +20,16 @@ export default (props: Props) => {
     setValue(props.value);
   }, [props.value]);
 
+  const handleChange = (e) => {
+    setValue(e.target.value);
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    timeout = window.setTimeout(() => {
+      props.onChange(e.target.value);
+    }, 1000);
+  }
+
   return (
     <Container title={props.title}>
       <div className="w-full relative rounded-xl bg-white border border-[#DADCE1] pr-8 h-10">
@@ -27,15 +37,7 @@ export default (props: Props) => {
           ref={ref}
           placeholder={props.placeholder}
           className="rounded-xl w-full outline-none leading-10 h-full border-0 px-3"
-          onChange={(e) => {
-            setValue(e.target.value);
-            if (timeout) {
-              clearTimeout(timeout);
-            }
-            timeout = window.setTimeout(() => {
-              props.onChange(e.target.value);
-            }, 1000);
-          }}
+          onChange={handleChange}
           defaultValue={value}
         />
         {!!value && (
