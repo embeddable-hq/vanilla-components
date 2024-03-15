@@ -63,6 +63,14 @@ cubes:
       type: string
       sql: case when STARTS_WITH(tour_sid,"ptour_") then "Bespoke Tours" when STARTS_WITH(tour_sid,"tour_") then "Venue Tours" else null end
 
+    - name: track_name
+      type: string
+      sql: track_name
+
+    - name: track_audio_language
+      type: string
+      sql: track_audio_language
+
     - name: tour_id
       type: string
       sql: tour_sid
@@ -96,6 +104,26 @@ cubes:
       title: Total Tour View
       type: sum
       sql: tour_view
+
+    - name: track_play_tour
+      title: Tour Track Play
+      type: sum
+      sql: case when STARTS_WITH(tour_sid,"tour_") then track_play else 0 end
+
+    - name: track_play_ptour
+      title: Bespoke Track Play
+      type: sum
+      sql: case when STARTS_WITH(tour_sid,"ptour_") then track_play else 0 end
+
+    - name: track_complete_tour
+      title: Tour Track Complete
+      type: sum
+      sql: case when STARTS_WITH(tour_sid,"tour_") then track_complete else 0 end
+
+    - name: track_complete_ptour
+      title: Bespoke Track Complete
+      type: sum
+      sql: case when STARTS_WITH(tour_sid,"ptour_") then track_complete else 0 end
 
     - name: ptour_created
       title: Bespoke Tour Created

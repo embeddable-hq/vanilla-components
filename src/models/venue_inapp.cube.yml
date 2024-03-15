@@ -1,10 +1,11 @@
 cubes:
-- name: venue_tours
-  #sql_table: smartify-cc94e.report_venue.venue_tourtrack_table
+- name: venue_inapp
+  #sql_table: smartify-cc94e.report_venue.venue_inapp_purchase
   sql: >
     SELECT *
-    FROM `smartify-cc94e.report_venue.venue_tourtrack_table`
-    WHERE organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+    FROM `smartify-cc94e.report_venue.venue_inapp_purchase`
+    WHERE (organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}')
+    
 
   dimensions:
     - name: date
@@ -27,6 +28,10 @@ cubes:
       type: string
       sql: stream_id
     
+    - name: device_language
+      type: string
+      sql: device_language
+    
     - name: venue_id
       type: string
       sql: venue_sid
@@ -43,69 +48,58 @@ cubes:
       type: string
       sql: case when platform = "IOS" then "iOS" when platform = "ANDROID" then "Android" when (platform = "WEB" and device_category = "desktop") then "Desktop" else "Webapp" end
     
+    - name: host_join
+      type: string
+      sql: host_join
+    
     - name: tour_name
       type: string
       sql: tour_name
-    
-    - name: track_name
-      type: string
-      sql: track_name
-    
-    - name: track_audio_language
-      type: string
-      sql: track_audio_language
-    
+ 
   measures:
     - name: total_events
       type: count
-      title: Total Events
-    
+      title: "Total Events"
+
     - name: users
       sql: user_pseudo_id
       type: count_distinct
-      title: Total Users
-    
+      title: "Total Users"
+
     - name: onsite_users
-      title: Onsite Users
       type: count_distinct
       sql: case when venue_sid = nearby_venue_id then user_pseudo_id else null end
-    
+
     - name: registered_users
-      title: Registered Users
       type: count_distinct
       sql: user_id
-    
+
+    - name: events_per_user
+      title: "Events per User"
+      type: number
+      sql: "ROUND({total_events} / {users}, 2)"
+
+    - name: in_app_purchases
+      title: "In-App Purchases"
+      type: sum
+      sql: in_app_purchases
+
     - name: tour_view
-      title: Tour View
+      title: "Tour View"
       type: sum
       sql: tour_view
     
-    - name: track_play
-      title: Track Play
-      type: sum
-      sql: track_play      
-    
-    - name: track_complete
-      title: Track Complete
-      type: sum
-      sql: track_complete
-    
-    - name: tour_view_users
-      title: Tour View Users
-      type: count_distinct
-      sql: case when tour_view > 0 then user_pseudo_id else null end
-    
-    - name: track_play_users
-      title: Track Play Users
-      type: count_distinct
-      sql: case when track_play > 0 then user_pseudo_id else null end
-    
-    - name: track_complete_users
-      title: Track Complete Users
-      type: count_distinct
-      sql: case when track_complete > 0 then user_pseudo_id else null end
-    
-    - name: track_completion_rate
-      title: Track Completion Rate
+    - name: inapp_conv_rate
+      title: "In-App Conv Rate"
       type: number
-      sql: CASE WHEN {track_play} = 0 THEN 0 ELSE ROUND(({track_complete} / NULLIF({track_play}, 0) * 100), 2) END
+      sql: CASE WHEN {tour_view} = 0 THEN 0 ELSE ROUND(({in_app_purchases} / NULLIF({tour_view}, 0) * 100), 2) END
+    
+    - name: in_app_revenue
+      title: "In-App Revenue"
+      type: sum
+      sql: in_app_revenue
+    
+    - name: inapp_aov
+      title: "In-App Avg Order Value"
+      type: number
+      sql: CASE WHEN {in_app_purchases} = 0 THEN 0 ELSE ({in_app_revenue} / {in_app_purchases}) END

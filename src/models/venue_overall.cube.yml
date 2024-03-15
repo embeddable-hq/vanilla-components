@@ -4,7 +4,7 @@ cubes:
   sql: >
     SELECT *
     FROM `smartify-cc94e.report_venue.venue_overall_table`
-    WHERE organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+    WHERE (organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}' or venue_sid = '{COMPILE_CONTEXT.securityContext.venue_id}')
 
   dimensions:
     - name: date
