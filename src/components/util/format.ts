@@ -7,19 +7,25 @@ type Options = {
   truncate?: number;
   dateFormat?: string;
   meta?: { prefix?: string; suffix?: string };
+  dps?: number;
 };
 
-const numberFormatter = new Intl.NumberFormat();
+function numberFormatter(dps: number | undefined) {
+  return new Intl.NumberFormat(undefined, {
+      minimumFractionDigits: isNaN(dps) ? 0 : dps, // Minimum number of digits after the decimal
+      maximumFractionDigits: isNaN(dps) ? 3 : dps, // Maximum number of digits after the decimal
+  });
+}
 
 const dateFormatter = new Intl.DateTimeFormat();
 
 export default function format(str: string = '', opt: Type | Options = 'string') {
-  const { type, dateFormat, meta, truncate }: Options =
+  const { type, dateFormat, meta, truncate, dps }: Options =
     typeof opt === 'string' ? { type: opt } : opt;
 
   str = str || '';
 
-  if (type === 'number') return wrap(numberFormatter.format(parseFloat(str)));
+  if (type === 'number') return wrap(numberFormatter(dps).format(parseFloat(str)));
 
   if (type === 'date' && str.endsWith('T00:00:00.000')) {
     return wrap(dateFormatter.format(new Date(str)));

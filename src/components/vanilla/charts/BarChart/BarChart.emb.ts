@@ -81,7 +81,14 @@ export const meta = {
       type: 'string',
       label: 'Y-Axis Title',
       category: 'Chart settings'
-    }
+    },
+    {
+      name: 'dps',
+      type: 'number',
+      label: 'Decimal Places',
+      defaultValue: 0,
+      category: 'Formatting'
+    },
   ]
 } as const satisfies EmbeddedComponentMeta;
 

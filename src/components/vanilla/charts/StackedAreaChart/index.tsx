@@ -10,17 +10,21 @@ import {
   LinearScale,
   PointElement,
   Title,
-  Tooltip
+  Tooltip,
+  TimeScale
 } from 'chart.js';
-
+import 'chart.js/auto';
+import 'chartjs-adapter-date-fns';
+import 'chartjs-adapter-moment';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
-import format from '../../../util/format';
+import hexToRgb from '../../../util/hexToRgb';
+import getStackedChartData from '../../../util/getStackedChartData';
 import Container from '../../Container';
 import { Inputs } from './LineChart.emb';
-import hexToRgb from '../../../util/hexToRgb';
+import format from '../../../util/format';
 
 ChartJS.register(
   CategoryScale,
@@ -31,7 +35,8 @@ ChartJS.register(
   Tooltip,
   Legend,
   Filler,
-  ChartDataLabels
+  ChartDataLabels,
+  TimeScale
 );
 
 ChartJS.defaults.font.size = parseInt(SMALL_FONT_SIZE);
@@ -43,44 +48,34 @@ type Props = Inputs & {
   results: DataResponse;
 };
 
-type Record = { [p: string]: string };
-
 export default (props: Props) => {
   const { results, title } = props;
 
+  const datasetsMeta = {
+    fill: true,
+    cubicInterpolationMode: 'monotone' as const,
+  }
+
   return (
     <Container className="overflow-y-hidden" title={title} results={results}>
-      <Line height="100%" options={chartOptions(props)} data={chartData(props)} />
+      <Line
+        height="100%"
+        options={chartOptions(props)}
+        data={getStackedChartData(props, datasetsMeta, null)}
+      />
     </Container>
   );
 };
 
-function chartData(props: Props): ChartData<'line'> {
-  const { results, xAxis, metrics, applyFill } = props;
-  const labels = results?.data?.map((d) =>
-    format(d[xAxis.name], { type: 'date', meta: xAxis?.meta })
-  );
-
-  return {
-    labels,
-    datasets:
-      metrics?.map((yAxis, i) => ({
-        label: yAxis.title,
-        data: results?.data?.map((d: Record) => d[yAxis.name]),
-        backgroundColor: applyFill
-          ? hexToRgb(COLORS[i % COLORS.length])
-          : COLORS[i % COLORS.length],
-        borderColor: COLORS[i % COLORS.length],
-        fill: applyFill,
-        cubicInterpolationMode: 'monotone' as const
-      })) || []
-  };
-}
 
 function chartOptions(props: Props): ChartOptions<'line'> {
   return {
     responsive: true,
     maintainAspectRatio: false,
+    interaction: {
+      mode: 'index',
+      intersect: false
+    },
     layout: {
       padding: {
         left: 0,
@@ -91,18 +86,22 @@ function chartOptions(props: Props): ChartOptions<'line'> {
     },
     scales: {
       y: {
+        stacked: true,
         min: props.yAxisMin,
         grace: '0%', // Add percent to add numbers on the y-axis above and below the max and min values
         grid: {
           display: false
         },
         ticks: {
-          precision: 0
+          // precision: 0,
+          callback: function (value) {
+            return props.displayAsPercentage ? `${value}%` : value
+          }
         },
         title: {
           display: !!props.yAxisTitle,
           text: props.yAxisTitle
-        }
+        },
       },
       x: {
         grid: {
@@ -111,6 +110,19 @@ function chartOptions(props: Props): ChartOptions<'line'> {
         title: {
           display: !!props.xAxisTitle,
           text: props.xAxisTitle
+        },
+        type: 'time',
+        time: {
+          round: props.granularity,
+          displayFormats: {
+            month: 'MMM',
+            day: 'd MMM',
+            week: 'd MMM',
+            hour: 'HH:mm',
+            minute: 'HH:mm',
+            second: 'HH:mm:ss'
+          },
+          unit: props.granularity
         },
       }
     },
@@ -127,6 +139,21 @@ function chartOptions(props: Props): ChartOptions<'line'> {
           boxHeight: 8
         }
       },
+      tooltip: {
+        //https://www.chartjs.org/docs/latest/configuration/tooltip.html
+        callbacks: {
+          label: function (context) {
+            let label = context.dataset.label || '';
+            if (context.parsed.y !== null) {
+              label += `: ${format(context.parsed['y'], { type: 'number', dps: props.dps })}`;
+              if (props.displayAsPercentage) {
+                label += '%';
+              }
+            }
+            return label;
+          }
+        }
+      },
       datalabels: {
         align: 'top',
         display: props.showLabels ? 'auto' : false,
@@ -137,19 +164,7 @@ function chartOptions(props: Props): ChartOptions<'line'> {
           }
           return val;
         }
-      },
-      tooltip: {
-        //https://www.chartjs.org/docs/latest/configuration/tooltip.html
-        callbacks: {
-          label: function (context) {
-            let label = context.dataset.label || '';
-            if (context.parsed.y !== null) {
-              label += `: ${format(context.parsed['y'], { type: 'number', dps: props.dps })}`;
-            }
-            return label;
-          }
-        }
-      },
+      }
     }
   };
 }

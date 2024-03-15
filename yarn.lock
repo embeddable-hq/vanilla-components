@@ -344,19 +344,19 @@
     "@cubejs-backend/shared" "0.33.20"
     source-map-support "^0.5.21"
 
-"@embeddable.com/core@*", "@embeddable.com/core@^2.5.2":
+"@embeddable.com/core@*", "@embeddable.com/core@^2.5.0":
   version "2.5.2"
   resolved "https://registry.npmjs.org/@embeddable.com/core/-/core-2.5.2.tgz"
   integrity sha512-tahw9InuJNX7gDwBNKSGOd9b38TkWb9av7eCfHcn3o9Q8AJV2KxAjPZD3jNLVlyEhW0VkYZYCI9OjtUm9Vw4yw==
 
-"@embeddable.com/react@*", "@embeddable.com/react@^2.5.2":
+"@embeddable.com/react@*", "@embeddable.com/react@^2.5.0":
   version "2.5.2"
   resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.5.2.tgz"
   integrity sha512-VIEplg6c87p6I2YvZc+YapLcElyyI2EkH24Yz0X9kV6/iqUcHNQhaL75zQawr0QzXtByiooT8MTrL4Chw48Tmg==
   dependencies:
     "@embeddable.com/core" "*"
 
-"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@^2.5.2":
+"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@^2.5.0":
   version "2.5.2"
   resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-2.5.2.tgz"
   integrity sha512-YtGx3/OBQpYkdI8fyAZoc++oNrh7PTfVS1/p6neXnW6rShQ66h4jwT/fb4rqV6yjsz85XXZA8y5YPh5Ucr8BMw==
@@ -377,7 +377,7 @@
     ws "^8.16.0"
     yaml "^2.3.3"
 
-"@embeddable.com/sdk-react@^2.3.2":
+"@embeddable.com/sdk-react@^2.3.0":
   version "2.3.2"
   resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-2.3.2.tgz"
   integrity sha512-oPXR7u+hG5jC8Sj1PL/UMJAmnBFHwaBjr67ROOMH3kF1EKT4bT3dplX31v/TkYb0LJBxlAGFN8SdTLaanB94+w==
@@ -1403,12 +1403,22 @@ chalk@^5.0.0, chalk@^5.3.0:
   resolved "https://registry.npmjs.org/chalk/-/chalk-5.3.0.tgz"
   integrity sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==
 
-chart.js@^4.1.1, chart.js@^4.4.1, chart.js@>=3.0.0:
+chart.js@^4.1.1, chart.js@^4.4.1, chart.js@>=2.8.0, chart.js@>=3.0.0:
   version "4.4.1"
   resolved "https://registry.npmjs.org/chart.js/-/chart.js-4.4.1.tgz"
   integrity sha512-C74QN1bxwV1v2PEujhmKjOZ7iUM4w6BWs23Md/6aOZZSlwMzeCIDGuZay++rBgChYru7/+QFeoQW0fQoP534Dg==
   dependencies:
     "@kurkle/color" "^0.3.0"
+
+chartjs-adapter-date-fns@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/chartjs-adapter-date-fns/-/chartjs-adapter-date-fns-3.0.0.tgz"
+  integrity sha512-Rs3iEB3Q5pJ973J93OBTpnP7qoGwvq3nUnoMdtxO+9aoJof7UFcRbWcIDteXuYd1fgAvct/32T9qaLyLuZVwCg==
+
+chartjs-adapter-moment@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/chartjs-adapter-moment/-/chartjs-adapter-moment-1.0.1.tgz"
+  integrity sha512-Uz+nTX/GxocuqXpGylxK19YG4R3OSVf8326D+HwSTsNw1LgzyIGRo+Qujwro1wy6X+soNSnfj5t2vZ+r6EaDmA==
 
 chartjs-plugin-datalabels@^2.2.0:
   version "2.2.0"
@@ -1720,7 +1730,7 @@ d3-zoom@^2.0.0:
     d3-selection "2"
     d3-transition "2"
 
-"date-fns@^2.28.0 || ^3.0.0", date-fns@^2.30.0:
+"date-fns@^2.28.0 || ^3.0.0", date-fns@^2.30.0, date-fns@>=2.0.0:
   version "2.30.0"
   resolved "https://registry.npmjs.org/date-fns/-/date-fns-2.30.0.tgz"
   integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
@@ -3529,7 +3539,7 @@ moment-timezone@^0.5.27, moment-timezone@^0.5.33:
   dependencies:
     moment "^2.29.4"
 
-moment@^2.24.0, moment@^2.29.4, "moment@>= 2":
+moment@^2.10.2, moment@^2.24.0, moment@^2.29.4, moment@^2.30.1, "moment@>= 2":
   version "2.30.1"
   resolved "https://registry.npmjs.org/moment/-/moment-2.30.1.tgz"
   integrity sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==
