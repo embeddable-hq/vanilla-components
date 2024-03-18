@@ -4,11 +4,12 @@ import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 're
 import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
+
+
 import format from '../../../util/format';
 import Container from '../../Container';
 import { CalendarIcon, ChevronLeft, ChevronRight } from '../../icons';
 import Dropdown from '../Dropdown';
-import { Inputs } from './DateRangePicker.emb';
 
 const ranges = [
   'Today',
@@ -28,9 +29,11 @@ type TimeRange = {
   relativeTimeString?: string;
 };
 
-type Props = Inputs & {
+type Props = {
   placeholder?: string;
   onChange: (v?: TimeRange) => void;
+  title: string;
+  value?: TimeRange;
 };
 
 export default (props: Props) => {
