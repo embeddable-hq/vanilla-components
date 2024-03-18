@@ -1,8 +1,8 @@
-import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
+import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
 
-export const meta: EmbeddedComponentMeta = {
+export const meta = {
   name: 'Text',
   label: 'Component: Text',
   inputs: [
@@ -21,15 +21,10 @@ export const meta: EmbeddedComponentMeta = {
       category: 'Configure chart'
     }
   ]
-};
+} as const satisfies EmbeddedComponentMeta;
 
-export type Inputs = {
-  title?: string;
-  body?: string;
-};
-
-export default defineComponent<Inputs>(Component, meta, {
-  props: (inputs) => {
+export default defineComponent(Component, meta, {
+  props: (inputs: Inputs<typeof meta>) => {
     return {
       title: inputs.title,
       body: inputs.body
