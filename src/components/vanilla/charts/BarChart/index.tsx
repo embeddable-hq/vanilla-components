@@ -82,7 +82,7 @@ function chartData(props: Props): ChartData<'bar'> {
         minBarLength: 0,
         borderRadius: 6,
         label: metric.title,
-        data: results?.data?.map((d) => parseInt(d[metric.name])) || [],
+        data: results?.data?.map((d) => parseFloat(d[metric.name])) || [],
         backgroundColor: COLORS[i % COLORS.length]
       })) || []
   };

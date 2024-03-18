@@ -10,10 +10,11 @@ type Options = {
   dps?: number;
 };
 
-function numberFormatter(dps: number | undefined) {
+function numberFormatter(dps: number | undefined | null) {
+  const fallback = (dps == null || dps < 0);
   return new Intl.NumberFormat(undefined, {
-      minimumFractionDigits: isNaN(dps) ? 0 : dps, // Minimum number of digits after the decimal
-      maximumFractionDigits: isNaN(dps) ? 3 : dps, // Maximum number of digits after the decimal
+      minimumFractionDigits: fallback ? 0 : dps, // Minimum number of digits after the decimal
+      maximumFractionDigits: fallback ? 2 : dps, // Maximum number of digits after the decimal
   });
 }
 

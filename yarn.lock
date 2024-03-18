@@ -344,19 +344,19 @@
     "@cubejs-backend/shared" "0.33.20"
     source-map-support "^0.5.21"
 
-"@embeddable.com/core@*", "@embeddable.com/core@^2.5.0":
+"@embeddable.com/core@*", "@embeddable.com/core@^2.5.2":
   version "2.5.2"
   resolved "https://registry.npmjs.org/@embeddable.com/core/-/core-2.5.2.tgz"
   integrity sha512-tahw9InuJNX7gDwBNKSGOd9b38TkWb9av7eCfHcn3o9Q8AJV2KxAjPZD3jNLVlyEhW0VkYZYCI9OjtUm9Vw4yw==
 
-"@embeddable.com/react@*", "@embeddable.com/react@^2.5.0":
+"@embeddable.com/react@*", "@embeddable.com/react@^2.5.2":
   version "2.5.2"
   resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.5.2.tgz"
   integrity sha512-VIEplg6c87p6I2YvZc+YapLcElyyI2EkH24Yz0X9kV6/iqUcHNQhaL75zQawr0QzXtByiooT8MTrL4Chw48Tmg==
   dependencies:
     "@embeddable.com/core" "*"
 
-"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@^2.5.0":
+"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@^2.5.2":
   version "2.5.2"
   resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-2.5.2.tgz"
   integrity sha512-YtGx3/OBQpYkdI8fyAZoc++oNrh7PTfVS1/p6neXnW6rShQ66h4jwT/fb4rqV6yjsz85XXZA8y5YPh5Ucr8BMw==
@@ -377,7 +377,7 @@
     ws "^8.16.0"
     yaml "^2.3.3"
 
-"@embeddable.com/sdk-react@^2.3.0":
+"@embeddable.com/sdk-react@^2.3.2":
   version "2.3.2"
   resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-2.3.2.tgz"
   integrity sha512-oPXR7u+hG5jC8Sj1PL/UMJAmnBFHwaBjr67ROOMH3kF1EKT4bT3dplX31v/TkYb0LJBxlAGFN8SdTLaanB94+w==

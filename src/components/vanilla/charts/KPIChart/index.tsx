@@ -11,6 +11,7 @@ type Props = {
   prefix: string;
   suffix: string;
   metric: { name: string; meta?: object };
+  dps: number;
 };
 
 export default (props: Props) => {
@@ -21,13 +22,12 @@ export default (props: Props) => {
 
     const n = props.value.data[0][props.metric?.name];
 
-    const num = parseFloat(n);
-
-    if (n !== `${num}`) return n;
+    if (isNaN(n)) return n;
 
     return format(n, {
       type: 'number',
-      meta: props.metric?.meta
+      meta: props.metric?.meta,
+      dps: props.dps
     });
   }, [props]);
 

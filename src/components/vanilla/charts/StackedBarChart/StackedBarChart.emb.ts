@@ -87,7 +87,6 @@ export const meta = {
       name: 'dps',
       type: 'number',
       label: 'Decimal Places',
-      defaultValue: 0,
       category: 'Formatting'
     },
   ]

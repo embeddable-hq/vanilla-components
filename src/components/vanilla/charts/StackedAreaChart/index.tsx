@@ -115,12 +115,12 @@ function chartOptions(props: Props): ChartOptions<'line'> {
         time: {
           round: props.granularity,
           displayFormats: {
-            month: 'MMM',
-            day: 'd MMM',
-            week: 'd MMM',
-            hour: 'HH:mm',
-            minute: 'HH:mm',
-            second: 'HH:mm:ss'
+            month: 'MMM YY',
+            day: 'DD MMM',
+            week: 'DD MMM',
+            hour: 'HH:mm DD MMM',
+            minute: 'HH:mm DD MMM',
+            second: 'HH:mm:ss DD MMM'
           },
           unit: props.granularity
         },

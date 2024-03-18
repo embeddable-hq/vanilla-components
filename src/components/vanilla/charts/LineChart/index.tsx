@@ -68,7 +68,7 @@ function chartData(props: Props): ChartData<'line'> {
         label: yAxis.title,
         data: results?.data?.map((d: Record) => d[yAxis.name]),
         backgroundColor: applyFill
-          ? hexToRgb(COLORS[i % COLORS.length])
+          ? hexToRgb(COLORS[i % COLORS.length], 0.2)
           : COLORS[i % COLORS.length],
         borderColor: COLORS[i % COLORS.length],
         fill: applyFill,
