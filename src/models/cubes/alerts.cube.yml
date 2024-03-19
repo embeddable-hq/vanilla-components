@@ -1,0 +1,46 @@
+cubes:
+  - name: alerts
+    title: Alerts
+    sql: SELECT alerts.id, alerts.trigger, alerts.frequency, alerts.timezone, alerts.created_at, alerts.trigger_type FROM public.alerts
+      
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: trigger
+        title: "Trigger"
+        sql: trigger
+        type: string
+
+      - name: frequency
+        title: "Frequency"
+        sql: frequency
+        type: string
+
+      - name: timezone
+        title: "Timezone"
+        sql: timezone
+        type: string
+
+      - name: trigger_type
+        title: "Trigger type"
+        sql: trigger_type
+        type: string
+
+      - name: created_at
+        title: "Created at"
+        sql: created_at
+        type: time
+
+      # - name: full_name
+      #   title: "Full name"
+      #   sql: CONCAT(first_name, ' ', last_name)
+      #   type: string
+
+    measures:
+      - name: count
+        type: count
+        title: 'Count alerts'
