@@ -109,3 +109,5 @@ cubes:
       title: Track Completion Rate
       type: number
       sql: CASE WHEN {track_play} = 0 THEN 0 ELSE ROUND(({track_complete} / NULLIF({track_play}, 0) * 100), 2) END
+      meta:
+        - suffix: " %"

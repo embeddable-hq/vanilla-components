@@ -16,7 +16,7 @@ export const COLORS = [
   '#FBD86F',  //Sunflower100
   '#93D4FA',  //Splash100
   '#73C67C',  //Obama100
-  '#EC5A68',  //Marilyn100
+  '#EB4448',   //Rothko100
   '#E69C6D',  //Haystack100
   '#5A489B',  //WaterLilies100
   '#FCBAA7',  //Nu100
@@ -24,7 +24,7 @@ export const COLORS = [
   '#728CEA',  //Sunrise100
   '#06006B',  //Postman100
   '#0066CC',  //Ishtar100ß
-  '#EB4448'   //Rothko100
+  '#EC5A68'  //Marilyn100
 ];
 
 /*

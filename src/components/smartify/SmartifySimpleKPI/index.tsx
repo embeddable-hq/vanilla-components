@@ -59,7 +59,7 @@ export default (props: Props) => {
           {formattedValue || 0}
           {props.suffix}
         </div>  
-      <p style={{ display: 'flex', fontSize: '14px', marginBottom: '2px', color: '#494949'}}>
+      <p style={{ display: 'flex', fontSize: '12px', marginBottom: '2px', color: '#494949'}}>
         {props.description}
       </p>
     </div>
