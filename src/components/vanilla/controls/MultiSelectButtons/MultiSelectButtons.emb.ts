@@ -1,9 +1,9 @@
 import { Value } from '@embeddable.com/core';
-import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
+import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
 
-export const meta: EmbeddedComponentMeta = {
+export const meta = {
   name: 'MultiSelectButtons',
   label: 'Control: Multiselect Buttons',
   defaultWidth: 400,
@@ -50,16 +50,10 @@ export const meta: EmbeddedComponentMeta = {
       events: [{ name: 'onChange', property: 'value' }]
     }
   ]
-};
+} as const satisfies EmbeddedComponentMeta;
 
-type Inputs = {
-  title: string;
-  values: Array<string>;
-  defaultValue: string;
-};
-
-export default defineComponent<Inputs>(Component, meta, {
-  props: (inputs) => {
+export default defineComponent(Component, meta, {
+  props: (inputs: Inputs<typeof meta>) => {
     return {
       ...inputs
     };

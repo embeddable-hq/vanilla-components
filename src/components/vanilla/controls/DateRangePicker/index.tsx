@@ -30,7 +30,7 @@ type TimeRange = {
 type Props = {
   placeholder?: string;
   onChange: (v?: TimeRange) => void;
-  title: string;
+  title?: string;
   value?: TimeRange;
   hideDate?: boolean;
 };

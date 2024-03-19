@@ -1,12 +1,12 @@
 import { Granularity, TimeRange, Value } from '@embeddable.com/core';
-import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
+import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 import { endOfDay, startOfDay } from 'date-fns';
 
 import TimeComparisonType from '../../../../types/TimeComparison.type.emb.js';
 import { timeRangeToUTC } from '../../../hooks/useTimezone.js';
 import Component from './index';
 
-export const meta: EmbeddedComponentMeta = {
+export const meta = {
   name: 'ComparisonFilter',
   label: 'Control: Comparison Filter',
   defaultWidth: 920,
@@ -103,18 +103,10 @@ export const meta: EmbeddedComponentMeta = {
       events: [{ name: 'onChangeGranularity', property: 'value' }]
     }
   ]
-};
+} as const satisfies EmbeddedComponentMeta;
 
-export type Inputs = {
-  title?: string;
-  defaultPeriod?: TimeRange;
-  defaultComparison?: string;
-  defaultGranularity?: Granularity;
-  showGranularity?: boolean;
-};
-
-export default defineComponent<Inputs>(Component, meta, {
-  props: (inputs) => inputs,
+export default defineComponent(Component, meta, {
+  props: (inputs: Inputs<typeof meta>) => inputs,
   events: {
     onChangePeriod: (v) => {
       if (!v) return { value: Value.noFilter() };

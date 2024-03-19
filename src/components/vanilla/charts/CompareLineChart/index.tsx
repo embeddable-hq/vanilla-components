@@ -1,4 +1,11 @@
-import { DataResponse } from '@embeddable.com/react';
+import {
+  DataResponse,
+  Dataset,
+  Dimension,
+  Granularity,
+  Measure,
+  TimeRange
+} from '@embeddable.com/core';
 import {
   CategoryScale,
   ChartData,
@@ -24,7 +31,6 @@ import { Line } from 'react-chartjs-2';
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import { timeRangeToLocal } from '../../../hooks/useTimezone';
 import Container from '../../Container';
-import { Inputs } from './CompareLineChart.emb';
 
 ChartJS.register(
   CategoryScale,
@@ -43,7 +49,20 @@ ChartJS.defaults.color = LIGHT_FONT;
 ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
 
-type Props = Inputs & {
+type Props = {
+  title?: string;
+  ds: Dataset;
+  xAxis: Dimension;
+  granularity: Granularity;
+  metrics: Measure[];
+  timeFilter?: TimeRange;
+  prevTimeFilter?: TimeRange;
+  yAxisMin?: number;
+  xAxisTitle?: string;
+  yAxisTitle?: string;
+  applyFill?: boolean;
+  showLabels?: boolean;
+  showLegend?: boolean;
   results: DataResponse;
   prevResults: DataResponse;
 };
@@ -84,10 +103,11 @@ function chartData(props: Props): ChartData<'line'> {
     metrics?.map((yAxis, i) => ({
       xAxisID: 'period',
       label: yAxis.title,
-      data: results?.data?.map((d: Record) => ({
-        y: parseFloat(d[yAxis.name] || '0'),
-        x: parseJSON(d[props.xAxis?.name || ''])
-      })),
+      data:
+        results?.data?.map((d: Record) => ({
+          y: parseFloat(d[yAxis.name] || '0'),
+          x: parseJSON(d[props.xAxis?.name || '']).valueOf()
+        })) || [],
       backgroundColor: applyFill ? hexToRgb(COLORS[i % COLORS.length]) : COLORS[i % COLORS.length],
       borderColor: COLORS[i % COLORS.length],
       fill: applyFill,
@@ -107,8 +127,8 @@ function chartData(props: Props): ChartData<'line'> {
         data: !!props.prevTimeFilter?.from
           ? prevResults?.data?.map((d: Record) => ({
               y: parseFloat(d[metrics[i].name] || '0'),
-              x: parseJSON(d[props.xAxis?.name || ''])
-            }))
+              x: parseJSON(d[props.xAxis?.name || '']).valueOf()
+            })) || []
           : [],
         backgroundColor: applyFill ? hexToRgb(COLORS[i % COLORS.length], 0.05) : c,
         borderColor: c,

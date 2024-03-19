@@ -1,6 +1,5 @@
 import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser';
-import { Dimension, Granularity, TimeRange } from '@embeddable.com/core';
-import { DataResponse } from '@embeddable.com/react';
+import { DataResponse, Dimension, Granularity, TimeRange } from '@embeddable.com/core';
 import {
   differenceInCalendarDays,
   differenceInSeconds,
@@ -13,11 +12,9 @@ import {
 } from 'date-fns';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import { timeRangeToLocal, toLocal } from '../../../hooks/useTimezone';
 import Container from '../../Container';
 import DateRangePicker from '../DateRangePicker';
 import Dropdown from '../Dropdown';
-import { Inputs } from './ComparisonFilter.emb';
 
 const valueProp: Dimension = {
   __type__: 'dimension',
@@ -48,7 +45,12 @@ const maxDuration = {
   year: 31541965000
 };
 
-export type Props = Inputs & {
+export type Props = {
+  title?: string;
+  defaultPeriod?: TimeRange;
+  defaultComparison?: string;
+  defaultGranularity?: Granularity;
+  showGranularity?: boolean;
   onChangePeriod: (v: TimeRange | null) => void;
   onChangeComparison: (v: TimeRange | null) => void;
   onChangeGranularity: (v: Granularity | null) => void;
