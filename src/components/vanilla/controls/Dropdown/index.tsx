@@ -1,4 +1,5 @@
-import { DataResponse, useEmbeddableState } from '@embeddable.com/react';
+import { DataResponse } from '@embeddable.com/core';
+import { useEmbeddableState } from '@embeddable.com/react';
 import React, {
   ReactNode,
   useCallback,
@@ -13,9 +14,8 @@ import { twMerge } from 'tailwind-merge';
 import Container from '../../Container';
 import Spinner from '../../Spinner';
 import { ChevronDown, ClearIcon } from '../../icons';
-import { Inputs } from './Dropdown.emb';
 
-type Props = Inputs & {
+export type Props = {
   icon?: ReactNode;
   className?: string;
   options: DataResponse;
@@ -24,6 +24,11 @@ type Props = Inputs & {
   onChange: (v: string) => void;
   searchProperty?: string;
   minDropdownWidth?: number;
+  property?: { name: string; title: string; nativeType: string; __type__: string };
+  title?: string;
+  defaultValue?: string;
+  placeholder?: string;
+  ds?: { embeddableId: string; datasetId: string; variableValues: Record };
 };
 
 type Record = { [p: string]: string };
@@ -106,7 +111,7 @@ export default (props: Props) => {
         return memo;
       }, []),
     [props, value, set]
-  );
+  ) as ReactNode[];
 
   return (
     <Container title={props.title}>

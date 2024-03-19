@@ -1,4 +1,4 @@
-import { DataResponse } from '@embeddable.com/react';
+import { DataResponse, Granularity } from '@embeddable.com/core';
 import {
   CategoryScale,
   ChartData,
@@ -21,7 +21,6 @@ import { Line } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import Container from '../../Container';
-import { Inputs } from './LineChart.emb';
 
 ChartJS.register(
   CategoryScale,
@@ -40,8 +39,18 @@ ChartJS.defaults.color = LIGHT_FONT;
 ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
 
-type Props = Inputs & {
+type Props = {
   results: DataResponse;
+  title: string;
+  xAxis: { name: string; meta?: object };
+  metrics: { name: string; title: string }[];
+  applyFill: boolean;
+  showLabels: boolean;
+  showLegend: boolean;
+  yAxisMin: number;
+  yAxisTitle: string;
+  xAxisTitle: string;
+  granularity: Granularity;
 };
 
 type Record = { [p: string]: string };
@@ -63,10 +72,11 @@ function chartData(props: Props): ChartData<'line'> {
     datasets:
       metrics?.map((yAxis, i) => ({
         label: yAxis.title,
-        data: results?.data?.map((d: Record) => ({
-          y: parseFloat(d[yAxis.name]),
-          x: parseJSON(d[props.xAxis?.name || ''])
-        })),
+        data:
+          results?.data?.map((d: Record) => ({
+            y: parseFloat(d[yAxis.name]),
+            x: parseJSON(d[props.xAxis?.name || '']).valueOf()
+          })) || [],
         backgroundColor: applyFill
           ? hexToRgb(COLORS[i % COLORS.length])
           : COLORS[i % COLORS.length],

@@ -8,7 +8,6 @@ import format from '../../../util/format';
 import Container from '../../Container';
 import { CalendarIcon, ChevronLeft, ChevronRight } from '../../icons';
 import Dropdown from '../Dropdown';
-import { Inputs } from './DateRangePicker.emb';
 
 const ranges = [
   'Today',
@@ -28,10 +27,12 @@ type TimeRange = {
   relativeTimeString?: string;
 };
 
-type Props = Inputs & {
-  hideDate?: boolean;
+type Props = {
   placeholder?: string;
   onChange: (v?: TimeRange) => void;
+  title: string;
+  value?: TimeRange;
+  hideDate?: boolean;
 };
 
 export default (props: Props) => {
@@ -84,7 +85,6 @@ export default (props: Props) => {
       <div className="relative inline-flex h-10 w-full text-[#101010] text-sm">
         <Dropdown
           minDropdownWidth={120}
-          ds={{ embeddableId: '', datasetId: '', variableValues: {} }}
           unclearable
           placeholder={props.placeholder}
           className="max-w-[120px] min-w-[80px] sm:max-w-[140px] relative rounded-r-none w-full h-10 border border-[#DADCE1] flex items-center"

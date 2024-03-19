@@ -1,9 +1,9 @@
-import { Dataset, Dimension, Granularity, Measure, loadData } from '@embeddable.com/core';
-import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
+import { loadData } from '@embeddable.com/core';
+import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
 
-export const meta: EmbeddedComponentMeta = {
+export const meta = {
   name: 'LineChart',
   label: 'Chart: Line (time-series)',
   classNames: ['inside-card'],
@@ -89,24 +89,10 @@ export const meta: EmbeddedComponentMeta = {
       defaultValue: true
     }
   ]
-};
+} as const satisfies EmbeddedComponentMeta;
 
-export type Inputs = {
-  title?: string;
-  ds: Dataset;
-  xAxis: Dimension;
-  granularity: Granularity;
-  metrics: Measure[];
-  yAxisMin?: number;
-  xAxisTitle?: string;
-  yAxisTitle?: string;
-  applyFill?: boolean;
-  showLabels?: boolean;
-  showLegend?: boolean;
-};
-
-export default defineComponent<Inputs>(Component, meta, {
-  props: (inputs) => {
+export default defineComponent(Component, meta, {
+  props: (inputs: Inputs<typeof meta>) => {
     return {
       ...inputs,
       results: loadData({

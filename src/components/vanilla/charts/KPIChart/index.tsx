@@ -1,14 +1,17 @@
-import { DataResponse } from '@embeddable.com/react';
+import { DataResponse } from '@embeddable.com/core';
 import React, { useMemo } from 'react';
 
 import format from '../../../util/format';
 import Container from '../../Container';
 import { WarningIcon } from '../../icons';
-import { Inputs } from './KPIChart.emb';
 
-type Props = Inputs & {
+type Props = {
   value: DataResponse;
   prevValue?: DataResponse;
+  title: string;
+  prefix: string;
+  suffix: string;
+  metric: { name: string; meta?: object };
 };
 
 export default (props: Props) => {
@@ -23,7 +26,7 @@ export default (props: Props) => {
 
     if (n !== `${num}`) return { n, percentage: null };
 
-    const prev = props.prevTimeFilter?.from && props.prevValue?.data?.[0]?.[props.metric?.name];
+    const prev = props.prevValue?.data?.[0]?.[props.metric?.name];
 
     return {
       percentage: prev ? Math.round((num / parseFloat(prev)) * 100) - 100 : null,

@@ -1,9 +1,9 @@
-import { Dataset, Dimension, Measure, loadData } from '@embeddable.com/core';
-import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
+import { loadData } from '@embeddable.com/core';
+import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
 
-export const meta: EmbeddedComponentMeta = {
+export const meta = {
   name: 'BarChart',
   label: 'Chart: Bar',
   classNames: ['inside-card'],
@@ -41,6 +41,15 @@ export const meta: EmbeddedComponentMeta = {
         dataset: 'ds'
       },
       category: 'Configure chart'
+    },
+    {
+      name: 'sortBy',
+      type: 'dimensionOrMeasure',
+      label: 'Sort by (optional)',
+      category: 'Configure chart',
+      config: {
+        dataset: 'ds'
+      }
     },
     {
       name: 'showLegend',
@@ -81,28 +90,22 @@ export const meta: EmbeddedComponentMeta = {
       type: 'string',
       label: 'Y-Axis Title',
       category: 'Chart settings'
-    }
+    },
   ]
-};
+} as const satisfies EmbeddedComponentMeta;
 
-export type Inputs = {
-  title?: string;
-  ds: Dataset;
-  xAxis: Dimension;
-  metrics: Measure[];
-  showLabels?: boolean;
-  showLegend?: boolean;
-  maxSegments?: number;
-};
-
-export default defineComponent<Inputs>(Component, meta, {
-  props: (inputs) => {
+export default defineComponent(Component, meta, {
+  props: (inputs: Inputs<typeof meta>) => {
     return {
       ...inputs,
       results: loadData({
         from: inputs.ds,
         dimensions: [inputs.xAxis],
-        measures: inputs.metrics
+        measures: inputs.metrics,
+        orderBy: inputs.sortBy && [{
+          property: inputs.sortBy, 
+          direction: inputs.sortBy.nativeType == 'string' ? 'asc' : 'desc'
+        }]
       })
     };
   }

@@ -1,11 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+
+
 import Container from '../../Container';
 import { ClearIcon } from '../../icons';
-import { Inputs } from './NumberInput.emb';
 
-type Props = Inputs & {
+
+type Props = {
   onChange: (v: string) => void;
+  value: number;
+  title: string;
+  placeholder: string;
 };
 
 export default (props: Props) => {

@@ -1,4 +1,4 @@
-import { DataResponse } from '@embeddable.com/react';
+import { DataResponse } from '@embeddable.com/core';
 import React, { ReactNode, useRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 

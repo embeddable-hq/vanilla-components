@@ -1,6 +1,9 @@
 # Starter Components
 
-Hello and welcome to our Embeddable components starter back built just for you by the Embeddable team ❤️ We wish to thank you for being one of the first to use the platform and welcome any feedback you might have.
+Hello and welcome to our Embeddable components **starter pack** built just for you by the Embeddable team ❤️ We wish to thank you for using our platform and welcome any feedback you might have.
+
+![example-dash](https://github.com/embeddable-hq/vanilla-components/assets/6795003/3f38f938-7848-4e25-8cc0-90160398f0a1)
+
 
 ### Installation
 
