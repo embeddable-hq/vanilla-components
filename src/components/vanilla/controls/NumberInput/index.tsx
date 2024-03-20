@@ -5,9 +5,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import Container from '../../Container';
 import { ClearIcon } from '../../icons';
 
+
 type Props = {
   onChange: (v: string) => void;
-  value: string;
+  value: number;
   title: string;
   placeholder: string;
 };

@@ -1,4 +1,4 @@
-import { DataResponse } from '@embeddable.com/react';
+import { DataResponse } from '@embeddable.com/core';
 import {
   CategoryScale,
   ChartData,
@@ -8,19 +8,19 @@ import {
   Legend,
   LineElement,
   LinearScale,
+  Point,
   PointElement,
   Title,
   Tooltip
 } from 'chart.js';
-
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React from 'react';
 import { Line } from 'react-chartjs-2';
+
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import format from '../../../util/format';
-import Container from '../../Container';
-import { Inputs } from './LineChart.emb';
 import hexToRgb from '../../../util/hexToRgb';
+import Container from '../../Container';
 
 ChartJS.register(
   CategoryScale,
@@ -39,8 +39,18 @@ ChartJS.defaults.color = LIGHT_FONT;
 ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
 
-type Props = Inputs & {
+type Props = {
   results: DataResponse;
+  title: string;
+  dps?: number;
+  xAxis: { name: string; meta?: object };
+  metrics: { name: string; title: string }[];
+  applyFill: boolean;
+  showLabels: boolean;
+  showLegend: boolean;
+  yAxisMin: number;
+  yAxisTitle: string;
+  xAxisTitle: string;
 };
 
 type Record = { [p: string]: string };
@@ -66,7 +76,11 @@ function chartData(props: Props): ChartData<'line'> {
     datasets:
       metrics?.map((yAxis, i) => ({
         label: yAxis.title,
-        data: results?.data?.map((d: Record) => d[yAxis.name]),
+        data: results?.data?.map((d: Record) => d[yAxis.name]) as unknown as (
+          | number
+          | Point
+          | null
+        )[],
         backgroundColor: applyFill
           ? hexToRgb(COLORS[i % COLORS.length], 0.2)
           : COLORS[i % COLORS.length],
@@ -111,7 +125,7 @@ function chartOptions(props: Props): ChartOptions<'line'> {
         title: {
           display: !!props.xAxisTitle,
           text: props.xAxisTitle
-        },
+        }
       }
     },
     animation: {
@@ -132,9 +146,7 @@ function chartOptions(props: Props): ChartOptions<'line'> {
         display: props.showLabels ? 'auto' : false,
         formatter: (v) => {
           let val = v ? format(v, { type: 'number', dps: props.dps }) : null;
-          if (props.displayAsPercentage) {
-            val += '%'
-          }
+
           return val;
         }
       },
@@ -144,12 +156,15 @@ function chartOptions(props: Props): ChartOptions<'line'> {
           label: function (context) {
             let label = context.dataset.label || '';
             if (context.parsed.y !== null) {
-              label += `: ${format(context.parsed['y'], { type: 'number', dps: props.dps })}`;
+              label += `: ${format(`${context.parsed['y'] || ''}`, {
+                type: 'number',
+                dps: props.dps
+              })}`;
             }
             return label;
           }
         }
-      },
+      }
     }
   };
 }

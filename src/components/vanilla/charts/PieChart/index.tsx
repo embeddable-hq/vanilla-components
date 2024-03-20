@@ -1,4 +1,4 @@
-import { DataResponse } from '@embeddable.com/react';
+import { DataResponse } from '@embeddable.com/core';
 import {
   ArcElement,
   CategoryScale,
@@ -18,8 +18,6 @@ import { Pie } from 'react-chartjs-2';
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import format from '../../../util/format';
 import Container from '../../Container';
-import { Inputs } from './PieChart.emb';
-import format from '../../../util/format';
 
 ChartJS.register(
   ChartDataLabels,
@@ -39,8 +37,15 @@ ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
 ChartJS.defaults.plugins.tooltip.usePointStyle = true;
 
-type Props = Inputs & {
+type Props = {
   results: DataResponse;
+  title: string;
+  dps?: number;
+  slice: { name: string; meta: object };
+  metric: { name: string; title: string };
+  showLabels: boolean;
+  showLegend: boolean;
+  maxSegments: number;
 };
 
 type Record = { [p: string]: string };
@@ -81,10 +86,15 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
       tooltip: {
         //https://www.chartjs.org/docs/latest/configuration/tooltip.html
         callbacks: {
-          label: function (context, data) {
-            let label = context.label || '';
-            label += `: ${format(context.raw, { type: 'number', dps: props.dps })}`;
-            return label
+          label: function (context) {
+            let label = context.dataset.label || '';
+            if (context.parsed !== null) {
+              label += `: ${format(`${context.parsed || ''}`, {
+                type: 'number',
+                dps: props.dps
+              })}`;
+            }
+            return label;
           }
         }
       },
@@ -108,7 +118,7 @@ function mergeLongTail({ results, slice, metric, maxSegments }: Props) {
     .slice(0, maxSegments - 1);
 
   const sumLongTail = results?.data
-    .slice(maxSegments - 1)
+    ?.slice(maxSegments - 1)
     .reduce((accumulator, record: Record) => accumulator + parseInt(record[metric.name]), 0);
 
   newData.push({ [slice.name]: 'Other', [metric.name]: sumLongTail });
@@ -118,14 +128,17 @@ function mergeLongTail({ results, slice, metric, maxSegments }: Props) {
 
 function chartData(props: Props) {
   const { maxSegments, results, metric, slice } = props;
-  const labelsExceedMaxSegments = maxSegments && maxSegments < results?.data?.length;
+  const labelsExceedMaxSegments = maxSegments && maxSegments < (results?.data?.length || 0);
   const newData = labelsExceedMaxSegments ? mergeLongTail(props) : results.data;
 
   // Chart.js pie expects labels like so: ['US', 'UK', 'Germany']
   const labels = newData?.map((d) => format(d[slice.name], { truncate: 15, meta: slice?.meta }));
 
   // Chart.js pie expects counts like so: [23, 10, 5]
-  const counts = newData?.map((d: Record) => format(d[metric.name]), { type: 'number', dps: props.dps });
+  const counts = newData?.map((d: Record) => format(d[metric.name]), {
+    type: 'number',
+    dps: props.dps
+  });
 
   return {
     labels,

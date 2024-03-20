@@ -43,6 +43,15 @@ export const meta = {
       category: 'Configure chart'
     },
     {
+      name: 'sortBy',
+      type: 'dimensionOrMeasure',
+      label: 'Sort by (optional)',
+      category: 'Configure chart',
+      config: {
+        dataset: 'ds'
+      }
+    },
+    {
       name: 'showLegend',
       type: 'boolean',
       label: 'Show Legend',
@@ -87,7 +96,7 @@ export const meta = {
       type: 'number',
       label: 'Decimal Places',
       category: 'Formatting'
-    },
+    }
   ]
 } as const satisfies EmbeddedComponentMeta;
 
@@ -98,7 +107,13 @@ export default defineComponent(Component, meta, {
       results: loadData({
         from: inputs.ds,
         dimensions: [inputs.xAxis],
-        measures: inputs.metrics
+        measures: inputs.metrics,
+        orderBy: inputs.sortBy && [
+          {
+            property: inputs.sortBy,
+            direction: inputs.sortBy.nativeType == 'string' ? 'asc' : 'desc'
+          }
+        ]
       })
     };
   }
