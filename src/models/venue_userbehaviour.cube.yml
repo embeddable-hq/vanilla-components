@@ -1,0 +1,195 @@
+cubes:
+- name: venue_user_behaviour
+  #sql_table: smartify-cc94e.report_venue.venue_overall_table
+  sql: >
+    select
+      a.partition_date as partition_date
+      ,a.user_pseudo_id as total_users
+      ,null as object_users
+      ,null as tour_users
+      ,a.platform as platform
+      ,a.geo_country as country
+      ,a.stream_id as stream
+      ,a.organisation_sid as organisation_id
+      ,a.venue_sid as venue_id
+      ,a.nearby_venue_id as nearby_venue_id
+      ,a.user_location_access as user_location_access
+      ,a.device_category as device_category
+      ,0 as object_view
+      ,0 as object_scan
+      ,0 as tour_view
+      ,0 as track_play
+      ,0 as track_complete
+      ,1 as total_events
+      ,"User Type" as user_type
+    from `smartify-cc94e.report_venue.venue_overall_table` as a
+    where a.partition_date >= "2023-01-01"
+    and organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+
+    union all
+    select
+      b.partition_date
+      ,null as total_users
+      ,b.user_pseudo_id as object_users
+      ,null as tour_users
+      ,b.platform as platform
+      ,b.geo_country as country
+      ,b.stream_id as stream
+      ,b.organisation_sid as organisation_id
+      ,b.venue_sid as venue_id
+      ,b.nearby_venue_id as nearby_venue_id
+      ,b.user_location_access as user_location_access
+      ,b.device_category as device_category
+      ,b.object_view as object_view
+      ,b.object_scan as object_scan
+      ,0 as tour_view
+      ,0 as track_play
+      ,0 as track_complete
+      ,0 as total_events
+      ,"User Type" as user_type
+    from `smartify-cc94e.report_venue.venue_object_table` as b 
+    where b.partition_date >= "2023-01-01"
+    and organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+
+    union all
+    select
+      c.partition_date
+      ,null as total_users
+      ,null as object_users
+      ,c.user_pseudo_id as tour_users
+      ,c.platform as platform
+      ,c.geo_country as country
+      ,c.stream_id as stream
+      ,c.organisation_sid as organisation_id
+      ,c.venue_sid as venue_id
+      ,c.nearby_venue_id as nearby_venue_id
+      ,c.user_location_access as user_location_access
+      ,c.device_category as device_category
+      ,0 as object_view
+      ,0 as object_scan
+      ,c.tour_view as tour_view
+      ,c.track_play as track_play
+      ,c.track_complete as track_complete
+      ,0 as total_events
+      ,"User Type" as user_type
+    from `smartify-cc94e.report_venue.venue_tourtrack_table` as c
+    where c.partition_date >= "2023-01-01"
+    and organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+
+  dimensions:
+    - name: date
+      type: time
+      sql: timestamp(partition_date)
+    - name: country
+      type: string
+      sql: geo_country
+    - name: stream
+      type: string
+      sql: stream_id
+    - name: venue_id
+      type: string
+      sql: venue_sid
+    - name: organisation_id
+      type: string
+      sql: organisation_sid
+    - name: user_location_type
+      type: string
+      sql: case when venue_sid = nearby_venue_id then "Onsite User" when user_location_access = "false" then "Unknown" else "Offsite User" end
+    - name: platform_device
+      type: string
+      sql: case when platform = "IOS" then "iOS" when platform = "ANDROID" then "Android" when (platform = "WEB" and device_category = "desktop") then "Desktop" else "Webapp" end
+    - name: user_type
+      type: string
+      sql: user_type
+
+  measures:
+    - name: total_users
+      type: count_distinct
+      title: Total Users
+      sql: total_users
+
+    - name: object_view_users
+      type: count_distinct
+      title: Object View Users
+      sql: case when object_view > 0 then object_users else null end
+
+    - name: object_scan_users
+      type: count_distinct
+      title: Object Scan Users
+      sql: case when object_scan > 0 then object_users else null end
+
+    - name: tour_view_users
+      title: Tour View Users
+      type: count_distinct
+      sql: case when tour_view > 0 then tour_users else null end
+
+    - name: track_play_users
+      title: Track Play Users
+      type: count_distinct
+      sql: case when track_play > 0 then tour_users else null end
+
+    - name: track_complete_users
+      title: Track Complete Users
+      type: count_distinct
+      sql: case when track_complete > 0 then tour_users else null end
+
+    - name: object_view
+      type: sum
+      title: Object Views
+      sql: object_view
+
+    - name: object_scan
+      type: sum
+      title: Object Scans
+      sql: object_scan
+
+    - name: tour_view
+      type: sum
+      title: Tour Views
+      sql: tour_view
+
+    - name: track_play
+      type: sum
+      title: Tour Plays
+      sql: track_play
+
+    - name: track_complete
+      type: sum
+      title: Tour Completes
+      sql: track_complete
+
+    - name: total_events
+      type: sum
+      title: Total Events
+      sql: total_events
+
+    - name: events_per_user
+      title: Events per User
+      type: number
+      sql: "ROUND({total_events} / {total_users}, 2)"
+      
+    - name: obj_view_per_user
+      title: Object View per User
+      type: number
+      sql: "ROUND({object_view} / {object_view_users}, 2)"
+      
+    - name: obj_scan_per_user
+      title: Object Scan per User
+      type: number
+      sql: "ROUND({object_scan} / {object_scan_users}, 2)"
+      
+    - name: tour_view_per_user
+      title: Tour View per User
+      type: number
+      sql: "ROUND({tour_view} / {tour_view_users}, 2)"
+      
+    - name: track_play_per_user
+      title: Track Play per User
+      type: number
+      sql: "ROUND({track_play} / {track_play_users}, 2)"
+      
+    - name: track_complete_per_user
+      title: Track Complete per User
+      type: number
+      sql: "ROUND({track_complete} / {track_complete_users}, 2)"
+      
