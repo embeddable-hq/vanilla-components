@@ -1,4 +1,3 @@
-import { DataResponse, Dataset, Dimension, Measure } from '@embeddable.com/core';
 import {
   CategoryScale,
   ChartData,

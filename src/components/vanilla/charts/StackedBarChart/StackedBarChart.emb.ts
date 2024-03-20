@@ -1,4 +1,4 @@
-import { Dataset, Dimension, Measure, loadData } from '@embeddable.com/core';
+import { loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
@@ -88,7 +88,7 @@ export const meta = {
       type: 'number',
       label: 'Decimal Places',
       category: 'Formatting'
-    },
+    }
   ]
 } as const satisfies EmbeddedComponentMeta;
 
