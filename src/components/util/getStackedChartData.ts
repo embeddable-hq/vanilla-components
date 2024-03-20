@@ -1,13 +1,37 @@
-import { ChartOptions } from 'chart.js';
-import format from '../util/format';
+import { DataResponse, Dataset, Dimension, Granularity, Measure } from '@embeddable.com/core';
+import { ChartData } from 'chart.js';
+
 import { COLORS } from '../constants';
+import format from '../util/format';
 
 type DatasetsMeta = {
-  [key: string]: 'boolean' | 'string' | 'number';
+  [key: string]: boolean | string | number;
 };
 
+export type Props = {
+  title?: string;
+  ds?: Dataset;
+  xAxis: Dimension;
+  segment: Dimension;
+  metric: Measure;
+  displayHorizontally?: boolean;
+  displayAsPercentage?: boolean;
+  showLabels?: boolean;
+  showLegend?: boolean;
+  maxSegments?: number;
+  dps?: number;
+  results: DataResponse;
+  yAxisMin?: number;
+  yAxisTitle?: string;
+  xAxisTitle?: string;
+  granularity?: Granularity;
+};
 
-export default function getStackedChartData(props: Props, datasetsMeta: DatasetsMeta, truncateDefault: number): ChartData<'bar'> {
+export default function getStackedChartData(
+  props: Props,
+  datasetsMeta: DatasetsMeta,
+  truncateDefault?: number
+): ChartData<'line' | 'bar', number[], unknown> {
   const { results, xAxis, metric, segment, maxSegments, displayAsPercentage } = props;
   const labels = [...new Set(results?.data?.map((d: Record) => d[xAxis?.name || '']))] as string[];
   const segments = segmentsToInclude();
@@ -43,37 +67,30 @@ export default function getStackedChartData(props: Props, datasetsMeta: Datasets
 
   return {
     labels: labels.map((l) => format(l, { truncate: truncateDefault, meta: xAxis?.meta })),
-    datasets: segments.map((s, i) => ({
-      ...datasetsMeta,
-      backgroundColor: COLORS[i % COLORS.length],
-      borderColor: COLORS[i % COLORS.length],
-      label: s,
-      data: labels.map((label) => {
-        const segmentValue = resultMap[label][s];
-        return displayAsPercentage && segmentValue !== null //skip null values
-          ? parseFloat(
-              (
-                (segmentValue * 100) /
-                segments.reduce(
-                  (accumulator, segment) => resultMap[label][segment] + accumulator,
-                  0
-                )
+    datasets: segments.map((s, i) => {
+      const dataset = {
+        ...datasetsMeta,
+        backgroundColor: COLORS[i % COLORS.length],
+        borderColor: COLORS[i % COLORS.length],
+        label: s,
+        data: labels.map((label) => {
+          const segmentValue = resultMap[label][s];
+          return displayAsPercentage && segmentValue !== null //skip null values
+            ? parseFloat(
+                `${
+                  (segmentValue * 100) /
+                  segments.reduce(
+                    (accumulator, segment) => resultMap[label][segment] + accumulator,
+                    0
+                  )
+                }`
               )
-            )
-          : segmentValue;
-        // return displayAsPercentage && segmentValue !== null //skip null values
-        //   ? format(parseFloat(
-        //       (
-        //         (segmentValue * 100) /
-        //         segments.reduce(
-        //           (accumulator, segment) => resultMap[label][segment] + accumulator,
-        //           0
-        //         )
-        //       ), { type: 'number', dps: props.dps })
-        //     )
-        //   : format(segmentValue, { type: 'number', dps: props.dps });
-      }),
-    }))
+            : segmentValue;
+        })
+      };
+
+      return dataset;
+    })
   };
 
   type Record = { [p: string]: string };

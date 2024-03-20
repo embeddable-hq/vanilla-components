@@ -1,9 +1,9 @@
-import { Dataset, Dimension, Measure, loadData } from '@embeddable.com/core';
-import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
+import { loadData } from '@embeddable.com/core';
+import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
 
-export const meta: EmbeddedComponentMeta = {
+export const meta = {
   name: 'StackedAreaChart',
   label: 'Chart: Stacked Area',
   classNames: ['inside-card'],
@@ -94,26 +94,12 @@ export const meta: EmbeddedComponentMeta = {
       type: 'number',
       label: 'Decimal Places',
       category: 'Formatting'
-    },
+    }
   ]
-};
+} as const satisfies EmbeddedComponentMeta;
 
-export type Inputs = {
-  title?: string;
-  ds: Dataset;
-  xAxis: Dimension;
-  segment: Dimension;
-  metric: Measure;
-  displayHorizontally?: boolean;
-  displayAsPercentage?: boolean;
-  showLabels?: boolean;
-  showLegend?: boolean;
-  maxSegments?: number;
-  dps?: number;
-};
-
-export default defineComponent<Inputs>(Component, meta, {
-  props: (inputs) => {
+export default defineComponent(Component, meta, {
+  props: (inputs: Inputs<typeof meta>) => {
     return {
       ...inputs,
       results: loadData({

@@ -1,4 +1,4 @@
-import { DataResponse } from '@embeddable.com/core';
+import { DataResponse, Dimension } from '@embeddable.com/core';
 import {
   BarElement,
   CategoryScale,
@@ -40,10 +40,7 @@ ChartJS.defaults.plugins.tooltip.enabled = true;
 type Props = {
   results: DataResponse;
   title: string;
-  xAxis: {
-    name: string;
-    meta?: object;
-  };
+  xAxis: Dimension;
   metrics: { name: string; title: string }[];
 };
 

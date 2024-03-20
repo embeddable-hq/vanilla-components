@@ -1,4 +1,3 @@
-import { DataResponse } from '@embeddable.com/core';
 import {
   BarElement,
   CategoryScale,
@@ -15,10 +14,9 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
-import format from '../../../util/format';
+import { EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import getBarChartOptions from '../../../util/getBarChartOptions';
-import getStackedChartData from '../../../util/getStackedChartData';
+import getStackedChartData, { Props } from '../../../util/getStackedChartData';
 import Container from '../../Container';
 
 ChartJS.register(
@@ -38,16 +36,6 @@ ChartJS.defaults.color = LIGHT_FONT;
 ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
 
-type Props = {
-  results: DataResponse;
-  title: string;
-  xAxis: { name: string; meta?: object };
-  metric: { name: string; title: string };
-  segment: { name: string; meta?: object };
-  displayAsPercentage: boolean;
-  maxSegments: number;
-};
-
 export default (props: Props) => {
   const { results, title } = props;
 
@@ -56,15 +44,15 @@ export default (props: Props) => {
     barThickness: 'flex',
     maxBarThickness: 15,
     minBarLength: 0,
-    borderRadius: 3,
-  }
+    borderRadius: 3
+  };
 
   return (
     <Container className="overflow-y-hidden" title={title} results={results}>
       <Bar
         height="100%"
         options={getBarChartOptions({ ...props, stacked: true })}
-        data={getStackedChartData(props, datasetsMeta, 15)}
+        data={getStackedChartData(props, datasetsMeta, 15) as ChartData<'bar', number[], unknown>}
       />
     </Container>
   );

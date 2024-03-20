@@ -1,5 +1,7 @@
 import { ChartOptions } from 'chart.js';
+
 import format from '../util/format';
+import { Props } from './getStackedChartData';
 
 export default function getBarChartOptions({
   showLegend = false,
@@ -11,7 +13,12 @@ export default function getBarChartOptions({
   yAxisTitle = '',
   xAxisTitle = '',
   dps = undefined
-}): ChartOptions<'bar'> {
+}: Partial<Props> & {
+  stacked?: boolean;
+  stackMetrics?: boolean;
+  yAxisTitle?: string;
+  xAxisTitle?: string;
+}): ChartOptions<'bar' | 'line'> {
   return {
     responsive: true,
     maintainAspectRatio: false,
@@ -97,12 +104,12 @@ export default function getBarChartOptions({
           label: function (context) {
             let label = context.dataset.label || '';
             if (context.parsed.y !== null) {
-              label += `: ${format(context.parsed['y'], { type: 'number', dps: dps })}`;
+              label += `: ${format(`${context.parsed['y']}`, { type: 'number', dps: dps })}`;
               if (displayAsPercentage) {
                 label += '%';
               }
             }
-            return label
+            return label;
           }
         }
       },
@@ -114,7 +121,7 @@ export default function getBarChartOptions({
         formatter: (v) => {
           let val = v ? format(v, { type: 'number', dps: dps }) : null;
           if (displayAsPercentage) {
-            val += '%'
+            val += '%';
           }
           return val;
         }
