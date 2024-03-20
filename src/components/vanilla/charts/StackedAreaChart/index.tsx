@@ -1,4 +1,3 @@
-import { DataResponse, Dataset, Dimension, Measure } from '@embeddable.com/core';
 import {
   CategoryScale,
   ChartData,
@@ -15,7 +14,6 @@ import {
 } from 'chart.js';
 import 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
-import 'chartjs-adapter-moment';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React from 'react';
 import { Line } from 'react-chartjs-2';
@@ -110,11 +108,11 @@ function chartOptions(props: Props): ChartOptions<'line'> {
           round: props.granularity,
           displayFormats: {
             month: 'MMM YY',
-            day: 'DD MMM',
-            week: 'DD MMM',
-            hour: 'HH:mm DD MMM',
-            minute: 'HH:mm DD MMM',
-            second: 'HH:mm:ss DD MMM'
+            day: 'dd MMM',
+            week: 'dd MMM',
+            hour: 'HH:mm dd MMM',
+            minute: 'HH:mm dd MMM',
+            second: 'HH:mm:ss dd MMM'
           },
           unit: props.granularity
         }
