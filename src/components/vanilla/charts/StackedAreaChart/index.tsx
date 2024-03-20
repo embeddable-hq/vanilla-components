@@ -107,7 +107,7 @@ function chartOptions(props: Props): ChartOptions<'line'> {
         time: {
           round: props.granularity,
           displayFormats: {
-            month: 'MMM YY',
+            month: 'MMM yy',
             day: 'dd MMM',
             week: 'dd MMM',
             hour: 'HH:mm dd MMM',
