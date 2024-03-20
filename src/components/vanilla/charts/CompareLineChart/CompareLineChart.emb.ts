@@ -1,11 +1,4 @@
-import {
-  Dataset,
-  Dimension,
-  Granularity,
-  Measure,
-  TimeRange,
-  loadData
-} from '@embeddable.com/core';
+import { loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 import { addMilliseconds } from 'date-fns';
 
@@ -115,6 +108,9 @@ export const meta = {
 
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
+    console.log(111, inputs.timeFilter?.from);
+    console.log(222, inputs.prevTimeFilter?.from);
+
     return {
       ...inputs,
       results: loadData({
