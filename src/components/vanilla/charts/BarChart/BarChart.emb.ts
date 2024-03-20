@@ -91,6 +91,12 @@ export const meta = {
       label: 'Y-Axis Title',
       category: 'Chart settings'
     },
+    {
+      name: 'dps',
+      type: 'number',
+      label: 'Decimal Places',
+      category: 'Formatting'
+    }
   ]
 } as const satisfies EmbeddedComponentMeta;
 
@@ -102,10 +108,12 @@ export default defineComponent(Component, meta, {
         from: inputs.ds,
         dimensions: [inputs.xAxis],
         measures: inputs.metrics,
-        orderBy: inputs.sortBy && [{
-          property: inputs.sortBy, 
-          direction: inputs.sortBy.nativeType == 'string' ? 'asc' : 'desc'
-        }]
+        orderBy: inputs.sortBy && [
+          {
+            property: inputs.sortBy,
+            direction: inputs.sortBy.nativeType == 'string' ? 'asc' : 'desc'
+          }
+        ]
       })
     };
   }

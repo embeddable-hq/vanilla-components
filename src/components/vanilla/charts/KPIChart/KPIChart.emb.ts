@@ -47,7 +47,13 @@ export const meta = {
       label: 'Suffix',
       description: 'Suffix',
       category: 'Chart settings'
-    }
+    },
+    {
+      name: 'dps',
+      type: 'number',
+      label: 'Decimal Places',
+      category: 'Formatting'
+    },
   ]
 } as const satisfies EmbeddedComponentMeta;
 

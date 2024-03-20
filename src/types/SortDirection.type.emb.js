@@ -2,11 +2,11 @@ import { defineOption, defineType } from '@embeddable.com/core';
 
 const SortDirectionType = defineType('sortDirection', {
   label: 'Sort Direction',
-  optionLabel: (direction) => direction
+  optionLabel: (direction) => direction.value
 });
 
-defineOption(SortDirectionType, 'Ascending');
+defineOption(SortDirectionType, {value: 'Ascending'});
 
-defineOption(SortDirectionType, 'Descending');
+defineOption(SortDirectionType, {value: 'Descending'});
 
 export default SortDirectionType;

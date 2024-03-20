@@ -1,4 +1,3 @@
-import { DataResponse } from '@embeddable.com/core';
 import {
   BarElement,
   CategoryScale,
@@ -15,9 +14,9 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
-import format from '../../../util/format';
+import { EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import getBarChartOptions from '../../../util/getBarChartOptions';
+import getStackedChartData, { Props } from '../../../util/getStackedChartData';
 import Container from '../../Container';
 
 ChartJS.register(
@@ -37,124 +36,24 @@ ChartJS.defaults.color = LIGHT_FONT;
 ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
 
-type Props = {
-  results: DataResponse;
-  title: string;
-  xAxis: { name: string; meta?: object };
-  metric: { name: string; title: string };
-  segment: { name: string; meta?: object };
-  displayAsPercentage: boolean;
-  maxSegments: number;
-};
-
 export default (props: Props) => {
   const { results, title } = props;
+
+  const datasetsMeta = {
+    barPercentage: 0.6,
+    barThickness: 'flex',
+    maxBarThickness: 15,
+    minBarLength: 0,
+    borderRadius: 3
+  };
 
   return (
     <Container className="overflow-y-hidden" title={title} results={results}>
       <Bar
         height="100%"
         options={getBarChartOptions({ ...props, stacked: true })}
-        data={chartData(props)}
+        data={getStackedChartData(props, datasetsMeta, 15) as ChartData<'bar', number[], unknown>}
       />
     </Container>
   );
 };
-
-function chartData(props: Props): ChartData<'bar'> {
-  const { results, xAxis, metric, segment, maxSegments, displayAsPercentage } = props;
-  const labels = [...new Set(results?.data?.map((d: Record) => d[xAxis?.name || '']))] as string[];
-  const segments = segmentsToInclude();
-  const resultMap = {};
-
-  // Populate a reference object like so:
-  // {
-  //   label1: {
-  //     segment1: metric,
-  //     segment2: metric, etc
-  //   }
-  // }
-
-  labels.forEach((label) => {
-    const labelRef = {};
-
-    segments.forEach((s) => (labelRef[s] = null)); // Default is null not 0, to avoid unwanted chart elements
-
-    resultMap[label] = labelRef;
-  });
-
-  results?.data?.forEach((d) => {
-    const seg = d[segment?.name || ''];
-    const axis = d[xAxis?.name || ''];
-    const met = d[metric?.name || ''];
-
-    if (segments.includes(seg)) {
-      resultMap[axis][seg] = parseInt(met);
-    } else {
-      resultMap[axis]['Other'] = (resultMap[axis]['Other'] || 0) + parseInt(met);
-    }
-  });
-
-  return {
-    labels: labels.map((l) => format(l, { truncate: 15, meta: xAxis?.meta })),
-    datasets: segments.map((s, i) => ({
-      barPercentage: 0.6,
-      barThickness: 'flex',
-      maxBarThickness: 15,
-      minBarLength: 0,
-      borderRadius: 3,
-      label: s,
-      data: labels.map((label) => {
-        const segmentValue = resultMap[label][s];
-        return displayAsPercentage && segmentValue !== null //skip null values
-          ? parseFloat(
-              (
-                (segmentValue * 100) /
-                segments.reduce(
-                  (accumulator, segment) => resultMap[label][segment] + accumulator,
-                  0
-                )
-              ).toFixed(2)
-            )
-          : segmentValue;
-      }),
-      backgroundColor: COLORS[i % COLORS.length]
-    }))
-  };
-
-  type Record = { [p: string]: string };
-
-  function segmentsToInclude(): string[] {
-    const uniqueSegments = [
-      ...new Set(results?.data?.map((d: Record) => d[segment?.name || ''] || 'No value'))
-    ] as string[];
-
-    if (!maxSegments || uniqueSegments.length <= maxSegments || maxSegments < 1) {
-      return uniqueSegments;
-    }
-
-    // Reduce to maxSegments, comprising the segments with the highest total and an 'Other' segment merging the longtail segments.
-    const segmentTotals = {};
-
-    results?.data?.forEach(
-      (d) =>
-        (segmentTotals[d[segment?.name || '']] =
-          (segmentTotals[d[segment?.name || '']] || 0) + parseInt(d[metric?.name || '']))
-    );
-
-    const summedSegments = Object.keys(segmentTotals)
-      .map((item) => {
-        return {
-          name: item,
-          value: segmentTotals[item]
-        };
-      })
-      .sort((a, b) => b.value - a.value);
-
-    const segmentsToInclude = summedSegments.slice(0, maxSegments).map((s) => s.name);
-
-    segmentsToInclude.push('Other');
-
-    return segmentsToInclude;
-  }
-}

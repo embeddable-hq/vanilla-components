@@ -1,5 +1,8 @@
 import { ChartOptions } from 'chart.js';
 
+import format from '../util/format';
+import { Props } from './getStackedChartData';
+
 export default function getBarChartOptions({
   showLegend = false,
   showLabels = false,
@@ -8,8 +11,14 @@ export default function getBarChartOptions({
   stackMetrics = false,
   displayAsPercentage = false,
   yAxisTitle = '',
-  xAxisTitle = ''
-}): ChartOptions<'bar'> {
+  xAxisTitle = '',
+  dps = undefined
+}: Partial<Props> & {
+  stacked?: boolean;
+  stackMetrics?: boolean;
+  yAxisTitle?: string;
+  xAxisTitle?: string;
+}): ChartOptions<'bar' | 'line'> {
   return {
     responsive: true,
     maintainAspectRatio: false,
@@ -29,9 +38,9 @@ export default function getBarChartOptions({
         grid: {
           display: false
         },
-        max: displayAsPercentage ? 100 : undefined,
+        max: displayAsPercentage && !displayHorizontally ? 100 : undefined,
         ticks: {
-          precision: 0,
+          // precision: 0,
           //https://www.chartjs.org/docs/latest/axes/labelling.html
           callback: function (value) {
             if (displayAsPercentage && !displayHorizontally) {
@@ -55,6 +64,7 @@ export default function getBarChartOptions({
         grid: {
           display: false
         },
+        max: displayAsPercentage && displayHorizontally ? 100 : undefined,
         ticks: {
           //https://www.chartjs.org/docs/latest/axes/labelling.html
           callback: function (value) {
@@ -94,7 +104,7 @@ export default function getBarChartOptions({
           label: function (context) {
             let label = context.dataset.label || '';
             if (context.parsed.y !== null) {
-              label += `: ${context.parsed[displayHorizontally ? 'x' : 'y']}`;
+              label += `: ${format(`${context.parsed['y']}`, { type: 'number', dps: dps })}`;
               if (displayAsPercentage) {
                 label += '%';
               }
@@ -107,7 +117,14 @@ export default function getBarChartOptions({
         //https://chartjs-plugin-datalabels.netlify.app/guide/
         anchor: stacked || stackMetrics ? 'center' : 'end',
         align: stacked || stackMetrics ? 'center' : 'end',
-        display: showLabels ? 'auto' : false
+        display: showLabels ? 'auto' : false,
+        formatter: (v) => {
+          let val = v ? format(v, { type: 'number', dps: dps }) : null;
+          if (displayAsPercentage) {
+            val += '%';
+          }
+          return val;
+        }
       }
     }
   };

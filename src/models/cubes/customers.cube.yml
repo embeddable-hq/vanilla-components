@@ -33,10 +33,15 @@ cubes:
       #   sql: CONCAT(first_name, ' ', last_name)
       #   type: string
 
+
     measures:
       - name: count
         type: count
         title: '# of customers'
+
+      - name: test_float
+        sql: "10.0 / {count}"
+        type: number
 
     joins:
       - name: orders # the name of the data model to join to (not the table)

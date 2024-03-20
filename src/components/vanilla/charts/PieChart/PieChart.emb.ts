@@ -59,7 +59,13 @@ export const meta = {
       label: 'Show Labels',
       defaultValue: false,
       category: 'Chart settings'
-    }
+    },
+    {
+      name: 'dps',
+      type: 'number',
+      label: 'Decimal Places',
+      category: 'Formatting'
+    },
   ]
 } as const satisfies EmbeddedComponentMeta;
 
