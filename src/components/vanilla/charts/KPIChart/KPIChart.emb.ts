@@ -72,6 +72,12 @@ export const meta = {
       label: 'Previous Time Filter',
       description: 'Date range',
       category: 'Chart settings'
+    },
+    {
+      name: 'dps',
+      type: 'number',
+      label: 'Decimal Places',
+      category: 'Formatting'
     }
   ]
 } as const satisfies EmbeddedComponentMeta;

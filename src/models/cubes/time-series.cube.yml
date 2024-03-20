@@ -1,7 +1,10 @@
 cubes:
   - name: time_series
     title: Time series
-    sql_table: public.time_series 
+    sql: SELECT time_series.id, time_series.day, time_series.number, CASE WHEN time_series.number > 6 THEN 'orange' WHEN COALESCE(time_series.number, 0) % 2 = 0 THEN 'big' ELSE 'small' END AS color FROM public.time_series
+
+    # sql: SELECT time_series.id,time_series.day,time_series.number, CASE WHEN (((COALESCE((time_series.number), 0)) % (2)) = 0) THEN (('big')) ELSE (('small')) END AS color FROM public.time_series
+
 
     dimensions:
       - name: id
@@ -16,6 +19,10 @@ cubes:
       - name: number
         sql: number
         type: number
+
+      - name: color
+        sql: color
+        type: string
 
     measures:
       - name: count

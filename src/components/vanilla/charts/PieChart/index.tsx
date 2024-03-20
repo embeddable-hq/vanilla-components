@@ -40,6 +40,7 @@ ChartJS.defaults.plugins.tooltip.usePointStyle = true;
 type Props = {
   results: DataResponse;
   title: string;
+  dps?: number;
   slice: { name: string; meta: object };
   metric: { name: string; title: string };
   showLabels: boolean;
@@ -76,6 +77,25 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
         borderRadius: 8,
         font: {
           weight: 'normal'
+        },
+        formatter: (v) => {
+          const val = v ? format(v, { type: 'number', dps: props.dps }) : null;
+          return val;
+        }
+      },
+      tooltip: {
+        //https://www.chartjs.org/docs/latest/configuration/tooltip.html
+        callbacks: {
+          label: function (context) {
+            let label = context.dataset.label || '';
+            if (context.parsed !== null) {
+              label += `: ${format(`${context.parsed || ''}`, {
+                type: 'number',
+                dps: props.dps
+              })}`;
+            }
+            return label;
+          }
         }
       },
       legend: {
@@ -115,7 +135,10 @@ function chartData(props: Props) {
   const labels = newData?.map((d) => format(d[slice.name], { truncate: 15, meta: slice?.meta }));
 
   // Chart.js pie expects counts like so: [23, 10, 5]
-  const counts = newData?.map((d: Record) => d[metric.name]);
+  const counts = newData?.map((d: Record) => format(d[metric.name]), {
+    type: 'number',
+    dps: props.dps
+  });
 
   return {
     labels,

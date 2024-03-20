@@ -1,11 +1,11 @@
-import { Dataset, Dimension, Measure, loadData } from '@embeddable.com/core';
+import { loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
 
 export const meta = {
-  name: 'StackedBarChart',
-  label: 'Chart: Stacked Bar',
+  name: 'StackedAreaChart',
+  label: 'Chart: Stacked Area',
   classNames: ['inside-card'],
   inputs: [
     {
@@ -26,8 +26,15 @@ export const meta = {
       type: 'dimension',
       label: 'X-Axis',
       config: {
-        dataset: 'ds'
+        dataset: 'ds',
+        supportedTypes: ['time']
       },
+      category: 'Configure chart'
+    },
+    {
+      name: 'granularity',
+      type: 'granularity',
+      label: 'Granularity',
       category: 'Configure chart'
     },
     {
@@ -70,13 +77,6 @@ export const meta = {
       category: 'Chart settings'
     },
     {
-      name: 'displayHorizontally',
-      type: 'boolean',
-      label: 'Display Horizontally',
-      defaultValue: false,
-      category: 'Chart settings'
-    },
-    {
       name: 'displayAsPercentage',
       type: 'boolean',
       label: 'Display as Percentages',
@@ -84,11 +84,17 @@ export const meta = {
       category: 'Chart settings'
     },
     {
+      name: 'yAxisMin',
+      type: 'number',
+      label: 'Y-Axis minimum value',
+      category: 'Chart settings'
+    },
+    {
       name: 'dps',
       type: 'number',
       label: 'Decimal Places',
       category: 'Formatting'
-    },
+    }
   ]
 } as const satisfies EmbeddedComponentMeta;
 
@@ -98,7 +104,13 @@ export default defineComponent(Component, meta, {
       ...inputs,
       results: loadData({
         from: inputs.ds,
-        dimensions: [inputs.xAxis, inputs.segment],
+        timeDimensions: [
+          {
+            dimension: inputs.xAxis?.name,
+            granularity: inputs.granularity
+          }
+        ],
+        dimensions: [inputs.segment],
         measures: [inputs.metric]
       })
     };

@@ -1,15 +1,13 @@
-import { Dimension, Measure } from '@embeddable.com/core';
-import { DataResponse } from '@embeddable.com/react';
+import { DataResponse, Dimension, Measure } from '@embeddable.com/core';
 import { scaleLinear } from 'd3-scale';
 import React, { useMemo, useRef } from 'react';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 
 import format from '../../../util/format';
 import Container from '../../Container';
-import { Inputs } from './MapChart.emb';
 import geography from './geography.json';
 
-type Props = Inputs & {
+type Props = {
   title?: string;
   db: DataResponse;
   segments?: Dimension;
