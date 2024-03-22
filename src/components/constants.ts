@@ -13,7 +13,7 @@ export const LIGHT_FONT = '#333942';
 
 //general chart colors
 export const COLORS = [
-  '#2859C5',
+  '#2859C5', 
   '#F58D02',
   '#964FD2',
   '#FF6B6C',
