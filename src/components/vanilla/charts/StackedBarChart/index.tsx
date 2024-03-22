@@ -52,7 +52,7 @@ export default (props: Props) => {
       <Bar
         height="100%"
         options={getBarChartOptions({ ...props, stacked: true })}
-        data={getStackedChartData(props, datasetsMeta, 15) as ChartData<'bar', number[], unknown>}
+        data={getStackedChartData(props, datasetsMeta, { truncateDefault: 15 }) as ChartData<'bar', number[], unknown>}
       />
     </Container>
   );

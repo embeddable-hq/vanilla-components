@@ -56,7 +56,7 @@ export default (props: Props) => {
       <Line
         height="100%"
         options={chartOptions(props)}
-        data={getStackedChartData(props, datasetsMeta) as ChartData<'line', number[], unknown>}
+        data={getStackedChartData(props, datasetsMeta, { chartType: 'stackedAreaChart' }) as ChartData<'line', number[], unknown>}
       />
     </Container>
   );

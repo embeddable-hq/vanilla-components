@@ -119,7 +119,8 @@ export default function getBarChartOptions({
         align: stacked || stackMetrics ? 'center' : 'end',
         display: showLabels ? 'auto' : false,
         formatter: (v) => {
-          let val = v ? format(v, { type: 'number', dps: dps }) : null;
+          if (v === null) return null;
+          let val = format(v, { type: 'number', dps: dps });
           if (displayAsPercentage) {
             val += '%';
           }

@@ -27,10 +27,17 @@ export type Props = {
   granularity?: Granularity;
 };
 
+type Options = {
+  truncateDefault?: number,
+  chartType?: string
+}
+
 export default function getStackedChartData(
   props: Props,
   datasetsMeta: DatasetsMeta,
-  truncateDefault?: number
+  options: Options,
+  // truncateDefault?: number,
+  // chartType: 'string'
 ): ChartData<'line' | 'bar', number[], unknown> {
   const { results, xAxis, metric, segment, maxSegments, displayAsPercentage } = props;
   const labels = [...new Set(results?.data?.map((d: Record) => d[xAxis?.name || '']))] as string[];
@@ -45,10 +52,12 @@ export default function getStackedChartData(
   //   }
   // }
 
+  const defaultSegmentValue = options.chartType === 'stackedAreaChart' ? 0 : null; // Default is null not 0, to avoid unwanted chart elements
+
   labels.forEach((label) => {
     const labelRef = {};
 
-    segments.forEach((s) => (labelRef[s] = null)); // Default is null not 0, to avoid unwanted chart elements
+    segments.forEach((s) => (labelRef[s] = defaultSegmentValue)); 
 
     resultMap[label] = labelRef;
   });
@@ -66,7 +75,7 @@ export default function getStackedChartData(
   });
 
   return {
-    labels: labels.map((l) => format(l, { truncate: truncateDefault, meta: xAxis?.meta })),
+    labels: labels.map((l) => format(l, { truncate: options.truncateDefault, meta: xAxis?.meta })),
     datasets: segments.map((s, i) => {
       const dataset = {
         ...datasetsMeta,
