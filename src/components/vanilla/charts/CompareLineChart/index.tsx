@@ -187,7 +187,7 @@ function chartData(props: Props): ChartData<'line'> {
 
     const seqDate = addTime[granularity](parseJSON(lastDate), 1);
 
-    if (parseJSON(thisDate).valueOf() === seqDate.valueOf()) return [...memo, record];
+    if (parseJSON(thisDate).valueOf() <= seqDate.valueOf()) return [...memo, record];
 
     memo.push({ [props.xAxis?.name || '']: seqDate.toJSON() });
 

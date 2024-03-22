@@ -108,9 +108,6 @@ export const meta = {
 
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
-    console.log(111, inputs.timeFilter?.from);
-    console.log(222, inputs.prevTimeFilter?.from);
-
     return {
       ...inputs,
       results: loadData({
