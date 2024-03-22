@@ -24,13 +24,36 @@ import {
 import 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { format, parseJSON } from 'date-fns';
+import {
+  add,
+  addDays,
+  addHours,
+  addMinutes,
+  addMonths,
+  addQuarters,
+  addSeconds,
+  addWeeks,
+  addYears,
+  format,
+  parseJSON
+} from 'date-fns';
 import React, { useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import { timeRangeToLocal } from '../../../hooks/useTimezone';
 import Container from '../../Container';
+
+const addTime: { [granularity: string]: (date: Date | number, amount: number) => Date } = {
+  second: addSeconds,
+  minute: addMinutes,
+  hour: addHours,
+  day: addDays,
+  week: addWeeks,
+  month: addMonths,
+  quarter: addQuarters,
+  year: addYears
+};
 
 ChartJS.register(
   CategoryScale,
@@ -97,14 +120,18 @@ export default (props: Props) => {
 };
 
 function chartData(props: Props): ChartData<'line'> {
-  const { results, prevResults, metrics, applyFill } = props;
+  const { results, prevResults, metrics, applyFill, granularity } = props;
+
+  const data = results?.data?.reduce(fillGaps, []);
+
+  const prevData = prevResults?.data?.reduce(fillGaps, []);
 
   const lines: ChartDataset<'line', DefaultDataPoint<'line'>>[] =
     metrics?.map((yAxis, i) => ({
       xAxisID: 'period',
       label: yAxis.title,
       data:
-        results?.data?.map((d: Record) => ({
+        data?.map((d: Record) => ({
           y: parseFloat(d[yAxis.name] || '0'),
           x: parseJSON(d[props.xAxis?.name || '']).valueOf()
         })) || [],
@@ -125,7 +152,7 @@ function chartData(props: Props): ChartData<'line'> {
         xAxisID: 'comparison',
         label: `Previous ${metrics[i].title}`,
         data: !!props.prevTimeFilter?.from
-          ? prevResults?.data?.map((d: Record) => ({
+          ? prevData?.map((d: Record) => ({
               y: parseFloat(d[metrics[i].name] || '0'),
               x: parseJSON(d[props.xAxis?.name || '']).valueOf()
             })) || []
@@ -146,6 +173,26 @@ function chartData(props: Props): ChartData<'line'> {
   return {
     datasets
   };
+
+  function fillGaps(memo: Record[], record: Record) {
+    const last = memo[memo.length - 1];
+
+    if (!last) return [...memo, record];
+
+    const lastDate = last[props.xAxis?.name || ''];
+
+    const thisDate = record[props.xAxis?.name || ''];
+
+    if (!lastDate || !thisDate) return [...memo, record];
+
+    const seqDate = addTime[granularity](parseJSON(lastDate), 1);
+
+    if (parseJSON(thisDate).valueOf() === seqDate.valueOf()) return [...memo, record];
+
+    memo.push({ [props.xAxis?.name || '']: seqDate.toJSON() });
+
+    return fillGaps(memo, record);
+  }
 }
 
 // Convert hex to rgb and add opacity. Used when a color-fill is applied beneath the chart line(s).
