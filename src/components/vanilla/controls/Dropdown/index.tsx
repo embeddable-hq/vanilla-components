@@ -11,8 +11,6 @@ import React, {
 } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-
-
 import Container from '../../Container';
 import Spinner from '../../Spinner';
 import { ChevronDown, ClearIcon } from '../../icons';
@@ -26,7 +24,7 @@ export type Props = {
   onChange: (v: string) => void;
   searchProperty?: string;
   property?: { name: string; title: string; nativeType: string; __type__: string };
-  title: string;
+  title?: string;
   defaultValue?: string;
   placeholder?: string;
   ds?: { embeddableId: string; datasetId: string; variableValues: Record };
