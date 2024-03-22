@@ -162,7 +162,7 @@ export default (props: Props) => {
       }
 
       // Previous period
-      const days = Math.abs(differenceInCalendarDays(period.from, period.to)) + 1;
+      const days = Math.abs(differenceInCalendarDays(period.from, period.to));
 
       props.onChangeComparison({
         relativeTimeString: '',
