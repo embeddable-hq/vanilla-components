@@ -55,6 +55,10 @@ cubes:
     - name: tour_name
       type: string
       sql: tour_name
+    
+    - name: paid_tour
+      type: string
+      sql: paid_tour
  
   measures:
     - name: total_events
@@ -93,13 +97,19 @@ cubes:
       title: "In-App Conv Rate"
       type: number
       sql: CASE WHEN {tour_view} = 0 THEN 0 ELSE ROUND(({in_app_purchases} / NULLIF({tour_view}, 0) * 100), 2) END
+      meta:
+        suffix: " %"
     
     - name: in_app_revenue
       title: "In-App Revenue"
       type: sum
       sql: in_app_revenue
+      meta:
+        suffix: " $"
     
     - name: inapp_aov
       title: "In-App Avg Order Value"
       type: number
       sql: CASE WHEN {in_app_purchases} = 0 THEN 0 ELSE ({in_app_revenue} / {in_app_purchases}) END
+      meta:
+        suffix: " $"

@@ -116,20 +116,27 @@ cubes:
       title: "Add to Cart %"
       type: number
       sql: CASE WHEN {item_view} = 0 THEN 0 ELSE ROUND(({add_to_cart} / NULLIF({item_view}, 0) * 100), 2) END
-      #sql: "ROUND({add_to_cart} / {item_view}, 2)"
+      meta:
+        suffix: " %"
 
     - name: cart_to_checkout
       title: "Checkout %"
       type: number
       sql: CASE WHEN {add_to_cart} = 0 THEN 0 ELSE ROUND(({begin_checkout} / NULLIF({add_to_cart}, 0) * 100), 2) END
+      meta:
+        suffix: " %"
 
     - name: checkout_to_purchase
       title: "Purchase %"
       type: number
       sql: CASE WHEN {begin_checkout} = 0 THEN 0 ELSE ROUND(({purchase} / NULLIF({begin_checkout}, 0) * 100), 2) END
+      meta:
+        suffix: " %"
 
     - name: ecommerce_conv_rate
       title: "Ecomm Conv Rate"
       type: number
       sql: CASE WHEN {item_view} = 0 THEN 0 ELSE ROUND(({purchase} / NULLIF({item_view}, 0) * 100), 2) END
+      meta:
+        suffix: " %"
       

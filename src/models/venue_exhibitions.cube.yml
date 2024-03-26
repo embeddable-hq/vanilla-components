@@ -101,3 +101,5 @@ cubes:
       title: Exhibition CTR
       type: number
       sql: "ROUND(({exhibition_click} / {exhibition_view} * 100), 2)"
+      meta:
+        suffix: " %"
