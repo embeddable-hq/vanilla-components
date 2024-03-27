@@ -11,6 +11,8 @@ import React, {
 } from 'react';
 import { twMerge } from 'tailwind-merge';
 
+import checkbox from '../../../icons/checkbox.svg';
+import checkboxEmpty from '../../../icons/checkbox_empty.svg';
 import Container from '../../Container';
 import Spinner from '../../Spinner';
 import { ChevronDown, ClearIcon } from '../../icons';
@@ -103,14 +105,17 @@ export default (props: Props) => {
           <div
             key={i}
             onClick={() => {
-              setFocus(false);
               setTriggerBlur(false);
               set(o[props.property?.name || ''] || '');
             }}
-            className={`flex items-center min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
+            className={`flex items-center min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal gap-1 ${
               value?.includes(o[props.property?.name || '']) ? 'bg-black/5' : ''
             } whitespace-nowrap overflow-hidden text-ellipsis`}
           >
+            <img
+              src={value?.includes(o[props.property?.name || '']) ? checkbox : checkboxEmpty}
+              alt=""
+            />
             {o[props.property?.name || '']}
             {o.note && (
               <span className="font-normal ml-auto pl-3 text-xs opacity-70">{o.note}</span>
@@ -150,12 +155,14 @@ export default (props: Props) => {
               focus ? 'hidden' : ''
             }`}
           >
-            {value.join(', ')}
+            Selected {value.length} {value.length === 1 ? 'option' : 'options'}
           </span>
         )}
 
         {focus && (
           <div
+            tabIndex={0}
+            onBlur={() => setFocus(false)}
             style={{ minWidth: props.minDropdownWidth }}
             className="flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[#DADCE1] w-full overflow-y-auto overflow-x-hidden max-h-[400px]"
           >
