@@ -45,11 +45,8 @@ export default (props: Props) => {
     [props.searchProperty || 'search']: ''
   }) as [Record, (f: (m: Record) => Record) => void];
 
-  console.log('default value', props.defaultValue);
-
   useEffect(() => {
     setValue(props.defaultValue);
-    console.log('setting default value >>>', props.defaultValue);
   }, [props.defaultValue]);
 
   const performSearch = useCallback(
@@ -79,8 +76,6 @@ export default (props: Props) => {
           newValues = [...newValues, newValue];
         }
       }
-
-      console.log('setting new values >>>>', newValues);
 
       props.onChange(newValues);
       setValue(newValues);
@@ -130,7 +125,6 @@ export default (props: Props) => {
 
   return (
     <Container title={props.title}>
-      asdalskdlkasndklans askdjbaskjdbaksjbda
       <div
         className={twMerge(
           'relative rounded-xl w-full min-w-[50px] h-10 border border-[#DADCE1] flex items-center',
