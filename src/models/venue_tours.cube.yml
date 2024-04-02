@@ -5,6 +5,9 @@ cubes:
     SELECT *
     FROM `smartify-cc94e.report_venue.venue_tourtrack_table`
     WHERE organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+    {% if  COMPILE_CONTEXT.securityContext.venue_id is not none %}
+      and venue_sid = '{COMPILE_CONTEXT.securityContext.venue_id}'
+    {% endif %}
 
   dimensions:
     - name: date

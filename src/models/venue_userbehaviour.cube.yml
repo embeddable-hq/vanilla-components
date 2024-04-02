@@ -25,6 +25,9 @@ cubes:
     from `smartify-cc94e.report_venue.venue_overall_table` as a
     where a.partition_date >= "2023-01-01"
     and organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+    {% if  COMPILE_CONTEXT.securityContext.venue_id is not none %}
+      and venue_sid = '{COMPILE_CONTEXT.securityContext.venue_id}'
+    {% endif %}
 
     union all
     select
@@ -50,6 +53,9 @@ cubes:
     from `smartify-cc94e.report_venue.venue_object_table` as b 
     where b.partition_date >= "2023-01-01"
     and organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+    {% if  COMPILE_CONTEXT.securityContext.venue_id is not none %}
+      and venue_sid = '{COMPILE_CONTEXT.securityContext.venue_id}'
+    {% endif %}
 
     union all
     select
@@ -75,6 +81,9 @@ cubes:
     from `smartify-cc94e.report_venue.venue_tourtrack_table` as c
     where c.partition_date >= "2023-01-01"
     and organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+    {% if  COMPILE_CONTEXT.securityContext.venue_id is not none %}
+      and venue_sid = '{COMPILE_CONTEXT.securityContext.venue_id}'
+    {% endif %}
 
   dimensions:
     - name: date

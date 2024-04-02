@@ -13,6 +13,7 @@
 - name: Smithsonian User
   securityContext:
     organisation_id: org_smithsonian
+    venue_id: venue_saam
 
 - name: Louvre User
   securityContext:

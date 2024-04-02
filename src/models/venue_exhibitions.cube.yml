@@ -5,6 +5,9 @@ cubes:
     SELECT *
     FROM `smartify-cc94e.report_venue.venue_exhibition_table`
     WHERE organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+    {% if  COMPILE_CONTEXT.securityContext.venue_id is not none %}
+      and venue_sid = '{COMPILE_CONTEXT.securityContext.venue_id}'
+    {% endif %}
 
   dimensions:
     - name: date
@@ -50,6 +53,14 @@ cubes:
     - name: exhibition_start_date
       type: string
       sql: exhibition_start_date
+    
+    - name: exh_start_date
+      type: time
+      sql: timestamp(exhibition_start_date)
+    
+    - name: exh_end_date
+      type: time
+      sql: timestamp(exhibition_end_date)
     
     - name: exhibition_end_date
       type: string

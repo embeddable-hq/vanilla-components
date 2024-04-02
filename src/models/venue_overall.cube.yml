@@ -2,9 +2,13 @@ cubes:
 - name: venue_overall
   #sql_table: smartify-cc94e.report_venue.venue_overall_table
   sql: >
-    SELECT *
-    FROM `smartify-cc94e.report_venue.venue_overall_table`
-    WHERE (organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}' or venue_sid = '{COMPILE_CONTEXT.securityContext.venue_id}')
+    SELECT a.*, b.language_name
+    FROM `smartify-cc94e.report_venue.venue_overall_table` as a
+    left join `smartify-cc94e.smartify_lookup_tables.device_language_region` as b on a.device_language = b.device_language
+    WHERE organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+    {% if  COMPILE_CONTEXT.securityContext.venue_id is not none %}
+      and venue_sid = '{COMPILE_CONTEXT.securityContext.venue_id}'
+    {% endif %}
 
   dimensions:
     - name: date
@@ -25,6 +29,9 @@ cubes:
     - name: device_language
       type: string
       sql: device_language
+    - name: language_name
+      type: string
+      sql: language_name
     - name: venue_id
       type: string
       sql: venue_sid
