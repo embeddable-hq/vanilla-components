@@ -8,5 +8,5 @@ export default defineConfig({
   // pushBaseUrl: 'https://api.dev.embeddable.com',
   // audienceUrl: 'https://api.dev.embeddable.com/',
   // authDomain: 'embeddable-dev.eu.auth0.com',
-  // authClientId: 'xOKco5ztFCpWn54bJbFkAcT8mV4LLcpG'
+  // authClientId: 'xOKco5ztFCpWn54bJbFkAcT8mV4LLcpG',
 });
