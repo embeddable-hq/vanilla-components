@@ -84,6 +84,7 @@ export default (props: Props) => {
       setServerSearch((s) => ({ ...s, [props.searchProperty || 'search']: '' }));
       clearTimeout(debounce);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [performSearch, props, value]
   );
 
