@@ -5,7 +5,7 @@ import Component, { Props } from './index';
 
 export const meta = {
   name: 'MultiSelectDropdown',
-  label: 'Control: MultiSelectDropdown',
+  label: 'Control: Multi-Select Dropdown',
   defaultWidth: 300,
   defaultHeight: 80,
   classNames: ['on-top'],
@@ -61,7 +61,7 @@ export const meta = {
   ],
   variables: [
     {
-      name: 'dropdown choice',
+      name: 'dropdown choices',
       type: 'string',
       defaultValue: Value.noFilter(),
       array: true,
@@ -101,7 +101,7 @@ export default defineComponent<Props, typeof meta, { search: string }>(Component
   events: {
     onChange: (value) => {
       return {
-        value: value || Value.noFilter()
+        value: value.length ? value : Value.noFilter()
       };
     }
   }
