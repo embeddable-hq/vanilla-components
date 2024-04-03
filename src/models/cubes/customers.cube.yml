@@ -3,7 +3,8 @@ cubes:
     title: My customers
     sql_table: public.customers
 
-    # sql: select *
+    # sql: >
+    #   select *
     #   from public.customers
     #   where country = '{COMPILE_CONTEXT.securityContext.country}'
 
