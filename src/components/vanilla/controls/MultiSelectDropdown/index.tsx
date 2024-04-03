@@ -18,11 +18,9 @@ import Spinner from '../../Spinner';
 import { ChevronDown, ClearIcon } from '../../icons';
 
 export type Props = {
-  icon?: ReactNode;
   className?: string;
   options: DataResponse;
   unclearable?: boolean;
-  inputClassName?: string;
   onChange: (v: string[]) => void;
   searchProperty?: string;
   minDropdownWidth?: number;
