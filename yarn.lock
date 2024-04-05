@@ -344,22 +344,22 @@
     "@cubejs-backend/shared" "0.33.20"
     source-map-support "^0.5.21"
 
-"@embeddable.com/core@*", "@embeddable.com/core@^2.5.2":
-  version "2.5.2"
-  resolved "https://registry.npmjs.org/@embeddable.com/core/-/core-2.5.2.tgz"
-  integrity sha512-tahw9InuJNX7gDwBNKSGOd9b38TkWb9av7eCfHcn3o9Q8AJV2KxAjPZD3jNLVlyEhW0VkYZYCI9OjtUm9Vw4yw==
+"@embeddable.com/core@*", "@embeddable.com/core@^2.5.4":
+  version "2.5.4"
+  resolved "https://registry.npmjs.org/@embeddable.com/core/-/core-2.5.4.tgz"
+  integrity sha512-sEV1yZ1KTYSw7IlzC3UuooMzPdUpE16FkzUzgtngscPZJGrhI16DOI0MONiyV77dt8MRaJj/tf2Pqw+RVuMZmg==
 
-"@embeddable.com/react@*", "@embeddable.com/react@^2.5.2":
-  version "2.5.2"
-  resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.5.2.tgz"
-  integrity sha512-VIEplg6c87p6I2YvZc+YapLcElyyI2EkH24Yz0X9kV6/iqUcHNQhaL75zQawr0QzXtByiooT8MTrL4Chw48Tmg==
+"@embeddable.com/react@*", "@embeddable.com/react@^2.5.4":
+  version "2.5.4"
+  resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.5.4.tgz"
+  integrity sha512-IZeeE7z9NSiL4Vo/wGWrsIhwpbLKKq3zittNf3m7oq5XkzliUzRIoLHgNBw0Qx8l5CQZ2i+8GG7yvBxNBOtKWQ==
   dependencies:
     "@embeddable.com/core" "*"
 
-"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@^2.5.2":
-  version "2.5.2"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-2.5.2.tgz"
-  integrity sha512-YtGx3/OBQpYkdI8fyAZoc++oNrh7PTfVS1/p6neXnW6rShQ66h4jwT/fb4rqV6yjsz85XXZA8y5YPh5Ucr8BMw==
+"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@^2.5.4":
+  version "2.5.4"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-2.5.4.tgz"
+  integrity sha512-UatUc88SqVYYX+J4w1L7RwRcdYN0BUmoKUWE0L7YC3UTkoA+aTBrw5GXREY8Lv8fbgTb/qzjrTqWG2pTLQOmKw==
   dependencies:
     "@embeddable.com/sdk-utils" "*"
     "@inquirer/select" "^1.3.0"
@@ -369,6 +369,7 @@
     chokidar "^3.5.3"
     finalhandler "^1.2.0"
     formdata-node "^6.0.3"
+    minimist "^1.2.8"
     open "^9.1.0"
     ora "^8.0.1"
     serve-static "^1.15.0"
@@ -377,10 +378,10 @@
     ws "^8.16.0"
     yaml "^2.3.3"
 
-"@embeddable.com/sdk-react@^2.3.2":
-  version "2.3.2"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-2.3.2.tgz"
-  integrity sha512-oPXR7u+hG5jC8Sj1PL/UMJAmnBFHwaBjr67ROOMH3kF1EKT4bT3dplX31v/TkYb0LJBxlAGFN8SdTLaanB94+w==
+"@embeddable.com/sdk-react@^2.3.4":
+  version "2.3.4"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-2.3.4.tgz"
+  integrity sha512-3jPJwNUSpvXgKM0wqCwl37oq+S3V5rANlCnU4B3kQbtC3baV3+fvcPXM1sFC0LLmCpXUo63TY6yGCNDqymWleg==
   dependencies:
     "@babel/generator" "^7.23.0"
     "@babel/parser" "^7.23.0"
@@ -3503,7 +3504,7 @@ minimatch@^9.0.1, minimatch@9.0.3:
   dependencies:
     brace-expansion "^2.0.1"
 
-minimist@^1.2.0, minimist@^1.2.6:
+minimist@^1.2.0, minimist@^1.2.6, minimist@^1.2.8:
   version "1.2.8"
   resolved "https://registry.npmjs.org/minimist/-/minimist-1.2.8.tgz"
   integrity sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==
