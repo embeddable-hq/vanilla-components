@@ -39,9 +39,6 @@
       "d3-zoom": "^3.0.0",
       "d3-interpolate": "^3.0.1",
       "d3-color": "^3.1.0"
-    },
-    "@cubejs-backend/api-gateway": {
-      "jsonwebtoken": "^9.0.0"
     }
   },
   "devDependencies": {
