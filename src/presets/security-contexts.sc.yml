@@ -13,7 +13,9 @@
 - name: Smithsonian User
   securityContext:
     organisation_id: org_smithsonian
-    venue_id: venue_saam
+    venue_id: 
+      - venue_saam
+      - venue_snpg
 
 - name: Louvre User
   securityContext:
