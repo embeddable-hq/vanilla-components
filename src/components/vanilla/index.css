@@ -6,6 +6,11 @@
   -webkit-font-smoothing: antialiased;
 }
 
+h1 {
+  font-size: 2.25rem; /* Equivalent to Tailwind's text-4xl; adjust as needed */
+  font-weight: bold; /* Makes the text bold */
+}
+
 :host(.on-top) {
   z-index: 1;
 }
@@ -23,6 +28,11 @@
   color: var(--rdp-selected-color);
   opacity: 1;
   background-color: var(--rdp-accent-color) !important;
+}
+
+.logo-container img {
+  max-width: 500px; /* Adjust based on your logo's size */
+  height: auto;
 }
 
 ::-webkit-scrollbar {
