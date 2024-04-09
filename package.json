@@ -34,6 +34,13 @@
     "tailwind-merge": "^2.2.1",
     "vite-plugin-css-injected-by-js": "^3.1.1"
   },
+  "overrides": {
+    "react-simple-maps": {
+      "d3-zoom": "^3.0.0",
+      "d3-interpolate": "^3.0.1",
+      "d3-color": "^3.1.0"
+    }
+  },
   "devDependencies": {
     "@embeddable.com/core": "^2.5.5",
     "@embeddable.com/react": "^2.5.5",
