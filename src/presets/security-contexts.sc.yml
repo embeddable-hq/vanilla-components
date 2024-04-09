@@ -15,6 +15,7 @@
 - name: Tower Bridge User
   securityContext:
     organisation_id: org_towerbridge
+    venue_id:
 
 - name: Smithsonian User
   securityContext:
