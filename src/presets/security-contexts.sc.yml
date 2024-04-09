@@ -1,10 +1,16 @@
 - name: Belvedere User
   securityContext:
     organisation_id: org_belvedere
-    
+    venue_id:
+      - venue_belvedere
+      - venue_belvlower
+      - venue_belv21
+
 - name: National Gallery User
   securityContext:
     organisation_id: org_ng
+    venue_id:
+      - venue_ng
 
 - name: Tower Bridge User
   securityContext:
@@ -20,3 +26,5 @@
 - name: Louvre User
   securityContext:
     organisation_id: org_louvre
+    venue_id:
+      - venue_louvre
