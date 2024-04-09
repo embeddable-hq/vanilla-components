@@ -1,9 +1,9 @@
 cubes:
-- name: venue_objects
- # sql_table: smartify-cc94e.report_venue.venue_object_table
+- name: venue_tours
+  #sql_table: smartify-cc94e.report_venue.venue_tourtrack_table
   sql: >
     SELECT *
-    FROM `smartify-cc94e.report_venue.venue_object_table`
+    FROM `smartify-cc94e.report_venue.venue_listen_time_table`
     WHERE organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
     {% if  COMPILE_CONTEXT.securityContext.venue_id is not none %}
       and venue_sid in {{list(COMPILE_CONTEXT.securityContext.venue_id)}}
@@ -46,83 +46,76 @@ cubes:
       type: string
       sql: case when platform = "IOS" then "iOS" when platform = "ANDROID" then "Android" when (platform = "WEB" and device_category = "desktop") then "Desktop" else "Webapp" end
     
-    - name: art_sid
+    - name: tour_name
       type: string
-      sql: art_sid
+      sql: tour_name
     
-    - name: art_name
+    - name: track_name
       type: string
-      sql: art_name
-      title: "Name"
+      sql: track_name
     
-    - name: art_category
+    - name: track_audio_language
       type: string
-      title: "Category"
-      sql: art_category
-    
-    - name: artist_sid
-      type: string
-      sql: artist_sid
-    
-    - name: artist_name
-      type: string
-      title: "Artist or Maker"
-      sql: artist_name
+      sql: track_audio_language
     
   measures:
     - name: total_events
       type: count
-      title: "Total Events"
+      title: Total Events
     
     - name: users
       sql: user_pseudo_id
       type: count_distinct
-      title: "Total Users"
+      title: Total Users
     
     - name: onsite_users
+      title: Onsite Users
       type: count_distinct
       sql: case when venue_sid = nearby_venue_id then user_pseudo_id else null end
     
     - name: registered_users
+      title: Registered Users
       type: count_distinct
       sql: user_id
     
-    - name: object_view
+    - name: tour_view
+      title: Tour View
       type: sum
-      sql: object_view
+      sql: tour_view
     
-    - name: object_scan
+    - name: track_play
+      title: Track Play
       type: sum
-      title: "Scans"
-      sql: object_scan      
+      sql: track_play      
     
-    - name: object_favorite
+    - name: track_complete
+      title: Track Complete
       type: sum
-      sql: object_favorite
+      sql: track_complete
     
-    - name: object_view_users
+    - name: tour_view_users
+      title: Tour View Users
       type: count_distinct
-      sql: case when object_view > 0 then user_pseudo_id else null end
+      sql: case when tour_view > 0 then user_pseudo_id else null end
     
-    - name: object_scan_users
+    - name: track_play_users
+      title: Track Play Users
       type: count_distinct
-      sql: case when object_scan > 0 then user_pseudo_id else null end
+      sql: case when track_play > 0 then user_pseudo_id else null end
     
-    - name: object_favorite_users
+    - name: track_complete_users
+      title: Track Complete Users
       type: count_distinct
-      sql: case when object_favorite > 0 then user_pseudo_id else null end
-
-    - name: object_view_per_user
-      title: "Object View per User"
+      sql: case when track_complete > 0 then user_pseudo_id else null end
+    
+    - name: track_completion_rate
+      title: Track Completion Rate
       type: number
-      sql: "ROUND({object_view} / {object_view_users}, 2)"
+      sql: CASE WHEN {track_play} = 0 THEN 0 ELSE ROUND(({track_complete} / NULLIF({track_play}, 0) * 100), 2) END
+      meta:
+        suffix: " %"
 
-    - name: object_scan_per_user
-      title: "Object Scan per User"
-      type: number
-      sql: "ROUND({object_scan} / {object_scan_users}, 2)"
-
-    - name: object_favorite_per_user
-      title: "Object Favorite per User"
-      type: number
-      sql: "ROUND({object_favorite} / {object_favorite_users}, 2)"
+    - name: track_listen_time
+      title: Track Listen Time
+      type: sum
+      sql: track_listen_time
