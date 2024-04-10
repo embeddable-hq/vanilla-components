@@ -1,15 +1,11 @@
-import {
-  Dimension,
-  Measure,
-  OrderBy,
-  isDimension,
-  isMeasure,
-  loadData
-} from '@embeddable.com/core';
+import { Dimension, Measure, OrderBy, isDimension, isMeasure, loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
-import SortDirectionType from '../../../../types/SortDirection.type.emb.js';
+
+
+import SortDirectionType from '../../../../types/SortDirection.type.emb';
 import Component, { Props } from './index';
+
 
 export const meta = {
   name: 'TableChart',
