@@ -29,15 +29,20 @@ export default (props: Props) => {
     const interval = setInterval(() => {
       const elem = ref.current?.parentElement?.parentElement;
       const heightWithoutHead = (elem?.clientHeight || 72) - 72;
-      const maxRowsFit = Math.floor(heightWithoutHead / 44);
+      const newMaxRowsFit = Math.floor(heightWithoutHead / 44);
 
-      if (maxRowsFit === val) return;
+      if (
+        (maxRowsFit === newMaxRowsFit && newMaxRowsFit === val) ||
+        props.tableData.data?.length === 0
+      ) {
+        return;
+      }
 
-      setMaxRowFit((val = maxRowsFit));
+      setMaxRowFit((val = newMaxRowsFit));
     }, 100);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [maxRowsFit, props.tableData]);
 
   const [meta, setMeta] = useEmbeddableState({
     page: 0,
