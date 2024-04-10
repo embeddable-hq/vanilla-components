@@ -1,5 +1,5 @@
 cubes:
-- name: venue_tours
+- name: venue_tours_time
   #sql_table: smartify-cc94e.report_venue.venue_tourtrack_table
   sql: >
     SELECT *
@@ -117,5 +117,5 @@ cubes:
 
     - name: track_listen_time
       title: Track Listen Time
-      type: sum
-      sql: track_listen_time
+      type: number
+      sql: round(sum(track_listen_time)/1000,0)
