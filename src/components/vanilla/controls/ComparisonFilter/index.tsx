@@ -74,9 +74,7 @@ export default (props: Props) => {
     return () => clearInterval(interval);
   }, []);
 
-  const granularityOptions: DataResponse = useMemo(() => {
-    return calculateGranularityOptions(period);
-  }, [period]);
+  const granularityOptions = calculateGranularityOptions(period);
 
   const comparisonOptions: DataResponse = useMemo(() => {
     if (!period?.from || !period?.to) {
