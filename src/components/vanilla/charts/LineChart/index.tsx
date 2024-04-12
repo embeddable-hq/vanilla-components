@@ -74,7 +74,7 @@ export default (props: Props) => {
           label: yAxis.title,
           data:
             data?.map((d: Record) => ({
-              y: parseFloat(d[yAxis.name]),
+              y: parseFloat(d[yAxis.name] || '0'),
               x: parseTime(d[props.xAxis?.name || '']) 
             })) || [],
           backgroundColor: applyFill
@@ -168,7 +168,7 @@ export default (props: Props) => {
             label: function (context) {
               let label = context.dataset.label || '';
               if (context.parsed.y !== null) {
-                label += `: ${formatValue(`${context.parsed['y'] || ''}`, {
+                label += `: ${formatValue(`${context.parsed['y']}`, {
                   type: 'number',
                   dps: props.dps
                 })}`;

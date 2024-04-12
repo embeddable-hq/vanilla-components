@@ -24,8 +24,9 @@ export default function formatValue(str: string = '', opt: Type | Options = 'str
   const { type, dateFormat, meta, truncate, dps }: Options =
     typeof opt === 'string' ? { type: opt } : opt;
 
-  str = str || '';
-
+  
+  str = str || str === 0 ? str : '';
+  
   if (type === 'number') return wrap(numberFormatter(dps).format(parseFloat(str)));
 
   if (type === 'date' && str.endsWith('T00:00:00.000')) {
