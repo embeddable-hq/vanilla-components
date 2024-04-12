@@ -1,4 +1,4 @@
-import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser';
+import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser.js';
 import { DataResponse, Dimension, Granularity, TimeRange } from '@embeddable.com/core';
 import {
   differenceInCalendarDays,
