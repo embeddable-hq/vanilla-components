@@ -35,12 +35,21 @@
     "tailwind-merge": "^2.2.1",
     "vite-plugin-css-injected-by-js": "^3.1.1"
   },
+  "overrides": {
+    "react-simple-maps": {
+      "d3-zoom": "^3.0.0",
+      "d3-interpolate": "^3.0.1",
+      "d3-color": "^3.1.0"
+    }
+  },
   "devDependencies": {
-    "@embeddable.com/core": "^2.5.4",
-    "@embeddable.com/react": "^2.5.4",
-    "@embeddable.com/sdk-core": "^2.5.4",
-    "@embeddable.com/sdk-react": "^2.3.4",  
+
+    "@embeddable.com/core": "^2.5.5",
+    "@embeddable.com/react": "^2.5.5",
+    "@embeddable.com/sdk-core": "3.0.1",
+    "@embeddable.com/sdk-react": "3.0.0",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/d3-scale": "^4.0.8",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^4.0.0",

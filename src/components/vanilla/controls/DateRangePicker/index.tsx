@@ -1,9 +1,8 @@
-import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser';
+import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser.js';
 import { endOfDay, getYear } from 'date-fns';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-
 import formatValue from '../../../util/format';
 import Container from '../../Container';
 import { CalendarIcon, ChevronLeft, ChevronRight } from '../../icons';

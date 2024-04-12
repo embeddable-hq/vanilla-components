@@ -1,7 +1,7 @@
 import { DataResponse, Dimension, Measure } from '@embeddable.com/core';
 import { scaleLinear } from 'd3-scale';
-import React, { useMemo, useRef } from 'react';
-import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { ComposableMapProps, GeographiesProps, GeographyProps } from 'react-simple-maps';
 
 import formatValue from '../../../util/format';
 import Container from '../../Container';
@@ -22,8 +22,18 @@ const highColor = '#146EF5';
 const hoverColor = '#0957cb';
 
 export default (props: Props) => {
+  const [mapComponents, setMapComponents] = useState({});
   const box = useRef<HTMLDivElement | null>(null);
   const tooltip = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    // Dynamically import 'react-simple-maps' components
+    const loadMapComponents = async () => {
+      const { ComposableMap, Geographies, Geography } = await import('react-simple-maps');
+      setMapComponents({ ComposableMap, Geographies, Geography });
+    };
+    loadMapComponents();
+  }, []);
 
   const [data, maxMetric] = useMemo((): [{ [segment: string]: number }, number] => {
     let maxMetric = 0;
@@ -47,8 +57,16 @@ export default (props: Props) => {
   }, [props]);
 
   const colorScale = useMemo(() => {
-    return scaleLinear().domain([0, maxMetric]).range([lowColor, highColor]);
+    return scaleLinear<string>().domain([0, maxMetric]).range([lowColor, highColor]);
   }, [maxMetric]);
+
+  if (!mapComponents) return <div>Loading map...</div>;
+
+  const { ComposableMap, Geographies, Geography } = mapComponents as {
+    ComposableMap: React.ComponentType<ComposableMapProps>;
+    Geographies: React.ComponentType<GeographiesProps>;
+    Geography: React.ComponentType<GeographyProps>;
+  };
 
   return (
     <Container className="overflow-y-hidden" title={props.title} results={props.db}>

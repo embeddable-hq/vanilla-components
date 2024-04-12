@@ -2,8 +2,8 @@ import { defineConfig } from '@embeddable.com/sdk-core';
 import react from '@embeddable.com/sdk-react';
 
 export default defineConfig({
-  plugins: [react],
-  
+  plugins: [react]
+
   // previewBaseUrl: 'https://app.dev.embeddable.com',
   // pushBaseUrl: 'https://api.dev.embeddable.com',
   // audienceUrl: 'https://api.dev.embeddable.com/',
