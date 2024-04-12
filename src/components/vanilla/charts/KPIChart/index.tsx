@@ -22,16 +22,12 @@ export default (props: Props) => {
 
     if (!props.metric?.name) return { percentage: null };
 
-    const n = props.value.data[0][props.metric?.name];
+    const n = parseFloat(props.value.data[0][props.metric?.name]);
 
-    const num = parseFloat(n);
-
-    if (n !== `${num}`) return { n, percentage: null };
-
-    const prev = props.prevValue?.data?.[0]?.[props.metric?.name];
+    const prev = parseFloat(props.prevValue?.data?.[0]?.[props.metric?.name]);
 
     return {
-      percentage: prev ? Math.round((num / parseFloat(prev)) * 100) - 100 : null,
+      percentage: prev ? Math.round((n / prev) * 100) - 100 : null,
       n: formatValue(n, {
         type: 'number',
         meta: props.metric?.meta,
