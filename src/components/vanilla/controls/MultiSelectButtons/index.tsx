@@ -31,11 +31,11 @@ export default (props: Props) => {
           return (
             <div
               key={i}
-              className="multiselectItem"
-              style={{ background: background, color: color }}
+              className="multiselectItem text-[#333942]"
+              style={{ background: background }}
               onClick={() => handleClick(value)}
             >
-              <div className="multiSelectInner">{value}</div>
+              <div className="multiSelectInner" style={{ color: color }}>{value}</div>
             </div>
           );
         })}

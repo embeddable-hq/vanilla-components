@@ -30,7 +30,7 @@ import { Line } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import useTimeseries from '../../../hooks/useTimeseries';
-import { timeRangeToLocal } from '../../../hooks/useTimezone';
+import { timeRangeToLocal, timeRangeToUTC, parseTime } from '../../../hooks/useTimezone';
 import Container from '../../Container';
 
 ChartJS.register(
@@ -89,7 +89,7 @@ export default (props: Props) => {
         data:
           data?.map((d: Record) => ({
             y: parseFloat(d[yAxis.name] || '0'),
-            x: parseJSON(d[props.xAxis?.name || '']).valueOf()
+            x: parseTime(d[props.xAxis?.name || ''])
           })) || [],
         backgroundColor: applyFill
           ? hexToRgb(COLORS[i % COLORS.length])
@@ -112,7 +112,7 @@ export default (props: Props) => {
           data: !!props.prevTimeFilter?.from
             ? prevData?.map((d: Record) => ({
                 y: parseFloat(d[metrics[i].name] || '0'),
-                x: parseJSON(d[props.xAxis?.name || '']).valueOf()
+                x: parseTime(d[props.xAxis?.name || '']) 
               })) || []
             : [],
           backgroundColor: applyFill ? hexToRgb(COLORS[i % COLORS.length], 0.05) : c,
@@ -178,6 +178,7 @@ export default (props: Props) => {
           type: 'time',
           time: {
             round: props.granularity,
+            isoWeekday: true,
             displayFormats: {
               month: 'MMM',
               day: 'd MMM',
@@ -203,6 +204,7 @@ export default (props: Props) => {
           type: 'time',
           time: {
             round: props.granularity,
+            isoWeekday: true,
             displayFormats: {
               month: 'MMM',
               day: 'd MMM',

@@ -1,7 +1,14 @@
 import { TimeRange } from '@embeddable.com/core';
 import { addMinutes, subMinutes } from 'date-fns';
+import {
+  parseJSON
+} from 'date-fns';
 
-const offset = new Date().getTimezoneOffset();
+export function parseTime(dateStr: string): number {
+  const d: Date = parseJSON(dateStr);
+  return d.valueOf() + d.getTimezoneOffset() * 60000;
+}
+
 
 export function timeRangeToUTC(range?: TimeRange) {
   if (!range?.to || !range?.from) return range;
@@ -26,23 +33,23 @@ export function timeRangeToLocal(range?: TimeRange) {
 export function toUTC(date: string | Date): Date | undefined {
   if (!date) return undefined;
 
-  if (date instanceof Date) return subMinutes(date, offset);
+  if (date instanceof Date) return subMinutes(date, date.getTimezoneOffset());
 
   const t = new Date(date);
 
   if (!t) return undefined;
 
-  return subMinutes(t, offset);
+  return subMinutes(t, date.getTimezoneOffset());
 }
 
 export function toLocal(date: string | Date): Date | undefined {
   if (!date) return undefined;
 
-  if (date instanceof Date) return addMinutes(date, offset);
+  if (date instanceof Date) return addMinutes(date, date.getTimezoneOffset());
 
   const t = new Date(date);
 
   if (!t) return undefined;
 
-  return addMinutes(t, offset);
+  return addMinutes(t, date.getTimezoneOffset());
 }

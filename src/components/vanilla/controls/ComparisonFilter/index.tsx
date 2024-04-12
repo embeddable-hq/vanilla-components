@@ -162,7 +162,8 @@ export default (props: Props) => {
       }
 
       // Previous period
-      const days = Math.abs(differenceInCalendarDays(period.from, period.to));
+
+      const days = Math.abs(differenceInCalendarDays(period.from, period.to)) + 1;
 
       props.onChangeComparison({
         relativeTimeString: '',
@@ -179,31 +180,25 @@ export default (props: Props) => {
     if (compareOption) changeComparisonOption(compareOption);
   }, [compareOption, recalcComparison, changeComparisonOption]);
 
+  //ensure the default period is set correctly on first load
   useEffect(() => {
     if (!props.defaultPeriod) return;
-
     if (
       !props.defaultPeriod?.from &&
       !props.defaultPeriod?.to &&
       props.defaultPeriod?.relativeTimeString
     ) {
       const [from, to] = dateParser(props.defaultPeriod?.relativeTimeString, '');
-
       if (!from || !to) return;
-
       props.defaultPeriod.from = new Date(from);
-
       props.defaultPeriod.to = new Date(to);
-
       setPeriod(props.defaultPeriod);
-
       props.onChangePeriod(props.defaultPeriod as TimeRange);
-
       return;
     }
-
     setPeriod(props.defaultPeriod);
-  }, [props.defaultPeriod]);
+  }, []);
+
 
   return (
     <Container title={props.title}>

@@ -13,6 +13,7 @@ const ranges = [
   'Today',
   'Yesterday',
   'This week',
+  'Last week',
   'Last 7 days',
   'This month',
   'Last 30 days',

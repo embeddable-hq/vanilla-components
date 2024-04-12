@@ -11,6 +11,7 @@ import {
   parseJSON
 } from 'date-fns';
 import { useCallback } from 'react';
+import { parseTime } from './useTimezone'
 
 type Record = { [p: string]: string };
 
@@ -40,9 +41,9 @@ export default ({ xAxis, granularity }: { xAxis?: Dimension; granularity?: Granu
 
       const seqDate = addTime[granularity || 'day'](parseJSON(lastDate), 1);
 
-      if (parseJSON(thisDate).valueOf() <= seqDate.valueOf()) return [...memo, record];
+      if (parseTime(thisDate) <= seqDate.valueOf()) return [...memo, record];
 
-      memo.push({ [xAxis?.name || '']: seqDate.toJSON() });
+      memo.push({ [xAxis?.name || '']: seqDate.toISOString().split('Z')[0] });
 
       return fillGaps(memo, record);
     },

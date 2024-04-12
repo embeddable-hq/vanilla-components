@@ -3,7 +3,7 @@ import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/
 import { endOfDay, startOfDay } from 'date-fns';
 
 import TimeComparisonType from '../../../../types/TimeComparison.type.emb.js';
-import { timeRangeToUTC } from '../../../hooks/useTimezone.js';
+import { timeRangeToUTC, timeRangeToLocal } from '../../../hooks/useTimezone.js';
 import Component from './index';
 
 export const meta = {
@@ -116,7 +116,11 @@ export default defineComponent(Component, meta, {
       return { value: value };
     },
     onChangeComparison: (v) => {
-      return { value: v || Value.noFilter() };
+      if (!v) return { value: Value.noFilter() };
+
+      const value = timeRangeToUTC({ ...v, from: startOfDay(v.from), to: endOfDay(v.to) });
+
+      return { value: value };
     },
     onChangeGranularity: (value) => {
       return { value: value || Value.noFilter() };

@@ -112,6 +112,7 @@ export default defineComponent(Component, meta, {
       ...inputs,
       results: loadData({
         from: inputs.ds,
+        limit: 500,
         timeDimensions: [
           {
             dimension: inputs.xAxis?.name,
@@ -127,7 +128,7 @@ export default defineComponent(Component, meta, {
                   operator: 'inDateRange',
                   value: {
                     from: inputs.timeFilter.from,
-                    to: addMilliseconds(inputs.timeFilter.to, 1),
+                    to: inputs.timeFilter.to,
                     relativeTimeString: ''
                   }
                 }
@@ -142,7 +143,7 @@ export default defineComponent(Component, meta, {
             granularity: inputs.granularity
           }
         ],
-        limit: !inputs.prevTimeFilter?.from ? 1 : undefined,
+        limit: !inputs.prevTimeFilter?.from ? 1 : 500,
         measures: inputs.metrics,
         filters:
           inputs.prevTimeFilter?.from && inputs.xAxis

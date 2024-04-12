@@ -18,7 +18,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { parseJSON } from 'date-fns';
 import React, { useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
-
+import { parseTime } from '../../../hooks/useTimezone';
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import useTimeseries from '../../../hooks/useTimeseries';
 import format from '../../../util/format';
@@ -75,7 +75,7 @@ export default (props: Props) => {
           data:
             data?.map((d: Record) => ({
               y: parseFloat(d[yAxis.name]),
-              x: parseJSON(d[props.xAxis?.name || '']).valueOf()
+              x: parseTime(d[props.xAxis?.name || '']) 
             })) || [],
           backgroundColor: applyFill
             ? hexToRgb(COLORS[i % COLORS.length], 0.2)
@@ -158,8 +158,7 @@ export default (props: Props) => {
           align: 'top',
           display: props.showLabels ? 'auto' : false,
           formatter: (v) => {
-            let val = v ? format(v, { type: 'number', dps: props.dps }) : null;
-
+            const val = v ? format(v, { type: 'number', dps: props.dps }) : null;
             return val;
           }
         },
