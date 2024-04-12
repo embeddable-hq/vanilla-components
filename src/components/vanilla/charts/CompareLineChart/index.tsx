@@ -237,7 +237,7 @@ export default (props: Props) => {
           align: 'top',
           display: props.showLabels ? 'auto' : false,
           formatter: (v) => {
-            const val = formatValue(v.y, { type: 'number', dps: props.dps }); //: null;
+            const val = v ? formatValue(v.y, { type: 'number', dps: props.dps }) : null;
             return val;
           }
         }
