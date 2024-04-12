@@ -81,6 +81,9 @@ export default (props: Props) => {
             ? hexToRgb(COLORS[i % COLORS.length], 0.2)
             : COLORS[i % COLORS.length],
           borderColor: COLORS[i % COLORS.length],
+          pointRadius: 0,
+          tension: 0.1,
+          pointHoverRadius: 3,
           fill: applyFill,
           cubicInterpolationMode: 'monotone' as const
         })) || []

@@ -95,6 +95,9 @@ export default (props: Props) => {
           ? hexToRgb(COLORS[i % COLORS.length])
           : COLORS[i % COLORS.length],
         borderColor: COLORS[i % COLORS.length],
+        pointRadius: 0,
+        tension: 0.1,
+        pointHoverRadius: 3,
         fill: applyFill,
         cubicInterpolationMode: 'monotone' as const
       })) || [];
@@ -117,7 +120,9 @@ export default (props: Props) => {
             : [],
           backgroundColor: applyFill ? hexToRgb(COLORS[i % COLORS.length], 0.05) : c,
           borderColor: c,
-          pointRadius: !!props.prevTimeFilter?.from ? undefined : 0,
+          pointRadius: 0,
+          tension: 0.1,
+          pointHoverRadius: 3,
           fill: applyFill && !!props.prevTimeFilter?.from,
           segment: {
             borderDash: [10, 5]
