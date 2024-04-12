@@ -1,7 +1,7 @@
 import { DataResponse, TimeRange } from '@embeddable.com/core';
 import React, { useMemo } from 'react';
 
-import format from '../../../util/format';
+import formatValue from '../../../util/format';
 import Container from '../../Container';
 import { WarningIcon } from '../../icons';
 
@@ -32,7 +32,7 @@ export default (props: Props) => {
 
     return {
       percentage: prev ? Math.round((num / parseFloat(prev)) * 100) - 100 : null,
-      n: format(n, {
+      n: formatValue(n, {
         type: 'number',
         meta: props.metric?.meta,
         dps: props.dps
@@ -63,7 +63,7 @@ export default (props: Props) => {
                   percentage < 0 ? 'rotate-180' : ''
                 } h-[20px] w-[9px] min-w-[9px] mr-1.5`}
               />
-              {percentage === Infinity ? '∞' : format(`${Math.abs(percentage)}`, 'number')}%
+              {percentage === Infinity ? '∞' : formatValue(`${Math.abs(percentage)}`, 'number')}%
             </span>
           )}
           {props.prefix}

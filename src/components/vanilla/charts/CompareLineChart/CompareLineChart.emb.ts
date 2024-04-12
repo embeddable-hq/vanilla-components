@@ -102,7 +102,13 @@ export const meta = {
       label: 'Show Legend',
       category: 'Chart settings',
       defaultValue: true
-    }
+    },
+    {
+      name: 'dps',
+      type: 'number',
+      label: 'Decimal Places',
+      category: 'Formatting'
+    },
   ]
 } as const satisfies EmbeddedComponentMeta;
 

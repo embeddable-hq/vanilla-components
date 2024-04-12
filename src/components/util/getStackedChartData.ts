@@ -2,7 +2,7 @@ import { DataResponse, Dataset, Dimension, Granularity, Measure } from '@embedda
 import { ChartData } from 'chart.js';
 
 import { COLORS } from '../constants';
-import format from '../util/format';
+import formatValue from '../util/format';
 
 type DatasetsMeta = {
   [key: string]: boolean | string | number;
@@ -75,7 +75,7 @@ export default function getStackedChartData(
   });
 
   return {
-    labels: labels.map((l) => format(l, { truncate: options.truncateDefault, meta: xAxis?.meta })),
+    labels: labels.map((l) => formatValue(l, { truncate: options.truncateDefault, meta: xAxis?.meta })),
     datasets: segments.map((s, i) => {
       const dataset = {
         ...datasetsMeta,

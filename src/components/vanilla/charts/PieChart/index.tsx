@@ -16,7 +16,7 @@ import React from 'react';
 import { Pie } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
-import format from '../../../util/format';
+import formatValue from '../../../util/format';
 import Container from '../../Container';
 
 ChartJS.register(
@@ -79,7 +79,7 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
           weight: 'normal'
         },
         formatter: (v) => {
-          const val = v ? format(v, { type: 'number', dps: props.dps }) : null;
+          const val = v ? formatValue(v, { type: 'number', dps: props.dps }) : null;
           return val;
         }
       },
@@ -89,7 +89,7 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
           label: function (context) {
             let label = context.dataset.label || '';
             if (context.parsed !== null) {
-              label += `: ${format(`${context.parsed || ''}`, {
+              label += `: ${formatValue(`${context.parsed || ''}`, {
                 type: 'number',
                 dps: props.dps
               })}`;
@@ -132,10 +132,10 @@ function chartData(props: Props) {
   const newData = labelsExceedMaxSegments ? mergeLongTail(props) : results.data;
 
   // Chart.js pie expects labels like so: ['US', 'UK', 'Germany']
-  const labels = newData?.map((d) => format(d[slice.name], { truncate: 15, meta: slice?.meta }));
+  const labels = newData?.map((d) => formatValue(d[slice.name], { truncate: 15, meta: slice?.meta }));
 
   // Chart.js pie expects counts like so: [23, 10, 5]
-  const counts = newData?.map((d: Record) => format(d[metric.name]), {
+  const counts = newData?.map((d: Record) => formatValue(d[metric.name]), {
     type: 'number',
     dps: props.dps
   });

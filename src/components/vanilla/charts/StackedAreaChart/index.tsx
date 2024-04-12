@@ -17,10 +17,9 @@ import 'chartjs-adapter-date-fns';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React, { useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
-
 import { EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import useTimeseries from '../../../hooks/useTimeseries';
-import format from '../../../util/format';
+import formatValue from '../../../util/format';
 import getStackedChartData, { Props } from '../../../util/getStackedChartData';
 import Container from '../../Container';
 
@@ -143,7 +142,7 @@ export default (props: Props) => {
             label: function (context) {
               let label = context.dataset.label || '';
               if (context.parsed.y !== null) {
-                label += `: ${format(`${context.parsed['y']}`, {
+                label += `: ${formatValue(`${context.parsed['y']}`, {
                   type: 'number',
                   dps: props.dps
                 })}`;
@@ -159,7 +158,7 @@ export default (props: Props) => {
           align: 'top',
           display: props.showLabels ? 'auto' : false,
           formatter: (v) => {
-            let val = v ? format(v, { type: 'number', dps: props.dps }) : null;
+            let val = v ? formatValue(v, { type: 'number', dps: props.dps }) : null;
             if (props.displayAsPercentage) {
               val += '%';
             }

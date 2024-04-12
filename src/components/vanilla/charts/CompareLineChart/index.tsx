@@ -25,9 +25,9 @@ import 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { format, parseJSON } from 'date-fns';
+import formatValue from '../../../util/format';
 import React, { useEffect, useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
-
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import useTimeseries from '../../../hooks/useTimeseries';
 import { timeRangeToLocal, timeRangeToUTC, parseTime } from '../../../hooks/useTimezone';
@@ -236,7 +236,10 @@ export default (props: Props) => {
         datalabels: {
           align: 'top',
           display: props.showLabels ? 'auto' : false,
-          formatter: (v) => v?.y
+          formatter: (v) => {
+            const val = formatValue(v.y, { type: 'number', dps: props.dps }); //: null;
+            return val;
+          }
         }
       }
     };

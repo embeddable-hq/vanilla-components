@@ -1,6 +1,6 @@
 import { ChartOptions } from 'chart.js';
 
-import format from '../util/format';
+import formatValue from '../util/format';
 import { Props } from './getStackedChartData';
 
 export default function getBarChartOptions({
@@ -104,7 +104,7 @@ export default function getBarChartOptions({
           label: function (context) {
             let label = context.dataset.label || '';
             if (context.parsed.y !== null) {
-              label += `: ${format(`${context.parsed['y']}`, { type: 'number', dps: dps })}`;
+              label += `: ${formatValue(`${context.parsed['y']}`, { type: 'number', dps: dps })}`;
               if (displayAsPercentage) {
                 label += '%';
               }
@@ -120,7 +120,7 @@ export default function getBarChartOptions({
         display: showLabels ? 'auto' : false,
         formatter: (v) => {
           if (v === null) return null;
-          let val = format(v, { type: 'number', dps: dps });
+          let val = formatValue(v, { type: 'number', dps: dps });
           if (displayAsPercentage) {
             val += '%';
           }

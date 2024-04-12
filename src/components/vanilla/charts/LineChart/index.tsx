@@ -21,7 +21,7 @@ import { Line } from 'react-chartjs-2';
 import { parseTime } from '../../../hooks/useTimezone';
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import useTimeseries from '../../../hooks/useTimeseries';
-import format from '../../../util/format';
+import formatValue from '../../../util/format';
 import hexToRgb from '../../../util/hexToRgb';
 import Container from '../../Container';
 
@@ -158,7 +158,7 @@ export default (props: Props) => {
           align: 'top',
           display: props.showLabels ? 'auto' : false,
           formatter: (v) => {
-            const val = v ? format(v, { type: 'number', dps: props.dps }) : null;
+            const val = v ? formatValue(v, { type: 'number', dps: props.dps }) : null;
             return val;
           }
         },
@@ -168,7 +168,7 @@ export default (props: Props) => {
             label: function (context) {
               let label = context.dataset.label || '';
               if (context.parsed.y !== null) {
-                label += `: ${format(`${context.parsed['y'] || ''}`, {
+                label += `: ${formatValue(`${context.parsed['y'] || ''}`, {
                   type: 'number',
                   dps: props.dps
                 })}`;

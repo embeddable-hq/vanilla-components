@@ -3,7 +3,7 @@ import { scaleLinear } from 'd3-scale';
 import React, { useMemo, useRef } from 'react';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 
-import format from '../../../util/format';
+import formatValue from '../../../util/format';
 import Container from '../../Container';
 import geography from './geography.json';
 
@@ -82,7 +82,7 @@ export default (props: Props) => {
                   return (
                     <Geography
                       onMouseEnter={() => {
-                        tooltip.current!.innerHTML = `${geo.properties.name}: ${format(
+                        tooltip.current!.innerHTML = `${geo.properties.name}: ${formatValue(
                           `${value || 0}`,
                           { type: 'number', meta: props.metric?.meta }
                         )}`;

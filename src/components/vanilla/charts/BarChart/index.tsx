@@ -16,7 +16,7 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
-import format from '../../../util/format';
+import formatValue from '../../../util/format';
 import getBarChartOptions from '../../../util/getBarChartOptions';
 import Container from '../../Container';
 
@@ -64,7 +64,7 @@ function chartData(props: Props): ChartData<'bar'> {
   const labels = [
     ...new Set(
       results?.data?.map((d: { [p: string]: string }) =>
-        format(d[xAxis?.name || ''], { truncate: 15, meta: xAxis.meta })
+        formatValue(d[xAxis?.name || ''], { truncate: 15, meta: xAxis.meta })
       )
     )
   ] as string[];

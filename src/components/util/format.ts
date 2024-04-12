@@ -20,7 +20,7 @@ function numberFormatter(dps: number | undefined | null) {
 
 const dateFormatter = new Intl.DateTimeFormat();
 
-export default function format(str: string = '', opt: Type | Options = 'string') {
+export default function formatValue(str: string = '', opt: Type | Options = 'string') {
   const { type, dateFormat, meta, truncate, dps }: Options =
     typeof opt === 'string' ? { type: opt } : opt;
 
