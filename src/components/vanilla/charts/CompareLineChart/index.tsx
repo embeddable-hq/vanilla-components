@@ -253,6 +253,7 @@ export default (props: Props) => {
   useEffect(() => {
     ChartJS.defaults.plugins.tooltip.callbacks.title = (lines: any[]) => {
       const definedFormat = {
+        quarter: 'MMM yyyy',
         month: 'MMM',
         day: 'd MMM',
         week: 'd MMM',
@@ -261,8 +262,9 @@ export default (props: Props) => {
         second: 'HH:mm:ss'
       };
 
-      return [...new Set(lines.map((line) => line?.raw?.x?.valueOf()))]
-        .map((date) => format(new Date(date), definedFormat[props.granularity]))
+      const linesList = lines.map((line) => line?.raw?.x?.valueOf());
+      const set = [...new Set(linesList)];
+      return set.map((date) => format(new Date(date), definedFormat[props.granularity]))
         .filter((v) => !!v);
     };
   }, [props.granularity]);
