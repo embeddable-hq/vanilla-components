@@ -357,7 +357,7 @@
   dependencies:
     "@embeddable.com/core" "*"
 
-"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@3.0.1":
+"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@^3.0.1":
   version "3.0.1"
   resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-3.0.1.tgz"
   integrity sha512-1/qlJ6huUI6MyvxfvSpyK32Sp0Mc4J5RpIVvLFDOE1NGk3bV10bNyoAfuJyKHGMtDlhXhs+Eoo1CfPfIcO625w==
@@ -380,10 +380,10 @@
     ws "^8.16.0"
     yaml "^2.3.3"
 
-"@embeddable.com/sdk-react@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-3.0.0.tgz"
-  integrity sha512-Ikddqb/CgjXBUQiZCz4a1HoLnHAZ3nr5ZVLbQMPA1kd9UnMCmWu/SOp13zlgq/UFC67djkq3Dud6bOHpLSxMuQ==
+"@embeddable.com/sdk-react@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-3.0.1.tgz"
+  integrity sha512-9cV+13IgF0kJNdrabnasAivnpnNrXGyd1nhhXqmLnLF0IUKh8bxr3fvKNI3GvqM3n9L+Xcp82z3VZ3AnLoIYnA==
   dependencies:
     "@babel/generator" "^7.23.0"
     "@babel/parser" "^7.23.0"
