@@ -20,9 +20,9 @@ export default (props: Props) => {
   const { n, percentage } = useMemo(() => {
     if (!props.value?.data?.length || !props.metric?.name) return { percentage: null };
 
-    const n = parseFloat(props.value.data[0][props.metric?.name]);
+    const n = parseFloat(props.value.data[0][props.metric?.name] || 0);
 
-    const prev = parseFloat(props.prevValue?.data?.[0]?.[props.metric?.name]);
+    const prev = parseFloat(props.prevValue?.data?.[0]?.[props.metric?.name] || 0);
 
     return {
       percentage: prev ? Math.round((n / prev) * 100) - 100 : null,

@@ -94,7 +94,7 @@ export default (props: Props) => {
             x: parseTime(d[props.xAxis?.name || ''])
           })) || [],
         backgroundColor: applyFill
-          ? hexToRgb(COLORS[i % COLORS.length])
+          ? hexToRgb(COLORS[i % COLORS.length], 0.2)
           : COLORS[i % COLORS.length],
         borderColor: COLORS[i % COLORS.length],
         pointRadius: 0,

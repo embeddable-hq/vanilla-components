@@ -23,7 +23,7 @@ export default (props: Props) => {
 
   return (
     <Container title={title}>
-      <div className="multiSelectContainer font-embeddable">
+      <div className="multiSelectContainer font-embeddable text-[14px]">
         {values?.map((value, i) => {
           const background = selected.includes(value) ? '#6778DE' : '#f1f1f1';
           const color = selected.includes(value) ? 'white' : 'inherit';
