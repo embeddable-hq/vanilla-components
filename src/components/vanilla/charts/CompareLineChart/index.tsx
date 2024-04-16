@@ -26,12 +26,14 @@ import 'chartjs-adapter-date-fns';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { format, parseJSON } from 'date-fns';
 import formatValue from '../../../util/format';
+import formatDateTooltips from '../../../util/formatDateTooltips'
 import React, { useEffect, useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
-import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
+import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE, DATE_DISPLAY_FORMATS } from '../../../constants';
 import useTimeseries from '../../../hooks/useTimeseries';
-import { timeRangeToLocal, timeRangeToUTC, parseTime } from '../../../hooks/useTimezone';
+import { timeRangeToLocal, parseTime } from '../../../hooks/useTimezone';
 import Container from '../../Container';
+import hexToRgb from '../../../util/hexToRgb';
 
 ChartJS.register(
   CategoryScale,
@@ -184,14 +186,7 @@ export default (props: Props) => {
           time: {
             round: props.granularity,
             isoWeekday: true,
-            displayFormats: {
-              month: 'MMM',
-              day: 'd MMM',
-              week: 'd MMM',
-              hour: 'eee HH:mm',
-              minute: 'eee HH:mm',
-              second: 'HH:mm:ss'
-            },
+            displayFormats: DATE_DISPLAY_FORMATS,
             unit: props.granularity
           },
           title: {
@@ -210,14 +205,7 @@ export default (props: Props) => {
           time: {
             round: props.granularity,
             isoWeekday: true,
-            displayFormats: {
-              month: 'MMM',
-              day: 'd MMM',
-              week: 'd MMM',
-              hour: 'eee HH:mm',
-              minute: 'eee HH:mm',
-              second: 'HH:mm:ss'
-            },
+            displayFormats: DATE_DISPLAY_FORMATS,
             unit: props.granularity
           },
           title: {
@@ -236,7 +224,12 @@ export default (props: Props) => {
           labels: {
             usePointStyle: true,
             boxHeight: 8
-          }
+          },          
+        },
+        tooltip: {
+          callbacks: {
+            title: (lines: any[]) => formatDateTooltips(lines, props.granularity)
+          },
         },
         datalabels: {
           align: 'top',
@@ -250,39 +243,9 @@ export default (props: Props) => {
     };
   }, [props]);
 
-  useEffect(() => {
-    ChartJS.defaults.plugins.tooltip.callbacks.title = (lines: any[]) => {
-      const definedFormat = {
-        quarter: 'MMM yyyy',
-        month: 'MMM',
-        day: 'd MMM',
-        week: 'd MMM',
-        hour: 'eee HH:mm',
-        minute: 'eee HH:mm',
-        second: 'HH:mm:ss'
-      };
-
-      const linesList = lines.map((line) => line?.raw?.x?.valueOf());
-      const set = [...new Set(linesList)];
-      return set.map((date) => format(new Date(date), definedFormat[props.granularity]))
-        .filter((v) => !!v);
-    };
-  }, [props.granularity]);
-
   return (
     <Container className="overflow-y-hidden" title={props.title} results={props.results}>
       <Line height="100%" options={chartOptions} data={chartData} />
     </Container>
   );
 };
-
-// Convert hex to rgb and add opacity. Used when a color-fill is applied beneath the chart line(s).
-function hexToRgb(hex: string, alpha?: number): string {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-
-  return result
-    ? `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}, ${
-        alpha || `0.3`
-      })`
-    : '';
-}

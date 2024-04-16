@@ -17,9 +17,10 @@ import 'chartjs-adapter-date-fns';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React, { useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
-import { EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
+import { EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE, DATE_DISPLAY_FORMATS } from '../../../constants';
 import useTimeseries from '../../../hooks/useTimeseries';
 import formatValue from '../../../util/format';
+import formatDateTooltips from '../../../util/formatDateTooltips'
 import getStackedChartData, { Props } from '../../../util/getStackedChartData';
 import Container from '../../Container';
 
@@ -90,7 +91,6 @@ export default (props: Props) => {
             display: false
           },
           ticks: {
-            // precision: 0,
             callback: function (value) {
               return props.displayAsPercentage ? `${value}%` : value;
             }
@@ -111,14 +111,7 @@ export default (props: Props) => {
           type: 'time',
           time: {
             round: props.granularity,
-            displayFormats: {
-              month: 'MMM yy',
-              day: 'dd MMM',
-              week: 'dd MMM',
-              hour: 'HH:mm dd MMM',
-              minute: 'HH:mm dd MMM',
-              second: 'HH:mm:ss dd MMM'
-            },
+            displayFormats: DATE_DISPLAY_FORMATS,
             unit: props.granularity
           }
         }
@@ -151,7 +144,8 @@ export default (props: Props) => {
                 }
               }
               return label;
-            }
+            },
+            title: (lines: any[]) => formatDateTooltips(lines, props.granularity)
           }
         },
         datalabels: {

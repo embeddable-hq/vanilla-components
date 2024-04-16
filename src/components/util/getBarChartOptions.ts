@@ -40,7 +40,6 @@ export default function getBarChartOptions({
         },
         max: displayAsPercentage && !displayHorizontally ? 100 : undefined,
         ticks: {
-          // precision: 0,
           //https://www.chartjs.org/docs/latest/axes/labelling.html
           callback: function (value) {
             if (displayAsPercentage && !displayHorizontally) {

@@ -18,9 +18,7 @@ type Props = {
 
 export default (props: Props) => {
   const { n, percentage } = useMemo(() => {
-    if (!props.value?.data?.length) return { percentage: null };
-
-    if (!props.metric?.name) return { percentage: null };
+    if (!props.value?.data?.length || !props.metric?.name) return { percentage: null };
 
     const n = parseFloat(props.value.data[0][props.metric?.name]);
 

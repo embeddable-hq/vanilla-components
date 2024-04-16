@@ -23,28 +23,6 @@ const valueProp: Dimension = {
   title: 'Value'
 };
 
-const minDuration = {
-  second: 2,
-  minute: 120,
-  hour: 7200,
-  day: 172800,
-  week: 1209600,
-  month: 5257000,
-  quarter: 15770000,
-  year: 63083930
-};
-
-const maxDuration = {
-  second: 90000,
-  minute: 60000,
-  hour: 604800, // 7 days
-  day: 86400000,
-  week: 604800000,
-  month: 2628500000,
-  quarter: 7885000000,
-  year: 31541965000
-};
-
 export type Props = {
   title?: string;
   defaultPeriod?: TimeRange;
@@ -74,7 +52,7 @@ export default (props: Props) => {
     return () => clearInterval(interval);
   }, []);
 
-  const granularityOptions = calculateGranularityOptions(period);
+  const granularityOptions = getValidGranularities(period);
 
   const comparisonOptions: DataResponse = useMemo(() => {
     if (!period?.from || !period?.to) {
@@ -212,23 +190,9 @@ export default (props: Props) => {
 
               setRecalcComparison(true);
 
-              const options = calculateGranularityOptions(period as TimeRange);
-
-              if (options?.data?.find((record) => record?.value === granularity)) return;
-
-              const days = Math.abs(
-                differenceInCalendarDays(period?.from || new Date(), period?.to || new Date())
-              );
-
-              let g: Granularity = 'hour';
-              if (days > 168) g = 'month';
-              else if (days > 59) g = 'week';
-              else if (days > 2) g = 'day';
-
+              const g = getValidGranularities(period as TimeRange).recommended.value
               if (granularity === g) return;
-
               setGranularity(g);
-
               props.onChangeGranularity(g);
             }}
           />
@@ -269,21 +233,50 @@ export default (props: Props) => {
   );
 };
 
-function calculateGranularityOptions(period?: TimeRange): DataResponse {
+function toSeconds (unit: string, n: number): number {
+  const unitsInSeconds = {
+      minute: 60,
+      hour: 3600,
+      day: 86400,
+      week: 604800,
+      month: 2629800,  // Roughly 30.44 days
+      quarter: 7889400,  // Roughly 91.31 days
+      year: 31557600  // Based on a typical Gregorian year
+  };
+  return n * unitsInSeconds[unit];
+}
+
+function getValidGranularities(period?: TimeRange): DataResponse {
   const data: { value: Granularity }[] = [];
-  const granularities = Object.keys(minDuration);
-  const difference = differenceInSeconds(period?.to || new Date(), period?.from || new Date());
+
+  
+  //period boundaries for valid granularity options
+  const gSettings = {
+    second: { min: 2, max: 100 },
+    minute: { min: toSeconds('minute', 2), max: toSeconds('minute', 100) },
+    hour: { min: toSeconds('hour', 2), max: toSeconds('hour', 100) },
+    day: { min: toSeconds('day', 0.5), max: toSeconds('day', 168) },
+    week: { min: toSeconds('week', 2), max: toSeconds('week', 365) },
+    month: { min: toSeconds('month', 2), max: toSeconds('month', 730) },
+    quarter: { min: toSeconds('quarter', 2), max: toSeconds('quarter', 36) },
+    year: { min: toSeconds('year', 1.5), max: toSeconds('year', 1000) }
+  }
+
+  const granularities = Object.keys(gSettings);
+  const diff = differenceInSeconds(period?.to || new Date(), period?.from || new Date());
 
   granularities.forEach((value) => {
-    if (minDuration[value] > difference) return;
-
-    if (maxDuration[value] < difference) return;
-
+    const { min, max } = gSettings[value];
+    if (diff < min || diff > max) return;
     data.push({ value: value as Granularity });
   });
 
+  let recommendedG = { value: 'day' };
+  if (data.length >= 2) recommendedG = data[data.length - 2]; //set the recommended granularity option as the penultimate valid option.
+
   return {
     isLoading: false,
-    data
+    data,
+    recommended: recommendedG
   };
 }

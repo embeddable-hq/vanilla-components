@@ -26,3 +26,14 @@ export const COLORS = [
   '#D7D7E5',
   '#FFD37A'
 ];
+
+export const DATE_DISPLAY_FORMATS = {
+  year: 'yyyy',
+  quarter: 'MMM yy',
+  month: 'MMM yy',
+  day: 'd MMM',
+  week: 'd MMM',
+  hour: 'eee HH:mm',
+  minute: 'eee HH:mm',
+  second: 'HH:mm:ss'
+}

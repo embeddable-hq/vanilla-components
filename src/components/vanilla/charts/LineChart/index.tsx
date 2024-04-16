@@ -19,9 +19,10 @@ import { parseJSON } from 'date-fns';
 import React, { useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
 import { parseTime } from '../../../hooks/useTimezone';
-import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
+import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE, DATE_DISPLAY_FORMATS } from '../../../constants';
 import useTimeseries from '../../../hooks/useTimeseries';
 import formatValue from '../../../util/format';
+import formatDateTooltips from '../../../util/formatDateTooltips'
 import hexToRgb from '../../../util/hexToRgb';
 import Container from '../../Container';
 
@@ -132,14 +133,7 @@ export default (props: Props) => {
           type: 'time',
           time: {
             round: props.granularity,
-            displayFormats: {
-              month: 'MMM',
-              day: 'd MMM',
-              week: 'd MMM',
-              hour: 'HH:mm',
-              minute: 'HH:mm',
-              second: 'HH:mm:ss'
-            },
+            displayFormats: DATE_DISPLAY_FORMATS,
             unit: props.granularity
           }
         }
@@ -177,7 +171,8 @@ export default (props: Props) => {
                 })}`;
               }
               return label;
-            }
+            },
+            title: (lines: any[]) => formatDateTooltips(lines, props.granularity)
           }
         }
       }
