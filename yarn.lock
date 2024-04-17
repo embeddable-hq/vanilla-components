@@ -357,10 +357,17 @@
   dependencies:
     "@embeddable.com/core" "*"
 
+<<<<<<< HEAD
 "@embeddable.com/sdk-core@3.2.0-next.0":
   version "3.2.0-next.0"
   resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-3.2.0-next.0.tgz"
   integrity sha512-2XY1FFgxIGSlDApf+CtlNZb4YABQd/0Mq+7kPy6/2Kp1NXWuBrmSt1HNNbB8kh6IfTKooemPPVi5irRzNtifLw==
+=======
+"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@3.1.1":
+  version "3.1.1"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-3.1.1.tgz"
+  integrity sha512-ZYQ98+wo+LQF9FH5lko9HIFbMLSCVpClYtCivzQ8QssUNicl+zJNe/PJW9br50bnu2vefV4Bu/cI/f/w6nCgWg==
+>>>>>>> main
   dependencies:
     "@embeddable.com/sdk-utils" "*"
     "@inquirer/select" "^1.3.0"
@@ -380,10 +387,17 @@
     ws "^8.16.0"
     yaml "^2.3.3"
 
+<<<<<<< HEAD
 "@embeddable.com/sdk-react@3.1.0-next.1":
   version "3.1.0-next.1"
   resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-3.1.0-next.1.tgz"
   integrity sha512-WB2udQmyihU3qEq3UVV4sMvtYSYypwu3DFugLnqQoNRKN6jGHCygl5V4qqnVDHmaOnCdDtZ3PlzXB2AQwqpQTw==
+=======
+"@embeddable.com/sdk-react@3.1.0":
+  version "3.1.0"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-3.1.0.tgz"
+  integrity sha512-jQxzgNltYU40LnABWOB8T/BBIFlUaLyDZ+7nQfL5XN35ia73bUpzZc3XZFI6YQOE11/7jLDKB1M6VEBMhoK5hA==
+>>>>>>> main
   dependencies:
     "@babel/generator" "^7.23.0"
     "@babel/parser" "^7.23.0"
@@ -1497,7 +1511,11 @@ chalk@^5.0.0, chalk@^5.3.0:
   resolved "https://registry.npmjs.org/chalk/-/chalk-5.3.0.tgz"
   integrity sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==
 
+<<<<<<< HEAD
 chart.js@^4.1.1, chart.js@^4.4.1, chart.js@>=2.8.0, chart.js@>=3.0.0:
+=======
+chart.js@^4.1.1, chart.js@^4.4.1, chart.js@>=3.0.0:
+>>>>>>> main
   version "4.4.2"
   resolved "https://registry.npmjs.org/chart.js/-/chart.js-4.4.2.tgz"
   integrity sha512-6GD7iKwFpP5kbSD4MeRRRlTnQvxfQREy36uEtm1hzHzcOqwWx0YEHuspuoNlslu+nciLIB7fjjsHkUv/FzFcOg==
@@ -1844,7 +1862,11 @@ data-view-byte-offset@^1.0.0:
     es-errors "^1.3.0"
     is-data-view "^1.0.1"
 
+<<<<<<< HEAD
 "date-fns@^2.28.0 || ^3.0.0", date-fns@^2.30.0, date-fns@>=2.0.0:
+=======
+"date-fns@^2.28.0 || ^3.0.0", date-fns@^2.30.0:
+>>>>>>> main
   version "2.30.0"
   resolved "https://registry.npmjs.org/date-fns/-/date-fns-2.30.0.tgz"
   integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
@@ -2759,6 +2781,7 @@ glob@^10.3.10:
     minimatch "^9.0.1"
     minipass "^7.0.4"
     path-scurry "^1.10.2"
+<<<<<<< HEAD
 
 glob@^10.3.12:
   version "10.3.12"
@@ -2770,6 +2793,8 @@ glob@^10.3.12:
     minimatch "^9.0.1"
     minipass "^7.0.4"
     path-scurry "^1.10.2"
+=======
+>>>>>>> main
 
 glob@^7.0.0, glob@^7.1.3, glob@^7.1.4, glob@^7.2.3:
   version "7.2.3"
