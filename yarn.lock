@@ -380,10 +380,10 @@
     ws "^8.16.0"
     yaml "^2.3.3"
 
-"@embeddable.com/sdk-react@3.1.0":
-  version "3.1.0"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-3.1.0.tgz"
-  integrity sha512-jQxzgNltYU40LnABWOB8T/BBIFlUaLyDZ+7nQfL5XN35ia73bUpzZc3XZFI6YQOE11/7jLDKB1M6VEBMhoK5hA==
+"@embeddable.com/sdk-react@3.1.1":
+  version "3.1.1"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-3.1.1.tgz"
+  integrity sha512-bXrToLeN9lKn9iexABYXWtYboyrozgdX5vWW6k46ptmMV3yTko1Yhw4O1SfKNWSGV2nYqUX16nMdgXnf0bWNDg==
   dependencies:
     "@babel/generator" "^7.23.0"
     "@babel/parser" "^7.23.0"
