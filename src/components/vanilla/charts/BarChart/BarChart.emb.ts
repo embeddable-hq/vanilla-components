@@ -1,5 +1,6 @@
 import { loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
+import SortDirectionType from '../../../../types/SortDirection.type.emb';
 
 import Component from './index';
 
@@ -50,6 +51,19 @@ export const meta = {
       config: {
         dataset: 'ds'
       }
+    },
+    {
+      name: 'defaultSortDirection',
+      type: SortDirectionType as never,
+      defaultValue: 'Ascending',
+      label: 'Default sort order',
+      category: 'Configure chart'
+    },
+    {
+      name: 'maxSegments',
+      type: 'number',
+      label: 'Max X-axis items',
+      category: 'Configure chart'
     },
     {
       name: 'showLegend',
@@ -104,7 +118,7 @@ export default defineComponent(Component, meta, {
         measures: inputs.metrics,
         orderBy: inputs.sortBy && [{
           property: inputs.sortBy, 
-          direction: inputs.sortBy.nativeType == 'string' ? 'asc' : 'desc'
+          direction: inputs.defaultSortDirection === 'Ascending' ? 'asc' : 'desc'
         }]
       })
     };

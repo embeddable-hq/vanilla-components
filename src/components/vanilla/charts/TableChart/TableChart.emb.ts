@@ -57,7 +57,7 @@ export const meta = {
       name: 'defaultSortDirection',
       type: SortDirectionType as never,
       defaultValue: 'Ascending',
-      label: 'Default Sort Direction',
+      label: 'Default sort order',
       category: 'Chart settings'
     }
   ]

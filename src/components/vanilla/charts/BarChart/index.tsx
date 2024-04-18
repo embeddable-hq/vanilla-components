@@ -61,16 +61,22 @@ export default (props: Props) => {
   );
 };
 
-function chartData(props: Props): ChartData<'bar'> {
-  const { results, xAxis, metrics } = props;
-
-  const labels = [
+function getLabels(data, xAxis) {
+  return [
     ...new Set(
-      results?.data?.map((d: { [p: string]: string }) =>
+      data?.map((d: { [p: string]: string }) =>
         format(d[xAxis?.name || ''], { truncate: 15, meta: xAxis.meta })
       )
     )
   ] as string[];
+}
+
+function chartData(props: Props): ChartData<'bar'> {
+  const { results, xAxis, metrics, maxSegments, defaultSortDirection, sortBy} = props;
+
+  const newData = mergeLongTail(results?.data, xAxis, metrics, maxSegments, defaultSortDirection, sortBy);
+
+  const labels = getLabels(newData, xAxis);
 
   return {
     labels,
@@ -82,8 +88,58 @@ function chartData(props: Props): ChartData<'bar'> {
         minBarLength: 0,
         borderRadius: 6,
         label: metric.title,
-        data: results?.data?.map((d) => parseInt(d[metric.name])) || [],
+        data: newData?.map((d) => parseInt(d[metric.name])) || [],
         backgroundColor: COLORS[i % COLORS.length]
       })) || []
   };
+}
+
+function mergeLongTail(rows, xAxis, metrics, n, defaultSortDirection, sortBy) {
+
+  if(!rows || rows.length === 0) return;
+  if (!n || n <= 0 || getLabels(rows, xAxis).length <= n) return rows;
+
+  const newData = [...rows].slice(0, n - 1);
+
+  const otherCategory = {
+    [xAxis.name]: 'Other'
+  }
+
+  const longTail = [...rows].slice(n - 1).forEach((row) => {
+    metrics.forEach((metric) => {
+      otherCategory[metric.name] = (parseFloat(otherCategory[metric.name]) || 0) + parseFloat(row[metric.name])
+    })
+  });
+
+  if (sortBy && defaultSortDirection) return [...insertInSortedOrder(newData, otherCategory, sortBy, defaultSortDirection)]
+
+  newData.push(otherCategory);
+  return newData
+
+}
+
+function insertInSortedOrder(array, item, sortBy, sortOrder) {
+
+  function findInsertIndex(arr, item) {
+      let low = 0;
+      let high = arr.length;
+
+      while (low < high) {
+          let mid = Math.floor((low + high) / 2);
+          // Adjust comparison based on the sort order
+          if (sortOrder === 'Ascending' ? arr[mid][sortBy.name] < item[sortBy.name] : arr[mid][sortBy.name] > item[sortBy.name]) {
+              low = mid + 1;
+          } else {
+              high = mid;
+          }
+      }
+      return low;
+  }
+
+    // Find the index at which to insert the item
+    const index = findInsertIndex(array, item);
+
+    // Insert the item into the array at the correct index
+    array.splice(index, 0, item);
+    return array;
 }
