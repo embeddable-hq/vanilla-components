@@ -5,6 +5,7 @@ import { twMerge } from 'tailwind-merge';
 import useFont from '../hooks/useFont';
 import useResize from '../hooks/useResize';
 import Spinner from './Spinner';
+import DownloadButton from './DownloadButton';
 import Title from './Title';
 import { WarningIcon } from './icons';
 import './index.css';
@@ -19,7 +20,7 @@ type Props = {
 export default (props: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, height] = useResize(ref);
-  const { results, title, children, className } = props;
+  const { results, title, children, className, enableDownloadAsCSV } = props;
   const { isLoading, error, data } = results || {};
   const noData = results && !isLoading && !data?.length;
 
@@ -37,6 +38,7 @@ export default (props: Props) => {
   return (
     <div className="h-full relative font-embeddable text-sm flex flex-col">
       <Spinner show={isLoading} />
+      <DownloadButton data={data} show={enableDownloadAsCSV && !isLoading && data?.length > 0}/>
       <Title title={title} />
       <div className={twMerge(`relative grow flex flex-col`, className || '')} ref={ref}>
         {!!height && (

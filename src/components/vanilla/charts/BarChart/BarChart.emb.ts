@@ -91,6 +91,13 @@ export const meta = {
       label: 'Y-Axis Title',
       category: 'Chart settings'
     },
+    {
+      name: 'enableDownloadAsCSV',
+      type: 'boolean',
+      label: 'Show download as CSV',
+      category: 'Export options',
+      defaultValue: true,
+    },
   ]
 } as const satisfies EmbeddedComponentMeta;
 
