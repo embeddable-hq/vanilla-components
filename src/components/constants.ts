@@ -13,7 +13,7 @@ export const LIGHT_FONT = '#333942';
 
 //general chart colors
 export const COLORS = [
-  '#2859C5',
+  '#2859C5', 
   '#F58D02',
   '#964FD2',
   '#FF6B6C',
@@ -26,3 +26,14 @@ export const COLORS = [
   '#D7D7E5',
   '#FFD37A'
 ];
+
+export const DATE_DISPLAY_FORMATS = {
+  year: 'yyyy',
+  quarter: 'MMM yy',
+  month: 'MMM yy',
+  day: 'd MMM',
+  week: 'd MMM',
+  hour: 'eee HH:mm',
+  minute: 'eee HH:mm',
+  second: 'HH:mm:ss'
+}

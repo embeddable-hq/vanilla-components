@@ -22,6 +22,7 @@
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "chart.js": "^4.4.1",
+    "chartjs-adapter-date-fns": "^3.0.0",
     "chartjs-plugin-datalabels": "^2.2.0",
     "chrono-node": "^2.7.3",
     "d3-scale": "^4.0.2",

@@ -1,13 +1,12 @@
 import { loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
-
-
+import { addMilliseconds } from 'date-fns';
 
 import Component from './index';
 
 export const meta = {
-  name: 'LineChart',
-  label: 'Chart: Line (time-series)',
+  name: 'CompareLineChart',
+  label: 'Chart: Line (time-series) comparison',
   classNames: ['inside-card'],
   inputs: [
     {
@@ -50,6 +49,20 @@ export const meta = {
         dataset: 'ds'
       },
       category: 'Configure chart'
+    },
+    {
+      name: 'timeFilter',
+      type: 'timeRange',
+      label: 'Time Filter',
+      description: 'Date range',
+      category: 'Chart settings'
+    },
+    {
+      name: 'prevTimeFilter',
+      type: 'timeRange',
+      label: 'Previous Time Filter',
+      description: 'Date range',
+      category: 'Chart settings'
     },
     {
       name: 'xAxisTitle',
@@ -105,13 +118,49 @@ export default defineComponent(Component, meta, {
       ...inputs,
       results: loadData({
         from: inputs.ds,
+        limit: 500,
         timeDimensions: [
           {
             dimension: inputs.xAxis?.name,
             granularity: inputs.granularity
           }
         ],
-        measures: inputs.metrics
+        measures: inputs.metrics,
+        filters:
+          inputs.timeFilter?.to && inputs.xAxis
+            ? [
+                {
+                  property: inputs.xAxis,
+                  operator: 'inDateRange',
+                  value: {
+                    from: inputs.timeFilter.from,
+                    to: inputs.timeFilter.to,
+                    relativeTimeString: ''
+                  }
+                }
+              ]
+            : undefined
+      }),
+      prevResults: loadData({
+        from: inputs.ds,
+        timeDimensions: [
+          {
+            dimension: inputs.xAxis?.name,
+            granularity: inputs.granularity
+          }
+        ],
+        limit: !inputs.prevTimeFilter?.from ? 1 : 500,
+        measures: inputs.metrics,
+        filters:
+          inputs.prevTimeFilter?.from && inputs.xAxis
+            ? [
+                {
+                  property: inputs.xAxis,
+                  operator: 'inDateRange',
+                  value: inputs.prevTimeFilter
+                }
+              ]
+            : undefined
       })
     };
   }

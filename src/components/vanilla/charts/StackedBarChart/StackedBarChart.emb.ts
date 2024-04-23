@@ -82,6 +82,12 @@ export const meta = {
       label: 'Display as Percentages',
       defaultValue: false,
       category: 'Chart settings'
+    },
+    {
+      name: 'dps',
+      type: 'number',
+      label: 'Decimal Places',
+      category: 'Formatting'
     }
   ]
 } as const satisfies EmbeddedComponentMeta;
