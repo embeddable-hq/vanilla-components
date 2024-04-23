@@ -25,15 +25,22 @@ import 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { format, parseJSON } from 'date-fns';
-import formatValue from '../../../util/format';
-import formatDateTooltips from '../../../util/formatDateTooltips'
 import React, { useEffect, useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
-import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE, DATE_DISPLAY_FORMATS } from '../../../constants';
+
+import {
+  COLORS,
+  DATE_DISPLAY_FORMATS,
+  EMB_FONT,
+  LIGHT_FONT,
+  SMALL_FONT_SIZE
+} from '../../../constants';
 import useTimeseries from '../../../hooks/useTimeseries';
-import { timeRangeToLocal, parseTime } from '../../../hooks/useTimezone';
-import Container from '../../Container';
+import { parseTime, timeRangeToLocal } from '../../../hooks/useTimezone';
+import formatValue from '../../../util/format';
+import formatDateTooltips from '../../../util/formatDateTooltips';
 import hexToRgb from '../../../util/hexToRgb';
+import Container from '../../Container';
 
 ChartJS.register(
   CategoryScale,
@@ -72,8 +79,11 @@ type Props = {
 
 type Record = { [p: string]: string };
 
-export default (props: Props) => {
-  props.granularity = props.granularity || 'day';
+export default (propsInitial: Props) => {
+  const props = useMemo(
+    () => ({ ...propsInitial, granularity: propsInitial.granularity || 'day' }),
+    [propsInitial]
+  );
 
   const { fillGaps } = useTimeseries(props);
 
@@ -117,7 +127,7 @@ export default (props: Props) => {
           data: !!props.prevTimeFilter?.from
             ? prevData?.map((d: Record) => ({
                 y: parseFloat(d[metrics[i].name] || '0'),
-                x: parseTime(d[props.xAxis?.name || '']) 
+                x: parseTime(d[props.xAxis?.name || ''])
               })) || []
             : [],
           backgroundColor: applyFill ? hexToRgb(COLORS[i % COLORS.length], 0.05) : c,
@@ -224,12 +234,12 @@ export default (props: Props) => {
           labels: {
             usePointStyle: true,
             boxHeight: 8
-          },          
+          }
         },
         tooltip: {
           callbacks: {
             title: (lines: any[]) => formatDateTooltips(lines, props.granularity)
-          },
+          }
         },
         datalabels: {
           align: 'top',
