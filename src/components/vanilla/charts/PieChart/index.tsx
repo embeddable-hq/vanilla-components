@@ -16,7 +16,7 @@ import React from 'react';
 import { Pie } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
-import format from '../../../util/format';
+import formatValue from '../../../util/format';
 import Container from '../../Container';
 
 ChartJS.register(
@@ -40,6 +40,7 @@ ChartJS.defaults.plugins.tooltip.usePointStyle = true;
 type Props = {
   results: DataResponse;
   title: string;
+  dps?: number;
   slice: { name: string; meta: object };
   metric: { name: string; title: string };
   showLabels: boolean;
@@ -76,6 +77,25 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
         borderRadius: 8,
         font: {
           weight: 'normal'
+        },
+        formatter: (v) => {
+          const val = v ? formatValue(v, { type: 'number', dps: props.dps }) : null;
+          return val;
+        }
+      },
+      tooltip: {
+        //https://www.chartjs.org/docs/latest/configuration/tooltip.html
+        callbacks: {
+          label: function (context) {
+            let label = context.dataset.label || '';
+            if (context.parsed !== null) {
+              label += `: ${formatValue(`${context.parsed || ''}`, {
+                type: 'number',
+                dps: props.dps
+              })}`;
+            }
+            return label;
+          }
         }
       },
       legend: {
@@ -112,10 +132,13 @@ function chartData(props: Props) {
   const newData = labelsExceedMaxSegments ? mergeLongTail(props) : results.data;
 
   // Chart.js pie expects labels like so: ['US', 'UK', 'Germany']
-  const labels = newData?.map((d) => format(d[slice.name], { truncate: 15, meta: slice?.meta }));
+  const labels = newData?.map((d) => formatValue(d[slice.name], { truncate: 15, meta: slice?.meta }));
 
   // Chart.js pie expects counts like so: [23, 10, 5]
-  const counts = newData?.map((d: Record) => d[metric.name]);
+  const counts = newData?.map((d: Record) => formatValue(d[metric.name]), {
+    type: 'number',
+    dps: props.dps
+  });
 
   return {
     labels,

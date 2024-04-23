@@ -3,8 +3,7 @@ import { endOfDay, getYear } from 'date-fns';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-
-import format from '../../../util/format';
+import formatValue from '../../../util/format';
 import Container from '../../Container';
 import { CalendarIcon, ChevronLeft, ChevronRight } from '../../icons';
 import Dropdown from '../Dropdown';
@@ -13,6 +12,7 @@ const ranges = [
   'Today',
   'Yesterday',
   'This week',
+  'Last week',
   'Last 7 days',
   'This month',
   'Last 30 days',
@@ -30,8 +30,9 @@ type TimeRange = {
 type Props = {
   placeholder?: string;
   onChange: (v?: TimeRange) => void;
-  title: string;
+  title?: string;
   value?: TimeRange;
+  hideDate?: boolean;
 };
 
 export default (props: Props) => {
@@ -83,10 +84,10 @@ export default (props: Props) => {
     <Container title={props.title}>
       <div className="relative inline-flex h-10 w-full text-[#101010] text-sm">
         <Dropdown
-          ds={{ embeddableId: '', datasetId: '', variableValues: {} }}
+          minDropdownWidth={120}
           unclearable
           placeholder={props.placeholder}
-          className="max-w-[120px] sm:max-w-[140px] relative rounded-r-none w-full h-10 border border-[#DADCE1] flex items-center"
+          className="max-w-[120px] min-w-[80px] sm:max-w-[140px] relative rounded-r-none w-full h-10 border border-[#DADCE1] flex items-center"
           defaultValue={range?.relativeTimeString || ''}
           onChange={(relativeTimeString) => {
             const [from, to] = dateParser(relativeTimeString, 'UTC');
@@ -105,7 +106,7 @@ export default (props: Props) => {
           }}
           property={{ name: 'value', title: '', nativeType: 'string', __type__: 'dimension' }}
         />
-        <div className="grow flex items-center p-4 hover:bg-[#f3f4f6] cursor-pointer relative text-sm border-y border-r rounded-r-xl border-[#d8dad9]">
+        <div className="grow flex items-center p-4 hover:bg-[#f3f4f6] cursor-pointer relative text-sm border-y border-r rounded-r-xl border-[#d8dad9] min-w-[60px]">
           <input
             ref={ref}
             onChange={() => {}}
@@ -114,12 +115,16 @@ export default (props: Props) => {
             className="absolute left-0 top-0 h-full w-full opacity-0 cursor-pointer"
           />
           <CalendarIcon className="mr-2 hidden sm:block" />
-          {!!range?.from && !!range?.to
-            ? `${format(range.from.toJSON(), { dateFormat: formatFrom })} - ${format(
-                range.to.toJSON(),
-                { dateFormat: formatTo }
-              )}`
-            : 'Select'}
+          {!props.hideDate && (
+            <span className="overflow-hidden truncate">
+              {!!range?.from && !!range?.to
+                ? `${formatValue(range.from.toJSON(), { dateFormat: formatFrom })} - ${formatValue(
+                    range.to.toJSON(),
+                    { dateFormat: formatTo }
+                  )}`
+                : 'Select'}
+            </span>
+          )}
           <div
             onClick={() => {
               setTriggerBlur(false);
@@ -172,7 +177,7 @@ const CustomCaption = (props: CaptionProps) => {
         <ChevronLeft />
       </button>
       <span className="mx-auto text-sm">
-        {format(props.displayMonth.toJSON(), { dateFormat: 'MMMM yyy' })}
+        {formatValue(props.displayMonth.toJSON(), { dateFormat: 'MMMM yyy' })}
       </span>
       <button
         className="w-7 h-7 bg-white rounded shadow border border-slate-500 justify-center items-center inline-flex"

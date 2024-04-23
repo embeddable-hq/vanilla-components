@@ -105,6 +105,12 @@ export const meta = {
       label: 'Y-Axis Title',
       category: 'Chart settings'
     },
+    {
+      name: 'dps',
+      type: 'number',
+      label: 'Decimal Places',
+      category: 'Formatting'
+    }
   ]
 } as const satisfies EmbeddedComponentMeta;
 

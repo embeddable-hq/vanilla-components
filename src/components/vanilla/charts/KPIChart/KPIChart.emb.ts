@@ -47,6 +47,37 @@ export const meta = {
       label: 'Suffix',
       description: 'Suffix',
       category: 'Chart settings'
+    },
+    {
+      name: 'timeProperty',
+      type: 'dimension',
+      label: 'Time Property',
+      description: 'Used by time filters',
+      config: {
+        dataset: 'ds',
+        supportedTypes: ['time']
+      },
+      category: 'Chart settings'
+    },
+    {
+      name: 'timeFilter',
+      type: 'timeRange',
+      label: 'Time Filter',
+      description: 'Date range',
+      category: 'Chart settings'
+    },
+    {
+      name: 'prevTimeFilter',
+      type: 'timeRange',
+      label: 'Previous Time Filter',
+      description: 'Date range',
+      category: 'Chart settings'
+    },
+    {
+      name: 'dps',
+      type: 'number',
+      label: 'Decimal Places',
+      category: 'Formatting'
     }
   ]
 } as const satisfies EmbeddedComponentMeta;
@@ -57,8 +88,34 @@ export default defineComponent(Component, meta, {
       ...inputs,
       value: loadData({
         from: inputs.ds,
-        measures: [inputs.metric]
-      })
+        measures: [inputs.metric],
+        filters:
+          inputs.timeFilter?.from && inputs.timeProperty
+            ? [
+                {
+                  property: inputs.timeProperty,
+                  operator: 'inDateRange',
+                  value: inputs.timeFilter
+                }
+              ]
+            : undefined
+      }),
+      prevValue:
+        inputs.timeProperty &&
+        loadData({
+          from: inputs.ds,
+          measures: [inputs.metric],
+          limit: !inputs.prevTimeFilter?.from ? 1 : undefined,
+          filters: inputs.prevTimeFilter?.from
+            ? [
+                {
+                  property: inputs.timeProperty,
+                  operator: 'inDateRange',
+                  value: inputs.prevTimeFilter
+                }
+              ]
+            : undefined
+        })
     };
   }
 });

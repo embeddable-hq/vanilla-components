@@ -22,7 +22,11 @@ const highColor = '#146EF5';
 const hoverColor = '#0957cb';
 
 export default (props: Props) => {
-  const [mapComponents, setMapComponents] = useState({});
+  const [mapComponents, setMapComponents] = useState<{
+    ComposableMap: React.ComponentType<ComposableMapProps>;
+    Geographies: React.ComponentType<GeographiesProps>;
+    Geography: React.ComponentType<GeographyProps>;
+  } | null>(null);
   const box = useRef<HTMLDivElement | null>(null);
   const tooltip = useRef<HTMLDivElement | null>(null);
 
@@ -62,11 +66,7 @@ export default (props: Props) => {
 
   if (!mapComponents) return <div>Loading map...</div>;
 
-  const { ComposableMap, Geographies, Geography } = mapComponents as {
-    ComposableMap: React.ComponentType<ComposableMapProps>;
-    Geographies: React.ComponentType<GeographiesProps>;
-    Geography: React.ComponentType<GeographyProps>;
-  };
+  const { ComposableMap, Geographies, Geography } = mapComponents;
 
   return (
     <Container className="overflow-y-hidden" title={props.title} results={props.db}>
