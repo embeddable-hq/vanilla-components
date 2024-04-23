@@ -3,7 +3,7 @@ import { scaleLinear } from 'd3-scale';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ComposableMapProps, GeographiesProps, GeographyProps } from 'react-simple-maps';
 
-import formatValue from '../../../util/format';
+import format from '../../../util/format';
 import Container from '../../Container';
 import geography from './geography.json';
 
@@ -85,52 +85,50 @@ export default (props: Props) => {
             ref={tooltip}
             className="absolute text-black bg-slate-200/80 rounded-sm whitespace-nowrap pointer-events-none empty:opacity-0 opacity-100 px-2 py-1 text-xs"
           />
-          {ComposableMap && (
-            <ComposableMap
-              projection="geoMercator"
-              projectionConfig={{
-                rotate: [-10, 0, 0],
-                scale: 100
-              }}
-            >
-              <Geographies geography={geography}>
-                {({ geographies }) =>
-                  geographies.map((geo) => {
-                    const value = data[geo.id] || data[geo?.properties?.name || ''];
+          <ComposableMap
+            projection="geoMercator"
+            projectionConfig={{
+              rotate: [-10, 0, 0],
+              scale: 100
+            }}
+          >
+            <Geographies geography={geography}>
+              {({ geographies }) =>
+                geographies.map((geo) => {
+                  const value = data[geo.id] || data[geo?.properties?.name || ''];
 
-                    return (
-                      <Geography
-                        onMouseEnter={() => {
-                          tooltip.current!.innerHTML = `${geo.properties.name}: ${formatValue(
-                            `${value || 0}`,
-                            { type: 'number', meta: props.metric?.meta }
-                          )}`;
-                        }}
-                        onMouseLeave={() => {
-                          tooltip.current!.innerHTML = '';
-                        }}
-                        key={geo.rsmKey}
-                        geography={geo}
-                        style={{
-                          default: {
-                            outline: 'none'
-                          },
-                          hover: {
-                            fill: hoverColor,
-                            outline: 'none'
-                          },
-                          pressed: {
-                            outline: 'none'
-                          }
-                        }}
-                        fill={`${value ? colorScale(value) : defaultColor}`}
-                      />
-                    );
-                  })
-                }
-              </Geographies>
-            </ComposableMap>
-          )}
+                  return (
+                    <Geography
+                      onMouseEnter={() => {
+                        tooltip.current!.innerHTML = `${geo.properties.name}: ${format(
+                          `${value || 0}`,
+                          { type: 'number', meta: props.metric?.meta }
+                        )}`;
+                      }}
+                      onMouseLeave={() => {
+                        tooltip.current!.innerHTML = '';
+                      }}
+                      key={geo.rsmKey}
+                      geography={geo}
+                      style={{
+                        default: {
+                          outline: 'none'
+                        },
+                        hover: {
+                          fill: hoverColor,
+                          outline: 'none'
+                        },
+                        pressed: {
+                          outline: 'none'
+                        }
+                      }}
+                      fill={`${value ? colorScale(value) : defaultColor}`}
+                    />
+                  );
+                })
+              }
+            </Geographies>
+          </ComposableMap>
         </div>
       </div>
     </Container>
