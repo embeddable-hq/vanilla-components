@@ -1,10 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-
-
 import Container from '../../Container';
 import { ClearIcon } from '../../icons';
-
 
 type Props = {
   onChange: (v: string) => void;
@@ -30,6 +27,8 @@ export default (props: Props) => {
           type="number"
           placeholder={props.placeholder}
           className="rounded-xl w-full h-full outline-none leading-10 border-0 px-3"
+          // hotfix > weird layout when at the right side of canvas
+          style={{ width: '100%', height: '100%' }}
           onChange={(e) => {
             setValue(e.target.value);
             if (timeout) {

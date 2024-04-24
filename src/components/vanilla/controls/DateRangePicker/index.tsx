@@ -3,6 +3,7 @@ import { endOfDay, getYear } from 'date-fns';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
+
 import formatValue from '../../../util/format';
 import Container from '../../Container';
 import { CalendarIcon, ChevronLeft, ChevronRight } from '../../icons';
@@ -113,6 +114,8 @@ export default (props: Props) => {
             onFocus={() => setFocus(true)}
             onBlur={() => setTriggerBlur(true)}
             className="absolute left-0 top-0 h-full w-full opacity-0 cursor-pointer"
+            // hotfix > weird layout when at the right side of canvas
+            style={{ width: '100%', height: '100%' }}
           />
           <CalendarIcon className="mr-2 hidden sm:block" />
           {!props.hideDate && (

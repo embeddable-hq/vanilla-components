@@ -28,7 +28,7 @@ export default (props: Props) => {
     timeout = window.setTimeout(() => {
       props.onChange(e.target.value);
     }, 1000);
-  }
+  };
 
   return (
     <Container title={props.title}>
@@ -37,6 +37,8 @@ export default (props: Props) => {
           ref={ref}
           placeholder={props.placeholder}
           className="rounded-xl w-full outline-none leading-10 h-full border-0 px-3"
+          // hotfix > weird layout when at the right side of canvas
+          style={{ width: '100%', height: '100%' }}
           onChange={handleChange}
           defaultValue={value}
         />
