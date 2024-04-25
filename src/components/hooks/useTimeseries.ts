@@ -41,7 +41,9 @@ export default ({ xAxis, granularity }: { xAxis?: Dimension; granularity?: Granu
 
       const seqDate = addTime[granularity || 'day'](parseJSON(lastDate), 1);
 
-      if (parseTime(thisDate) <= seqDate.valueOf()) return [...memo, record];
+      const currDate = parseJSON(thisDate);
+
+      if (currDate <= seqDate) return [...memo, record];
 
       memo.push({ [xAxis?.name || '']: seqDate.toISOString().split('Z')[0] });
 
