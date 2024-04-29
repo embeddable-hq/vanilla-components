@@ -2,7 +2,7 @@ import { defineOption, defineType } from '@embeddable.com/core';
 
 const TimeComparisonType = defineType('timeComparison', {
   label: 'Time Comparison',
-  toString: (str) => str
+  optionLabel: (value) => value
 });
 
 defineOption(TimeComparisonType, 'No comparison');
