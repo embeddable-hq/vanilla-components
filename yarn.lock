@@ -345,22 +345,20 @@
     "@cubejs-backend/shared" "0.33.20"
     source-map-support "^0.5.21"
 
-"@embeddable.com/core@*", "@embeddable.com/core@^2.5.5":
+"@embeddable.com/core@^2.5.5":
   version "2.5.5"
-  resolved "https://registry.npmjs.org/@embeddable.com/core/-/core-2.5.5.tgz"
-  integrity sha512-UXNNq21YQoWg9ciEwzv/M9tmHClzRytCelYArmc+WMorpaPjBDrLbsWC1jYCstxI15uC/3hjlwPdnb+VdD+3vw==
+  resolved "file:../embeddable-sdk/packages/core"
 
 "@embeddable.com/react@^2.5.5":
   version "2.5.5"
-  resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.5.5.tgz"
-  integrity sha512-XmCvcRP4Ry61UJXMLHkXEpH180X6MHDrBWwQcRHtgaIRQ0pLSfIWnuco1TEHtX1vHu6Sfk9Q7DwAY1lJm/ADiA==
+  resolved "file:../embeddable-sdk/packages/react"
   dependencies:
     "@embeddable.com/core" "*"
 
-"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@3.1.1":
-  version "3.1.1"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-3.1.1.tgz"
-  integrity sha512-ZYQ98+wo+LQF9FH5lko9HIFbMLSCVpClYtCivzQ8QssUNicl+zJNe/PJW9br50bnu2vefV4Bu/cI/f/w6nCgWg==
+"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@3.1.5":
+  version "3.1.5"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-3.1.5.tgz"
+  integrity sha512-SKUQYUGLSIb1tOdxjZoyOwW6RcLJJGODZeWRoExiL8r82AjwaQANNk8UaREfiL5i1NI6RUEhgtb/KJBxBRSJkg==
   dependencies:
     "@embeddable.com/sdk-utils" "*"
     "@inquirer/select" "^1.3.0"
@@ -380,10 +378,10 @@
     ws "^8.16.0"
     yaml "^2.3.3"
 
-"@embeddable.com/sdk-react@3.1.1":
-  version "3.1.1"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-3.1.1.tgz"
-  integrity sha512-bXrToLeN9lKn9iexABYXWtYboyrozgdX5vWW6k46ptmMV3yTko1Yhw4O1SfKNWSGV2nYqUX16nMdgXnf0bWNDg==
+"@embeddable.com/sdk-react@3.1.4":
+  version "3.1.4"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-3.1.4.tgz"
+  integrity sha512-3YjpXArQSb665HSR2Rs/8nBIa1ElmUzVLrzNXH2+2A+QpSyde8VUpnhOs5/dDwLduUoJR2+UR8JCQKr/1pkgPg==
   dependencies:
     "@babel/generator" "^7.23.0"
     "@babel/parser" "^7.23.0"
@@ -509,9 +507,9 @@
     figures "^3.2.0"
 
 "@inquirer/type@^1.1.6":
-  version "1.2.1"
-  resolved "https://registry.npmjs.org/@inquirer/type/-/type-1.2.1.tgz"
-  integrity sha512-xwMfkPAxeo8Ji/IxfUSqzRi0/+F2GIqJmpc5/thelgMGsjNZcjDDRBO9TLXT1s/hdx/mK5QbVIvgoLIFgXhTMQ==
+  version "1.3.1"
+  resolved "https://registry.npmjs.org/@inquirer/type/-/type-1.3.1.tgz"
+  integrity sha512-Pe3PFccjPVJV1vtlfVvm9OnlbxqdnP5QcscFEFEnK5quChf1ufZtM0r8mR5ToWHMxZOh0s8o/qp9ANGRTo/DAw==
 
 "@isaacs/cliui@^8.0.2":
   version "8.0.2"
@@ -622,9 +620,9 @@
   integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
 
 "@stencil/core@^4.6.0":
-  version "4.15.0"
-  resolved "https://registry.npmjs.org/@stencil/core/-/core-4.15.0.tgz"
-  integrity sha512-C5syM3chCyxX0Os5M+ZWrBujjqwUfrTb87YiLr8RC+kMTmIpnRvvtj8/s3QYDGdDENGRxGkBpeboVh82IGqk0w==
+  version "4.17.1"
+  resolved "https://registry.npmjs.org/@stencil/core/-/core-4.17.1.tgz"
+  integrity sha512-nlARe1QtK5abnCG8kPQKJMWiELg39vKabvf3ebm6YEhQA35CgrxC1pVYTsYq3yktJKoY+k+VzGRnATLKyaLbvA==
 
 "@swc-node/core@^1.13.0":
   version "1.13.0"
@@ -651,29 +649,29 @@
     source-map-support "^0.5.21"
     tslib "^2.6.2"
 
-"@swc/core-darwin-arm64@1.4.13":
-  version "1.4.13"
-  resolved "https://registry.npmjs.org/@swc/core-darwin-arm64/-/core-darwin-arm64-1.4.13.tgz"
-  integrity sha512-36P72FLpm5iq85IvoEjBvi22DiqkkEIanJ1M0E8bkxcFHUbjBrYfPY9T6cpPyK5oQqkaTBvNAc3j1BlVD6IH6w==
+"@swc/core-darwin-arm64@1.4.17":
+  version "1.4.17"
+  resolved "https://registry.npmjs.org/@swc/core-darwin-arm64/-/core-darwin-arm64-1.4.17.tgz"
+  integrity sha512-HVl+W4LezoqHBAYg2JCqR+s9ife9yPfgWSj37iIawLWzOmuuJ7jVdIB7Ee2B75bEisSEKyxRlTl6Y1Oq3owBgw==
 
 "@swc/core@>= 1.3":
-  version "1.4.13"
-  resolved "https://registry.npmjs.org/@swc/core/-/core-1.4.13.tgz"
-  integrity sha512-rOtusBE+2gaeRkAJn5E4zp5yzZekZOypzSOz5ZG6P1hFbd+Cc26fWEdK6sUSnrkkvTd0Oj33KXLB/4UkbK/UHA==
+  version "1.4.17"
+  resolved "https://registry.npmjs.org/@swc/core/-/core-1.4.17.tgz"
+  integrity sha512-tq+mdWvodMBNBBZbwFIMTVGYHe9N7zvEaycVVjfvAx20k1XozHbHhRv+9pEVFJjwRxLdXmtvFZd3QZHRAOpoNQ==
   dependencies:
     "@swc/counter" "^0.1.2"
     "@swc/types" "^0.1.5"
   optionalDependencies:
-    "@swc/core-darwin-arm64" "1.4.13"
-    "@swc/core-darwin-x64" "1.4.13"
-    "@swc/core-linux-arm-gnueabihf" "1.4.13"
-    "@swc/core-linux-arm64-gnu" "1.4.13"
-    "@swc/core-linux-arm64-musl" "1.4.13"
-    "@swc/core-linux-x64-gnu" "1.4.13"
-    "@swc/core-linux-x64-musl" "1.4.13"
-    "@swc/core-win32-arm64-msvc" "1.4.13"
-    "@swc/core-win32-ia32-msvc" "1.4.13"
-    "@swc/core-win32-x64-msvc" "1.4.13"
+    "@swc/core-darwin-arm64" "1.4.17"
+    "@swc/core-darwin-x64" "1.4.17"
+    "@swc/core-linux-arm-gnueabihf" "1.4.17"
+    "@swc/core-linux-arm64-gnu" "1.4.17"
+    "@swc/core-linux-arm64-musl" "1.4.17"
+    "@swc/core-linux-x64-gnu" "1.4.17"
+    "@swc/core-linux-x64-musl" "1.4.17"
+    "@swc/core-win32-arm64-msvc" "1.4.17"
+    "@swc/core-win32-ia32-msvc" "1.4.17"
+    "@swc/core-win32-x64-msvc" "1.4.17"
 
 "@swc/counter@^0.1.2", "@swc/counter@^0.1.3":
   version "0.1.3"
@@ -5325,9 +5323,9 @@ wrappy@1:
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
 
 ws@^8.16.0:
-  version "8.16.0"
-  resolved "https://registry.npmjs.org/ws/-/ws-8.16.0.tgz"
-  integrity sha512-HS0c//TP7Ina87TfiPUz1rQzMhHrl/SG2guqRcTOIUYD2q8uhUdNHZYJUaQ8aTGPzCh+c6oawMKW35nFl1dxyQ==
+  version "8.17.0"
+  resolved "https://registry.npmjs.org/ws/-/ws-8.17.0.tgz"
+  integrity sha512-uJq6108EgZMAl20KagGkzCKfMEjxmKvZHG7Tlq0Z6nOky7YF7aq4mOx6xK8TJ/i1LeK4Qus7INktacctDgY8Ow==
 
 xtend@^4.0.0:
   version "4.0.2"
@@ -5372,6 +5370,6 @@ zip-stream@^4.1.0:
     readable-stream "^3.6.0"
 
 zod@^3.22.4:
-  version "3.22.4"
-  resolved "https://registry.npmjs.org/zod/-/zod-3.22.4.tgz"
-  integrity sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==
+  version "3.23.4"
+  resolved "https://registry.npmjs.org/zod/-/zod-3.23.4.tgz"
+  integrity sha512-/AtWOKbBgjzEYYQRNfoGKHObgfAZag6qUJX1VbHo2PRBgS+wfWagEY2mizjfyAPcGesrJOcx/wcl0L9WnVrHFw==

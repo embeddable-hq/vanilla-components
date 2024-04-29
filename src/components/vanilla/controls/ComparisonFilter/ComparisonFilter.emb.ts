@@ -1,9 +1,9 @@
-import { Granularity, TimeRange, Value } from '@embeddable.com/core';
+import { Value } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 import { endOfDay, startOfDay } from 'date-fns';
 
-import TimeComparisonType from '../../../../types/TimeComparison.type.emb.js';
-import { timeRangeToUTC, timeRangeToLocal } from '../../../hooks/useTimezone.js';
+import TimeComparisonType from '../../../../types/TimeComparison.type.emb';
+import { timeRangeToUTC } from '../../../hooks/useTimezone';
 import Component from './index';
 
 export const meta = {
