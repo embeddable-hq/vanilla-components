@@ -132,8 +132,8 @@ export default (props: Props) => {
           className={`outline-none bg-transparent leading-9 h-9 border-0 px-3 w-full cursor-pointer text-sm ${
             focus || !value ? '' : 'opacity-0'
           }`}
-          // hotfix > weird layout when at the right side of canvas
-          style={{ width: '100%', height: '100%' }}
+          // Chrome issue: Interactive elements inherit props on shadowRoot on click
+          style={{ minWidth: 0 }}
         />
 
         {!!value && (

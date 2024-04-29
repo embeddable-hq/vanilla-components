@@ -114,8 +114,8 @@ export default (props: Props) => {
             onFocus={() => setFocus(true)}
             onBlur={() => setTriggerBlur(true)}
             className="absolute left-0 top-0 h-full w-full opacity-0 cursor-pointer"
-            // hotfix > weird layout when at the right side of canvas
-            style={{ width: '100%', height: '100%' }}
+            // Chrome issue: Interactive elements inherit props on shadowRoot on click
+            style={{ minWidth: 0 }}
           />
           <CalendarIcon className="mr-2 hidden sm:block" />
           {!props.hideDate && (
