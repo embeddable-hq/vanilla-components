@@ -24,12 +24,18 @@ cubes:
     measures:
       - name: count
         type: count
+
       - name: sum
         type: sum
         sql: number
+
       - name: avg
         type: avg
         sql: number
+        
+      - name: test_float
+        sql: "10.0 / {count}"
+        type: number
         
     pre_aggregations:
     # Pre-aggregation definitions go here.

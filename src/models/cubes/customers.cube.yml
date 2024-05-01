@@ -39,10 +39,6 @@ cubes:
         type: count
         title: '# of customers'
 
-      - name: test_float
-        sql: "10.0 / {count}"
-        type: number
-
     joins:
       - name: orders # the name of the data model to join to (not the table)
         sql: '{CUBE}.id = {orders}.customer_id'
