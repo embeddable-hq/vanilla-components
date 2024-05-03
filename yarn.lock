@@ -345,13 +345,15 @@
     "@cubejs-backend/shared" "0.33.20"
     source-map-support "^0.5.21"
 
-"@embeddable.com/core@^2.5.5":
+"@embeddable.com/core@*", "@embeddable.com/core@^2.5.5":
   version "2.5.5"
-  resolved "file:../embeddable-sdk/packages/core"
+  resolved "https://registry.npmjs.org/@embeddable.com/core/-/core-2.5.5.tgz"
+  integrity sha512-UXNNq21YQoWg9ciEwzv/M9tmHClzRytCelYArmc+WMorpaPjBDrLbsWC1jYCstxI15uC/3hjlwPdnb+VdD+3vw==
 
 "@embeddable.com/react@^2.5.5":
   version "2.5.5"
-  resolved "file:../embeddable-sdk/packages/react"
+  resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.5.5.tgz"
+  integrity sha512-XmCvcRP4Ry61UJXMLHkXEpH180X6MHDrBWwQcRHtgaIRQ0pLSfIWnuco1TEHtX1vHu6Sfk9Q7DwAY1lJm/ADiA==
   dependencies:
     "@embeddable.com/core" "*"
 
