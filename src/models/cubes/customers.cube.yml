@@ -1,6 +1,7 @@
 cubes:
   - name: customers
     title: My customers
+    data_source: default
     sql_table: public.customers
 
     # sql: >
