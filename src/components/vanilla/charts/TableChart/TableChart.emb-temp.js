@@ -1,4 +1,5 @@
-import { isDimension, isMeasure, loadData } from "@embeddable.com/core";
+import {SortDirectionType} from '../../../../types/SortDirection.type.emb'
+
 export const meta = {
   name: "TableChart",
   label: "Chart: Table",

@@ -55,7 +55,7 @@ export default (props: Props) => {
 
       clearTimeout(debounce);
 
-      debounce = window.setTimeout(() => {
+      debounce = window && window.setTimeout(() => {
         setServerSearch((s) => ({ ...s, [props.searchProperty || 'search']: newSearch }));
       }, 500);
     },

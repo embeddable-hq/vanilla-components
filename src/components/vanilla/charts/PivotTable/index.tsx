@@ -1,8 +1,9 @@
-/* eslint-disable no-prototype-builtins */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { DataResponse, Dimension, Measure } from '@embeddable.com/core';
 import * as WebDataRocks from '@webdatarocks/react-webdatarocks';
 import '@webdatarocks/webdatarocks/webdatarocks.min.css';
-import { maxBy } from 'lodash';
+import _ from 'lodash';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import Container from '../../Container';
@@ -28,7 +29,7 @@ export default (props: Props) => {
     if (!pivot) return;
 
     if (!showBars) {
-      pivot.customizeCell(function (cell, data) {
+      pivot.customizeCell(function (cell: any, data: any) {
         if (
           data &&
           data.hierarchy &&
@@ -39,21 +40,21 @@ export default (props: Props) => {
         }
       });
     } else {
-      pivot.customizeCell(function (cell, data) {
-        pivot.getData({}, (allData) => {
+      pivot.customizeCell(function (cell: any, data: any) {
+        pivot.getData({}, (allData: any) => {
           const cellCaption = data && data.rows && data.rows[0] && data?.rows[0]?.caption;
 
           const columnCaption =
             data && data.columns && data.columns[0] && data?.columns[0]?.caption;
 
           const allValuesToColumnCaption = allData.data.filter(
-            (row) => row['c0'] === columnCaption && !!row['r0'] && !!row['v0']
+            (row: any) => row['c0'] === columnCaption && !!row['r0'] && !!row['v0']
           );
 
-          const maxValueObject = maxBy(allValuesToColumnCaption, 'v0');
+          const maxValueObject: any = _.maxBy(allValuesToColumnCaption, 'v0');
 
           const cellValue = parseInt(cell.text || 0);
-          const maxValue = maxValueObject?.v0 || 0;
+          const maxValue =  maxValueObject?.v0 || 0;
 
           // Calculate the bar length as a percentage of the column's max value
           const barLength = (cellValue / maxValue) * 100;

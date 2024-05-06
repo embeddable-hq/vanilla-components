@@ -35,7 +35,7 @@ export default (props: Props) => {
             if (timeout) {
               clearTimeout(timeout);
             }
-            timeout = window.setTimeout(() => {
+            timeout =window && window.setTimeout(() => {
               props.onChange(e.target.value);
             }, 1000);
           }}
