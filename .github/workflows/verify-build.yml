@@ -12,11 +12,11 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest]
-        node_version: [20.x]
+        node_version: [18, 19, 20]
 
     steps:
-      - name: Verify build on ${{ matrix.os }}
-        run: echo "Verifying build on ${{ matrix.os }}"
+      - name: Verify build on ${{ matrix.os }} and Node.js ${{ matrix.node_version }}
+        run: echo "Verifying build on ${{ matrix.os }} and Node.js ${{ matrix.node_version }}"
 
       - name: Checkout main branch
         uses: actions/checkout@v2
