@@ -1,5 +1,6 @@
 cubes:
   - name: orders
+    data_source: default
     sql_table: public.orders
 
     dimensions:

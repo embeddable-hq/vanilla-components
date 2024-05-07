@@ -1,4 +1,4 @@
-import { DataResponse } from '@embeddable.com/core';
+import { DataResponse, Dimension } from '@embeddable.com/core';
 import {
   BarElement,
   CategoryScale,
@@ -16,7 +16,7 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
-import format from '../../../util/format';
+import formatValue from '../../../util/format';
 import getBarChartOptions from '../../../util/getBarChartOptions';
 import Container from '../../Container';
 
@@ -40,10 +40,7 @@ ChartJS.defaults.plugins.tooltip.enabled = true;
 type Props = {
   results: DataResponse;
   title: string;
-  xAxis: {
-    name: string;
-    meta?: object;
-  };
+  xAxis: Dimension;
   metrics: { name: string; title: string }[];
 };
 
@@ -71,7 +68,7 @@ function chartData(props: Props): ChartData<'bar'> {
   const labels = [
     ...new Set(
       results?.data?.map((d: { [p: string]: string }) =>
-        format(d[xAxis?.name || ''], { truncate: 15, meta: xAxis.meta })
+        formatValue(d[xAxis?.name || ''], { truncate: 15, meta: xAxis.meta })
       )
     )
   ] as string[];
@@ -86,7 +83,7 @@ function chartData(props: Props): ChartData<'bar'> {
         minBarLength: 0,
         borderRadius: 6,
         label: metric.title,
-        data: results?.data?.map((d) => parseInt(d[metric.name])) || [],
+        data: results?.data?.map((d) => parseFloat(d[metric.name])) || [],
         backgroundColor: COLORS[i % COLORS.length]
       })) || []
   };

@@ -141,3 +141,28 @@
   visibility: hidden;
   width: 0;
 }
+
+.multiSelectContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.multiselectItem {
+  margin-left: 4px;
+  background: #f1f1f1;
+  cursor: pointer;
+  border-radius: 100px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  max-width: 150px;
+  margin: 0px 4px 4px 0px;
+  justify-content: center;
+}
+
+.multiSelectInner {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
