@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest]
+        node_version: [20.x]
 
     steps:
       - name: Verify build on ${{ matrix.os }}
@@ -23,17 +24,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 20.x
+          node-version: ${{ matrix.node_version }}
 
       - name: Install dependencies
         run: npm i
 
       - name: Build embeddable
         run: npm run embeddable:build
-
-      - name: Check for errors
-        run: |
-          if [ $? -ne 0 ]; then
-            echo "Error found during build process"
-            exit 1
-          fi
