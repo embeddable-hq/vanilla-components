@@ -33,10 +33,13 @@ jobs:
         run: npm run embeddable:build
 
       - name: Send Slack notification on failure
-        uses: rtCamp/action-slack-notify@v2
-        if: ${{ failure() }}
+        uses: ravsamhq/notify-slack-action@v2
+        if: always()
         with:
           status: ${{ job.status }}
-          notification_title: "Vanilla Components Build Failed for ${{ matrix.os }} and Node.js ${{ matrix.node_version }}"
+          notify_when: 'failure'
+          notification_title: "Vanilla Components build {status_message} for ${{ matrix.os }} and Node.js ${{ matrix.node_version }}"
+          message_format: '{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>'
+          footer: 'Linked to Repo <{repo_url}|{repo}>'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
