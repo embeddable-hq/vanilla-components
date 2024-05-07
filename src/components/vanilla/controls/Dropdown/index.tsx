@@ -11,8 +11,6 @@ import React, {
 } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-
-
 import Container from '../../Container';
 import Spinner from '../../Spinner';
 import { ChevronDown, ClearIcon } from '../../icons';
@@ -25,8 +23,9 @@ export type Props = {
   inputClassName?: string;
   onChange: (v: string) => void;
   searchProperty?: string;
+  minDropdownWidth?: number;
   property?: { name: string; title: string; nativeType: string; __type__: string };
-  title: string;
+  title?: string;
   defaultValue?: string;
   placeholder?: string;
   ds?: { embeddableId: string; datasetId: string; variableValues: Record };
@@ -98,11 +97,14 @@ export default (props: Props) => {
               setTriggerBlur(false);
               set(o[props.property?.name || ''] || '');
             }}
-            className={`min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
+            className={`flex items-center min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
               value === o[props.property?.name || ''] ? 'bg-black/5' : ''
             } whitespace-nowrap overflow-hidden text-ellipsis`}
           >
             {o[props.property?.name || '']}
+            {o.note && (
+              <span className="font-normal ml-auto pl-3 text-xs opacity-70">{o.note}</span>
+            )}
           </div>
         );
 
@@ -115,7 +117,7 @@ export default (props: Props) => {
     <Container title={props.title}>
       <div
         className={twMerge(
-          'relative rounded-xl w-full h-10 border border-[#DADCE1] flex items-center',
+          'relative rounded-xl w-full min-w-[50px] h-10 border border-[#DADCE1] flex items-center',
           props.className
         )}
       >
@@ -127,12 +129,14 @@ export default (props: Props) => {
           onFocus={() => setFocus(true)}
           onBlur={() => setTriggerBlur(true)}
           onChange={(e) => performSearch(e.target.value)}
-          className="outline-none bg-transparent leading-9 h-9 border-0 px-3 w-full cursor-pointer text-sm"
+          className={`outline-none bg-transparent leading-9 h-9 border-0 px-3 w-full cursor-pointer text-sm ${
+            focus || !value ? '' : 'opacity-0'
+          }`}
         />
 
         {!!value && (
           <span
-            className={`absolute w-[calc(100%-2rem)] rounded-xl left-3 top-1 h-8 leading-8 block pointer-events-none bg-white text-sm ${
+            className={`absolute w-[calc(100%-2rem)] whitespace-nowrap overflow-hidden truncate rounded-xl left-3 top-1 h-8 leading-8 block pointer-events-none text-sm ${
               focus ? 'hidden' : ''
             }`}
           >
@@ -141,7 +145,10 @@ export default (props: Props) => {
         )}
 
         {focus && (
-          <div className="flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[#DADCE1] w-full overflow-y-auto overflow-x-hidden max-h-[400px]">
+          <div
+            style={{ minWidth: props.minDropdownWidth }}
+            className="flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[#DADCE1] w-full overflow-y-auto overflow-x-hidden max-h-[400px]"
+          >
             {list}
             {list?.length === 0 && !!search && (
               <div className="px-3 py-2 text-black/50 italic cursor-pointer">No results</div>

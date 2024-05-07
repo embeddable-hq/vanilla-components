@@ -1,4 +1,3 @@
-import { DataResponse, Dimension, Granularity } from '@embeddable.com/core';
 import {
   CategoryScale,
   ChartData,
@@ -9,21 +8,20 @@ import {
   LineElement,
   LinearScale,
   PointElement,
+  TimeScale,
   Title,
   Tooltip
 } from 'chart.js';
 import 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { parseJSON } from 'date-fns';
 import React, { useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
-import { parseTime } from '../../../hooks/useTimezone';
-import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE, DATE_DISPLAY_FORMATS } from '../../../constants';
+import { EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE, DATE_DISPLAY_FORMATS } from '../../../constants';
 import useTimeseries from '../../../hooks/useTimeseries';
 import formatValue from '../../../util/format';
 import formatDateTooltips from '../../../util/formatDateTooltips'
-import hexToRgb from '../../../util/hexToRgb';
+import getStackedChartData, { Props } from '../../../util/getStackedChartData';
 import Container from '../../Container';
 
 ChartJS.register(
@@ -35,7 +33,8 @@ ChartJS.register(
   Tooltip,
   Legend,
   Filler,
-  ChartDataLabels
+  ChartDataLabels,
+  TimeScale
 );
 
 ChartJS.defaults.font.size = parseInt(SMALL_FONT_SIZE);
@@ -43,56 +42,32 @@ ChartJS.defaults.color = LIGHT_FONT;
 ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
 
-type Props = {
-  results: DataResponse;
-  title: string;
-  dps?: number;
-  xAxis: Dimension;
-  metrics: { name: string; title: string }[];
-  applyFill: boolean;
-  showLabels: boolean;
-  showLegend: boolean;
-  yAxisMin: number;
-  yAxisTitle: string;
-  xAxisTitle: string;
-  granularity: Granularity;
-};
-
-type Record = { [p: string]: string };
-
 export default (props: Props) => {
-  const { results, title } = props;
   const { fillGaps } = useTimeseries(props);
 
-  const chartData: ChartData<'line'> = useMemo(() => {
-    const { results, metrics, applyFill } = props;
+  const datasetsMeta = {
+    fill: true,
+    cubicInterpolationMode: 'monotone' as const
+  };
 
-    const data = results?.data?.reduce(fillGaps, []);
+  const chartData = useMemo(() => {
+    const data = props?.results?.data?.reduce(fillGaps, []);
 
-    return {
-      datasets:
-        metrics?.map((yAxis, i) => ({
-          label: yAxis.title,
-          data:
-            data?.map((d: Record) => ({
-              y: parseFloat(d[yAxis.name] || '0'),
-              x: parseTime(d[props.xAxis?.name || '']) 
-            })) || [],
-          backgroundColor: applyFill
-            ? hexToRgb(COLORS[i % COLORS.length], 0.2)
-            : COLORS[i % COLORS.length],
-          borderColor: COLORS[i % COLORS.length],
-          pointRadius: 0,
-          tension: 0.1,
-          pointHoverRadius: 3,
-          fill: applyFill,
-          cubicInterpolationMode: 'monotone' as const
-        })) || []
-    };
+    return getStackedChartData(
+      {
+        ...props,
+        results: {
+          ...props.results,
+          data
+        }
+      },
+      datasetsMeta,
+      { chartType: 'stackedAreaChart' }
+    ) as ChartData<'line', number[], unknown>;
   }, [props]);
 
-  const chartOptions: ChartOptions<'line'> = useMemo(
-    () => ({
+  const chartOptions: ChartOptions<'line'> = useMemo(() => {
+    return {
       responsive: true,
       maintainAspectRatio: false,
       interaction: {
@@ -109,13 +84,16 @@ export default (props: Props) => {
       },
       scales: {
         y: {
+          stacked: true,
           min: props.yAxisMin,
           grace: '0%', // Add percent to add numbers on the y-axis above and below the max and min values
           grid: {
             display: false
           },
           ticks: {
-            precision: 0
+            callback: function (value) {
+              return props.displayAsPercentage ? `${value}%` : value;
+            }
           },
           title: {
             display: !!props.yAxisTitle,
@@ -151,14 +129,6 @@ export default (props: Props) => {
             boxHeight: 8
           }
         },
-        datalabels: {
-          align: 'top',
-          display: props.showLabels ? 'auto' : false,
-          formatter: (v) => {
-            const val = v ? formatValue(v.y, { type: 'number', dps: props.dps }) : null;
-            return val;
-          }
-        },
         tooltip: {
           //https://www.chartjs.org/docs/latest/configuration/tooltip.html
           callbacks: {
@@ -169,19 +139,32 @@ export default (props: Props) => {
                   type: 'number',
                   dps: props.dps
                 })}`;
+                if (props.displayAsPercentage) {
+                  label += '%';
+                }
               }
               return label;
             },
             title: (lines: any[]) => formatDateTooltips(lines, props.granularity)
           }
+        },
+        datalabels: {
+          align: 'top',
+          display: props.showLabels ? 'auto' : false,
+          formatter: (v) => {
+            let val = v ? formatValue(v, { type: 'number', dps: props.dps }) : null;
+            if (props.displayAsPercentage) {
+              val += '%';
+            }
+            return val;
+          }
         }
       }
-    }),
-    [props]
-  );
+    };
+  }, [props]);
 
   return (
-    <Container className="overflow-y-hidden" title={title} results={results}>
+    <Container className="overflow-y-hidden" title={props.title} results={props.results}>
       <Line height="100%" options={chartOptions} data={chartData} />
     </Container>
   );

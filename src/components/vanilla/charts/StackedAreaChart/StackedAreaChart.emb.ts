@@ -1,13 +1,11 @@
 import { loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
-
-
 import Component from './index';
 
 export const meta = {
-  name: 'LineChart',
-  label: 'Chart: Line (time-series)',
+  name: 'StackedAreaChart',
+  label: 'Chart: Stacked Area',
   classNames: ['inside-card'],
   inputs: [
     {
@@ -20,9 +18,7 @@ export const meta = {
     {
       name: 'ds',
       type: 'dataset',
-      label: 'Dataset',
-      description: 'Dataset',
-      defaultValue: false,
+      label: 'Dataset to display',
       category: 'Configure chart'
     },
     {
@@ -42,40 +38,50 @@ export const meta = {
       category: 'Configure chart'
     },
     {
-      name: 'metrics',
-      type: 'measure',
-      array: true,
-      label: 'Metrics',
+      name: 'segment',
+      type: 'dimension',
+      label: 'Segment',
       config: {
         dataset: 'ds'
       },
       category: 'Configure chart'
     },
     {
-      name: 'xAxisTitle',
-      type: 'string',
-      label: 'X-Axis Title',
+      name: 'metric',
+      type: 'measure',
+      label: 'Metric',
+      config: {
+        dataset: 'ds'
+      },
+      category: 'Configure chart'
+    },
+    {
+      name: 'showLegend',
+      type: 'boolean',
+      label: 'Show legend',
+      defaultValue: true,
       category: 'Chart settings'
     },
     {
-      name: 'yAxisTitle',
-      type: 'string',
-      label: 'Y-Axis Title',
+      name: 'maxSegments',
+      type: 'number',
+      label: 'Max Legend Items',
+      defaultValue: 8,
       category: 'Chart settings'
     },
     {
       name: 'showLabels',
       type: 'boolean',
       label: 'Show Labels',
-      category: 'Chart settings',
-      defaultValue: false
+      defaultValue: false,
+      category: 'Chart settings'
     },
     {
-      name: 'applyFill',
+      name: 'displayAsPercentage',
       type: 'boolean',
-      label: 'Color fill space under line',
-      category: 'Chart settings',
-      defaultValue: false
+      label: 'Display as Percentages',
+      defaultValue: false,
+      category: 'Chart settings'
     },
     {
       name: 'yAxisMin',
@@ -84,18 +90,11 @@ export const meta = {
       category: 'Chart settings'
     },
     {
-      name: 'showLegend',
-      type: 'boolean',
-      label: 'Show Legend',
-      category: 'Chart settings',
-      defaultValue: true
-    },
-    {
       name: 'dps',
       type: 'number',
       label: 'Decimal Places',
       category: 'Formatting'
-    },
+    }
   ]
 } as const satisfies EmbeddedComponentMeta;
 
@@ -111,7 +110,8 @@ export default defineComponent(Component, meta, {
             granularity: inputs.granularity
           }
         ],
-        measures: inputs.metrics
+        dimensions: [inputs.segment],
+        measures: [inputs.metric]
       })
     };
   }

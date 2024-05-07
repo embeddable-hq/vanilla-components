@@ -2,7 +2,7 @@ import { DataResponse, DimensionOrMeasure, OrderBy, OrderDirection } from '@embe
 import { useEmbeddableState } from '@embeddable.com/react';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import format from '../../../util/format';
+import formatValue from '../../../util/format';
 import Container from '../../Container';
 import { ChevronLeft, ChevronRight, SortDown, SortUp } from '../../icons';
 
@@ -190,10 +190,10 @@ export default (props: Props) => {
 
 function formatColumn(text: string | number, column: DimensionOrMeasure) {
   if (typeof text === 'number' || column.nativeType === 'number') {
-    return format(`${text}`, { type: 'number', meta: column?.meta });
+    return formatValue(`${text}`, { type: 'number', meta: column?.meta });
   }
 
-  if (text && column.nativeType === 'time') return format(text, 'date');
+  if (text && column.nativeType === 'time') return formatValue(text, 'date');
 
-  return format(text);
+  return formatValue(text);
 }
