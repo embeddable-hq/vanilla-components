@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataResponse, Dimension, Measure } from '@embeddable.com/core';
-import '@webdatarocks/webdatarocks/webdatarocks.min.css';
 import _ from 'lodash';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import Container from '../../Container';
+import '../../webdatarocks.min.css';
 
 export type Props = {
   tableData: DataResponse;
@@ -42,7 +42,8 @@ export default (props: Props) => {
           data.hierarchy.uniqueName == 'orders.count' &&
           data.type == 'value'
         ) {
-          return cell.text;
+          const html = `<p style="text-align:left">${cell.text || 0}</p>`;
+          return (cell.text = html);
         }
       });
     } else {
@@ -77,7 +78,9 @@ export default (props: Props) => {
                             </div>
                           
                           </div>`;
-            return (cell.text = cell.text ? html : '0');
+            return (cell.text = cell.text
+              ? html
+              : `<p style="text-align:left">${cell.text || 0}</p>`);
           }
         });
       });
@@ -122,6 +125,22 @@ export default (props: Props) => {
   //   });
   // }, [columns, measures, rows, tableData?.data]);
 
+  useEffect(() => {
+    // const pivot = ref.current?.webdatarocks;
+    // if (!pivot) return;
+    // pivot.on('reportcomplete', function () {
+    //   pivot.expandAllData(true);
+    // });
+    // pivot.on('cellclick', function (cell) {
+    //   console.log('cell', cell);
+    //   const rowType = cell.type;
+    //   if (rowType === 'header') {
+    //     return;
+    //     // Check if the row is collapsed
+    //   }
+    // });
+  });
+
   const data = useMemo(() => {
     return {
       container: '#wdr-component',
@@ -133,15 +152,36 @@ export default (props: Props) => {
           uniqueName: measure.name,
           aggregation: 'sum',
           caption: measure.title
-        }))
+        })),
+        expands: {
+          expandAll: true
+        },
+        drills: {
+          drillAll: true
+        }
       },
+
+      width: '100%',
+      height: '100%',
       options: {
         toolbar: false,
         showHeaders: false,
         configuratorButton: false,
+        configuratorActive: false,
+        showAggregations: false,
+        showCalculatedValuesButton: false,
+        drillThrough: false,
+        showDrillThroughConfigurator: false,
+        sorting: 'off',
         grid: {
           showGrandTotals: 'off',
-          type: 'classic'
+          showTotals: 'off',
+          type: 'classic',
+          showFilter: false,
+          showHeaders: false,
+          showHierarchies: true,
+          showReportFiltersArea: true,
+          showHierarchyCaptions: true
         }
       }
     };
@@ -152,7 +192,7 @@ export default (props: Props) => {
 
   return (
     <>
-      <Container className="overflow-y-scroll" title={props.title} results={props.tableData}>
+      <Container className="overflow-y-scroll h-auto" title={props.title} results={props.tableData}>
         <div className="flex flex-row w-full justify-end items-center pb-2 px-5">
           <label className="switch">
             <input

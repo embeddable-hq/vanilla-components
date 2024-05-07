@@ -192,6 +192,7 @@
   font-weight: bold;
   left: 0px !important;
   position: absolute;
+  rotate: 270deg;
 }
 
 .wdr-filter-icon:before {
@@ -310,4 +311,31 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.wdr-header {
+  background-color: #fff !important;
+  border-bottom: 1px solid #ddd !important;
+  color: #000 !important;
+}
+
+.wdr-filters {
+  background-color: #fff !important;
+  border-bottom: 1px solid #ddd !important;
+  color: #000 !important;
+}
+
+#wdr-pivot-view .wdr-grid-layout div.wdr-cell {
+  border: 1px solid #ddd;
+}
+#wdr-pivot-view .wdr-grid-layout #wdr-cols-filter {
+  border-right: 1px solid #ddd;
+}
+
+#wdr-pivot-view .wdr-grid-layout div.wdr-scroll-pane {
+  -ms-overflow-style: none !important; /* Internet Explorer 10+ */
+  scrollbar-width: none !important; /* Firefox */
+}
+#wdr-pivot-view .wdr-grid-layout div.wdr-scroll-pane::-webkit-scrollbar {
+  display: none !important; /* Safari and Chrome */
 }
