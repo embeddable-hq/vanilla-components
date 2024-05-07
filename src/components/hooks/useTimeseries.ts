@@ -11,7 +11,6 @@ import {
   parseJSON
 } from 'date-fns';
 import { useCallback } from 'react';
-import { parseTime } from './useTimezone'
 
 type Record = { [p: string]: string };
 

@@ -11,8 +11,8 @@ import React, {
 } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import checkbox from '../../../icons/checkbox.svg';
-import checkboxEmpty from '../../../icons/checkbox_empty.svg';
+// import checkbox from '../../../icons/checkbox.svg';
+// import checkboxEmpty from '../../../icons/checkbox_empty.svg';
 import Container from '../../Container';
 import Spinner from '../../Spinner';
 import { ChevronDown, ClearIcon } from '../../icons';
@@ -55,9 +55,11 @@ export default (props: Props) => {
 
       clearTimeout(debounce);
 
-      debounce =window && window.setTimeout(() => {
-        setServerSearch((s) => ({ ...s, [props.searchProperty || 'search']: newSearch }));
-      }, 500);
+      debounce =
+        window &&
+        window.setTimeout(() => {
+          setServerSearch((s) => ({ ...s, [props.searchProperty || 'search']: newSearch }));
+        }, 500);
     },
     [setSearch, setServerSearch, props.searchProperty]
   );
@@ -112,7 +114,11 @@ export default (props: Props) => {
             } whitespace-nowrap overflow-hidden text-ellipsis`}
           >
             <img
-              src={value?.includes(o[props.property?.name || '']) ? checkbox : checkboxEmpty}
+              src={
+                value?.includes(o[props.property?.name || ''])
+                  ? '../../../icons/checkbox.svg'
+                  : '../../../icons/checkbox_empty.svg'
+              }
               alt=""
             />
             {o[props.property?.name || '']}

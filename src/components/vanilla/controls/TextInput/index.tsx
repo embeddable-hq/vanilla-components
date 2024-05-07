@@ -20,15 +20,17 @@ export default (props: Props) => {
     setValue(props.value);
   }, [props.value]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
     if (timeout) {
       clearTimeout(timeout);
     }
-    timeout = window && window.setTimeout(() => {
-      props.onChange(e.target.value);
-    }, 1000);
-  }
+    timeout =
+      window &&
+      window.setTimeout(() => {
+        props.onChange(e.target.value);
+      }, 1000);
+  };
 
   return (
     <Container title={props.title}>

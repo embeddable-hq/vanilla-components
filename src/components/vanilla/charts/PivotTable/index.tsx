@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { DataResponse, Dimension, Measure } from '@embeddable.com/core';
-import * as WebDataRocks from '@webdatarocks/react-webdatarocks';
 import '@webdatarocks/webdatarocks/webdatarocks.min.css';
 import _ from 'lodash';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -18,10 +16,18 @@ export type Props = {
 
 export default (props: Props) => {
   const { columns, tableData, rows, measures } = props;
-
+  const [webdatarocks, setWebdatarocks] = useState<any>(null);
   const [showBars, setShowBars] = useState(false);
 
-  const ref: React.RefObject<WebDataRocks.Pivot> = React.useRef<WebDataRocks.Pivot>(null);
+  const ref: React.RefObject<any> = React.useRef<any>(null);
+
+  useEffect(() => {
+    const loadDynamic = async () => {
+      const { Pivot } = await import('@webdatarocks/react-webdatarocks');
+      setWebdatarocks({ Pivot });
+    };
+    loadDynamic();
+  }, []);
 
   useEffect(() => {
     if (!tableData?.data) return;
@@ -42,8 +48,6 @@ export default (props: Props) => {
     } else {
       pivot.customizeCell(function (cell: any, data: any) {
         pivot.getData({}, (allData: any) => {
-          const cellCaption = data && data.rows && data.rows[0] && data?.rows[0]?.caption;
-
           const columnCaption =
             data && data.columns && data.columns[0] && data?.columns[0]?.caption;
 
@@ -54,12 +58,10 @@ export default (props: Props) => {
           const maxValueObject: any = _.maxBy(allValuesToColumnCaption, 'v0');
 
           const cellValue = parseInt(cell.text || 0);
-          const maxValue =  maxValueObject?.v0 || 0;
+          const maxValue = maxValueObject?.v0 || 0;
 
           // Calculate the bar length as a percentage of the column's max value
           const barLength = (cellValue / maxValue) * 100;
-
-          console.log('barLength', barLength);
 
           if (
             data &&
@@ -145,6 +147,9 @@ export default (props: Props) => {
     };
   }, [tableData, rows, columns, measures]);
 
+  const WebDataRocks = webdatarocks?.Pivot;
+  console.log('tableData', WebDataRocks);
+
   return (
     <>
       <Container className="overflow-y-scroll" title={props.title} results={props.tableData}>
@@ -162,12 +167,7 @@ export default (props: Props) => {
         </div>
 
         {tableData.isLoading === false && (
-          <WebDataRocks.Pivot
-            ref={ref}
-            width="100%"
-            report={data}
-            className=""
-          ></WebDataRocks.Pivot>
+          <WebDataRocks ref={ref} width="100%" report={data} className=""></WebDataRocks>
         )}
       </Container>
     </>
