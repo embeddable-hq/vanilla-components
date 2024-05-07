@@ -14,8 +14,8 @@ jobs:
         os: [ubuntu-latest, macOS-latest, windows-latest]
 
     steps:
-      - name: Test on ${{ matrix.os }}
-        run: echo "Testing on ${{ matrix.os }}"
+      - name: Verify build on ${{ matrix.os }}
+        run: echo "Verifying build on ${{ matrix.os }}"
 
       - name: Checkout main branch
         uses: actions/checkout@v2
