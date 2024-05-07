@@ -1,5 +1,6 @@
 cubes:
   - name: products
+    data_source: default
     sql_table: public.products
 
     dimensions:

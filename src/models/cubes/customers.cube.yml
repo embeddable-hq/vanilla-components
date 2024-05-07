@@ -1,6 +1,7 @@
 cubes:
   - name: customers
     title: My customers
+    data_source: default
     sql_table: public.customers
 
     # sql: >
@@ -32,6 +33,7 @@ cubes:
       #   title: "Full name"
       #   sql: CONCAT(first_name, ' ', last_name)
       #   type: string
+
 
     measures:
       - name: count
