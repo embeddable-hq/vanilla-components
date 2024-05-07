@@ -45,14 +45,13 @@ type Props = {
 };
 
 export default (props: Props) => {
-  const { results, title, enableDownloadAsCSV } = props;
+  const { results, title } = props;
 
   return (
     <Container
+      {...props}
       className="overflow-y-hidden"
-      enableDownloadAsCSV={enableDownloadAsCSV}
-      title={title}
-      results={results}>
+      >
       <Bar
         height="100%"
         options={getBarChartOptions({ ...props, stacked: false })}

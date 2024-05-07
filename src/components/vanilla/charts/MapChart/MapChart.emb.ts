@@ -8,6 +8,7 @@ import Component from './index';
 export const meta = {
   name: 'MapChart',
   label: 'Chart: Map',
+  classNames: ['inside-card'],
   defaultHeight: 650,
   defaultWidth: 1130,
   inputs: [
@@ -43,6 +44,13 @@ export const meta = {
         dataset: 'ds'
       },
       category: 'Configure chart'
+    },
+    {
+      name: 'enableDownloadAsCSV',
+      type: 'boolean',
+      label: 'Show download as CSV',
+      category: 'Export options',
+      defaultValue: true,
     }
   ]
 } as const satisfies EmbeddedComponentMeta;
@@ -51,7 +59,7 @@ export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
     return {
       ...inputs,
-      db: loadData({
+      results: loadData({
         from: inputs.ds,
         dimensions: [inputs.segments],
         measures: [inputs.metric]

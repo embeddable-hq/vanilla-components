@@ -59,6 +59,13 @@ export const meta = {
       defaultValue: 'Ascending',
       label: 'Default Sort Direction',
       category: 'Chart settings'
+    },
+    {
+      name: 'enableDownloadAsCSV',
+      type: 'boolean',
+      label: 'Show download as CSV',
+      category: 'Export options',
+      defaultValue: true,
     }
   ]
 } as const satisfies EmbeddedComponentMeta;
@@ -93,7 +100,7 @@ export default defineComponent<
       ...inputs,
       limit,
       defaultSort,
-      tableData: loadData({
+      results: loadData({
         from: inputs.ds,
         dimensions: (inputs.columns?.filter((c) => isDimension(c)) as Dimension[]) || [],
         measures: (inputs.columns?.filter((c) => isMeasure(c)) as Measure[]) || [],
