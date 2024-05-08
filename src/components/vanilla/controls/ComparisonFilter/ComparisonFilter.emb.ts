@@ -29,7 +29,7 @@ export const meta = {
     {
       name: 'defaultPeriod',
       type: 'timeRange',
-      label: 'Default period',
+      label: 'Primary date range',
       category: 'Configuration'
     },
     {
@@ -83,14 +83,14 @@ export const meta = {
   ],
   variables: [
     {
-      name: 'period',
+      name: 'primary date range',
       type: 'timeRange',
       inputs: ['defaultPeriod'],
       defaultValue: { relativeTimeString: 'last 30 days' },
       events: [{ name: 'onChangePeriod', property: 'value' }]
     },
     {
-      name: 'comparison',
+      name: 'comparison date range',
       type: 'timeRange',
       defaultValue: Value.noFilter(),
       events: [{ name: 'onChangeComparison', property: 'value' }]
