@@ -1,5 +1,5 @@
 cubes:
-  - name: customers
+  - name: customers1
     title: My customers
     sql_table: public.customers
 
