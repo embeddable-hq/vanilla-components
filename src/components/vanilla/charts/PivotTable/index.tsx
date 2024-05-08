@@ -4,7 +4,7 @@ import _ from 'lodash';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import Container from '../../Container';
-import '../../webdatarocks.min.css';
+import '../../webdatarocks.css';
 
 export type Props = {
   tableData: DataResponse;
@@ -18,6 +18,8 @@ export default (props: Props) => {
   const { columns, tableData, rows, measures } = props;
   const [webdatarocks, setWebdatarocks] = useState<any>(null);
   const [showBars, setShowBars] = useState(false);
+
+  console.log('tableData', tableData);
 
   const ref: React.RefObject<any> = React.useRef<any>(null);
 
@@ -174,8 +176,8 @@ export default (props: Props) => {
         showDrillThroughConfigurator: false,
         sorting: 'off',
         grid: {
-          showGrandTotals: 'off',
-          showTotals: 'off',
+          // showGrandTotals: 'off',
+          // showTotals: 'off',
           type: 'classic',
           showFilter: false,
           showHeaders: false,
@@ -188,7 +190,6 @@ export default (props: Props) => {
   }, [tableData, rows, columns, measures]);
 
   const WebDataRocks = webdatarocks?.Pivot;
-  console.log('tableData', WebDataRocks);
 
   return (
     <>
