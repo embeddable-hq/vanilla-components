@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
-import { twMerge } from 'tailwind-merge';
+import React from 'react';
 
-export default function DownloadButton({ show, data, prevData }: { show?: boolean; }) {
-  const [isPreparing, setIsPreparing] = useState(false);
+export default function DownloadButton({ show, data, prevData, title, preppingDownload, setpreppingDownload }: { show?: boolean; }) {
 
   if (!show) return;
 
-  
   function arrayToCsv(data){
     return data.map(row =>
       row
@@ -27,7 +24,7 @@ export default function DownloadButton({ show, data, prevData }: { show?: boolea
     pom.href = url;
     pom.setAttribute('download', filename);
     pom.click();
-    setIsPreparing(false)
+    setpreppingDownload(false)
   }
 
   function formatValue(v) {
@@ -38,7 +35,7 @@ export default function DownloadButton({ show, data, prevData }: { show?: boolea
   }
 
   function handleClick() {
-    setIsPreparing(true);
+    setpreppingDownload(true);
     const rows = [];
     const columns = Object.keys(data[0]);
     rows.push(columns.map(c => c)); //title row
@@ -55,10 +52,10 @@ export default function DownloadButton({ show, data, prevData }: { show?: boolea
   }
 
 
-  return (
+ return (
     <svg 
       onClick={handleClick}
-      className={`absolute right-2 top-2 z-1 ${isPreparing ? 'cursor-progress' : 'cursor-pointer'} opacity-50 hover:opacity-100`}
+      className={`absolute right-0 top-0 z-1 cursor-pointer hover:opacity-100 ${preppingDownload ? ' opacity-0' : 'opacity-50'}` }
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
@@ -72,6 +69,6 @@ export default function DownloadButton({ show, data, prevData }: { show?: boolea
             <rect width="24" height="24" fill="white"/>
           </clipPath>
         </defs>
-      </svg>
+    </svg>
   );
 }

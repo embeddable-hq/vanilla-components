@@ -1,5 +1,5 @@
 import { DataResponse } from '@embeddable.com/core';
-import React, { ReactNode, useRef } from 'react';
+import React, { ReactNode, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import useFont from '../hooks/useFont';
@@ -25,6 +25,7 @@ interface ContainerFullProps extends ContainerProps {
 export default ({ children, className, ...props }: ContainerFullProps) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, height] = useResize(ref);
+  const [preppingDownload, setpreppingDownload] = useState(false);
   const { isLoading, error, data } = props.results || {};
   const noData = props.results && !isLoading && !data?.length;
 
@@ -41,8 +42,22 @@ export default ({ children, className, ...props }: ContainerFullProps) => {
 
   return (
     <div className="h-full relative font-embeddable text-sm flex flex-col">
-      <Spinner show={isLoading} />
-      <DownloadButton data={data} prevData={props.prevResults?.data} show={props.enableDownloadAsCSV && !isLoading && data?.length > 0}/>
+
+      {(props.enableDownloadAsCSV) 
+        ? (
+          <div className={`${!props.title ? 'h-[40px] w-full' : ''}`}>
+            <DownloadButton
+              data={data}
+              prevData={props.prevResults?.data}
+              show={data?.length > 0 && !isLoading && !preppingDownload}
+              setpreppingDownload={setpreppingDownload}
+            />
+          </div>
+        )
+        : null
+      }
+
+      <Spinner show={isLoading || preppingDownload} />
       <Title title={props.title} />
       <div className={twMerge(`relative grow flex flex-col`, className || '')} ref={ref}>
         {!!height && (
