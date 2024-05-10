@@ -46,7 +46,6 @@ export const meta = {
       name: 'measures',
       type: 'measure',
       label: 'Measures',
-      array: true,
       config: {
         dataset: 'ds'
       },
@@ -62,7 +61,7 @@ export default defineComponent<Props, typeof meta>(Component, meta, {
       tableData: loadData({
         from: inputs.ds,
         dimensions: [...inputs.columns, ...inputs.rows],
-        measures: [...inputs.measures]
+        measures: [inputs.measures]
       })
     };
   }
