@@ -27,6 +27,7 @@
     "chartjs-adapter-date-fns": "^3.0.0",
     "chartjs-plugin-datalabels": "^2.2.0",
     "chrono-node": "^2.7.3",
+    "classnames": "^2.5.1",
     "d3-scale": "^4.0.2",
     "date-fns": "^2.30.0",
     "lodash": "^4.17.21",

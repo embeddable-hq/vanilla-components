@@ -2,6 +2,7 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataResponse, Dimension, Measure } from '@embeddable.com/core';
+import classNames from 'classnames';
 import { FileWarningIcon } from 'lucide-react';
 import Pivot from 'quick-pivot';
 import { useMemo } from 'react';
@@ -210,7 +211,11 @@ const PivotTable = ({ data, rowsToPivot, colsToPivot }: any) => {
                 `}
                   key={idx}
                 >
-                  <span className="text-overflow-dynamic-container w-[100px]">
+                  <span
+                    className={classNames('text-overflow-dynamic-container w-[100px]', {
+                      'w-[80px]': row.type === 'rowHeader' && idx === 0
+                    })}
+                  >
                     <span className="text-overflow-dynamic-ellipsis">{value}</span>
                   </span>
                 </td>
