@@ -31,6 +31,14 @@ This is a "Preview workspace" (local to you) that allows you make changes locall
 
 It opens a "Preview" workspace, that uses your local components and models.
 
+### Syncing this starter pack with your private repo
+
+We recommend cloning this repo and storing it privately where you keep your git repositories.
+
+You can then set up this repo as a [git remote](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes) so that you can merge in the latest changes (new components, functionality, etc.) whenever you need.
+
+Alternatively, if you'd prefer to integrate Embeddable's sdk directly into your existing codebase, take a look at [this repo](https://github.com/embeddable-hq/onboarding) for an example of a minimal setup.
+
 ### Debugging Data Models
 To test and debug your data models locally using Cube's data playground:
 
