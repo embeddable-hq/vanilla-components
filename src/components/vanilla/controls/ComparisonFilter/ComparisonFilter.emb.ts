@@ -23,13 +23,13 @@ export const meta = {
       name: 'defaultComparison',
       type: TimeComparisonType,
       label: 'Default comparison option',
-      defaultValue: 'No comparison',
+      defaultValue: 'Previous period',
       category: 'Configuration'
     },
     {
       name: 'defaultPeriod',
       type: 'timeRange',
-      label: 'Default period',
+      label: 'Primary date range',
       category: 'Configuration'
     },
     {
@@ -83,14 +83,14 @@ export const meta = {
   ],
   variables: [
     {
-      name: 'period',
+      name: 'primary date range',
       type: 'timeRange',
       inputs: ['defaultPeriod'],
-      defaultValue: Value.noFilter(),
+      defaultValue: { relativeTimeString: 'last 30 days' },
       events: [{ name: 'onChangePeriod', property: 'value' }]
     },
     {
-      name: 'comparison',
+      name: 'comparison date range',
       type: 'timeRange',
       defaultValue: Value.noFilter(),
       events: [{ name: 'onChangeComparison', property: 'value' }]
@@ -99,7 +99,7 @@ export const meta = {
       name: 'granularity',
       type: 'granularity',
       inputs: ['defaultGranularity'],
-      defaultValue: Value.noFilter(),
+      defaultValue: 'day',
       events: [{ name: 'onChangeGranularity', property: 'value' }]
     }
   ]

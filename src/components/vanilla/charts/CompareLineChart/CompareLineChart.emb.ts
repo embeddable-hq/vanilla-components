@@ -53,14 +53,14 @@ export const meta = {
     {
       name: 'timeFilter',
       type: 'timeRange',
-      label: 'Time Filter',
+      label: 'Primary date range',
       description: 'Date range',
       category: 'Chart settings'
     },
     {
       name: 'prevTimeFilter',
       type: 'timeRange',
-      label: 'Previous Time Filter',
+      label: 'Comparison date range',
       description: 'Date range',
       category: 'Chart settings'
     },
@@ -109,6 +109,13 @@ export const meta = {
       label: 'Decimal Places',
       category: 'Formatting'
     },
+    {
+      name: 'enableDownloadAsCSV',
+      type: 'boolean',
+      label: 'Show download as CSV',
+      category: 'Export options',
+      defaultValue: true,
+    }
   ]
 } as const satisfies EmbeddedComponentMeta;
 

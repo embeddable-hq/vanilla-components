@@ -78,6 +78,13 @@ export const meta = {
       type: 'number',
       label: 'Decimal Places',
       category: 'Formatting'
+    },
+    {
+      name: 'enableDownloadAsCSV',
+      type: 'boolean',
+      label: 'Show download as CSV',
+      category: 'Export options',
+      defaultValue: true,
     }
   ]
 } as const satisfies EmbeddedComponentMeta;
@@ -86,7 +93,7 @@ export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
     return {
       ...inputs,
-      value: loadData({
+      results: loadData({
         from: inputs.ds,
         measures: [inputs.metric],
         filters:
@@ -100,7 +107,7 @@ export default defineComponent(Component, meta, {
               ]
             : undefined
       }),
-      prevValue:
+      prevResults:
         inputs.timeProperty &&
         loadData({
           from: inputs.ds,

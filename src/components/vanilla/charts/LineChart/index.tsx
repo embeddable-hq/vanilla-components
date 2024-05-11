@@ -181,7 +181,9 @@ export default (props: Props) => {
   );
 
   return (
-    <Container className="overflow-y-hidden" title={title} results={results}>
+    <Container
+      {...props}
+      className="overflow-y-hidden">
       <Line height="100%" options={chartOptions} data={chartData} />
     </Container>
   );

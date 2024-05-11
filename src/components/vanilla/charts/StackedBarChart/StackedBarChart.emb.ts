@@ -88,6 +88,14 @@ export const meta = {
       type: 'number',
       label: 'Decimal Places',
       category: 'Formatting'
+    },
+    {
+
+      name: 'enableDownloadAsCSV',
+      type: 'boolean',
+      label: 'Show download as CSV',
+      category: 'Export options',
+      defaultValue: true,
     }
   ]
 } as const satisfies EmbeddedComponentMeta;
