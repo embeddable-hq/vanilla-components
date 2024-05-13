@@ -21,11 +21,27 @@ interface ContainerFullProps extends ContainerProps {
     className?: string;
 }
 
+const titlesByName = (props) => {
+  const results = {};
+  const extractTitle = input => {
+    if(['measure', 'dimension'].includes(input?.__type__)) {
+      results[input.name] = input.title;
+    }
+  }
+  for (const [key, value] of Object.entries(props)) {
+    if(Array.isArray(value)) {
+      value.forEach(extractTitle)
+    } else {
+      extractTitle(value);
+    }
+  }
+  return results;
+}
 
 export default ({ children, className, ...props }: ContainerFullProps) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, height] = useResize(ref);
-  const [preppingDownload, setpreppingDownload] = useState(false);
+  const [preppingDownload, setPreppingDownload] = useState(false);
   const { isLoading, error, data } = props.results || {};
   const noData = props.results && !isLoading && !data?.length;
 
@@ -50,7 +66,8 @@ export default ({ children, className, ...props }: ContainerFullProps) => {
               data={data}
               prevData={props.prevResults?.data}
               show={data?.length > 0 && !isLoading && !preppingDownload}
-              setpreppingDownload={setpreppingDownload}
+              setPreppingDownload={setPreppingDownload}
+              titlesByName={titlesByName(props)}
             />
           </div>
         )

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function DownloadButton({ show, data, prevData, title, preppingDownload, setpreppingDownload }: { show?: boolean; }) {
+export default function DownloadButton({ show, data, prevData, setPreppingDownload, titlesByName }: { show?: boolean; }) {
 
   if (!show) return;
 
@@ -24,7 +24,7 @@ export default function DownloadButton({ show, data, prevData, title, preppingDo
     pom.href = url;
     pom.setAttribute('download', filename);
     pom.click();
-    setpreppingDownload(false)
+    setPreppingDownload(false)
   }
 
   function formatValue(v) {
@@ -35,10 +35,10 @@ export default function DownloadButton({ show, data, prevData, title, preppingDo
   }
 
   function handleClick() {
-    setpreppingDownload(true);
+    setPreppingDownload(true);
     const rows = [];
     const columns = Object.keys(data[0]);
-    rows.push(columns.map(c => c)); //title row
+    rows.push(columns.map(c => titlesByName[c] || c)); //title row
     data?.map(row => {
       const rowValues = columns.map(c => row[c]);
       rows.push(rowValues);
@@ -55,7 +55,7 @@ export default function DownloadButton({ show, data, prevData, title, preppingDo
  return (
     <svg 
       onClick={handleClick}
-      className={`absolute right-0 top-0 z-1 cursor-pointer hover:opacity-100 ${preppingDownload ? ' opacity-0' : 'opacity-50'}` }
+      className={`absolute right-0 top-0 z-1 cursor-pointer hover:opacity-100 opacity-50`}
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
