@@ -134,16 +134,12 @@ export default defineComponent(Component, meta, {
         ],
         measures: inputs.metrics,
         filters:
-          inputs.timeFilter?.to && inputs.xAxis
+          inputs.timeFilter && inputs.xAxis
             ? [
                 {
                   property: inputs.xAxis,
                   operator: 'inDateRange',
-                  value: {
-                    from: inputs.timeFilter.from,
-                    to: inputs.timeFilter.to,
-                    relativeTimeString: ''
-                  }
+                  value: inputs.timeFilter
                 }
               ]
             : undefined

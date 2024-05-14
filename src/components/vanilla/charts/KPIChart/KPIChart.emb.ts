@@ -97,7 +97,7 @@ export default defineComponent(Component, meta, {
         from: inputs.ds,
         measures: [inputs.metric],
         filters:
-          inputs.timeFilter?.from && inputs.timeProperty
+          inputs.timeFilter && inputs.timeProperty
             ? [
                 {
                   property: inputs.timeProperty,
