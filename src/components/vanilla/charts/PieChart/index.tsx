@@ -51,10 +51,12 @@ type Props = {
 type Record = { [p: string]: string };
 
 export default (props: Props) => {
-  const { results, title } = props;
+  const { results, title, enableDownloadAsCSV } = props;
 
   return (
-    <Container className="overflow-y-hidden" title={title} results={results}>
+    <Container
+      {...props}
+      className="overflow-y-hidden">
       <Pie height="100%" options={chartOptions(props)} data={chartData(props)} />
     </Container>
   );

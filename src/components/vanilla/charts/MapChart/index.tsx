@@ -9,7 +9,7 @@ import geography from './geography.json';
 
 type Props = {
   title?: string;
-  db: DataResponse;
+  results: DataResponse;
   segments?: Dimension;
   metric?: Measure;
 };
@@ -43,7 +43,7 @@ export default (props: Props) => {
     let maxMetric = 0;
 
     const data =
-      props.db.data?.reduce((memo: { [segment: string]: number }, record: Record) => {
+      props.results.data?.reduce((memo: { [segment: string]: number }, record: Record) => {
         if (!props.segments || !props.metric) return memo;
 
         const segment: string = record[props.segments.name];
@@ -69,7 +69,9 @@ export default (props: Props) => {
   const { ComposableMap, Geographies, Geography } = mapComponents;
 
   return (
-    <Container className="overflow-y-hidden" title={props.title} results={props.db}>
+    <Container
+      {...props}
+      className="overflow-y-hidden">
       <div className="relative aspect-[1.87] overflow-hidden cursor-pointer">
         <div
           ref={box}

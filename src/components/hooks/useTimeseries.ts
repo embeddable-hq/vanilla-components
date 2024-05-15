@@ -26,6 +26,17 @@ const addTime: { [granularity: string]: (date: Date | number, amount: number) =>
   year: addYears
 };
 
+
+const unitsInSeconds = {
+  minute: 60,
+  hour: 3600,
+  day: 86400,
+  week: 604800,
+  month: 2629800,  // Roughly 30.44 days
+  quarter: 7889400,  // Roughly 91.31 days
+  year: 31557600  // Based on a typical Gregorian year
+};
+
 export default ({ xAxis, granularity }: { xAxis?: Dimension; granularity?: Granularity }) => {
   const fillGaps = useCallback(
     (memo: Record[], record: Record) => {
@@ -40,10 +51,14 @@ export default ({ xAxis, granularity }: { xAxis?: Dimension; granularity?: Granu
       if (!lastDate || !thisDate) return [...memo, record];
 
       const seqDate = addTime[granularity || 'day'](parseJSON(lastDate), 1);
-
       const currDate = parseJSON(thisDate);
 
-      if (currDate <= seqDate) return [...memo, record];
+      const seqDateSince1970 = seqDate.getTime();
+      const currDateSince1970 = currDate.getTime();
+
+      //comparison against granularity below to account for daylight savings time changes 
+      if((currDateSince1970 <= seqDateSince1970 || Math.abs(seqDateSince1970 - currDateSince1970) < unitsInSeconds[granularity || 'day'] * 1000)) return [...memo, record];
+
 
       memo.push({ [xAxis?.name || '']: seqDate.toISOString().split('Z')[0] });
 

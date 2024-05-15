@@ -91,11 +91,18 @@ export const meta = {
       label: 'Y-Axis Title',
       category: 'Chart settings'
     },
-    {
-      name: 'dps',
+    {name: 'dps',
       type: 'number',
       label: 'Decimal Places',
       category: 'Formatting'
+    },
+    {
+
+      name: 'enableDownloadAsCSV',
+      type: 'boolean',
+      label: 'Show download as CSV',
+      category: 'Export options',
+      defaultValue: true,
     }
   ]
 } as const satisfies EmbeddedComponentMeta;

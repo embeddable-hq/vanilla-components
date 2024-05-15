@@ -12,20 +12,32 @@ Hello and welcome to our Embeddable components **starter pack** built just for y
 ### Build & Deploy
 This is how you push code changes to your Embeddable workspace
 
-`npm run embeddable:login`
+ 1. Head to https://app.embeddable.com and grab your **API Key**.
 
-`npm run embeddable:build`
+ 2. **Build** the code bundle:
 
-`npm run embeddable:push`
+    `npm run embeddable:build`
 
-`open https://app.embeddable.com`
+ 4. **Push** the above code bundle to your workspace:
+ 
+     `npm run embeddable:push -- --api-key <API Key> --email <Email> --message <Message>`
+
+ 5. Head back to https://app.embeddable.com and "Create new Embeddable" using the **components** and **models** from your code bundle
 
 ### Local Development
 This is a "Preview workspace" (local to you) that allows you make changes locally and see them instantly without needing to "Build and Deploy".
 
-`npm run embeddable:login`
+`npm run embeddable:dev` 
 
-`npm run embeddable:dev` # opens a "Preview" workspace, that uses your local components and models
+It opens a "Preview" workspace, that uses your local components and models.
+
+### Syncing this starter pack with your private repo
+
+We recommend cloning this repo and storing it privately where you keep your git repositories.
+
+You can then set up this repo as a [git remote](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes) so that you can merge in the latest changes (new components, functionality, etc.) whenever you need.
+
+Alternatively, if you'd prefer to integrate Embeddable's sdk directly into your existing codebase, take a look at [this repo](https://github.com/embeddable-hq/onboarding) for an example of a minimal setup.
 
 ### Debugging Data Models
 To test and debug your data models locally using Cube's data playground:

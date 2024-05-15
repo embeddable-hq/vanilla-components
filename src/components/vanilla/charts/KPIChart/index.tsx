@@ -6,8 +6,8 @@ import Container from '../../Container';
 import { WarningIcon } from '../../icons';
 
 type Props = {
-  value: DataResponse;
-  prevValue?: DataResponse;
+  results: DataResponse;
+  prevResults?: DataResponse;
   prevTimeFilter?: TimeRange;
   title: string;
   prefix: string;
@@ -17,12 +17,12 @@ type Props = {
 };
 
 export default (props: Props) => {
+  
   const { n, percentage } = useMemo(() => {
-    if (!props.value?.data?.length || !props.metric?.name) return { percentage: null };
-
-    const n = parseFloat(props.value.data[0][props.metric?.name] || 0);
-
-    const prev = parseFloat(props.prevValue?.data?.[0]?.[props.metric?.name] || 0);
+    if (!props.results?.data?.length || !props.metric?.name) return { percentage: null };
+    
+    const n = parseFloat(props.results.data[0][props.metric?.name] || 0);
+    const prev = parseFloat(props.prevResults?.data?.[0]?.[props.metric?.name] || 0);
 
     return {
       percentage: prev ? Math.round((n / prev) * 100) - 100 : null,
@@ -34,17 +34,19 @@ export default (props: Props) => {
     };
   }, [props]);
 
-  if (props.value?.error) {
+  if (props.results?.error) {
     return (
       <div className="h-full flex items-center justify-center font-embeddable text-sm">
         <WarningIcon />
-        <div className="whitespace-pre-wrap p-4 max-w-sm text-xs">{props.value?.error}</div>
+        <div className="whitespace-pre-wrap p-4 max-w-sm text-xs">{props.results?.error}</div>
       </div>
     );
   }
 
   return (
-    <Container className="overflow-y-hidden" title={props.title} results={props.value}>
+    <Container
+      {...props}
+      className="overflow-y-hidden">
       <div className="relative grow items-center justify-center flex min-h-[40px]">
         <div className="flex items-center justify-center font-embeddable text-[#333942] text-[44px] font-bold relative -mt-[10px]">
           {props.prevTimeFilter?.to && percentage !== null && (

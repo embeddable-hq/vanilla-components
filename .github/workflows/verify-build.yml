@@ -1,5 +1,9 @@
 name: Verify Build for Vanilla Components
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
@@ -31,3 +35,15 @@ jobs:
 
       - name: Build embeddable
         run: npm run embeddable:build
+
+      - name: Send Slack notification on failure
+        uses: ravsamhq/notify-slack-action@v2
+        if: always()
+        with:
+          status: ${{ job.status }}
+          notify_when: 'failure'
+          notification_title: "Vanilla Components build {status_message} for ${{ matrix.os }} and Node.js ${{ matrix.node_version }}"
+          message_format: '{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>'
+          footer: 'Linked to Repo <{repo_url}|{repo}>'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

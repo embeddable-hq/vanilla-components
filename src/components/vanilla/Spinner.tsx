@@ -5,7 +5,7 @@ export default function Spinner({ show, className }: { show?: boolean; className
   return (
     <svg
       className={twMerge(
-        `absolute right-2 top-2 z-1 pointer-events-none spinner ${
+        `absolute right-0 top-0 z-1 pointer-events-none spinner ${
           show ? 'opacity-100' : 'opacity-0'
         }`,
         className

@@ -8,7 +8,7 @@ import { ChevronLeft, ChevronRight, SortDown, SortUp } from '../../icons';
 
 export type Props = {
   limit?: number;
-  tableData: DataResponse;
+  results: DataResponse;
   defaultSort?: { property: DimensionOrMeasure; direction: string }[];
   columns: DimensionOrMeasure[];
   title: string;
@@ -20,7 +20,7 @@ type Record = { [p: string]: string };
 
 export default (props: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
-  const { columns, tableData } = props;
+  const { columns, results } = props;
   const [maxRowsFit, setMaxRowFit] = useState(0);
 
   useLayoutEffect(() => {
@@ -33,7 +33,7 @@ export default (props: Props) => {
 
       if (
         (maxRowsFit === newMaxRowsFit && newMaxRowsFit === val) ||
-        props.tableData.data?.length === 0
+        props.results.data?.length === 0
       ) {
         return;
       }
@@ -42,7 +42,7 @@ export default (props: Props) => {
     }, 100);
 
     return () => clearInterval(interval);
-  }, [maxRowsFit, props.tableData]);
+  }, [maxRowsFit, props.results]);
 
   const [meta, setMeta] = useEmbeddableState({
     page: 0,
@@ -76,7 +76,7 @@ export default (props: Props) => {
 
   const rows = useMemo(
     () =>
-      tableData?.data?.map(
+      results?.data?.map(
         (record: Record) =>
           columns?.map((prop) => {
             if (!prop) return '';
@@ -86,11 +86,13 @@ export default (props: Props) => {
             return `${parsed}` === record[prop.name] ? parsed : record[prop.name] || '';
           }) || []
       ) || [],
-    [tableData, columns]
+    [results, columns]
   );
 
   return (
-    <Container className="overflow-y-hidden" title={props.title} results={props.tableData}>
+    <Container
+      {...props}
+      className="overflow-y-hidden">
       <div
         ref={ref}
         className="grow flex flex-col justify-start w-full overflow-x-auto font-embeddable text-sm"
@@ -99,7 +101,7 @@ export default (props: Props) => {
           className="grow overflow-hidden relative"
           style={{ minWidth: `${columns.length * 100}px` }}
         >
-          {!!meta && !(props.tableData?.isLoading && !props.tableData?.data?.length) && (
+          {!!meta && !(props.results?.isLoading && !props.results?.data?.length) && (
             <table className="overflow-visible w-full">
               <thead className="border-y border-[#B8BDC6]">
                 <tr>
@@ -157,7 +159,7 @@ export default (props: Props) => {
             </table>
           )}
 
-          {(!meta || (props.tableData?.isLoading && !props.tableData?.data?.length)) && (
+          {(!meta || (props.results?.isLoading && !props.results?.data?.length)) && (
             <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
           )}
         </div>
