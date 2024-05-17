@@ -6,8 +6,9 @@ import classNames from 'classnames';
 import _ from 'lodash';
 import { FileWarningIcon } from 'lucide-react';
 import Pivot from 'quick-pivot';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
+import formatValue from '../../../util/format';
 import Container from '../../Container';
 
 export type Props = {
@@ -16,10 +17,13 @@ export type Props = {
   rows: Dimension[];
   measures: Measure;
   title: string;
+  maxWidth?: number;
+  minWidth?: number;
 };
+
 export default (props: Props) => {
-  const { columns, tableData, rows, measures } = props;
-  console.log('columns', columns, 'rows', rows, 'measures', measures, 'tableData', tableData);
+  const { columns, tableData, rows, measures, maxWidth, minWidth } = props;
+  console.log('props', props);
   const rowsToPivot = rows.map((row) => row.name);
   const colsToPivot = columns.map((row) => row.name);
   const aggregationDimension = measures.name;
@@ -40,6 +44,7 @@ export default (props: Props) => {
       rowHeader
     );
   }, [aggregationDimension, colsToPivot, rowsToPivot, tableData, rows, measures, columns]);
+
   return (
     <Container className="overflow-y-scroll h-auto" title={props.title} results={props.tableData}>
       {!tableData?.isLoading &&
@@ -58,11 +63,26 @@ export default (props: Props) => {
             rowsToPivot={rowsToPivot}
             colsToPivot={colsToPivot}
             rowsData={rows}
+            columnsData={columns}
+            measures={measures}
+            maxWidth={maxWidth}
+            minWidth={minWidth}
           />
         ))}
     </Container>
   );
 };
+
+function formatPivotColumn(text: string | number, column: Measure) {
+  if (typeof text === 'number' || column.nativeType === 'number') {
+    return formatValue(`${text}`, { type: 'number', meta: column?.meta });
+  }
+
+  if (text && column.nativeType === 'time') return formatValue(text, 'date');
+
+  return formatValue(text);
+}
+
 const fillDuplicates = (arr1: any[], arr2?: any[]) => {
   let seen: any = {};
   if (!arr2) {
@@ -89,8 +109,19 @@ const fillDuplicates = (arr1: any[], arr2?: any[]) => {
   });
   return processedSecondHeader;
 };
-const PivotTable = ({ data, rowsToPivot, colsToPivot, rowsData, columnsData }: any) => {
+const PivotTable = ({
+  data,
+  rowsToPivot,
+  colsToPivot,
+  rowsData,
+  columnsData,
+  maxWidth = 200,
+  minWidth = 100,
+  measures
+}: any) => {
   const { table: tableData } = data;
+  const [showBars, setShowBars] = useState(false);
+
   const table = useMemo(() => {
     return tableData.map((row: any) => {
       if (row.type === 'colHeader') {
@@ -102,8 +133,52 @@ const PivotTable = ({ data, rowsToPivot, colsToPivot, rowsData, columnsData }: a
       return row;
     });
   }, [tableData]);
+
   const rows = table?.filter((row: any) => row.type === 'data' || row.type === 'rowHeader');
-  // format rows data that the depth 0 create a new column and the depth 1 create a new col
+
+  const updatedRows = useMemo(() => {
+    const deepArr = _.cloneDeep(rows);
+
+    const maxDepth = Math.max(...deepArr.map((row: any) => row.depth));
+    console.log('MAX DEPTH', maxDepth);
+
+    if (maxDepth === 0) return deepArr;
+
+    const updated = deepArr.map((row: any) => {
+      const { value, depth, type } = row;
+      console.log('Before Slice', value);
+      if (type === 'rowHeader' && depth === 0) {
+        value.splice(depth + 1, 0, ...new Array(maxDepth).fill('').map(() => ''));
+        console.log('UPDATED', value);
+        return {
+          ...row,
+          value
+        };
+      }
+
+      if (type === 'rowHeader' && depth === 1) {
+        value.splice(depth + 1, 0, '');
+        value.splice(depth - 1, 0, '');
+        console.log('UPDATED', value);
+        return {
+          ...row,
+          value
+        };
+      }
+
+      if (type === 'data') {
+        value.splice(0, 0, ...new Array(maxDepth).fill('').map(() => ''));
+        console.log('UPDATED', value);
+        return {
+          ...row,
+          value
+        };
+      }
+    });
+
+    return updated;
+  }, [rows]);
+
   const headers = useMemo(() => {
     const headersCount = colsToPivot?.length;
     if (headersCount === 1) {
@@ -166,12 +241,14 @@ const PivotTable = ({ data, rowsToPivot, colsToPivot, rowsData, columnsData }: a
       return [];
     }
   }, [colsToPivot?.length, table]);
+
   const rowsDataName = useCallback(
     (name: string) => {
       return rowsData?.find((row: any) => row.name === name)?.title || name;
     },
     [rowsData]
   );
+
   const maxForEachCol = useMemo(() => {
     const obj: any = {};
     let arr = [];
@@ -185,83 +262,105 @@ const PivotTable = ({ data, rowsToPivot, colsToPivot, rowsData, columnsData }: a
         }
       }
     }
-    console.log('OBJ', obj);
     return obj;
   }, [rows]);
-  console.log(rowsToPivot, colsToPivot);
+
+  console.log('MAX FOR EACH COL', maxForEachCol);
+
   return (
-    <table>
-      <thead className="last:border-t-0 sticky top-0 z-50">
-        {headers.map((header: any, index: number) => {
-          return (
-            <tr className="flex flex-row border-b  first:border-t border-[#B8BDC6] " key={index}>
-              {rowsToPivot &&
-                rowsToPivot.map((value: any, idx: any) => (
+    <div>
+      <div className="flex flex-row w-full justify-end items-center pb-2 px-5">
+        <label className="switch">
+          <input
+            checked={showBars}
+            type="checkbox"
+            onChange={(e) => {
+              setShowBars(e.target.checked);
+            }}
+          />
+          <span className="slider round"></span>
+        </label>
+      </div>
+      <table>
+        <thead className="last:border-t-0 sticky top-0 z-50">
+          {headers.map((header: any, index: number) => {
+            return (
+              <tr className="flex flex-row border-b  first:border-t border-[#B8BDC6] " key={index}>
+                {rowsToPivot &&
+                  rowsToPivot.map((value: any, idx: any) => (
+                    <td
+                      style={{ minWidth: minWidth, maxWidth: maxWidth }}
+                      rowSpan={rowsToPivot?.length}
+                      key={`${value}-${idx}`}
+                      className="bg-white  hover:text-black font-bold text-sm select-none  text-[#333942] p-3  block"
+                    >
+                      {index === colsToPivot?.length - 1 ? rowsDataName(value) : ''}
+                    </td>
+                  ))}
+                {header.slice(1).map((row: any, idx: any) => (
                   <td
-                    rowSpan={rowsToPivot?.length}
-                    key={`${value}-${idx}`}
-                    className="bg-white  hover:text-black font-bold text-sm select-none  text-[#333942] p-3 !w-[100px] block"
-                  >
-                    {index === colsToPivot?.length - 1 ? rowsDataName(value) : ''}
-                  </td>
-                ))}
-              {header.slice(1).map((row: any, idx: any) => (
-                <>
-                  <td
+                    style={{ minWidth: minWidth, maxWidth: maxWidth }}
                     key={idx}
-                    className="bg-white  hover:text-black font-bold text-sm select-none  text-[#333942] p-3 !w-[100px] block"
+                    className="bg-white  hover:text-black font-bold text-sm select-none  text-[#333942] p-3  block"
                   >
                     {row}
                   </td>
-                </>
+                ))}
+              </tr>
+            );
+          })}
+        </thead>
+        <tbody>
+          {updatedRows.map((row: any, index: any) => (
+            <tr key={index} className="flex flex-row">
+              {row.value.map((value: any, idx: any) => (
+                <td
+                  style={{ minWidth: minWidth, maxWidth: maxWidth }}
+                  colSpan={idx === 0 && rowsToPivot?.length ? rowsToPivot?.length : 1}
+                  className={`text-wrap text-sm text-dark p-3 ${
+                    row.type === 'rowHeader' ? 'font-bold' : ''
+                  }
+
+            ${!!!value && idx > 1 && 'bg-[#FAFAFA]'}
+            `}
+                  key={idx}
+                >
+                  {showBars ? (
+                    idx === 0 ? (
+                      <span className={classNames('w-[100px]')}>
+                        <span className="">{value}</span>
+                      </span>
+                    ) : (
+                      row.type === 'data' && (
+                        <div className="flex items-center gap-x-1 whitespace-nowrap">
+                          <div
+                            className="flex w-full bg-transparent gap-x-1 items-center overflow-hidden"
+                            role="progressbar"
+                          >
+                            <div
+                              className="flex flex-row h-2 justify-center overflow-hidden bg-blue-600 text-xs text-white text-center whitespace-nowrap transition duration-500 dark:bg-blue-500"
+                              style={{ width: `${(value / maxForEachCol[index]) * 100}%` }}
+                            ></div>
+                            <div className="">
+                              <span>{value}</span>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    )
+                  ) : (
+                    <span className="text-overflow-dynamic-container">
+                      <span className="text-overflow-dynamic-ellipsis">
+                        {formatPivotColumn(value, measures?.nativeType)}
+                      </span>
+                    </span>
+                  )}
+                </td>
               ))}
             </tr>
-          );
-        })}
-      </thead>
-      <tbody>
-        {rows.map((row: any, index: any) => (
-          <tr key={index} className="flex flex-row">
-            {row.value.map((value: any, idx: any) => (
-              <td
-                colSpan={idx === 0 && rowsToPivot?.length ? rowsToPivot?.length : 1}
-                className={` text-sm text-dark p-3 text-wrap ${
-                  row.type === 'rowHeader' ? 'font-bold' : ''
-                } ${idx === 0 && rowsToPivot?.length > 1 ? 'w-[200px]' : 'w-[100px]'}
-                  ${idx === 0 && rowsToPivot?.length === 2 && row.type === 'data' && 'pl-[114px]'}
-                  ${!!!value && 'bg-[#FAFAFA]'}
-                  `}
-                key={idx}
-              >
-                {idx === 0 ? (
-                  <span
-                    className={classNames('w-[100px]', {
-                      'w-[80px]': row.type === 'rowHeader' && idx === 0
-                    })}
-                  >
-                    <span className="">{value}</span>
-                  </span>
-                ) : (
-                  <div className="flex items-center gap-x-1 whitespace-nowrap">
-                    <div
-                      className="flex w-full bg-transparent gap-x-1 items-center overflow-hidden"
-                      role="progressbar"
-                    >
-                      <div
-                        className="flex flex-row h-2 justify-center overflow-hidden bg-blue-600 text-xs text-white text-center whitespace-nowrap transition duration-500 dark:bg-blue-500"
-                        style={{ width: `${(value / maxForEachCol[index]) * 100}%` }}
-                      ></div>
-                      <div className="">
-                        <span>{value}</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };

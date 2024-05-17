@@ -1,4 +1,10 @@
-import { DataResponse, DimensionOrMeasure, OrderBy, OrderDirection } from '@embeddable.com/core';
+import {
+  DataResponse,
+  DimensionOrMeasure,
+  Measure,
+  OrderBy,
+  OrderDirection
+} from '@embeddable.com/core';
 import { useEmbeddableState } from '@embeddable.com/react';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
