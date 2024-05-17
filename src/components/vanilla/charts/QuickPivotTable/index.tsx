@@ -289,8 +289,7 @@ const PivotTable = ({
                 {rowsToPivot &&
                   rowsToPivot.map((value: any, idx: any) => (
                     <td
-                      style={{ minWidth: minWidth, maxWidth: maxWidth }}
-                      rowSpan={rowsToPivot?.length}
+                      style={{ width: '100px' }}
                       key={`${value}-${idx}`}
                       className="bg-white  hover:text-black font-bold text-sm select-none  text-[#333942] p-3  block"
                     >
@@ -299,7 +298,7 @@ const PivotTable = ({
                   ))}
                 {header.slice(1).map((row: any, idx: any) => (
                   <td
-                    style={{ minWidth: minWidth, maxWidth: maxWidth }}
+                    style={{ width: '100px' }}
                     key={idx}
                     className="bg-white  hover:text-black font-bold text-sm select-none  text-[#333942] p-3  block"
                   >
@@ -315,9 +314,8 @@ const PivotTable = ({
             <tr key={index} className="flex flex-row">
               {row.value.map((value: any, idx: any) => (
                 <td
-                  style={{ minWidth: minWidth, maxWidth: maxWidth }}
-                  colSpan={idx === 0 && rowsToPivot?.length ? rowsToPivot?.length : 1}
-                  className={`text-wrap text-sm text-dark p-3 ${
+                  style={{ width: '100px' }}
+                  className={`text-wrap w-full text-sm text-dark p-3 ${
                     row.type === 'rowHeader' ? 'font-bold' : ''
                   }
 
@@ -332,7 +330,7 @@ const PivotTable = ({
                       </span>
                     ) : (
                       row.type === 'data' && (
-                        <div className="flex items-center gap-x-1 whitespace-nowrap">
+                        <div className="flex w-full items-center gap-x-1 whitespace-nowrap">
                           <div
                             className="flex w-full bg-transparent gap-x-1 items-center overflow-hidden"
                             role="progressbar"
