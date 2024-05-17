@@ -22,6 +22,30 @@ h1 {
   border: 1px solid #ddd;
 }
 
+:host(.inside-card-yellow) {
+  /*  box-shadow: 0px 1px 4px rgba(28, 28, 33, 0.2);*/
+  border-radius: 8px;
+  padding: 15px !important;
+  border: 1px solid #FBD86F;
+  background-color: #FEF7E1;
+}
+
+:host(.inside-card-blue) {
+  /*  box-shadow: 0px 1px 4px rgba(28, 28, 33, 0.2);*/
+  border-radius: 8px;
+  padding: 15px !important;
+  border: 1px solid #93D4FA;
+  background-color: #EAF2FB;
+}
+
+:host(.inside-card-green) {
+  /*  box-shadow: 0px 1px 4px rgba(28, 28, 33, 0.2);*/
+  border-radius: 8px;
+  padding: 15px !important;
+  border: 1px solid #73C67C;
+  background-color: #EDF8EE;
+}
+
 .rdp-day_selected,
 .rdp-day_selected:focus-visible,
 .rdp-day_selected:hover {

@@ -1,5 +1,5 @@
 export const EMB_FONT =
-  '"Poppins", -apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+  '-apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
 
 export const FONTS = {
   // 'Open Sans': 'OpenSans.ttf'
@@ -26,6 +26,17 @@ export const COLORS = [
   '#0066CC',  //Ishtar100ß
   '#EC5A68'  //Marilyn100
 ];
+
+export const DATE_DISPLAY_FORMATS = {
+  year: 'yyyy',
+  quarter: 'MMM yy',
+  month: 'MMM yy',
+  day: 'd MMM',
+  week: 'd MMM',
+  hour: 'eee HH:mm',
+  minute: 'eee HH:mm',
+  second: 'HH:mm:ss'
+}
 
 /*
 //general chart colors
@@ -60,3 +71,4 @@ export const COLORS = [
   '#D7D7E5',
   '#FFD37A'
 ];
+*/
