@@ -50,6 +50,18 @@ export const meta = {
         dataset: 'ds'
       },
       category: 'Configure chart'
+    },
+    {
+      name: 'maxWidth',
+      type: 'number',
+      label: 'Max cell width',
+      category: 'Pivot Table settings'
+    },
+    {
+      name: 'minWidth',
+      type: 'number',
+      label: 'Min cell width',
+      category: 'Pivot Table settings'
     }
   ]
 } as const satisfies EmbeddedComponentMeta;
