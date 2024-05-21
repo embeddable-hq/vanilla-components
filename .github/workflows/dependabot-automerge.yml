@@ -1,7 +1,9 @@
-name: auto-merge
+name: Dependabot auto-merge
 
 on:
   pull_request:
+
+permissions: write-all
 
 jobs:
   auto-merge:
@@ -12,3 +14,4 @@ jobs:
         with:
           target: minor
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          command: squash and merge
