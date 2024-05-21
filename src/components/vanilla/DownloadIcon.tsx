@@ -1,7 +1,7 @@
 import React from 'react';
 import downloadAsCSV from '../util/downloadAsCSV';
 
-export default function DownloadIcon({ show, setPreppingDownload, props }: { show?: boolean; }) {
+export default function DownloadIcon({ show, setPreppingDownload, props }: { show?: boolean; setPreppingDownload?: boolean }) {
 
   if (!show) return;
 

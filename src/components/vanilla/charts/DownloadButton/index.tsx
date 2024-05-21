@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { DataResponse, DimensionOrMeasure } from '@embeddable.com/core';
 import downloadAsCSV from '../../../util/downloadAsCSV';
 import Container from '../../Container';
+import Button from '../../Button';
+
 import { REGULAR_FONT_SIZE } from '../../../constants';
 import Spinner from '../../Spinner';
 
@@ -41,14 +43,13 @@ export default (props: Props) => {
     <Container 
       {...props}
       className="overflow-y-hidden">
-      <button
+      <Button
+        buttonLabel={buttonLabel}
+        showSpinner={preppingDownload}
         disabled={results?.isLoading || preppingDownload}
-        className={`text-[${REGULAR_FONT_SIZE}] border border-gray-300 h-[50px] rounded-full py-[16px] px-[32px] flex gap-[8px] items-center justify-center disabled:opacity-[0.6] disabled:cursor-not-allowed`}
-        onClick={() => downloadAsCSV(props, results?.data, results?.prevData, setPreppingDownload)} type="button"
-        >
-        {downloadSVG}
-        {buttonLabel}
-      </button>
+        onClick={() => downloadAsCSV(props, results?.data, results?.prevData, setPreppingDownload)}
+        icon={downloadSVG}
+      />
     </Container>
   );
 };

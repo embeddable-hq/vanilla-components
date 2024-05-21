@@ -86,7 +86,7 @@ export const meta = {
       name: 'primary date range',
       type: 'timeRange',
       inputs: ['defaultPeriod'],
-      defaultValue: { relativeTimeString: 'last 30 days' },
+      defaultValue: { relativeTimeString: 'Last 30 days' },
       events: [{ name: 'onChangePeriod', property: 'value' }]
     },
     {
