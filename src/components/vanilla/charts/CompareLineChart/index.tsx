@@ -121,10 +121,10 @@ export default (propsInitial: Props) => {
 
         const update: ChartDataset<'line', DefaultDataPoint<'line'>> = {
           cubicInterpolationMode: 'monotone' as const,
-          showLine: !!props.prevTimeFilter?.from,
+          showLine: !!props.prevTimeFilter,
           xAxisID: 'comparison',
           label: `Previous ${metrics[i].title}`,
-          data: !!props.prevTimeFilter?.from
+          data: props.prevTimeFilter
             ? prevData?.map((d: Record) => ({
                 y: parseFloat(d[metrics[i].name] || '0'),
                 x: parseTime(d[props.xAxis?.name || ''])
@@ -135,7 +135,7 @@ export default (propsInitial: Props) => {
           pointRadius: 0,
           tension: 0.1,
           pointHoverRadius: 3,
-          fill: applyFill && !!props.prevTimeFilter?.from,
+          fill: applyFill && !!props.prevTimeFilter,
           segment: {
             borderDash: [10, 5]
           }
@@ -254,9 +254,7 @@ export default (propsInitial: Props) => {
   }, [props]);
 
   return (
-    <Container
-      {...props}
-      className="overflow-y-hidden">
+    <Container {...props} className="overflow-y-hidden">
       <Line height="100%" options={chartOptions} data={chartData} />
     </Container>
   );
