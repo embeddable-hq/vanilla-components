@@ -340,22 +340,22 @@
     "@cubejs-backend/shared" "0.33.20"
     source-map-support "^0.5.21"
 
-"@embeddable.com/core@*", "@embeddable.com/core@^2.5.5":
-  version "2.5.5"
-  resolved "https://registry.npmjs.org/@embeddable.com/core/-/core-2.5.5.tgz"
-  integrity sha512-UXNNq21YQoWg9ciEwzv/M9tmHClzRytCelYArmc+WMorpaPjBDrLbsWC1jYCstxI15uC/3hjlwPdnb+VdD+3vw==
+"@embeddable.com/core@*", "@embeddable.com/core@^2.5.6":
+  version "2.5.6"
+  resolved "https://registry.npmjs.org/@embeddable.com/core/-/core-2.5.6.tgz"
+  integrity sha512-NI3LoXJwJvzZI1GXB5+1Ue2ic/33PVoib6loJu3MzGhZNDiL2YPC96eHhWJWGFkuUvh5J1tD0wx+AMg+TSzwvQ==
 
-"@embeddable.com/react@^2.5.5":
-  version "2.5.5"
-  resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.5.5.tgz"
-  integrity sha512-XmCvcRP4Ry61UJXMLHkXEpH180X6MHDrBWwQcRHtgaIRQ0pLSfIWnuco1TEHtX1vHu6Sfk9Q7DwAY1lJm/ADiA==
+"@embeddable.com/react@^2.5.7":
+  version "2.5.7"
+  resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.5.7.tgz"
+  integrity sha512-xtgLth8OoI9P4UDE3II+q8lbYE0tQO8Y+F/gQUtj27nNcF4cWOqyvKc92V1NF+ITgBlRX4+DwtEpz+UPB/98OQ==
   dependencies:
     "@embeddable.com/core" "*"
 
-"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@^3.1.6":
-  version "3.1.6"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-3.1.6.tgz"
-  integrity sha512-N9O81fLtvWUYs8zK5iS47HSQP+hkajPnJDBzpAcnH3B1IV6CI+J1da/WQlkEPswra5PA9KFxHNhH/Ve/cHcBiQ==
+"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@^3.1.9":
+  version "3.1.9"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-3.1.9.tgz"
+  integrity sha512-P9n7/YnAlKG4GywjSaWNtnOQYEZFqarQbZ8QwsUCKfhp1Gb1YmVHrMia+m4dHHx+jVQ0WQ1K9ks8gHPGTquXAA==
   dependencies:
     "@embeddable.com/sdk-utils" "*"
     "@inquirer/select" "^1.3.0"
@@ -375,16 +375,17 @@
     ws "^8.16.0"
     yaml "^2.3.3"
 
-"@embeddable.com/sdk-react@^3.1.4":
-  version "3.1.4"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-3.1.4.tgz"
-  integrity sha512-3YjpXArQSb665HSR2Rs/8nBIa1ElmUzVLrzNXH2+2A+QpSyde8VUpnhOs5/dDwLduUoJR2+UR8JCQKr/1pkgPg==
+"@embeddable.com/sdk-react@^3.1.6":
+  version "3.1.6"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-3.1.6.tgz"
+  integrity sha512-zAn/6kQpvSfXyPAcsaAMX2CthbQQ08hHbTBeqdN9UZUxO9VjHlU5XOjJj6/EjZqQXUATe6gq5clduUKnBa/IYw==
   dependencies:
     "@babel/generator" "^7.23.0"
     "@babel/parser" "^7.23.0"
     "@babel/traverse" "^7.23.2"
     "@embeddable.com/sdk-core" "*"
     "@embeddable.com/sdk-utils" "*"
+    "@happy-dom/global-registrator" "^14.10.2"
     "@vitejs/plugin-react" "^4.0.2"
     astring "^1.8.6"
     ora "^7.0.1"
@@ -447,6 +448,13 @@
   integrity sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==
   dependencies:
     "@hapi/hoek" "^9.0.0"
+
+"@happy-dom/global-registrator@^14.10.2":
+  version "14.11.0"
+  resolved "https://registry.npmjs.org/@happy-dom/global-registrator/-/global-registrator-14.11.0.tgz"
+  integrity sha512-QRqnYzaS90gwWT0zuTMHVry4ouacoUCYedeEQOMQjFA+AVynroLoj2XVC+WYugDSeAa6FSXprXjiEZiZ0g+VgA==
+  dependencies:
+    happy-dom "^14.11.0"
 
 "@headlessui/tailwindcss@^0.2.0":
   version "0.2.0"
@@ -2081,6 +2089,11 @@ end-of-stream@^1.0.0, end-of-stream@^1.4.1:
   dependencies:
     once "^1.4.0"
 
+entities@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.npmjs.org/entities/-/entities-4.5.0.tgz"
+  integrity sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==
+
 env-var@^6.3.0:
   version "6.3.0"
   resolved "https://registry.npmjs.org/env-var/-/env-var-6.3.0.tgz"
@@ -2826,6 +2839,15 @@ graphql-scalars@^1.10.0:
   version "15.8.0"
   resolved "https://registry.npmjs.org/graphql/-/graphql-15.8.0.tgz"
   integrity sha512-5gghUc24tP9HRznNpV2+FIoq3xKkj5dTQqf4v0CpdPbFVwFkWoxOM+o+2OC9ZSvjEMTjfmG9QT+gcvggTwW1zw==
+
+happy-dom@^14.11.0:
+  version "14.11.0"
+  resolved "https://registry.npmjs.org/happy-dom/-/happy-dom-14.11.0.tgz"
+  integrity sha512-vu25dY7YJqLuTG/3ADC0FZRRF0yNBp3q2K0YTN08opXdZi8V/YzIJDNJWFiCnDIuyc+RrCIE093+H5fa9Trlxg==
+  dependencies:
+    entities "^4.5.0"
+    webidl-conversions "^7.0.0"
+    whatwg-mimetype "^3.0.0"
 
 has-bigints@^1.0.1, has-bigints@^1.0.2:
   version "1.0.2"
@@ -5223,6 +5245,16 @@ webidl-conversions@^3.0.0:
   version "3.0.1"
   resolved "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-3.0.1.tgz"
   integrity sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==
+
+webidl-conversions@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-7.0.0.tgz"
+  integrity sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==
+
+whatwg-mimetype@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/whatwg-mimetype/-/whatwg-mimetype-3.0.0.tgz"
+  integrity sha512-nt+N2dzIutVRxARx1nghPKGv1xHikU7HKdfafKkLNLindmPU/ch3U31NOCGGA/dmPcmb1VlofO0vnKAcsm0o/Q==
 
 whatwg-url@^5.0.0:
   version "5.0.0"
