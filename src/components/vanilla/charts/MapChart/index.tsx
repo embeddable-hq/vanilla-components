@@ -91,8 +91,11 @@ export default (props: Props) => {
             projection="geoMercator"
             projectionConfig={{
               rotate: [-10, 0, 0],
-              scale: 100
+              center: [0, 50],
+              scale: 120
             }}
+            style={{ position:'fixed', top:0, left:0, height:'100%', width:'100%' }} 
+            preserveAspectRatio="none"
           >
             <Geographies geography={geography}>
               {({ geographies }) =>
