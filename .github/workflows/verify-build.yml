@@ -23,7 +23,7 @@ jobs:
         run: echo "Verifying build on ${{ matrix.os }} and Node.js ${{ matrix.node_version }}"
 
       - name: Checkout main branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
