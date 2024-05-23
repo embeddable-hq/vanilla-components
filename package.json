@@ -21,7 +21,7 @@
     "@types/react-simple-maps": "^3.0.4",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
-    "chart.js": "^4.4.1",
+    "chart.js": "^4.4.3",
     "chartjs-adapter-date-fns": "^3.0.0",
     "chartjs-plugin-datalabels": "^2.2.0",
     "chrono-node": "^2.7.3",
