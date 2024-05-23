@@ -254,19 +254,20 @@
     "@babel/helper-validator-identifier" "^7.24.5"
     to-fast-properties "^2.0.0"
 
-"@cubejs-backend/api-gateway@^0.34.31":
-  version "0.34.62"
-  resolved "https://registry.npmjs.org/@cubejs-backend/api-gateway/-/api-gateway-0.34.62.tgz"
-  integrity sha512-FQKoPj0KlAnLoBfeq89AZeFQH1XfJBv5Xh2kBddMcVz/YDQ+t8ruu+vigN4Zx3hrlL0GvXItgeI3pQ4LhQRudQ==
+"@cubejs-backend/api-gateway@^0.35.37":
+  version "0.35.37"
+  resolved "https://registry.yarnpkg.com/@cubejs-backend/api-gateway/-/api-gateway-0.35.37.tgz#59d1590a91894fbc19f7ea1eb267690f8f4ce50b"
+  integrity sha512-5qIG53bCjf1XodU8NGHCf5kI0ap9kh5jj5aGPFtrjqloAfHaTnRz+QiIU/zq9qz3e399/l/2uZtkeKS2Cm+nIw==
   dependencies:
-    "@cubejs-backend/native" "^0.34.62"
-    "@cubejs-backend/shared" "^0.34.60"
+    "@cubejs-backend/native" "^0.35.37"
+    "@cubejs-backend/shared" "^0.35.33"
     "@ungap/structured-clone" "^0.3.4"
     body-parser "^1.19.0"
     chrono-node "^2.6.2"
     express-graphql "^0.12.0"
     graphql "^15.8.0"
     graphql-scalars "^1.10.0"
+    graphql-tag "^2.12.6"
     inflection "^1.12.0"
     joi "^17.8.3"
     jsonwebtoken "^8.3.0"
@@ -278,18 +279,18 @@
     ramda "^0.27.0"
     uuid "^8.3.2"
 
-"@cubejs-backend/cubesql@^0.34.62":
-  version "0.34.62"
-  resolved "https://registry.npmjs.org/@cubejs-backend/cubesql/-/cubesql-0.34.62.tgz"
-  integrity sha512-ZTebaXTh8Thdn5yTd1+DKA+ToXHlWqovvAcxZ8gytupA1ZxIM19JG1T/W7RYzkBKS4Nv17c9aTk6nhCHeC9IJw==
+"@cubejs-backend/cubesql@^0.35.37":
+  version "0.35.37"
+  resolved "https://registry.yarnpkg.com/@cubejs-backend/cubesql/-/cubesql-0.35.37.tgz#37e36cee6140edb70eaaac68248e28a0103d58e5"
+  integrity sha512-rk4Vr0cIjvSKrD7k/64t6CoMwcavNzSMdHfHR1Wdh5CndEH2Cr22/8eAmfPoHmq/1r8BxkhpHnAqnWkl5M/9iQ==
 
-"@cubejs-backend/native@^0.34.62":
-  version "0.34.62"
-  resolved "https://registry.npmjs.org/@cubejs-backend/native/-/native-0.34.62.tgz"
-  integrity sha512-qI27LcNqhh/o70q50AJN/IGi3dF5lj+Rk50ykwF/lxCy+qjFsOzTvAYUGHujrdYyKBh0v0GfYLoHUhmlaQRYcA==
+"@cubejs-backend/native@^0.35.37":
+  version "0.35.37"
+  resolved "https://registry.yarnpkg.com/@cubejs-backend/native/-/native-0.35.37.tgz#26b6d782eee7078716c30f36d2bc3ca5852a09bc"
+  integrity sha512-IUwbZ3qQ2cr9kL7llZHbOwWnXC5zNBDtGy9Evh7dT8hgjX4WDWhVREYKO86DWy+fEkOJ7Dg4B8KUuue+iuZ//Q==
   dependencies:
-    "@cubejs-backend/cubesql" "^0.34.62"
-    "@cubejs-backend/shared" "^0.34.60"
+    "@cubejs-backend/cubesql" "^0.35.37"
+    "@cubejs-backend/shared" "^0.35.33"
     "@cubejs-infra/post-installer" "^0.0.7"
 
 "@cubejs-backend/shared@0.33.20":
@@ -312,10 +313,10 @@
     throttle-debounce "^3.0.1"
     uuid "^8.3.2"
 
-"@cubejs-backend/shared@^0.34.60":
-  version "0.34.60"
-  resolved "https://registry.npmjs.org/@cubejs-backend/shared/-/shared-0.34.60.tgz"
-  integrity sha512-+VFJv/g1PbFKJ0JuSp4A7ndzHUUi/1nWPhMaR3rnMTibOxB+7hk2pA49Nb7e+Nsc9Y/vfJKDj/zcWEBvnOHIaA==
+"@cubejs-backend/shared@^0.35.33":
+  version "0.35.33"
+  resolved "https://registry.yarnpkg.com/@cubejs-backend/shared/-/shared-0.35.33.tgz#6a0eef7a52a74f4026873d52afd9cfb4e0bd77d5"
+  integrity sha512-0AHrkT+GMn8r1PpWH5+upJrfmcbICY35yR/uRMiobNwpbe7lXc8284imbWVNFC0MlZ0qPTZ92Uhud0ZJctk1Zg==
   dependencies:
     "@oclif/color" "^0.1.2"
     bytes "^3.1.0"
@@ -2876,6 +2877,13 @@ graphql-scalars@^1.10.0:
   dependencies:
     tslib "^2.5.0"
 
+graphql-tag@^2.12.6:
+  version "2.12.6"
+  resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.12.6.tgz#d441a569c1d2537ef10ca3d1633b48725329b5f1"
+  integrity sha512-FdSNcu2QQcWnM2VNvSCCDCVS5PpPqpzgFT8+GXzqJuoDd0CBncxCY278u4mhRO7tMgo2JjgJA5aZ+nWSQ/Z+xg==
+  dependencies:
+    tslib "^2.1.0"
+
 graphql@^15.8.0:
   version "15.8.0"
   resolved "https://registry.npmjs.org/graphql/-/graphql-15.8.0.tgz"
@@ -4993,7 +5001,7 @@ tslib@^1:
   resolved "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2.0.3, tslib@^2.5.0, tslib@^2.6.2:
+tslib@^2.0.3, tslib@^2.1.0, tslib@^2.5.0, tslib@^2.6.2:
   version "2.6.2"
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.6.2.tgz"
   integrity sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==
