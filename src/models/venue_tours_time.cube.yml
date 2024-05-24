@@ -119,3 +119,8 @@ cubes:
       title: Track Listen Time
       type: number
       sql: round(sum(track_listen_time)/1000,0)
+
+    - name: listen_time_per_user
+      title: User Avg Listen Time
+      type: number
+      sql: CASE WHEN {track_listen_time} = 0 THEN 0 ELSE ROUND({track_listen_time} / NULLIF({track_play_users},0),0) END
