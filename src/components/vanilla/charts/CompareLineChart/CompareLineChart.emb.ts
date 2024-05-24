@@ -114,7 +114,7 @@ export const meta = {
       type: 'boolean',
       label: 'Show download as CSV',
       category: 'Export options',
-      defaultValue: true,
+      defaultValue: true
     }
   ]
 } as const satisfies EmbeddedComponentMeta;
@@ -134,16 +134,12 @@ export default defineComponent(Component, meta, {
         ],
         measures: inputs.metrics,
         filters:
-          inputs.timeFilter?.to && inputs.xAxis
+          inputs.timeFilter && inputs.xAxis
             ? [
                 {
                   property: inputs.xAxis,
                   operator: 'inDateRange',
-                  value: {
-                    from: inputs.timeFilter.from,
-                    to: inputs.timeFilter.to,
-                    relativeTimeString: ''
-                  }
+                  value: inputs.timeFilter
                 }
               ]
             : undefined
@@ -156,10 +152,10 @@ export default defineComponent(Component, meta, {
             granularity: inputs.granularity
           }
         ],
-        limit: !inputs.prevTimeFilter?.from ? 1 : 500,
+        limit: !inputs.prevTimeFilter ? 1 : 500,
         measures: inputs.metrics,
         filters:
-          inputs.prevTimeFilter?.from && inputs.xAxis
+          inputs.prevTimeFilter && inputs.xAxis
             ? [
                 {
                   property: inputs.xAxis,
