@@ -254,12 +254,12 @@
     "@babel/helper-validator-identifier" "^7.24.5"
     to-fast-properties "^2.0.0"
 
-"@cubejs-backend/api-gateway@^0.35.37":
-  version "0.35.37"
-  resolved "https://registry.yarnpkg.com/@cubejs-backend/api-gateway/-/api-gateway-0.35.37.tgz#59d1590a91894fbc19f7ea1eb267690f8f4ce50b"
-  integrity sha512-5qIG53bCjf1XodU8NGHCf5kI0ap9kh5jj5aGPFtrjqloAfHaTnRz+QiIU/zq9qz3e399/l/2uZtkeKS2Cm+nIw==
+"@cubejs-backend/api-gateway@^0.35.40":
+  version "0.35.40"
+  resolved "https://registry.yarnpkg.com/@cubejs-backend/api-gateway/-/api-gateway-0.35.40.tgz#4994d7cb7dd9509c1aabb297ed073c030f438598"
+  integrity sha512-gGLDvgFc+7fPSoHrvJ+LN4Ac7SZnvm2UQLLhiIc4Yy5LEIpkoASvD6gMNULJEH9YlgLfB2fnePeMzkvzJ2BY8g==
   dependencies:
-    "@cubejs-backend/native" "^0.35.37"
+    "@cubejs-backend/native" "^0.35.40"
     "@cubejs-backend/shared" "^0.35.33"
     "@ungap/structured-clone" "^0.3.4"
     body-parser "^1.19.0"
@@ -279,17 +279,17 @@
     ramda "^0.27.0"
     uuid "^8.3.2"
 
-"@cubejs-backend/cubesql@^0.35.37":
-  version "0.35.37"
-  resolved "https://registry.yarnpkg.com/@cubejs-backend/cubesql/-/cubesql-0.35.37.tgz#37e36cee6140edb70eaaac68248e28a0103d58e5"
-  integrity sha512-rk4Vr0cIjvSKrD7k/64t6CoMwcavNzSMdHfHR1Wdh5CndEH2Cr22/8eAmfPoHmq/1r8BxkhpHnAqnWkl5M/9iQ==
+"@cubejs-backend/cubesql@^0.35.40":
+  version "0.35.40"
+  resolved "https://registry.yarnpkg.com/@cubejs-backend/cubesql/-/cubesql-0.35.40.tgz#2f318610311465ac218af21f67789fc0964e1197"
+  integrity sha512-NRz8c7QjDMgWWMAw/EigUGUJJn6D+JB5v+97wbqJ5sAhdmKXkqksnbZN6FRVKsuyE4/LKSluUNr86A5CkLWOdA==
 
-"@cubejs-backend/native@^0.35.37":
-  version "0.35.37"
-  resolved "https://registry.yarnpkg.com/@cubejs-backend/native/-/native-0.35.37.tgz#26b6d782eee7078716c30f36d2bc3ca5852a09bc"
-  integrity sha512-IUwbZ3qQ2cr9kL7llZHbOwWnXC5zNBDtGy9Evh7dT8hgjX4WDWhVREYKO86DWy+fEkOJ7Dg4B8KUuue+iuZ//Q==
+"@cubejs-backend/native@^0.35.40":
+  version "0.35.40"
+  resolved "https://registry.yarnpkg.com/@cubejs-backend/native/-/native-0.35.40.tgz#0f4cf1f1a1564aa925ad47bfba684fe159559a6f"
+  integrity sha512-+K/HQgVLwv65kpr47BBlDHsn5vIeEUwj24r921EsPPBanWXxirxKo1upIHCcKdKTZLgrElz5n5nyPld6UNDh4A==
   dependencies:
-    "@cubejs-backend/cubesql" "^0.35.37"
+    "@cubejs-backend/cubesql" "^0.35.40"
     "@cubejs-backend/shared" "^0.35.33"
     "@cubejs-infra/post-installer" "^0.0.7"
 
