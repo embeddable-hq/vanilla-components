@@ -1,0 +1,109 @@
+cubes:
+- name: venue_surveys
+  sql: >
+    select
+      date(timestamp_micros(a.event_timestamp)) as partition_date
+      ,a.event_name
+      ,a.user_id
+      ,a.user_pseudo_id
+      ,a.stream_id
+      ,a.content_category
+      ,a.device.language as device_language
+      ,a.event_label
+      ,b.language_name
+      ,a.utm_content
+      ,a.utm_term
+      ,a.utm_campaign_id
+      ,a.utm_campaign_name
+      ,a.utm_source
+      ,a.utm_medium
+      ,a.venue_id
+      ,a.organization_id
+      ,a.tour_id
+      ,a.tour_id_name
+    from `smartify-cc94e.smartify_flat_analytics.smartify_ga_flat` as a
+    left join `smartify-cc94e.smartify_lookup_tables.device_language_region` as b on a.device.language = b.device_language
+    where organization_id = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+    {% if  COMPILE_CONTEXT.securityContext.venue_id is not none %}
+      and venue_id in {{list(COMPILE_CONTEXT.securityContext.venue_id)}}
+    {% endif %}
+    and partition_date >= "2024-05-22"
+    and event_name = "inapp_click"
+    and stream_id = "1913717213"
+
+  dimensions:
+    - name: date
+      type: time
+      sql: timestamp(partition_date)
+    - name: event_name
+      type: string
+      sql: event_name
+    - name: event_label
+      type: string
+      sql: event_label
+    - name: country
+      type: string
+      sql: geo_country
+    - name: city
+      type: string
+      sql: geo_city
+    - name: stream
+      type: string
+      sql: stream_id
+    - name: device_language
+      type: string
+      sql: device.language
+    - name: venue_id
+      type: string
+      sql: venue_id
+    - name: organisation_id
+      type: string
+      sql: organization_id
+    - name: platform_device
+      type: string
+      sql: case when platform = "IOS" then "iOS" when platform = "ANDROID" then "Android" when (platform = "WEB" and device_category = "desktop") then "Desktop" else "Webapp" end
+    - name: satisfaction_vote
+      type: string
+      sql: case when (utm_content = "Satisfaction Survey" and event_label = "Thumbs up") then "positive" when (utm_content = "Satisfaction Survey" and event_label = "Thumbs down") then "negative" else null end
+
+  measures:
+    - name: nps_votes
+      type: sum
+      title: NPS Survey Votes
+      sql: case when (utm_content = "Smilies NPS" and event_name = "inapp_click") then 1 else 0 end
+    - name: promoters
+      type: sum
+      title: NPS Promoters
+      sql: case when (utm_content = "Smilies NPS" and event_label = "Very positive") then 1 else 0 end
+    - name: passives
+      type: sum
+      title: NPS Neutrals
+      sql: case when (utm_content = "Smilies NPS" and event_label = "Positive") then 1 else 0 end
+    - name: detractors
+      type: sum
+      title: NPS Detractors
+      sql: case when (utm_content = "Smilies NPS" and (event_label = "Negative" or event_label = "Very Negative" or event_label = "Neutral")) then 1 else 0 end
+    - name: nps_score
+      type: number
+      title: NPS Score
+      sql: "round(({promoters}/{nps_votes}) - ({detractors}/{nps_votes}),2)*100"
+    - name: satisfaction_votes
+      type: sum
+      title: Satisfaction Votes
+      sql: case when (utm_content = "Satisfaction Survey" and event_name = "inapp_click") then 1 else 0 end
+    - name: satisfaction_thumbsup
+      type: sum
+      title: Satisfaction Thumbs Up
+      sql: case when (utm_content = "Satisfaction Survey" and event_label = "Thumbs up") then 1 else 0 end
+    - name: satisfaction_thumbsdown
+      type: sum
+      title: Satisfaction Thumbs Down
+      sql: case when (utm_content = "Satisfaction Survey" and event_label = "Thumbs down") then 1 else 0 end
+    - name: satisfaction_rate
+      type: number
+      title: Satisfaction Rate
+      sql: "round({satisfaction_thumbsup}/{satisfaction_votes},2)*100"
+    - name: nps_score_10
+      title: NPS Score 0-10
+      type: number
+      sql: "({nps_score} + 100) / 20"

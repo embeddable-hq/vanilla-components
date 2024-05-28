@@ -17,6 +17,17 @@
     organisation_id: org_towerbridge
     venue_id:
 
+- name: HRP
+  securityContext:
+    organisation_id: org_hrp
+    venue_id:
+      - venue_banquetingh
+      - venue_hamptoncourt
+      - venue_hillsborough
+      - venue_kensington
+      - venue_kewpalace
+      - venue_toweroflondon
+
 - name: Smithsonian User
   securityContext:
     organisation_id: org_smithsonian
