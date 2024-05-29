@@ -5,40 +5,22 @@ import { twMerge } from 'tailwind-merge';
 import useFont from '../hooks/useFont';
 import useResize from '../hooks/useResize';
 import Spinner from './Spinner';
-import DownloadButton from './DownloadButton';
+import DownloadIcon from './DownloadIcon';
 import Title from './Title';
+import Description from './Description';
 import { WarningIcon } from './icons';
 import './index.css';
 
-interface ContainerProps {
+type Props = {
+  children?: ReactNode;
+  description?: string;
+  className?: string;
   title?: string;
   results?: DataResponse;
   enableDownloadAsCSV?: boolean;
 }
 
-interface ContainerFullProps extends ContainerProps {
-    children?: ReactNode;
-    className?: string;
-}
-
-const titlesByName = (props) => {
-  const results = {};
-  const extractTitle = input => {
-    if(['measure', 'dimension'].includes(input?.__type__)) {
-      results[input.name] = input.title;
-    }
-  }
-  for (const [key, value] of Object.entries(props)) {
-    if(Array.isArray(value)) {
-      value.forEach(extractTitle)
-    } else {
-      extractTitle(value);
-    }
-  }
-  return results;
-}
-
-export default ({ children, className, ...props }: ContainerFullProps) => {
+export default ({ children, className, ...props }: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, height] = useResize(ref);
   const [preppingDownload, setPreppingDownload] = useState(false);
@@ -62,12 +44,10 @@ export default ({ children, className, ...props }: ContainerFullProps) => {
       {(props.enableDownloadAsCSV) 
         ? (
           <div className={`${!props.title ? 'h-[40px] w-full' : ''}`}>
-            <DownloadButton
-              data={data}
-              prevData={props.prevResults?.data}
+            <DownloadIcon
+              props={props}
               show={data?.length > 0 && !isLoading && !preppingDownload}
               setPreppingDownload={setPreppingDownload}
-              titlesByName={titlesByName(props)}
             />
           </div>
         )
@@ -76,6 +56,7 @@ export default ({ children, className, ...props }: ContainerFullProps) => {
 
       <Spinner show={isLoading || preppingDownload} />
       <Title title={props.title} />
+      <Description description={props.description} />
       <div className={twMerge(`relative grow flex flex-col`, className || '')} ref={ref}>
         {!!height && (
           <div className="flex flex-col" style={{ height: `${height}px` }}>
