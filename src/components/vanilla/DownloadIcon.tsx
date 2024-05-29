@@ -1,7 +1,18 @@
 import React from 'react';
+import { DataResponse } from '@embeddable.com/core';
 import downloadAsCSV from '../util/downloadAsCSV';
 
-export default function DownloadIcon({ show, setPreppingDownload, props }: { show?: boolean; setPreppingDownload?: boolean }) {
+type Props = {
+  show?: boolean;
+  setPreppingDownload?: boolean;
+  props: {
+    results?: DataResponse;
+    prevResults?: DataResponse;
+  }
+}
+
+
+export default function DownloadIcon({ show, setPreppingDownload, props }: Props) {
 
   if (!show) return;
 

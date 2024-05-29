@@ -1,7 +1,13 @@
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
 
-export default function Spinner({ show, className, size }: { show?: boolean; className?: string, size?:string}) {
+type Props = {
+  show?: boolean;
+  className?: string;
+  size?:string;
+}
+
+export default function Spinner({ show, className, size }: Props) {
   return (
     <svg
       className={twMerge(

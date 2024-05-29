@@ -14,8 +14,6 @@ export type Props = {
   buttonLabel: string;
 };
 
-
-
 export default (props: Props) => {
   const { results, buttonLabel } = props;
 

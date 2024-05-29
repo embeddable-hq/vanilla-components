@@ -11,18 +11,16 @@ import Description from './Description';
 import { WarningIcon } from './icons';
 import './index.css';
 
-interface ContainerProps {
+type Props = {
+  children?: ReactNode;
+  description?: string;
+  className?: string;
   title?: string;
   results?: DataResponse;
   enableDownloadAsCSV?: boolean;
 }
 
-interface ContainerFullProps extends ContainerProps {
-    children?: ReactNode;
-    className?: string;
-}
-
-export default ({ children, className, ...props }: ContainerFullProps) => {
+export default ({ children, className, ...props }: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, height] = useResize(ref);
   const [preppingDownload, setPreppingDownload] = useState(false);
