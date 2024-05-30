@@ -43,7 +43,7 @@
     }
   },
   "devDependencies": {
-    "@embeddable.com/core": "2.5.6",
+    "@embeddable.com/core": "2.5.7",
     "@embeddable.com/react": "2.5.7",
     "@embeddable.com/sdk-core": "3.1.9",
     "@embeddable.com/sdk-react": "3.1.6",
