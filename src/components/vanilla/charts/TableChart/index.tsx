@@ -33,11 +33,10 @@ export default (props: Props) => {
 
       if (
         (maxRowsFit === newMaxRowsFit && newMaxRowsFit === val) ||
-        props.results.data?.length === 0
+        props.results?.data?.length === 0
       ) {
         return;
       }
-
       setMaxRowFit((val = newMaxRowsFit));
     }, 100);
 
