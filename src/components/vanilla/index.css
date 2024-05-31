@@ -177,18 +177,18 @@ table.border-table th {
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
   border-right: 1px solid #ddd;
-  min-width: 80px;
+  min-width: 150px;
 }
 
 table.border-table th:first-child {
   /* Apply both top and bottom borders to the <th> */
-  min-width: 200px;
+  min-width: 250px;
   z-index: 3;
 }
 
 /*table.border-table td:first-child {}*/
 
-table.border-table tr:first-child th {
+table.border-table.two-d-table tr:first-child th {
   /* Apply both top and bottom borders to the <th> */
   border-bottom: none;
 }

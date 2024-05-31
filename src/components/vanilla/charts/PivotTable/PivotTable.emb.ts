@@ -1,6 +1,7 @@
 import { loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
+import SortDirectionType from '../../../../types/SortDirection.type.emb';
 import Component from './index';
 
 export const meta = {
@@ -31,12 +32,26 @@ export const meta = {
       category: 'Configure chart'
     },
     {
+      name: 'defaultRowSortDirection',
+      type: SortDirectionType as never,
+      defaultValue: 'Ascending',
+      label: 'Default Row Sort Direction',
+      category: 'Configure chart'
+    },
+    {
       name: 'columnValues',
       type: 'dimension',
       label: 'Column Values',
       config: {
         dataset: 'ds'
       },
+      category: 'Configure chart'
+    },
+    {
+      name: 'defaultColumnSortDirection',
+      type: SortDirectionType as never,
+      defaultValue: 'Ascending',
+      label: 'Default Column Sort Direction',
       category: 'Configure chart'
     },
     {
@@ -48,52 +63,54 @@ export const meta = {
       },
       category: 'Configure chart'
     },
-    // {
-    //   name: 'showLegend',
-    //   type: 'boolean',
-    //   label: 'Turn on the legend',
-    //   defaultValue: true,
-    //   category: 'Chart settings'
-    // },
-    // {
-    //   name: 'maxSegments',
-    //   type: 'number',
-    //   label: 'Max Legend items',
-    //   defaultValue: 8,
-    //   category: 'Chart settings'
-    // },
-    // {
-    //   name: 'showLabels',
-    //   type: 'boolean',
-    //   label: 'Show Labels',
-    //   defaultValue: false,
-    //   category: 'Chart settings'
-    // },
-    // {
-
-    //   name: 'dps',
-    //   type: 'number',
-    //   label: 'Decimal Places',
-    //   category: 'Formatting'
-    // },
-    // {
-    //   name: 'enableDownloadAsCSV',
-    //   type: 'boolean',
-    //   label: 'Show download as CSV',
-    //   category: 'Export options',
-    //   defaultValue: true,
-    // },
+    {
+      name: 'colMinWidth',
+      type: 'number',
+      label: 'Minimum column width in pixels',
+      defaultValue: 150,
+      category: 'Chart styling'
+    },
+    {
+      name: 'dps',
+      type: 'number',
+      label: 'Decimal Places',
+      category: 'Formatting'
+    },
+    {
+      name: 'enableDownloadAsCSV',
+      type: 'boolean',
+      label: 'Show download as CSV',
+      category: 'Export options',
+      defaultValue: true,
+    },
   ]
 } as const satisfies EmbeddedComponentMeta;
 
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
+
+    const dimensions = [inputs.rowValues];
+    const defaultSort = [
+      {
+        property: inputs.rowValues,
+        direction: inputs.defaultRowSortDirection?.value === 'Ascending' ? 'asc' : 'desc'
+      }
+    ];
+    if(inputs?.columnValues) { 
+      dimensions.push(inputs.columnValues)
+      defaultSort.push({
+        property: inputs.columnValues,
+        direction: inputs.defaultColumnSortDirection?.value === 'Ascending' ? 'asc' : 'desc'
+      })
+    }      
+
     return {
       ...inputs,
       results: loadData({
         from: inputs.ds,
-        dimensions: [inputs.rowValues, inputs.columnValues],
-        measures: [inputs.metric]
+        dimensions: [...dimensions],
+        measures: [inputs.metric],
+        orderBy: defaultSort
       })
     };
   }
