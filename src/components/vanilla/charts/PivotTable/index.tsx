@@ -1,6 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import Container from '../../Container';
 import formatValue from '../../../util/format';
+import { SortDown, SortUp } from '../../icons';
 
 type Props = {
   // title: string;
@@ -11,7 +12,7 @@ export default (props: Props) => {
   const { results, rowValues, columnValues, metric, title, colMinWidth, dps } = props;
   const { data, isLoading, error } = results;
 
-  const [sortIndex, setSortIndex] = useState(null);
+  const [sortOrder, setSortOrder] = useState({clickedIndex: null, columnSortOrders: []});
 
   const countDimensions = (() => {
     if (rowValues && columnValues) return 2;
@@ -21,13 +22,38 @@ export default (props: Props) => {
 
   const { tableData, columnsRef, rowsRef } = useMemo(() => {
     if(countDimensions === 2 && !error) {
-      return build2DData(props, sortIndex)
+      return build2DData(props, sortOrder)
     } else return { tableData: null, columnsRef: null, rowsRef: null };
-  }, [props, countDimensions, error, sortIndex]);
+  }, [props, countDimensions, error, sortOrder]);
 
   const headerStyle = {
     minWidth: colMinWidth ? parseInt(colMinWidth) : inherit
   }
+
+  useEffect(() => {
+    const objectsArray = Array.from({ length: columnsRef?.uniqueValues?.length + 1 }, (_, i) => ({ sortAsc: false }));
+    const newState = {
+      clickedIndex: null,
+      columnSortOrders: objectsArray
+    }
+    setSortOrder(newState) 
+  }, [columnsRef?.uniqueValues?.length]);
+
+  const handleSortOrder = (index) => {
+    setSortOrder(prevSortOrder => ({
+      ...prevSortOrder,
+      columnSortOrders: prevSortOrder.columnSortOrders.map((order, i) => {
+        if (i === index) {
+          return {
+            ...order,
+            sortAsc: prevSortOrder.clickedIndex === index ? !order.sortAsc : order.sortAsc
+          };
+        }
+        return order;
+      }),
+      clickedIndex: index
+    }));
+  };
 
   return (
     <Container
@@ -36,7 +62,7 @@ export default (props: Props) => {
       {
         !(results?.isLoading && !results?.data?.length) && (
           (countDimensions === 2)            
-            ? build2DTable(tableData, columnsRef, columnValues, rowsRef, rowValues, metric, headerStyle, dps, setSortIndex)
+            ? build2DTable(tableData, columnsRef, columnValues, rowsRef, rowValues, metric, headerStyle, dps, handleSortOrder, sortOrder)
             : build1DTable(results, rowValues, metric, headerStyle, dps)
         )
       }
@@ -44,7 +70,7 @@ export default (props: Props) => {
   )
 };
 
-function build2DTable(tableData, columnsRef, columnValues, rowsRef, rowValues, metric, headerStyle, dps, setSortIndex) {
+function build2DTable(tableData, columnsRef, columnValues, rowsRef, rowValues, metric, headerStyle, dps, handleSortOrder, sortOrder) {
   return (
     <table className="border-table two-d-table min-w-full">
       <thead className="">
@@ -57,17 +83,40 @@ function build2DTable(tableData, columnsRef, columnValues, rowsRef, rowValues, m
           </th>
         </tr>
         <tr className="">
-          <th
-            onClick={() => setSortIndex(0)}
+          {/*<th
+            onClick={() => handleSortOrder(0)}
             style={headerStyle}
             className={`bg-white select-none text-[#333942] p-2 sticky top-[37px]`}>
             <div className="text-left">{rowValues?.title}</div>
-          </th>
+          </th>*/}
+          <th
+              onClick={() => handleSortOrder(0)}
+              style={headerStyle} className={`bg-white select-none text-[#333942] p-2 sticky top-[37px] cursor-pointer`}>
+              <div className="w-100 flex items-center">
+                <div className="text-left flex grow">{rowValues?.title}</div>
+                <div
+                  className={`${sortOrder.clickedIndex === 0 ? 'text-[#FF6B6C]' : 'text-[#333942]'}`}>
+                  {sortOrder.columnSortOrders[0]?.sortAsc 
+                    ? (<SortUp fill="currentcolor" />)
+                    : (<SortDown fill="currentcolor" />)
+                    }
+                </div>
+              </div>
+            </th>
           {columnsRef?.uniqueValues.map((header, index) => (
             <th
-              onClick={() => setSortIndex(index+1)}
-              style={headerStyle} key={index} className={`bg-white select-none text-[#333942] p-2 sticky top-[37px]`}>
-              <div className="text-left">{header}</div>
+              onClick={() => handleSortOrder(index+1)}
+              style={headerStyle} key={index} className={`bg-white select-none text-[#333942] p-2 sticky top-[37px] cursor-pointer`}>
+              <div className="w-100 flex items-center">
+                <div className="text-left flex grow">{header}</div>
+                <div
+                  className={`${sortOrder.clickedIndex === (index+1) ? 'text-[#FF6B6C]' : 'text-[#333942]'}`}>
+                  {sortOrder.columnSortOrders[index+1]?.sortAsc 
+                    ? (<SortUp fill="currentcolor" />)
+                    : (<SortDown fill="currentcolor" />)
+                    }
+                </div>
+              </div>
             </th>
           ))}
         </tr>
@@ -126,7 +175,7 @@ function build1DTable(results, rowValues, metric, headerStyle, dps) {
     </table>)
 }
 
-function build2DData(props: Props, sortIndex) {
+function build2DData(props: Props, sortOrder) {
 
   const { results, rowValues, columnValues, metric } = props;
   const { data } = results;
@@ -159,11 +208,22 @@ function build2DData(props: Props, sortIndex) {
     tableData[rowIndex][columnIndex] = item[metric.name];
   })
 
-  const sortedTableData = !sortIndex
+  const index = sortOrder.clickedIndex;
+  const sortAsc = sortOrder.columnSortOrders[index]?.sortAsc;
+
+  const sortedTableData = index === undefined || sortAsc === undefined
     ? tableData
-    : tableData.sort((a, b) => {
-      return a[sortIndex] - b[sortIndex]
-    })
+    : [...tableData].sort((a, b) => {      
+      const valueA = a[index];
+      const valueB = b[index];
+      if (!isNaN(parseInt(valueA)) && !isNaN(parseInt(valueB))) {
+        return sortAsc ? valueA - valueB : valueB - valueA;
+      } else {
+        return sortAsc
+          ? valueA.toString().localeCompare(valueB.toString())
+          : valueB.toString().localeCompare(valueA.toString());
+      }
+  });
 
   return {
     tableData: sortedTableData,
