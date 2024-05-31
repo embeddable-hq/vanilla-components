@@ -85,7 +85,7 @@ export default defineComponent<
 
     const defaultSort =
       inputs.columns
-        ?.filter((c) => c.name !== inputs.defaultSort.name)
+        ?.filter((c) => c.name !== inputs.defaultSort?.name)
         .map((property) => ({
             property,
             direction: defaultSortDirection
