@@ -1,60 +1,24 @@
 import React from 'react';
+import { DataResponse } from '@embeddable.com/core';
+import downloadAsCSV from '../util/downloadAsCSV';
 
-export default function DownloadButton({ show, data, prevData, setPreppingDownload, titlesByName }: { show?: boolean; }) {
+type Props = {
+  show?: boolean;
+  setPreppingDownload?: boolean;
+  props: {
+    results?: DataResponse;
+    prevResults?: DataResponse;
+  }
+}
+
+
+export default function DownloadIcon({ show, setPreppingDownload, props }: Props) {
 
   if (!show) return;
 
-  function arrayToCsv(data){
-    return data.map(row =>
-      row
-        .map(String)  // convert every value to String
-        .map(v => v.replaceAll('"', '""'))  // escape double quotes
-        .map(v => `"${v}"`)  // quote it
-        .join(',')  // comma-separated
-    ).join('\r\n');  // rows starting on new lines
-  }
-
-  function downloadBlob(content, filename, contentType) {
-    // Create a blob
-    const blob = new Blob([content], { type: contentType });
-    const url = URL.createObjectURL(blob);
-
-    // Create a link to download it
-    const pom = document.createElement('a');
-    pom.href = url;
-    pom.setAttribute('download', filename);
-    pom.click();
-    setPreppingDownload(false)
-  }
-
-  function formatValue(v) {
-    if(v === null || v === undefined) {
-      return '';
-    }
-    return v;
-  }
-
-  function handleClick() {
-    setPreppingDownload(true);
-    const rows = [];
-    const columns = Object.keys(data[0]);
-    rows.push(columns.map(c => titlesByName[c] || c)); //title row
-    data?.map(row => {
-      const rowValues = columns.map(c => row[c]);
-      rows.push(rowValues);
-    })
-    prevData?.map(row => {
-      const rowValues = columns.map(c => row[c]);
-      rows.push(rowValues);
-    })
-    const csv = arrayToCsv(rows);
-    setTimeout(() => {  downloadBlob(csv, 'export.csv', 'text/csv;charset=utf-8;'); }, 200); //timeout set to indicate that the download is in progress (if instant it can appear to the user that it hasn't been successful)
-  }
-
-
  return (
     <svg 
-      onClick={handleClick}
+      onClick={() => downloadAsCSV(props, props.results?.data, props.prevResults?.data, setPreppingDownload)}
       className={`absolute right-0 top-0 z-1 cursor-pointer hover:opacity-100 opacity-50`}
       xmlns="http://www.w3.org/2000/svg"
       width="24"

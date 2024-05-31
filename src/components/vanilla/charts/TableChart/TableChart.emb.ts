@@ -81,18 +81,20 @@ export default defineComponent<
         ? Math.min(inputs.maxPageRows || 1000, state?.maxRowsFit || 1000)
         : 1;
 
+    const defaultSortDirection = inputs.defaultSortDirection?.value === 'Ascending' ? 'asc' : 'desc';
+
     const defaultSort =
       inputs.columns
-        ?.filter((c) => c !== inputs.defaultSort)
+        ?.filter((c) => c.name !== inputs.defaultSort?.name)
         .map((property) => ({
-          property,
-          direction: 'asc'
-        })) || [];
+            property,
+            direction: defaultSortDirection
+          })) || [];
 
     if (inputs.defaultSort) {
       defaultSort.unshift({
         property: inputs.defaultSort,
-        direction: inputs.defaultSortDirection === 'Ascending' ? 'asc' : 'desc'
+        direction: defaultSortDirection
       });
     }
 
