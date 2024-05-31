@@ -166,3 +166,51 @@
   overflow: hidden;
 }
 
+table.border-table {
+  border-collapse: separate; /* Don't collapse */
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+table.border-table th {
+  /* Apply both top and bottom borders to the <th> */
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  min-width: 80px;
+}
+
+table.border-table th:first-child {
+  /* Apply both top and bottom borders to the <th> */
+  min-width: 200px;
+  z-index: 3;
+}
+
+/*table.border-table td:first-child {}*/
+
+table.border-table tr:first-child th {
+  /* Apply both top and bottom borders to the <th> */
+  border-bottom: none;
+}
+
+table.border-table td {
+  /* For cells, apply the border to one of each side only (right but not left, bottom but not top) */
+  border-bottom: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+}
+
+table.border-table th:first-child,
+table.border-table td:first-child {
+  /* Apply a left border on the first <td> or <th> in a row */
+  border-left: 1px solid #ddd;
+  position:sticky;
+  left:0;
+}
+
+table.border-table td:first-child {
+  /* Apply a left border on the first <td> or <th> in a row */
+  border-left: 1px solid #ddd;
+  position:sticky;
+  left:0;
+  z-index: 2;
+}
