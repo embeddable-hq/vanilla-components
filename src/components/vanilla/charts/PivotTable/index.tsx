@@ -2,6 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import Container from '../../Container';
 import formatValue from '../../../util/format';
 import { SortDown, SortUp } from '../../icons';
+import ValueBar from './ValueBar';
 
 type Props = {
   // title: string;
@@ -20,10 +21,10 @@ export default (props: Props) => {
     else return null;
   })();
 
-  const { tableData, columnsRef, rowsRef } = useMemo(() => {
+  const { tableData, columnsRef, rowsRef, maxValue } = useMemo(() => {
     if(countDimensions === 2 && !error) {
       return build2DData(props, sortOrder)
-    } else return { tableData: null, columnsRef: null, rowsRef: null };
+    } else return { tableData: null, columnsRef: null, rowsRef: null, maxValue: 0 };
   }, [props, countDimensions, error, sortOrder]);
 
   const headerStyle = {
@@ -62,15 +63,18 @@ export default (props: Props) => {
       {
         !(results?.isLoading && !results?.data?.length) && (
           (countDimensions === 2)            
-            ? build2DTable(tableData, columnsRef, columnValues, rowsRef, rowValues, metric, headerStyle, dps, handleSortOrder, sortOrder)
-            : build1DTable(results, rowValues, metric, headerStyle, dps)
+            ? build2DTable(props, tableData, columnsRef, rowsRef, headerStyle, handleSortOrder, sortOrder, maxValue)
+            : build1DTable(props, headerStyle)
         )
       }
     </Container>
   )
 };
 
-function build2DTable(tableData, columnsRef, columnValues, rowsRef, rowValues, metric, headerStyle, dps, handleSortOrder, sortOrder) {
+function build2DTable(props, tableData, columnsRef, rowsRef, headerStyle, handleSortOrder, sortOrder, maxValue) {
+
+  const { columnValues, rowValues, metric, dps, displayValueBars } = props;
+
   return (
     <table className="border-table two-d-table min-w-full">
       <thead className="">
@@ -83,12 +87,6 @@ function build2DTable(tableData, columnsRef, columnValues, rowsRef, rowValues, m
           </th>
         </tr>
         <tr className="">
-          {/*<th
-            onClick={() => handleSortOrder(0)}
-            style={headerStyle}
-            className={`bg-white select-none text-[#333942] p-2 sticky top-[37px]`}>
-            <div className="text-left">{rowValues?.title}</div>
-          </th>*/}
           <th
               onClick={() => handleSortOrder(0)}
               style={headerStyle} className={`bg-white select-none text-[#333942] p-2 sticky top-[37px] cursor-pointer`}>
@@ -128,11 +126,15 @@ function build2DTable(tableData, columnsRef, columnValues, rowsRef, rowValues, m
               <td className="bg-white text-sm text-dark p-2">
                 <div>{row[0]}</div>
               </td>
-              {row.filter((_, i) => i > 0).map((value, i) => (
-                <td key={i} className="text-sm text-dark p-2">
-                  <div className="text-right">{formatValue(value, { type: "number", meta: metric.meta, dps: dps })}</div>
-                </td>
-              ))}
+              {row.filter((_, i) => i > 0).map((value, i) => {
+                return (
+                  <td key={i} className="text-sm text-dark p-2">
+                    <div className="flex items-center gap-[8px]">
+                      <ValueBar displayValueBars={displayValueBars} value={value} maxValue={maxValue}/>
+                      <div className="text-right">{formatValue(value, { type: "number", meta: metric.meta, dps: dps })}</div>  
+                    </div>                
+                  </td>)
+              })}
           </tr>
           )
         })}      
@@ -141,7 +143,9 @@ function build2DTable(tableData, columnsRef, columnValues, rowsRef, rowValues, m
   )
 }
  
-function build1DTable(results, rowValues, metric, headerStyle, dps) {
+function build1DTable(props, headerStyle) {
+
+  const { results, rowValues, metric, dps } = props;
 
   return !(results?.isLoading && !results?.data?.length) && (<table className="border-table min-w-full">
       <thead className="">
@@ -153,7 +157,7 @@ function build1DTable(results, rowValues, metric, headerStyle, dps) {
           </th>
           <th
             style={headerStyle}
-            className="bg-white text-sm text-dark p-2 sticky top-0">
+            className="bg-white text-sm text-[#333942] p-2 sticky top-0">
             <div className="text-right">{metric?.title}</div>
           </th>
         </tr>
@@ -201,11 +205,21 @@ function build2DData(props: Props, sortOrder) {
     rowsRef.uniqueValues[index],
     ...Array(columnsRef.uniqueValues.length).fill(0)
   ]);
-  //populate tableData with the actual data from the result set.
+  
+  //used to calculate lenghth of bar
+  let maxValue = 0;
+
+  //populate tableData with the actual data from the result set
   data?.forEach((item) => {
-    const rowIndex = rowsRef.indexes[item[rowValues.name]];
-    const columnIndex = columnsRef.indexes[item[columnValues.name]]+1;
-    tableData[rowIndex][columnIndex] = item[metric.name];
+    const rowValue = item[rowValues.name];
+    const colValue = item[columnValues.name];
+    const metricValue = item[metric.name];
+    const rowIndex = rowsRef.indexes[rowValue];
+    const columnIndex = columnsRef.indexes[colValue]+1;
+    tableData[rowIndex][columnIndex] = metricValue;
+    if (props.displayValueBars) {
+      maxValue = parseFloat(metricValue) > maxValue ? parseFloat(metricValue) : maxValue;
+    }    
   })
 
   const index = sortOrder.clickedIndex;
@@ -216,7 +230,7 @@ function build2DData(props: Props, sortOrder) {
     : [...tableData].sort((a, b) => {      
       const valueA = a[index];
       const valueB = b[index];
-      if (!isNaN(parseInt(valueA)) && !isNaN(parseInt(valueB))) {
+      if (!isNaN(parseFloat(valueA)) && !isNaN(parseFloat(valueB))) {
         return sortAsc ? valueA - valueB : valueB - valueA;
       } else {
         return sortAsc
@@ -228,6 +242,7 @@ function build2DData(props: Props, sortOrder) {
   return {
     tableData: sortedTableData,
     columnsRef: columnsRef,
-    rowsRef: rowsRef
+    rowsRef: rowsRef,
+    maxValue: maxValue
   }
 }

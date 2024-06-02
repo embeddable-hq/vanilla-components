@@ -23,6 +23,15 @@ export const meta = {
       category: 'Configure chart'
     },
     {
+      name: 'metric',
+      type: 'measure',
+      label: 'Metric',
+      config: {
+        dataset: 'ds'
+      },
+      category: 'Configure chart'
+    },
+    {
       name: 'rowValues',
       type: 'dimension',
       label: 'Row Values',
@@ -55,20 +64,18 @@ export const meta = {
       category: 'Configure chart'
     },
     {
-      name: 'metric',
-      type: 'measure',
-      label: 'Metric',
-      config: {
-        dataset: 'ds'
-      },
-      category: 'Configure chart'
-    },
-    {
       name: 'colMinWidth',
       type: 'number',
       label: 'Minimum column width in pixels',
       defaultValue: 150,
       category: 'Chart styling'
+    },
+    {
+      name: 'displayValueBars',
+      type: 'boolean',
+      label: 'Display value bars',
+      defaultValue: true,
+      category: 'Chart styling',      
     },
     {
       name: 'dps',
