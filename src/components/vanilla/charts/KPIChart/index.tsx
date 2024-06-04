@@ -49,7 +49,8 @@ export default (props: Props) => {
   return (
     <Container
       {...props}
-      className="overflow-y-hidden">
+      className="overflow-y-hidden"
+    >
       <div className="relative grow items-center justify-center flex min-h-[40px]">
         <div
           className={`flex items-center justify-center font-embeddable text-[#333942] leading-tight font-bold relative -mt-[10px]`}
