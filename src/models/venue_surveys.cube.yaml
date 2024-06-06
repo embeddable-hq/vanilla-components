@@ -64,7 +64,7 @@ cubes:
       sql: case when platform = "IOS" then "iOS" when platform = "ANDROID" then "Android" when (platform = "WEB" and device_category = "desktop") then "Desktop" else "Webapp" end
     - name: satisfaction_vote
       type: string
-      sql: case when (utm_content = "Satisfaction Survey" and event_label = "Thumbs up") then "positive" when (utm_content = "Satisfaction Survey" and event_label = "Thumbs down") then "negative" else null end
+      sql: case when (utm_content = "Satisfaction Survey" and event_label = "Thumbs up") then "positive" when (utm_content = "Satisfaction Survey" and event_label = "Thumbs down") then "negative" end
 
   measures:
     - name: nps_votes

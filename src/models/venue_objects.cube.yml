@@ -63,6 +63,10 @@ cubes:
     - name: artist_sid
       type: string
       sql: artist_sid
+
+    - name: user_connectivity
+      type: string
+      sql: case when user_connectivity in ("Internet Highspeed","Internet Corporate") then "Wi-Fi" else user_connectivity end
     
     - name: artist_name
       type: string

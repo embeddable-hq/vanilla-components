@@ -53,6 +53,10 @@ cubes:
     - name: track_name
       type: string
       sql: track_name
+
+    - name: user_connectivity
+      type: string
+      sql: case when user_connectivity in ("Internet Highspeed","Internet Corporate") then "Wi-Fi" else user_connectivity end
     
     - name: track_audio_language
       type: string

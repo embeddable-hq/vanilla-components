@@ -53,6 +53,12 @@ cubes:
     - name: user_language
       type: string
       sql: user_language
+    - name: user_logged
+      type: string
+      sql: user_logged
+    - name: user_connectivity
+      type: string
+      sql: case when user_connectivity in ("Internet Highspeed","Internet Corporate") then "Wi-Fi" else user_connectivity end
     - name: host_join
       type: string
       sql: host_join
@@ -84,6 +90,10 @@ cubes:
     - name: registered_users
       type: count_distinct
       sql: user_id
+    
+    - name: logged_users
+      type: count_distinct
+      sql: case when user_logged = "true" then user_pseudo_id else null end
 
     - name: events_per_user
       title: Events per User
