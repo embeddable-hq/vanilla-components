@@ -67,7 +67,7 @@ function chartData(props: Props): ChartData<'bar'> {
   const labels = [
     ...new Set(
       results?.data?.map((d: { [p: string]: string }) =>
-        formatValue(d[xAxis?.name || ''], { truncate: 15, meta: xAxis.meta })
+        formatValue(d[xAxis?.name || ''], { meta: xAxis?.meta })
       )
     )
   ] as string[];
