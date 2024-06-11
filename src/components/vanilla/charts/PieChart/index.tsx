@@ -43,9 +43,10 @@ type Props = {
   dps?: number;
   slice: { name: string; meta: object };
   metric: { name: string; title: string };
-  showLabels: boolean;
-  showLegend: boolean;
-  maxSegments: number;
+  showLabels?: boolean;
+  showLegend?: boolean;
+  maxSegments?: number;
+  displayAsPercentage?: boolean;
 };
 
 type Record = { [p: string]: string };
@@ -81,7 +82,8 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
           weight: 'normal'
         },
         formatter: (v) => {
-          const val = v ? formatValue(v, { type: 'number', dps: props.dps }) : null;
+          let val = v ? formatValue(v, { type: 'number', dps: props.dps }) : null;
+          val = props.displayAsPercentage ? `${val}%` : val;
           return val;
         }
       },
@@ -96,6 +98,7 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
                 dps: props.dps
               })}`;
             }
+            label = props.displayAsPercentage ? `${label}%` : label;
             return label;
           }
         }
@@ -129,17 +132,25 @@ function mergeLongTail({ results, slice, metric, maxSegments }: Props) {
 }
 
 function chartData(props: Props) {
-  const { maxSegments, results, metric, slice } = props;
+  const { maxSegments, results, metric, slice, displayAsPercentage } = props;
   const labelsExceedMaxSegments = maxSegments && maxSegments < (results?.data?.length || 0);
   const newData = labelsExceedMaxSegments ? mergeLongTail(props) : results.data;
 
   // Chart.js pie expects labels like so: ['US', 'UK', 'Germany']
   const labels = newData?.map((d) => formatValue(d[slice.name], { truncate: 15, meta: slice?.meta }));
 
+
+  const sum = displayAsPercentage 
+    ? newData?.reduce(
+        (accumulator, obj) => accumulator + parseFloat(obj[metric.name]), 0
+      )
+    : null;
+
   // Chart.js pie expects counts like so: [23, 10, 5]
-  const counts = newData?.map((d: Record) => formatValue(d[metric.name]), {
-    type: 'number',
-    dps: props.dps
+  const counts = newData?.map((d: Record) => {
+    const metricValue = parseFloat(d[metric.name]);
+    const value = displayAsPercentage ? ((metricValue * 100) / sum) : metricValue;
+    return formatValue(value, { type: 'number', dps: props.dps })
   });
 
   return {
