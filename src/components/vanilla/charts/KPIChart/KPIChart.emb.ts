@@ -80,6 +80,13 @@ export const meta = {
       category: 'Formatting'
     },
     {
+      name: 'fontSize',
+      type: 'number',
+      label: 'Text size in pixels',
+      defaultValue: 44,
+      category: 'Formatting'
+    },
+    {
       name: 'enableDownloadAsCSV',
       type: 'boolean',
       label: 'Show download as CSV',
