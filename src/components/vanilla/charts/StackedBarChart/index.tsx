@@ -42,7 +42,7 @@ export default (props: Props) => {
   const datasetsMeta = {
     barPercentage: 0.6,
     barThickness: 'flex',
-    maxBarThickness: 15,
+    maxBarThickness: 25,
     minBarLength: 0,
     borderRadius: 3
   };
