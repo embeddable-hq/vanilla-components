@@ -84,7 +84,7 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
         formatter: (v) => {
           let val = v ? formatValue(v, { type: 'number', dps: props.dps }) : null;
           val = props.displayAsPercentage ? `${val}%` : val;
-          return val;
+          return props.displayAsPercentage ? `${val}%` : val;;
         }
       },
       tooltip: {
