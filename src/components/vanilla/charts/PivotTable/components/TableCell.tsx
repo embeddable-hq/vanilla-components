@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import cn from 'classnames';
+import clsx from 'clsx';
 
 type Props = {
   isHeader?: boolean;
@@ -11,7 +11,7 @@ export default function TableCell({ isHeader, className, children }: PropsWithCh
 
   return (
     <Cell
-      className={cn('text-sm p-2 z-10 font-normal first:border-l', {
+      className={clsx('text-sm p-2 z-10 font-normal first:border-l', {
         'z-10 sticky left-0 bg-white': isHeader,
       }, className)}
     >

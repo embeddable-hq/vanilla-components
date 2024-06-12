@@ -106,16 +106,14 @@ export default defineComponent(Component, meta, {
     if (inputs.rowValues && inputs.rowSortDirection) {
       sort.push({
         property: inputs.rowValues,
-        // FIXME: prevent typescript type Assertion
-        direction: (inputs.rowSortDirection?.value === SortDirection.ASCENDING ? 'asc' : 'desc') as OrderDirection
+        direction: (inputs.rowSortDirection?.value === SortDirection.ASCENDING ? 'asc' : 'desc')
       });
     }
 
     if (inputs.columnValues && inputs.columnSortDirection) {
       sort.push({
         property: inputs.columnValues,
-        // FIXME: prevent typescript type Assertion
-        direction: (inputs.columnSortDirection?.value === SortDirection.ASCENDING ? 'asc' : 'desc') as OrderDirection
+        direction: (inputs.columnSortDirection?.value === SortDirection.ASCENDING ? 'asc' : 'desc')
       });
     }
 

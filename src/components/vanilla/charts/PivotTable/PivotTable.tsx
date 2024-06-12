@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { Dimension, Measure } from '@embeddable.com/core';
+import clsx from 'clsx';
 import TableHead, { Column } from './components/TableHead';
 import TableRow from './components/TableRow';
 import { WarningIcon } from '../../icons';
@@ -7,7 +8,6 @@ import { TableHeaderType } from './enums/TableHeaderType';
 import { SortDirection } from '../../../../enums/SortDirection';
 import { MeasureVisualizationFormat } from './enums/MeasureVisualizationFormat';
 import TableCell from './components/TableCell';
-import cn from 'classnames';
 import { COLORS } from '../../../constants';
 import formatValue from '../../../util/format';
 
@@ -145,7 +145,7 @@ export default ({
                 <TableCell
                   key={`${rowIndex}-${columnIndex}-${column.key}`}
                   isHeader={isRowHeader}
-                  className={cn('border-b', {
+                  className={clsx('border-b', {
                     'text-left': isRowHeader,
                     'border-r': columnIndex === groupedCollumns.length - 1 || isRowHeader
                   })}
