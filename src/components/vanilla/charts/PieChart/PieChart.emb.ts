@@ -61,6 +61,13 @@ export const meta = {
       category: 'Chart settings'
     },
     {
+      name: 'displayAsPercentage',
+      type: 'boolean',
+      label: 'Display as Percentages',
+      defaultValue: false,
+      category: 'Chart settings'
+    },
+    {
 
       name: 'dps',
       type: 'number',
