@@ -49,7 +49,7 @@ export default ({
   nullValueCharacter,
   measureVisualizationFormat,
 }: Props) => {
-  // FIXME: This is fixed only for one col dimension for testing purposes, so let's support more nested dimensions
+  // TODO: This is fixed only for one col dimension for testing purposes, so let's support more nested dimensions
   const columnDimensionValues = useMemo(() => {
     if (columnDimensions?.length) {
       return getDimensionValues(rawData, columnDimensions[0], columnSortDirection);
@@ -60,57 +60,30 @@ export default ({
 
   const tableColumns: Column[] | undefined = useMemo(() => {
     if (columnDimensions?.length) {
-      // if (measures.length > 1 ) {
-        // Return column and row dimensions along with measures
-        return [
-          ...(rowDimensions?.length ? [{
-            label: columnDimensions[0].title,
-            key: columnDimensions[0].name,
-            type: TableHeaderType.DIMENSION,
-            children: [{
-              label: rowDimensions[0].title,
-              key: rowDimensions[0].name,
-              type: TableHeaderType.ROW_HEADER,
-              minWidth: minRowDimensionColumnWidth || minColumnWidth || 'auto'
-            }]
-          }] : []),
-          ...columnDimensionValues.map((dimensionValue) => ({
-            label: dimensionValue,
-            key: columnDimensions[0].name,
-            type: TableHeaderType.DIMENSION,
-            children: measures.map((measure) => ({
-              label: measure.title,
-              key: measure.name,
-              type: TableHeaderType.MEASURE,
-              minWidth: minColumnWidth || 'auto',
-            }))
+      return [
+        ...(rowDimensions?.length ? [{
+          label: columnDimensions[0].title,
+          key: columnDimensions[0].name,
+          type: TableHeaderType.DIMENSION,
+          children: [{
+            label: rowDimensions[0].title,
+            key: rowDimensions[0].name,
+            type: TableHeaderType.ROW_HEADER,
+            minWidth: minRowDimensionColumnWidth || minColumnWidth || 'auto'
+          }]
+        }] : []),
+        ...columnDimensionValues.map((dimensionValue) => ({
+          label: dimensionValue,
+          key: columnDimensions[0].name,
+          type: TableHeaderType.DIMENSION,
+          children: measures.map((measure) => ({
+            label: measure.title,
+            key: measure.name,
+            type: TableHeaderType.MEASURE,
+            minWidth: minColumnWidth || 'auto',
           }))
-        ]
-      // } else {
-      //   // Do not show measure labels per each column dimension and show dimension value as a label of measure instead
-      //   // FIXME: this solution works only for 1 col dimension max
-      //   return [
-      //     ...(rowDimensions?.length ? [{
-      //       label: '',
-      //       key: columnDimensions[0].name,
-      //       type: TableHeaderType.DIMENSION,
-      //       children: [{
-      //         label: rowDimensions[0].title,
-      //         key: rowDimensions[0].name,
-      //         type: TableHeaderType.ROW_HEADER,
-      //       }]
-      //     }] : []),
-      //     {
-      //       label: columnDimensions[0].title,
-      //       type: TableHeaderType.DIMENSION,
-      //       children: columnDimensionValues.map((dimensionValue) => ({
-      //         label: dimensionValue,
-      //         key: columnDimensions[0].name,
-      //         type: TableHeaderType.MEASURE
-      //       }))
-      //     }
-      //   ]
-      // }
+        }))
+      ]
     } else if (rowDimensions?.length) {
       return [
         {
@@ -119,12 +92,12 @@ export default ({
           type: TableHeaderType.ROW_HEADER,
           minWidth: minRowDimensionColumnWidth || minColumnWidth || 'auto',
         },
-        ...measures.map((measure) => ({
+        ...(measures?.map((measure) => ({
           label: measure.title,
           key: measure.name,
           type: TableHeaderType.MEASURE,
           minWidth: minColumnWidth || 'auto',
-        }))
+        })) || [])
       ]
     }
   }, [rawData, columnDimensions, rowDimensions, measures]);
@@ -132,7 +105,7 @@ export default ({
   let maxValuesOfMeasures = 0;
 
   const tableData = useMemo<Record<string, any>[]>(() => (
-    // FIXME: This is fixed only for one col dimension for testing purposes, so let's support more nested dimensions
+    // TODO: This is fixed only for one col dimension for testing purposes, so let's support more nested dimensions
     // FIXME: use custom groupBy function of library like lodash or underscore
     Object.groupBy(rawData, (dataRecord) => {
       if (measureVisualizationFormat !== MeasureVisualizationFormat.NUMERIC_VALUES_ONLY) {

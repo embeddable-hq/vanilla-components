@@ -15,17 +15,6 @@ type Props = {
 }
 
 export default function TableHead({ columns }: Props) {
-
-  const getTotalColumns = (columns: Column[] | Array<Column[]>): number => {
-    return columns.reduce((acc, column) => {
-      if (Array.isArray(column)) {
-        return acc + getTotalColumns(column);
-      } else {
-        return acc + (column.children?.length || 1);
-      }
-    }, 0);
-  }
-
   const renderColumn = (column: Column | Column[], columnIndex: number, columns: Column[]): ReactElement => {
     if (Array.isArray(column)) {
       return column.map(renderColumn);

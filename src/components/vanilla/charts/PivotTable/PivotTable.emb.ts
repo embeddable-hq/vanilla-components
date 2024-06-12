@@ -26,6 +26,16 @@ export const meta = {
       category: 'Configure table'
     },
     {
+      name: 'metrics',
+      type: 'measure',
+      label: 'Metrics',
+      array: true,
+      config: {
+        dataset: 'ds'
+      },
+      category: 'Configure table'
+    },
+    {
       name: 'rowValues',
       type: 'dimension',
       label: 'Row Values',
@@ -55,16 +65,6 @@ export const meta = {
       type: SortDirectionType,
       defaultValue: { value: SortDirection.ASCENDING },
       label: 'Column Values Sort Direction',
-      category: 'Configure table'
-    },
-    {
-      name: 'metrics',
-      type: 'measure',
-      label: 'Metrics',
-      array: true,
-      config: {
-        dataset: 'ds'
-      },
       category: 'Configure table'
     },
     {
