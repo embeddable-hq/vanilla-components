@@ -117,9 +117,6 @@ export default function getBarChartOptions({
         anchor: stacked || stackMetrics ? 'center' : 'end',
         align: stacked || stackMetrics ? 'center' : 'end',
         display: showLabels ? 'auto' : false,
-        backgroundColor: `rgba(255, 255, 255, ${ stacked || stackMetrics ? 0.4 : 0 }`,
-        borderRadius: 8,
-        padding: 1,
         formatter: (v) => {
           if (v === null) return null;
           let val = formatValue(v, { type: 'number', dps: dps });
