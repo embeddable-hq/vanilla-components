@@ -38,9 +38,10 @@ export const meta = {
       category: 'Chart data'
     },
     {
-      name: 'date granularity (day, week, month etc)',
+      name: 'granularity',
       type: 'granularity',
       label: 'Granularity',
+      defaultValue: 'day',
       category: 'Variables to configure'
     },
     {
