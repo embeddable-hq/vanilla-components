@@ -30,3 +30,4 @@ dist-ssr
 
 # build files
 embeddable-entry-point.jsx
+.embeddable-dev-build
