@@ -136,7 +136,7 @@ function chartData(props: Props) {
   const newData = labelsExceedMaxSegments ? mergeLongTail(props) : results.data;
 
   // Chart.js pie expects labels like so: ['US', 'UK', 'Germany']
-  const labels = newData?.map((d) => formatValue(d[slice.name], { truncate: 15, meta: slice?.meta }));
+  const labels = newData?.map((d) => formatValue(d[slice.name], { meta: slice?.meta }));
 
 
   const sum = displayAsPercentage 
