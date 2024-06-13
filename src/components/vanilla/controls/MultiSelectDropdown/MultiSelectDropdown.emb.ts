@@ -44,6 +44,13 @@ export const meta = {
       type: 'string',
       label: 'Placeholder',
       category: 'Settings'
+    },
+    {
+      name: 'limit',
+      type: 'string',
+      label: 'Default number of options',
+      defaultValue: 100,
+      category: 'Settings'
     }
   ],
   events: [
@@ -84,7 +91,7 @@ export default defineComponent<Props, typeof meta, { search: string }>(Component
       options: loadData({
         from: inputs.ds,
         dimensions: inputs.property ? [inputs.property] : [],
-        limit: 20,
+        limit: inputs.limit || 1000,
         filters:
           embState?.search && inputs.property
             ? [
