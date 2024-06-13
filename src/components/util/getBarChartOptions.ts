@@ -26,8 +26,8 @@ export default function getBarChartOptions({
     layout: {
       padding: {
         left: 0,
-        right: showLabels && displayHorizontally ? 60 : 0, // Buffer for data labels
-        top: showLabels && !displayHorizontally ? 20 : 0, // Buffer for data labels
+        right: showLabels && displayHorizontally && !stacked ? 60 : 0, // Buffer for data labels
+        top: showLabels && !stacked && !displayHorizontally ? 20 : 0, // Buffer for data labels
         bottom: 0
       }
     },
