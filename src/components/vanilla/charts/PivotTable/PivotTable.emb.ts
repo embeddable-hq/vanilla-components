@@ -46,7 +46,7 @@ export const meta = {
     },
     {
       name: 'rowSortDirection',
-      type: SortDirectionType,
+      type: SortDirectionType as never,
       defaultValue: { value: SortDirection.ASCENDING },
       label: 'Default Row Sort Direction',
       category: 'Configure table'
@@ -62,7 +62,7 @@ export const meta = {
     },
     {
       name: 'columnSortDirection',
-      type: SortDirectionType,
+      type: SortDirectionType as never,
       defaultValue: { value: SortDirection.ASCENDING },
       label: 'Column Values Sort Direction',
       category: 'Configure table'
@@ -106,14 +106,14 @@ export default defineComponent(Component, meta, {
     if (inputs.rowValues && inputs.rowSortDirection) {
       sort.push({
         property: inputs.rowValues,
-        direction: (inputs.rowSortDirection?.value === SortDirection.ASCENDING ? 'asc' : 'desc')
+        direction: (inputs.rowSortDirection?.value === SortDirection.ASCENDING ? 'asc' : 'desc') as OrderDirection
       });
     }
 
     if (inputs.columnValues && inputs.columnSortDirection) {
       sort.push({
         property: inputs.columnValues,
-        direction: (inputs.columnSortDirection?.value === SortDirection.ASCENDING ? 'asc' : 'desc')
+        direction: (inputs.columnSortDirection?.value === SortDirection.ASCENDING ? 'asc' : 'desc') as OrderDirection
       });
     }
 
