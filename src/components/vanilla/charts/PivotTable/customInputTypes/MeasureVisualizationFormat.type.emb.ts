@@ -10,6 +10,4 @@ defineOption(MetricsVisualizationFormat, { value: MeasureVisualizationFormat.NUM
 
 defineOption(MetricsVisualizationFormat, { value: MeasureVisualizationFormat.VALUE_BARS });
 
-// defineOption(MetricsVisualizationFormat, { value: MeasureVisualizationFormat.HEATMAP });
-
 export default MetricsVisualizationFormat;
