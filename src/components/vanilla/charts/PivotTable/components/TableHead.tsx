@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import clsx from 'clsx';
+import cn from '../../../../util/cn';
 import { TableHeaderType } from '../enums/TableHeaderType';
 
 export type Column = {
@@ -27,7 +27,7 @@ export default function TableHead({ columns }: Props) {
         <th
           key={`${column.key}-${columnIndex}`}
           colSpan={column.children?.length}
-          className={clsx('p-2', 'border-y', 'first:border-l', {
+          className={cn('p-2', 'border-y', 'first:border-l', {
             'text-left': shouldBeLeftAligned,
             'border-r': shouldRenderRightBorder,
             'border-b-0': column.children?.length,

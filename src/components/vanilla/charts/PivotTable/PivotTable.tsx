@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Dimension, Measure } from '@embeddable.com/core';
-import clsx from 'clsx';
+import cn from '../../../util/cn';
 import TableHead, { Column } from './components/TableHead';
 import TableRow from './components/TableRow';
 import { WarningIcon } from '../../icons';
@@ -145,7 +145,7 @@ export default ({
                 <TableCell
                   key={`${rowIndex}-${columnIndex}-${column.key}`}
                   isHeader={isRowHeader}
-                  className={clsx('border-b', {
+                  className={cn('border-b', {
                     'text-left': isRowHeader,
                     'border-r': columnIndex === groupedCollumns.length - 1 || isRowHeader
                   })}
