@@ -14,18 +14,18 @@ export const REGULAR_FONT_SIZE = '14px'
 //general chart colors
 //degrade
 export const COLORS = [
-  '#FBD86F',  //Sunflower100
-  '#93D4FA',  //Splash100
-  '#73C67C',  //Obama100
-  '#EB4448',   //Rothko100
-  '#E69C6D',  //Haystack100
-  '#5A489B',  //WaterLilies100
-  '#FCBAA7',  //Nu100
-  '#04A598',  //Turquoise100
-  '#728CEA',  //Sunrise100
-  '#06006B',  //Postman100
-  '#0066CC',  //Ishtar100ß
-  '#EC5A68'  //Marilyn100
+  '#2859C5', 
+  '#F58D02',
+  '#964FD2',
+  '#FF6B6C',
+  '#B8B8D1',
+  '#FFC145',
+  '#4473D9',
+  '#FDA32B',
+  '#AF79DD',
+  '#FF9E9F',
+  '#D7D7E5',
+  '#FFD37A'
 ];
 
 export const DATE_DISPLAY_FORMATS = {

@@ -68,7 +68,6 @@ export const meta = {
       category: 'Chart settings'
     },
     {
-
       name: 'dps',
       type: 'number',
       label: 'Decimal Places',
