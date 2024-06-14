@@ -26,8 +26,8 @@ export default function getBarChartOptions({
     layout: {
       padding: {
         left: 0,
-        right: 0,
-        top: showLabels ? 20 : 0, // Added so the highest data labels fits
+        right: showLabels && displayHorizontally && !stacked ? 60 : 0, // Buffer for data labels
+        top: showLabels && !stacked && !displayHorizontally ? 20 : 0, // Buffer for data labels
         bottom: 0
       }
     },
@@ -102,8 +102,9 @@ export default function getBarChartOptions({
         callbacks: {
           label: function (context) {
             let label = context.dataset.label || '';
-            if (context.parsed.y !== null) {
-              label += `: ${formatValue(`${context.parsed['y']}`, { type: 'number', dps: dps })}`;
+            if (context.parsed && typeof context.parsed === 'object') {
+              const axis = displayHorizontally ? 'x' : 'y';
+              label += `: ${formatValue(`${context.parsed[axis]}`, { type: 'number', dps: dps })}`;
               if (displayAsPercentage) {
                 label += '%';
               }
