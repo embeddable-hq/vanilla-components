@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Dimension, Measure } from '@embeddable.com/core';
 import cn from '../../../util/cn';
 import TableHead, { Column } from './components/TableHead';
@@ -8,79 +8,80 @@ import { TableHeaderType } from './enums/TableHeaderType';
 import { SortDirection } from '../../../../enums/SortDirection';
 import { MeasureVisualizationFormat } from './enums/MeasureVisualizationFormat';
 import TableCell from './components/TableCell';
-import { COLORS } from '../../../constants';
+import { COLORS, REGULAR_FONT_SIZE } from '../../../constants';
 import formatValue from '../../../util/format';
+import { useSortablePivotTable } from './useSortablePivotTable';
 
-type Props = {
-  rawData: Record<string, any>[];
+type Props<T> = {
+  rawData: T[];
   rowDimensions?: Dimension[];
   columnDimensions?: Dimension[];
   measures: Measure[];
-  rowSortDirection?: SortDirection;
-  columnSortDirection?: SortDirection;
+  defaultRowDimensionSortDirection?: SortDirection;
+  defaultColumnDimensionSortDirection?: SortDirection;
   minColumnWidth?: number;
   minRowDimensionColumnWidth?: number;
   nullValueCharacter?: string;
   measureVisualizationFormat: MeasureVisualizationFormat;
+  columnSortingEnabled?: boolean;
+  fontSize?: string;
 }
 
-function getDimensionValues(dataset: Record<string, any>, dimension: Dimension, sortDirection = SortDirection.ASCENDING): string[] {
-  return [...new Set(dataset.map((record: any) => record[dimension.name]))].sort((a: string, b: string): number => {
-    if (!a || !b) {
-      return 0;
-    }
-
-    if (sortDirection === SortDirection.ASCENDING) {
-      return a.localeCompare(b);
-    } else {
-      return b.localeCompare(a);
-    }
-  }) as string[];
-}
-
-export default ({
+const PivotTable = <T,>({
   rawData,
   columnDimensions,
   rowDimensions,
+  defaultRowDimensionSortDirection,
   measures,
-  columnSortDirection,
+  defaultColumnDimensionSortDirection,
   minColumnWidth,
   minRowDimensionColumnWidth,
   nullValueCharacter,
   measureVisualizationFormat,
-}: Props) => {
-  // TODO: This is fixed only for one col dimension for testing purposes, so let's support more nested dimensions
-  const columnDimensionValues = useMemo(() => {
-    if (columnDimensions?.length) {
-      return getDimensionValues(rawData, columnDimensions[0], columnSortDirection);
-    } else {
-      return [];
-    }
-  }, [rawData, columnDimensions, columnSortDirection]);
+  columnSortingEnabled = true,
+  fontSize = REGULAR_FONT_SIZE
+}: Props<T>) => {
+  const [
+    sortedRowDimensionValues,
+    sortedColumnDimensionValues,
+    tableData,
+    handleSortingChange
+  ] = useSortablePivotTable<T>(
+    rawData,
+    rowDimensions,
+    columnDimensions,
+    defaultRowDimensionSortDirection,
+    defaultColumnDimensionSortDirection
+  );
 
-  const tableColumns: Column[] | undefined = useMemo(() => {
+
+  const tableColumns: Column[] = useMemo(() => {
     if (columnDimensions?.length) {
       return [
         ...(rowDimensions?.length ? [{
           label: columnDimensions[0].title,
           key: columnDimensions[0].name,
           type: TableHeaderType.DIMENSION,
+          sortable: false,
           children: [{
             label: rowDimensions[0].title,
             key: rowDimensions[0].name,
             type: TableHeaderType.ROW_HEADER,
-            minWidth: minRowDimensionColumnWidth || minColumnWidth || 'auto'
+            sortable: columnSortingEnabled,
+            minWidth: minRowDimensionColumnWidth || minColumnWidth
           }]
         }] : []),
-        ...columnDimensionValues.map((dimensionValue) => ({
+        ...sortedColumnDimensionValues.map((dimensionValue) => ({
           label: dimensionValue,
           key: columnDimensions[0].name,
           type: TableHeaderType.DIMENSION,
+          sortable: false,
           children: measures.map((measure) => ({
             label: measure.title,
             key: measure.name,
             type: TableHeaderType.MEASURE,
-            minWidth: minColumnWidth || 'auto',
+            sortable: columnSortingEnabled,
+            minWidth: minColumnWidth,
           }))
         }))
       ]
@@ -90,35 +91,62 @@ export default ({
           label: rowDimensions[0].title,
           key: rowDimensions[0].name,
           type: TableHeaderType.ROW_HEADER,
-          minWidth: minRowDimensionColumnWidth || minColumnWidth || 'auto',
+          sortable: columnSortingEnabled,
+          minWidth: minRowDimensionColumnWidth || minColumnWidth,
         },
         ...(measures?.map((measure) => ({
           label: measure.title,
           key: measure.name,
           type: TableHeaderType.MEASURE,
-          minWidth: minColumnWidth || 'auto',
+          sortable: columnSortingEnabled,
+          minWidth: minColumnWidth,
         })) || [])
       ]
+    } else {
+      return [];
     }
   }, [rawData, columnDimensions, rowDimensions, measures]);
 
-  let maxValuesOfMeasures = 0;
 
-  const tableData = useMemo<Record<string, any>[]>(() => (
-    // TODO: This is fixed only for one col dimension for testing purposes, so let's support more nested dimensions
-    // FIXME: use custom groupBy function of library like lodash or underscore
-    Object.groupBy(rawData, (dataRecord) => {
-      if (measureVisualizationFormat !== MeasureVisualizationFormat.NUMERIC_VALUES_ONLY) {
-        maxValuesOfMeasures = Math.max(maxValuesOfMeasures, ...(measures.map((measure) => parseFloat(dataRecord[measure.name]) || 0)));
+  const [rowSortDescriptor, setRowSortDescriptor] = useState<{
+    column: Column | undefined;
+    direction: SortDirection;
+  }>(() => {
+    if (rowDimensions?.length && defaultRowDimensionSortDirection) {
+      if (columnDimensions?.length) {
+        return {
+          column: {
+            ...tableColumns[0].children?.[0],
+            parent: tableColumns[0]
+          },
+          direction: defaultRowDimensionSortDirection
+        }
+      } else {
+        return {
+          column: tableColumns[0],
+          direction: defaultRowDimensionSortDirection
+        }
       }
+    }
 
-      return dataRecord[rowDimensions?.[0]?.name || '']
-    })
-  ), [rawData, rowDimensions, measureVisualizationFormat]);
+    return {};
+  });
+
+
+  const maxValueAmongMeasures = useMemo(() => {
+    if (measureVisualizationFormat !== MeasureVisualizationFormat.NUMERIC_VALUES_ONLY) {
+      return Math.max(...rawData.map((record: T) => (
+        Math.max(...measures.map((measure) => parseFloat(record[measure.name])) || 0)
+      )) || 0);
+    }
+
+    return 0;
+  }, [rawData, measures, measureVisualizationFormat]);
+
 
   if (!tableColumns?.length) {
     return (
-      <div className="h-full flex items-center justify-center font-embeddable text-sm">
+      <div className="text-sm h-full flex items-center justify-center font-embeddable">
         <WarningIcon />
         <div className="whitespace-pre-wrap p-4 max-w-sm text-xs">Please define at least one data dimension</div>
       </div>
@@ -128,17 +156,31 @@ export default ({
   return (
     <table className="min-w-full border-separate border-spacing-0 table-fixed">
       <thead className="text-[#333942] sticky top-0 z-20 bg-white">
-        <TableHead columns={tableColumns} />
+        <TableHead
+          columns={tableColumns}
+          sortBy={rowSortDescriptor?.column}
+          sortDirection={rowSortDescriptor?.direction}
+          onSortingChange={(column: Column, sortDirection: SortDirection) => {
+            setRowSortDescriptor({
+              column,
+              direction: sortDirection
+            });
+
+            handleSortingChange(column, sortDirection, parseInt(nullValueCharacter || '') === 0);
+          }}
+          fontSize={fontSize}
+        />
       </thead>
 
       <tbody className="overflow-y-auto">
       {
-        Object.entries(tableData).map(([rowDimensionValue, rowData], rowIndex: number) => (
+        sortedRowDimensionValues.map((rowDimension, rowIndex: number) => (
           <TableRow
-            key={rowDimensionValue.replaceAll(' ', '-').toLowerCase()}
+            key={`${rowIndex}-${rowDimension?.replaceAll(' ', '-').toLowerCase()}`}
             columns={tableColumns}
-            rowData={rowData}
-            renderCell={(cellValue, column, groupedCollumns, columnIndex) => {
+            rowData={tableData[rowDimension]}
+            rowHeader={rowDimension}
+            renderCell={(cellValue, column, columnIndex) => {
               const isRowHeader = column.type === TableHeaderType.ROW_HEADER;
 
               return (
@@ -147,29 +189,29 @@ export default ({
                   isHeader={isRowHeader}
                   className={cn('border-b', {
                     'text-left': isRowHeader,
-                    'border-r': columnIndex === groupedCollumns.length - 1 || isRowHeader
+                    'border-r': measures.at(-1)?.name === column.key || !column.parent || isRowHeader
                   })}
                 >
-                  <span>
+                  <span style={{ fontSize }}>
                     {
                       cellValue === undefined || cellValue === null
                         ? nullValueCharacter
                         : formatValue(cellValue, {type: isRowHeader ? 'string' : 'number'})
                     }
-                    {
-                      cellValue && measureVisualizationFormat === MeasureVisualizationFormat.VALUE_BARS && !isRowHeader
-                        ? (
-                          <div
-                            className="h-1 rounded-sm"
-                            style={{
-                              width: `${(parseFloat(cellValue) / maxValuesOfMeasures) * 80}%`,
-                              backgroundColor: `${COLORS[measures.findIndex((measure) => measure.name === column.key) % COLORS.length]}`
-                            }}
-                          />
-                        )
-                        : null
-                    }
                   </span>
+                  {
+                    cellValue && measureVisualizationFormat === MeasureVisualizationFormat.VALUE_BARS && !isRowHeader
+                      ? (
+                        <div
+                          className="h-1 rounded-sm"
+                          style={{
+                            width: `${(parseFloat(cellValue) / maxValueAmongMeasures) * 80}%`,
+                            backgroundColor: `${COLORS[measures.findIndex((measure) => measure.name === column.key) % COLORS.length]}`
+                          }}
+                        />
+                      )
+                      : null
+                  }
                 </TableCell>
               );
             }}
@@ -180,3 +222,5 @@ export default ({
     </table>
   )
 }
+
+export default PivotTable;

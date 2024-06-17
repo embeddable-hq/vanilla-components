@@ -17,13 +17,13 @@ export const meta = {
       type: 'string',
       label: 'Title',
       description: 'The title for the chart',
-      category: 'Configure table'
+      category: 'Table configuration'
     },
     {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset to display',
-      category: 'Configure table'
+      category: 'Table configuration'
     },
     {
       name: 'metrics',
@@ -33,7 +33,7 @@ export const meta = {
       config: {
         dataset: 'ds'
       },
-      category: 'Configure table'
+      category: 'Table configuration'
     },
     {
       name: 'rowValues',
@@ -42,14 +42,7 @@ export const meta = {
       config: {
         dataset: 'ds'
       },
-      category: 'Configure table'
-    },
-    {
-      name: 'rowSortDirection',
-      type: SortDirectionType as never,
-      defaultValue: { value: SortDirection.ASCENDING },
-      label: 'Default Row Sort Direction',
-      category: 'Configure table'
+      category: 'Table configuration'
     },
     {
       name: 'columnValues',
@@ -58,30 +51,48 @@ export const meta = {
       config: {
         dataset: 'ds'
       },
-      category: 'Configure table'
-    },
-    {
-      name: 'columnSortDirection',
-      type: SortDirectionType as never,
-      defaultValue: { value: SortDirection.ASCENDING },
-      label: 'Column Values Sort Direction',
-      category: 'Configure table'
-    },
-    {
-      name: 'nullValueCharacter',
-      type: 'string',
-      label: 'Null value character',
-      description: 'Character that should be displayed if value does not exist',
-      defaultValue: '∅',
-      category: 'Configure table'
+      category: 'Table configuration'
     },
     {
       name: 'measureVisualizationFormat',
       type: MeasureVisualizationFormatType,
       label: 'Metrics visualization format',
       defaultValue: { value: MeasureVisualizationFormat.NUMERIC_VALUES_ONLY },
-      category: 'Configure table'
+      category: 'Table configuration'
     },
+
+    // Table settings
+    {
+      name: 'nullValueCharacter',
+      type: 'string',
+      label: 'Null value character',
+      description: 'Character that should be displayed if value does not exist',
+      defaultValue: '∅',
+      category: 'Table settings'
+    },
+    {
+      name: 'columnSortingEnabled',
+      type: 'boolean',
+      label: 'Enable column sorting',
+      defaultValue: true,
+      category: 'Table settings'
+    },
+    {
+      name: 'columnSortDirection',
+      type: SortDirectionType as never,
+      defaultValue: { value: SortDirection.ASCENDING },
+      label: 'Default Column Sort Direction',
+      category: 'Table settings'
+    },
+    {
+      name: 'rowSortDirection',
+      type: SortDirectionType as never,
+      defaultValue: { value: SortDirection.ASCENDING },
+      label: 'Default Row Sort Direction',
+      category: 'Table settings'
+    },
+
+    // Table styling
     {
       name: 'minColumnWidth',
       type: 'number',
@@ -94,6 +105,12 @@ export const meta = {
       type: 'number',
       label: 'Minimum row value width in pixels',
       defaultValue: 200,
+      category: 'Table styling'
+    },
+    {
+      name: 'fontSize',
+      type: 'number',
+      label: 'Font size in pixels',
       category: 'Table styling'
     },
   ]
@@ -122,6 +139,7 @@ export default defineComponent(Component, meta, {
       rowSortDirection: inputs.rowSortDirection?.value,
       columnSortDirection: inputs.columnSortDirection?.value,
       measureVisualizationFormat: inputs.measureVisualizationFormat?.value,
+      fontSize: inputs.fontSize,
       results: loadData({
         from: inputs.ds,
         dimensions: ([inputs.rowValues, inputs.columnValues]?.filter((input) => isDimension(input)) as Dimension[]) || [],
