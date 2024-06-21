@@ -19,6 +19,7 @@ type Props = {
   columnSortDirection?: SortDirection;
   nullValueCharacter?: string;
   measureVisualizationFormat: MeasureVisualizationFormat;
+  fontSize?: number;
 };
 
 export default ({ results, rowValues, columnValues, metrics, ...props }: Props) => (
@@ -33,8 +34,11 @@ export default ({ results, rowValues, columnValues, metrics, ...props }: Props) 
           {...props}
           rawData={results.data!}
           columnDimensions={[columnValues].filter((metric) => isDimension(metric)) as Dimension[]}
+          defaultColumnDimensionSortDirection={props.columnSortDirection}
           rowDimensions={[rowValues].filter((metric) => isDimension(metric)) as Dimension[]}
+          defaultRowDimensionSortDirection={props.rowSortDirection}
           measures={metrics}
+          fontSize={props.fontSize ? `${props.fontSize}px` : undefined}
         />
       )
     }
