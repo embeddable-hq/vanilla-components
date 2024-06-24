@@ -1,4 +1,4 @@
-import { loadData } from '@embeddable.com/core';
+import { loadData, Value } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
@@ -79,9 +79,24 @@ export const meta = {
       label: 'Show download as CSV',
       category: 'Export options',
       defaultValue: true,
-
     },
-  ]
+  ],
+  events: [
+    {
+      name: 'onClick',
+      label: 'Click',
+      properties: [
+        {
+          name: 'slice',
+          type: 'string'
+        },
+        {
+          name: 'metric',
+          type: 'number'
+        },
+      ]
+    }
+  ],
 } as const satisfies EmbeddedComponentMeta;
 
 export default defineComponent(Component, meta, {
@@ -94,5 +109,13 @@ export default defineComponent(Component, meta, {
         measures: [inputs.metric]
       })
     };
+  },
+  events: {
+    onClick: (value) => {
+      return { 
+        slice: value.slice || Value.noFilter(),
+        metric: value.metric || Value.noFilter()
+      };
+    }
   }
 });
