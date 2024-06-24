@@ -27,7 +27,7 @@
     "chrono-node": "^2.7.3",
     "clsx": "^2.1.1",
     "d3-scale": "^4.0.2",
-    "date-fns": "^2.30.0",
+    "date-fns": "^3.6.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-day-picker": "^8.9.1",
