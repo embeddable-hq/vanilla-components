@@ -62,7 +62,7 @@ export default (props: Props) => {
 };
 
 function chartData(props: Props): ChartData<'bar'> {
-  const { results, xAxis, metrics } = props;
+  const { results, xAxis, metrics, metricNames } = props;
 
   const labels = [
     ...new Set(
@@ -81,7 +81,7 @@ function chartData(props: Props): ChartData<'bar'> {
         maxBarThickness: 25,
         minBarLength: 0,
         borderRadius: 6,
-        label: metric.title,
+        label: (metricNames && metricNames[i]) || metric.title,
         data: results?.data?.map((d) => parseFloat(d[metric.name])) || [],
         backgroundColor: COLORS[i % COLORS.length]
       })) || []
