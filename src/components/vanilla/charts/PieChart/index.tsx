@@ -12,8 +12,8 @@ import {
   Tooltip
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import React from 'react';
-import { Pie } from 'react-chartjs-2';
+import React, { useRef } from 'react';
+import { Pie, getElementAtEvent } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import formatValue from '../../../util/format';
@@ -52,13 +52,47 @@ type Props = {
 type Record = { [p: string]: string };
 
 export default (props: Props) => {
-  const { results, title, enableDownloadAsCSV } = props;
+  const { results, title, enableDownloadAsCSV, maxSegments, metric, slice, onClick } = props;
+
+  const chartRef = useRef<ChartJS>(null);
+
+  const fireClickEvent = (element: InteractionItem[]) => {
+    if (!element.length) {
+      //clicked outside pie
+      onClick({ slice: null, metric: null });
+      return;
+    } 
+    const { datasetIndex, index } = element[0];
+    if(index + 1 >= maxSegments) {
+      //clicked OTHER
+      return;
+    }
+    onClick({ 
+      slice: results.data[index][slice.name], 
+      metric: results.data[index][metric.name]
+    })
+  };
+
+  const handleClick = (event: MouseEvent<HTMLCanvasElement>) => {
+    const { current: chart } = chartRef;
+
+    if (!chart) {
+      return;
+    }
+    fireClickEvent(getElementAtEvent(chart, event));
+  };
 
   return (
     <Container
       {...props}
       className="overflow-y-hidden">
-      <Pie height="100%" options={chartOptions(props)} data={chartData(props)} />
+      <Pie 
+        height="100%" 
+        options={chartOptions(props)} 
+        data={chartData(props)} 
+        ref={chartRef}
+        onClick={handleClick}
+      />
     </Container>
   );
 };

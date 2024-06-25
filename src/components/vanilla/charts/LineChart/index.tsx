@@ -89,7 +89,7 @@ export default (props: Props) => {
           cubicInterpolationMode: 'monotone' as const
         })) || []
     };
-  }, [props]);
+  }, [props, fillGaps]);
 
   const chartOptions: ChartOptions<'line'> = useMemo(
     () => ({
