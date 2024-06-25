@@ -45,13 +45,13 @@ ChartJS.defaults.plugins.tooltip.enabled = true;
 export default (props: Props) => {
   const { fillGaps } = useTimeseries(props);
 
-  const datasetsMeta = {
-    fill: true,
-    cubicInterpolationMode: 'monotone' as const
-  };
-
   const chartData = useMemo(() => {
     const data = props?.results?.data?.reduce(fillGaps, []);
+
+    const datasetsMeta = {
+      fill: true,
+      cubicInterpolationMode: 'monotone' as const
+    };
 
     return getStackedChartData(
       {
@@ -64,7 +64,7 @@ export default (props: Props) => {
       datasetsMeta,
       { chartType: 'stackedAreaChart' }
     ) as ChartData<'line', number[], unknown>;
-  }, [props]);
+  }, [props, fillGaps]);
 
   const chartOptions: ChartOptions<'line'> = useMemo(() => {
     return {
