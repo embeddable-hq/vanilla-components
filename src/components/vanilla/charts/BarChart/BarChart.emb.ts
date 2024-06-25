@@ -43,6 +43,13 @@ export const meta = {
       category: 'Configure chart'
     },
     {
+      name: 'metricNames',
+      type: 'string',
+      array: true,
+      label: 'Override Metric Names',
+      category: 'Configure chart'
+    },
+    {
       name: 'sortBy',
       type: 'dimensionOrMeasure',
       label: 'Sort by (optional)',
