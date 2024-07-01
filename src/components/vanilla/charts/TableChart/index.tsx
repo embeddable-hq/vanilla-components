@@ -91,7 +91,8 @@ export default (props: Props) => {
   return (
     <Container
       {...props}
-      className="overflow-y-hidden">
+      className="overflow-y-hidden"
+    >
       <div
         ref={ref}
         className="grow flex flex-col justify-start w-full overflow-x-auto font-embeddable text-sm"
