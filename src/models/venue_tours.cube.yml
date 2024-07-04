@@ -50,13 +50,25 @@ cubes:
       type: string
       sql: tour_name
     
+    - name: tour_sid
+      type: string
+      sql: tour_sid
+    
     - name: track_name
       type: string
       sql: track_name
     
+    - name: track_sid
+      type: string
+      sql: track_sid
+    
     - name: track_audio_language
       type: string
       sql: track_audio_language
+    
+    - name: user_connectivity
+      type: string
+      sql: case when connectivity in ("Internet Highspeed","Internet Corporate") then "Wi-Fi" else connectivity end
     
   measures:
     - name: total_events

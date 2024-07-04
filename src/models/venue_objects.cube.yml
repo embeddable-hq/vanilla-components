@@ -73,6 +73,10 @@ cubes:
       title: "Artist or Maker"
       sql: artist_name
     
+    - name: user_connectivity
+      type: string
+      sql: case when connectivity in ("Internet Highspeed","Internet Corporate") then "Wi-Fi" else connectivity end
+    
   measures:
     - name: total_events
       type: count

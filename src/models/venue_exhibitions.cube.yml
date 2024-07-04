@@ -65,6 +65,10 @@ cubes:
     - name: exhibition_end_date
       type: string
       sql: exhibition_end_date
+
+    - name: user_connectivity
+      type: string
+      sql: case when connectivity in ("Internet Highspeed","Internet Corporate") then "Wi-Fi" else connectivity end
     
   measures:
     - name: total_events
