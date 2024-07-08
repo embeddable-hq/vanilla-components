@@ -5,7 +5,8 @@ import Component, { Props } from './index';
 
 export const meta = {
   name: 'Dropdown',
-  label: 'Control: Dropdown',
+  category: 'Controls',
+  label: 'Dropdown',
   defaultWidth: 300,
   defaultHeight: 80,
   classNames: ['on-top'],

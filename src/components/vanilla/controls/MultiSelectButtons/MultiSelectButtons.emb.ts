@@ -5,7 +5,8 @@ import Component from './index';
 
 export const meta = {
   name: 'MultiSelectButtons',
-  label: 'Control: Multiselect Buttons',
+  category: 'Controls',
+  label: 'Multiselect Buttons',
   defaultWidth: 400,
   defaultHeight: 80,
   inputs: [

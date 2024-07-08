@@ -8,7 +8,8 @@ import Component from './index';
 
 export const meta = {
   name: 'ComparisonFilter',
-  label: 'Control: Comparison Filter',
+  category: 'Controls',
+  label: 'Comparison Filter',
   defaultWidth: 920,
   defaultHeight: 80,
   classNames: ['on-top'],

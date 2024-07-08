@@ -5,7 +5,8 @@ import Component from './index';
 
 export const meta = {
   name: 'DateRangePicker',
-  label: 'Control: Date Range',
+  category: 'Controls',
+  label: 'Date Range',
   defaultWidth: 300,
   defaultHeight: 80,
   classNames: ['on-top'],

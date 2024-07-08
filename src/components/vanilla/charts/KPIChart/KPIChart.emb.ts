@@ -5,7 +5,8 @@ import Component from './index';
 
 export const meta = {
   name: 'KPIChart',
-  label: 'Chart: Single KPI',
+  category: 'Charts',
+  label: 'Single KPI',
   defaultWidth: 200,
   defaultHeight: 150,
   classNames: ['inside-card'],

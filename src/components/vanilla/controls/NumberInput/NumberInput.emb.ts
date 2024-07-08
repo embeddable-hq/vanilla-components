@@ -7,7 +7,8 @@ import Component from './index';
 
 export const meta = {
   name: 'NumberInput',
-  label: 'Control: Number',
+  category: 'Controls',
+  label: 'Number',
   defaultWidth: 300,
   defaultHeight: 80,
   inputs: [

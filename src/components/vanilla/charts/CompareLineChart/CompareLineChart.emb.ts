@@ -6,7 +6,8 @@ import Component from './index';
 
 export const meta = {
   name: 'CompareLineChart',
-  label: 'Chart: Line (time-series) comparison',
+  category: 'Charts',
+  label: 'Line (time-series) comparison',
   classNames: ['inside-card'],
   inputs: [
     {

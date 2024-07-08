@@ -5,7 +5,8 @@ import Component from './index';
 
 export const meta = {
   name: 'TextInput',
-  label: 'Control: Text',
+  category: 'Controls',
+  label: 'Text',
   defaultWidth: 300,
   defaultHeight: 80,
   inputs: [

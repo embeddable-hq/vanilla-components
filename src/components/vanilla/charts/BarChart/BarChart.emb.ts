@@ -5,7 +5,8 @@ import Component from './index';
 
 export const meta = {
   name: 'BarChart',
-  label: 'Chart: Bar',
+  category: 'Charts',
+  label: 'Bar',
   classNames: ['inside-card'],
   inputs: [
     {

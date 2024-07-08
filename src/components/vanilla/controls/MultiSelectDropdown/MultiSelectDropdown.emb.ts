@@ -5,7 +5,8 @@ import Component, { Props } from './index';
 
 export const meta = {
   name: 'MultiSelectDropdown',
-  label: 'Control: Multi-Select Dropdown',
+  category: 'Controls',
+  label: 'Multi-Select Dropdown',
   defaultWidth: 300,
   defaultHeight: 80,
   classNames: ['on-top'],
