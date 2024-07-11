@@ -28,14 +28,13 @@ export type Props = {
 };
 
 type Options = {
-  truncateDefault?: number,
   chartType?: string
 }
 
 export default function getStackedChartData(
   props: Props,
   datasetsMeta: DatasetsMeta,
-  options: Options,
+  options?: Options,
 ): ChartData<'line' | 'bar', number[], unknown> {
   const { results, xAxis, metric, segment, maxSegments, displayAsPercentage } = props;
   const labels = [...new Set(results?.data?.map((d: Record) => d[xAxis?.name || '']))] as string[];
@@ -50,7 +49,7 @@ export default function getStackedChartData(
   //   }
   // }
 
-  const defaultSegmentValue = options.chartType === 'stackedAreaChart' ? 0 : null; // Default is null not 0, to avoid unwanted chart elements
+  const defaultSegmentValue = options?.chartType === 'stackedAreaChart' ? 0 : null; // Default is null not 0, to avoid unwanted chart elements
 
   labels.forEach((label) => {
     const labelRef = {};
@@ -73,7 +72,7 @@ export default function getStackedChartData(
   });
 
   return {
-    labels: labels.map((l) => formatValue(l, { truncate: options.truncateDefault, meta: xAxis?.meta })),
+    labels: labels.map((l) => formatValue(l, { meta: xAxis?.meta })),
     datasets: segments.map((s, i) => {
       const dataset = {
         ...datasetsMeta,

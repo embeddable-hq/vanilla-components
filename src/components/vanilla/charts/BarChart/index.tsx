@@ -67,7 +67,7 @@ function chartData(props: Props): ChartData<'bar'> {
   const labels = [
     ...new Set(
       results?.data?.map((d: { [p: string]: string }) =>
-        formatValue(d[xAxis?.name || ''], { truncate: 15, meta: xAxis.meta })
+        formatValue(d[xAxis?.name || ''], { meta: xAxis?.meta })
       )
     )
   ] as string[];
@@ -78,7 +78,7 @@ function chartData(props: Props): ChartData<'bar'> {
       metrics?.map((metric, i) => ({
         barPercentage: 0.6,
         barThickness: 'flex',
-        maxBarThickness: 15,
+        maxBarThickness: 25,
         minBarLength: 0,
         borderRadius: 6,
         label: metric.title,

@@ -35,6 +35,7 @@ export type Props = {
 };
 
 export default (props: Props) => {
+  const { onChangeComparison, defaultPeriod, onChangePeriod } = props;
   const ref = useRef<HTMLDivElement | null>(null);
   const [hideDate, setHideDate] = useState(false);
   const [recalcComparison, setRecalcComparison] = useState(true);
@@ -95,12 +96,14 @@ export default (props: Props) => {
     }
   }, [period?.from, period?.to]);
 
+  
+
   const changeComparisonOption = useCallback(
     (value: string) => {
       setCompareOption(value);
 
       if (value === 'No comparison') {
-        props.onChangeComparison(null);
+        onChangeComparison(null);
 
         return;
       }
@@ -108,7 +111,7 @@ export default (props: Props) => {
       if (!period?.from || !period?.to) return;
 
       if (value === 'Previous month') {
-        props.onChangeComparison({
+        onChangeComparison({
           relativeTimeString: '',
           from: subMonths(period.from, 1),
           to: subMonths(period.to, 1)
@@ -118,7 +121,7 @@ export default (props: Props) => {
       }
 
       if (value === 'Previous quarter') {
-        props.onChangeComparison({
+        onChangeComparison({
           relativeTimeString: '',
           from: subQuarters(period.from, 1),
           to: subQuarters(period.to, 1)
@@ -128,7 +131,7 @@ export default (props: Props) => {
       }
 
       if (value === 'Previous year') {
-        props.onChangeComparison({
+        onChangeComparison({
           relativeTimeString: '',
           from: subYears(period.from, 1),
           to: subYears(period.to, 1)
@@ -141,13 +144,13 @@ export default (props: Props) => {
 
       const days = Math.abs(differenceInCalendarDays(period.from, period.to)) + 1;
 
-      props.onChangeComparison({
+      onChangeComparison({
         relativeTimeString: '',
         from: subDays(period.from, days),
         to: subDays(period.to, days)
       });
     },
-    [props.onChangeComparison, period, setCompareOption]
+    [onChangeComparison, period, setCompareOption]
   );
 
   useEffect(() => {
@@ -158,22 +161,22 @@ export default (props: Props) => {
 
   //ensure the default period is set correctly on first load
   useEffect(() => {
-    if (!props.defaultPeriod) return;
+    if (!defaultPeriod) return;
     if (
-      !props.defaultPeriod?.from &&
-      !props.defaultPeriod?.to &&
-      props.defaultPeriod?.relativeTimeString
+      !defaultPeriod?.from &&
+      !defaultPeriod?.to &&
+      defaultPeriod?.relativeTimeString
     ) {
-      const [from, to] = dateParser(props.defaultPeriod?.relativeTimeString, '');
+      const [from, to] = dateParser(defaultPeriod?.relativeTimeString, '');
       if (!from || !to) return;
-      props.defaultPeriod.from = new Date(from);
-      props.defaultPeriod.to = new Date(to);
-      setPeriod(props.defaultPeriod);
-      props.onChangePeriod(props.defaultPeriod as TimeRange);
+      defaultPeriod.from = new Date(from);
+      defaultPeriod.to = new Date(to);
+      setPeriod(defaultPeriod);
+      onChangePeriod(defaultPeriod as TimeRange);
       return;
     }
-    setPeriod(props.defaultPeriod);
-  }, []);
+    setPeriod(defaultPeriod);
+  }, [defaultPeriod, onChangePeriod]);
 
 
   return (

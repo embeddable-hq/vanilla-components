@@ -9,11 +9,12 @@ type Props = {
   results: DataResponse;
   prevResults?: DataResponse;
   prevTimeFilter?: TimeRange;
-  title: string;
-  prefix: string;
-  suffix: string;
+  title?: string;
+  prefix?: string;
+  suffix?: string;
   metric: { name: string; meta?: object };
-  dps: number;
+  dps?: number;
+  fontSize?: number;
 };
 
 export default (props: Props) => {
@@ -34,6 +35,8 @@ export default (props: Props) => {
     };
   }, [props]);
 
+  const fontSize = props.fontSize || 44;
+
   if (props.results?.error) {
     return (
       <div className="h-full flex items-center justify-center font-embeddable text-sm">
@@ -46,9 +49,13 @@ export default (props: Props) => {
   return (
     <Container
       {...props}
-      className="overflow-y-hidden">
+      className="overflow-y-hidden"
+    >
       <div className="relative grow items-center justify-center flex min-h-[40px]">
-        <div className="flex items-center justify-center font-embeddable text-[#333942] text-[44px] font-bold relative -mt-[10px]">
+        <div
+          className={`flex items-center justify-center font-embeddable text-[#333942] leading-tight font-bold relative -mt-[10px]`}
+          style={{ fontSize: `${fontSize}px` }}
+        >
           {props.prevTimeFilter?.to && percentage !== null && (
             <span
               className="absolute left-0 -bottom-[38px] w-full justify-center flex items-center text-[16px]"
@@ -62,9 +69,7 @@ export default (props: Props) => {
               {percentage === Infinity ? '∞' : formatValue(`${Math.abs(percentage)}`, 'number')}%
             </span>
           )}
-          {props.prefix}
-          {n || 0}
-          {props.suffix}
+          <span className="text-center">{`${props.prefix || ''}${n || 0}${props.suffix || ''}`}</span>
         </div>
       </div>
     </Container>

@@ -12,8 +12,8 @@ import {
   Tooltip
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import React from 'react';
-import { Pie } from 'react-chartjs-2';
+import React, { useRef } from 'react';
+import { Pie, getElementAtEvent } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import formatValue from '../../../util/format';
@@ -52,13 +52,47 @@ type Props = {
 type Record = { [p: string]: string };
 
 export default (props: Props) => {
-  const { results, title, enableDownloadAsCSV } = props;
+  const { results, title, enableDownloadAsCSV, maxSegments, metric, slice, onClick } = props;
+
+  const chartRef = useRef<ChartJS>(null);
+
+  const fireClickEvent = (element: InteractionItem[]) => {
+    if (!element.length) {
+      //clicked outside pie
+      onClick({ slice: null, metric: null });
+      return;
+    } 
+    const { datasetIndex, index } = element[0];
+    if(index + 1 >= maxSegments) {
+      //clicked OTHER
+      return;
+    }
+    onClick({ 
+      slice: results.data[index][slice.name], 
+      metric: results.data[index][metric.name]
+    })
+  };
+
+  const handleClick = (event: MouseEvent<HTMLCanvasElement>) => {
+    const { current: chart } = chartRef;
+
+    if (!chart) {
+      return;
+    }
+    fireClickEvent(getElementAtEvent(chart, event));
+  };
 
   return (
     <Container
       {...props}
       className="overflow-y-hidden">
-      <Pie height="100%" options={chartOptions(props)} data={chartData(props)} />
+      <Pie 
+        height="100%" 
+        options={chartOptions(props)} 
+        data={chartData(props)} 
+        ref={chartRef}
+        onClick={handleClick}
+      />
     </Container>
   );
 };
@@ -136,7 +170,7 @@ function chartData(props: Props) {
   const newData = labelsExceedMaxSegments ? mergeLongTail(props) : results.data;
 
   // Chart.js pie expects labels like so: ['US', 'UK', 'Germany']
-  const labels = newData?.map((d) => formatValue(d[slice.name], { truncate: 15, meta: slice?.meta }));
+  const labels = newData?.map((d) => formatValue(d[slice.name], { meta: slice?.meta }));
 
 
   const sum = displayAsPercentage 
@@ -148,8 +182,7 @@ function chartData(props: Props) {
   // Chart.js pie expects counts like so: [23, 10, 5]
   const counts = newData?.map((d: Record) => {
     const metricValue = parseFloat(d[metric.name]);
-    const value = displayAsPercentage ? ((metricValue * 100) / sum) : metricValue;
-    return formatValue(value, { type: 'number', dps: props.dps })
+    return displayAsPercentage ? ((metricValue * 100) / sum) : metricValue;
   });
 
   return {

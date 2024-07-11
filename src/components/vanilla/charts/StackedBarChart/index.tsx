@@ -42,7 +42,7 @@ export default (props: Props) => {
   const datasetsMeta = {
     barPercentage: 0.6,
     barThickness: 'flex',
-    maxBarThickness: 15,
+    maxBarThickness: 25,
     minBarLength: 0,
     borderRadius: 3
   };
@@ -54,7 +54,7 @@ export default (props: Props) => {
       <Bar
         height="100%"
         options={getBarChartOptions({ ...props, stacked: true })}
-        data={getStackedChartData(props, datasetsMeta, { truncateDefault: 15 }) as ChartData<'bar', number[], unknown>}
+        data={getStackedChartData(props, datasetsMeta) as ChartData<'bar', number[], unknown>}
       />
     </Container>
   );
