@@ -118,7 +118,12 @@ export default defineComponent(Component, meta, {
           }
         ],
         dimensions: [inputs.segment],
-        measures: [inputs.metric]
+        measures: [inputs.metric],
+        filters: [{
+          property: inputs.xAxis,
+          operator: 'notEquals',
+          value: [null]
+        }]
       })
     };
   }
