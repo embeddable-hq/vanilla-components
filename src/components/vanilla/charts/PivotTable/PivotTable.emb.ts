@@ -1,4 +1,4 @@
-import { Dimension, isDimension, isMeasure, loadData, Measure, OrderDirection } from '@embeddable.com/core';
+import { Dimension, isDimension, isMeasure, loadData, Measure, OrderDirection, OrderBy } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import SortDirectionType from '../../../../types/SortDirection.type.emb';
@@ -39,6 +39,7 @@ export const meta = {
       name: 'rowValues',
       type: 'dimension',
       label: 'Row Values',
+      array: true,
       config: {
         dataset: 'ds'
       },
@@ -48,6 +49,7 @@ export const meta = {
       name: 'columnValues',
       type: 'dimension',
       label: 'Column Values',
+      array: true,
       config: {
         dataset: 'ds'
       },
@@ -78,17 +80,17 @@ export const meta = {
       category: 'Table settings'
     },
     {
-      name: 'columnSortDirection',
-      type: SortDirectionType as never,
+      name: 'rowSortDirection',
+      type: SortDirectionType,
       defaultValue: { value: SortDirection.ASCENDING },
-      label: 'Default Column Sort Direction',
+      label: 'Default Row Sort Direction',
       category: 'Table settings'
     },
     {
-      name: 'rowSortDirection',
-      type: SortDirectionType as never,
+      name: 'columnSortDirection',
+      type: SortDirectionType,
       defaultValue: { value: SortDirection.ASCENDING },
-      label: 'Default Row Sort Direction',
+      label: 'Default Column Sort Direction',
       category: 'Table settings'
     },
 
@@ -118,34 +120,43 @@ export const meta = {
 
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>, [state]) => {
-    const sort = [];
+    const rowDimensions = (inputs.rowValues || []).filter((input) => isDimension(input)) as Dimension[];
+    const columnDimensions = (inputs.columnValues || []).filter((input) => isDimension(input)) as Dimension[];
+    const measures = inputs.metrics?.filter((metric) => isMeasure(metric)) as Measure[];
 
-    if (inputs.rowValues && inputs.rowSortDirection) {
-      sort.push({
-        property: inputs.rowValues,
-        direction: (inputs.rowSortDirection?.value === SortDirection.ASCENDING ? 'asc' : 'desc') as OrderDirection
-      });
-    }
+    const filteredRowDimensions: Dimension[] = rowDimensions.filter((dimension) => dimension && isDimension(dimension));
 
-    if (inputs.columnValues && inputs.columnSortDirection) {
-      sort.push({
-        property: inputs.columnValues,
-        direction: (inputs.columnSortDirection?.value === SortDirection.ASCENDING ? 'asc' : 'desc') as OrderDirection
-      });
-    }
+    const sort: OrderBy[] = filteredRowDimensions.map((rowDimension) => ({
+      property: rowDimension,
+      direction: (inputs.rowSortDirection?.value === SortDirection.ASCENDING ? 'asc' : 'desc') as OrderDirection
+    }));
 
     return {
       ...inputs,
+      columnValues: columnDimensions,
       rowSortDirection: inputs.rowSortDirection?.value,
       columnSortDirection: inputs.columnSortDirection?.value,
       measureVisualizationFormat: inputs.measureVisualizationFormat?.value,
       fontSize: inputs.fontSize,
-      results: loadData({
-        from: inputs.ds,
-        dimensions: ([inputs.rowValues, inputs.columnValues]?.filter((input) => isDimension(input)) as Dimension[]) || [],
-        measures: (inputs.metrics?.filter((metric) => isMeasure(metric)) as Measure[]) || [],
-        orderBy: sort
-      })
+      // Fetch data for each row dimension level
+      ...(rowDimensions?.length
+        ? rowDimensions.reduce((resultSet, dimension, index, dimensions) => ({
+          ...resultSet,
+          [`resultsDimension${index + 1}`]: loadData({
+            from: inputs.ds,
+            dimensions: [...filteredRowDimensions.slice(0, index + 1), ...columnDimensions],
+            measures: measures,
+            orderBy: sort.slice(0, index + 1)
+          })
+        }), {})
+        : {
+          resultsDimension0: loadData({
+            from: inputs.ds,
+            dimensions: columnDimensions,
+            measures: measures,
+          })
+        }
+      )
     };
   }
 });
