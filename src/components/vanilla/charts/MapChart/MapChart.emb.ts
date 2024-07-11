@@ -17,7 +17,7 @@ export const meta = {
       type: 'string',
       label: 'Title',
       description: 'The title for the chart',
-      category: 'Configure chart'
+      category: 'Chart data'
     },
     {
       name: 'ds',
@@ -25,7 +25,7 @@ export const meta = {
       label: 'Dataset',
       description: 'Dataset',
       defaultValue: false,
-      category: 'Configure chart'
+      category: 'Chart data'
     },
     {
       name: 'segments',
@@ -34,7 +34,7 @@ export const meta = {
       config: {
         dataset: 'ds'
       },
-      category: 'Configure chart'
+      category: 'Chart data'
     },
     {
       name: 'metric',
@@ -43,7 +43,7 @@ export const meta = {
       config: {
         dataset: 'ds'
       },
-      category: 'Configure chart'
+      category: 'Chart data'
     },
     {
       name: 'enableDownloadAsCSV',

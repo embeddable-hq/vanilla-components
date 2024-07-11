@@ -13,7 +13,7 @@ export const meta = {
         name: 'ds',
         type: 'dataset',
         label: 'Dataset to download from',
-        category: 'Chart data'
+        category: 'Data'
     },
     {
         name: 'columns',
@@ -23,7 +23,7 @@ export const meta = {
         config: {
             dataset: 'ds'
         },
-        category: 'Chart data'
+        category: 'Data'
     },
     {
         name: 'title',

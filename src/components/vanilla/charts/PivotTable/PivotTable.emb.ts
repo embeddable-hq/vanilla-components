@@ -46,20 +46,19 @@ export const meta = {
         },
         category: 'Chart data'
     },
-    {
-        name: 'measureVisualizationFormat',
-        type: MeasureVisualizationFormatType,
-        label: 'Metrics visualization format',
-        defaultValue: { value: MeasureVisualizationFormat.NUMERIC_VALUES_ONLY },
-        category: 'Chart data'
-    },
-
     // Table settings
     {
         name: 'title',
         type: 'string',
         label: 'Title',
         description: 'The title for the chart',
+        category: 'Chart settings'
+    },
+    {
+        name: 'measureVisualizationFormat',
+        type: MeasureVisualizationFormatType,
+        label: 'Metrics visualization format',
+        defaultValue: { value: MeasureVisualizationFormat.NUMERIC_VALUES_ONLY },
         category: 'Chart settings'
     },
     {
