@@ -13,13 +13,6 @@ export const meta = {
   defaultWidth: 1130,
   inputs: [
     {
-      name: 'title',
-      type: 'string',
-      label: 'Title',
-      description: 'The title for the chart',
-      category: 'Chart data'
-    },
-    {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset',
@@ -44,6 +37,13 @@ export const meta = {
         dataset: 'ds'
       },
       category: 'Chart data'
+    },
+    {
+      name: 'title',
+      type: 'string',
+      label: 'Title',
+      description: 'The title for the chart',
+      category: 'Chart settings'
     },
     {
       name: 'enableDownloadAsCSV',
