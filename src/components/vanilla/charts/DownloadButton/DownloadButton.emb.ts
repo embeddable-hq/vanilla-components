@@ -30,14 +30,14 @@ export const meta = {
         type: 'string',
         label: 'Title',
         description: 'The title for the button',
-        category: 'Chart settings'
+        category: 'Settings'
     },
     {
         name: 'description',
         type: 'string',
         label: 'Description',
         description: 'The description for the button',
-        category: 'Chart settings'
+        category: 'Settings'
     },
     {
         name: 'buttonLabel',
@@ -45,14 +45,14 @@ export const meta = {
         label: 'Button label',
         description: 'The text to show on the button',
         defaultValue: 'Download',
-        category: 'Chart settings'
+        category: 'Settings'
     },
     {
         name: 'maxRows',
         type: 'number',
         label: 'Maximum number of rows to download',
         defaultValue: 100,
-        category: 'Chart settings'
+        category: 'Settings'
     }
   ]
 } as const satisfies EmbeddedComponentMeta;
