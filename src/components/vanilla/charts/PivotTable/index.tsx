@@ -7,11 +7,15 @@ import PivotTable from './PivotTable';
 import { SortDirection } from '../../../../enums/SortDirection';
 import { MeasureVisualizationFormat } from './enums/MeasureVisualizationFormat';
 
+type DynamicDimensionsData = {
+  [key in `resultsDimension${number}`]: DataResponse;
+}
+
 type Props = {
   title: string;
-  results: DataResponse;
-  rowValues: Dimension;
-  columnValues: Dimension;
+  description?: string;
+  rowValues?: Dimension[];
+  columnValues?: Dimension[];
   metrics: Measure[];
   minColumnWidth?: number;
   minRowDimensionColumnWidth?: number;
@@ -20,26 +24,43 @@ type Props = {
   nullValueCharacter?: string;
   measureVisualizationFormat: MeasureVisualizationFormat;
   fontSize?: number;
-};
+  aggregateRowDimensions?: boolean;
+} & DynamicDimensionsData;
 
-export default ({ results, rowValues, columnValues, metrics, ...props }: Props) => (
-  <Container
-    {...props}
-    className="overflow-auto"
-  >
-    {
-      !results.isLoading && !results.error && (
-        <PivotTable
-          {...props}
-          rawData={results.data!}
-          columnDimensions={[columnValues].filter((metric) => isDimension(metric)) as Dimension[]}
-          defaultColumnDimensionSortDirection={props.columnSortDirection}
-          rowDimensions={[rowValues].filter((metric) => isDimension(metric)) as Dimension[]}
-          defaultRowDimensionSortDirection={props.rowSortDirection}
-          measures={metrics}
-          fontSize={props.fontSize ? `${props.fontSize}px` : undefined}
-        />
-      )
-    }
-  </Container>
-);
+export default ({ rowValues, columnValues, metrics, ...props }: Props) => {
+  const results: DataResponse[] = [];
+
+  if (rowValues?.length && props.aggregateRowDimensions) {
+    rowValues?.forEach((rowDimension, index) => {
+      if (props[`resultsDimension${index}`]) {
+        results.push(props[`resultsDimension${index}`]);
+      }
+    });
+  } else {
+    results.push(props.resultsDimension0);
+  }
+
+  return (
+    <Container
+      title={props.title}
+      results={results}
+      description={props.description}
+      className="overflow-auto"
+    >
+      {
+        results.every((result) => result && !result.isLoading && !result.error) && (
+          <PivotTable
+            {...props}
+            data={results.map(result => result.data!)}
+            columnDimensions={columnValues}
+            defaultColumnDimensionSortDirection={props.columnSortDirection}
+            rowDimensions={rowValues?.filter((metric) => isDimension(metric)) as Dimension[]}
+            defaultRowDimensionSortDirection={props.rowSortDirection}
+            measures={metrics}
+            fontSize={props.fontSize ? `${props.fontSize}px` : undefined}
+          />
+        )
+      }
+    </Container>
+  );
+}

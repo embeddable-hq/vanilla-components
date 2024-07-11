@@ -1,89 +1,92 @@
 import React, { ReactElement } from 'react';
 import cn from '../../../../util/cn';
-import { TableHeaderType } from '../enums/TableHeaderType';
-import { SortDown, SortUp } from '../../../icons';
-import { SortDirection } from '../../../../../enums/SortDirection';
+import { ColumnType } from '../enums/ColumnType';
 import { REGULAR_FONT_SIZE } from '../../../../constants';
-
-export type Column = {
-  label: string;
-  key: string;
-  type: TableHeaderType;
-  children?: Column[];
-  parent?: Column;
-  sortable?: boolean;
-  minWidth?: number;
-}
+import { Column } from '../core/Column';
+import { SortCriteria } from '../../../../util/sortFn';
+import { SortDirection } from '../../../../../enums/SortDirection';
+import { SortDown, SortUp } from '../../../icons';
 
 type Props = {
   columns: Column[];
-  sortBy?: Column;
-  sortDirection?: SortDirection;
-  onSortingChange?: (column: Column, sortDirection: SortDirection) => void;
+  onSortingChange?: (columnKey: string, sortDirection: SortDirection) => void;
   fontSize?: string;
+  minColumnWidth?: string;
+  minHeaderColumnWidth?: string;
+  enableSorting?: boolean;
+  sortCriteria?: SortCriteria<any>[];
 }
 
-export default function TableHead({ columns, sortBy, sortDirection, onSortingChange, fontSize = REGULAR_FONT_SIZE }: Props) {
+export default function TableHead({
+  columns,
+  fontSize = REGULAR_FONT_SIZE,
+  minColumnWidth,
+  minHeaderColumnWidth,
+  enableSorting = true,
+  sortCriteria,
+  onSortingChange
+}: Props) {
+
   const renderColumn = (column: Column, columnIndex: number): ReactElement => {
-    const isSticky = column.type === TableHeaderType.ROW_HEADER || column.children?.some(child => child.type === TableHeaderType.ROW_HEADER);
-    const shouldBeLeftAligned = column.type !== TableHeaderType.DIMENSION || column.children?.filter(child => child.type === TableHeaderType.MEASURE).length === 1;
-    const shouldRenderRightBorder = !column.parent || column.parent?.children?.at(-1)?.key === column.key;
-    const isDimension = column.type === TableHeaderType.DIMENSION;
-    const isSortable = column.sortable && !isDimension;
-    const isSorted = sortBy?.key === column.key && (!column.parent || column.parent?.label === sortBy?.parent?.label);
+    const isRowHeader = column.type === ColumnType.ROW_HEADER || column.type === ColumnType.ROW_HEADER_GRUOP;
+    const shouldBeLeftAligned = column.type !== ColumnType.DIMENSION || column.children?.filter(child => child.type === ColumnType.MEASURE).length === 1;
+    const leafColumns = column.getLeafColumns();
+    const isSticky = isRowHeader || leafColumns.some(child => child.type === ColumnType.ROW_HEADER || child.type === ColumnType.ROW_HEADER_GRUOP) ;
+    const shouldRenderRightBorder = column.depth === 0 || column.type !== ColumnType.MEASURE || column.parent?.children?.at(-1)?.key === column.key;
+    const isSortable = enableSorting && (column.type !== ColumnType.DIMENSION);
+    const sortedDirection = sortCriteria?.find(criteria => criteria.key === column.key)?.direction;
 
     return (
       <th
-        key={`${column.key}-${columnIndex}`}
-        colSpan={column.children?.length}
-        className={cn('p-2', 'border-y', 'first:border-l', {
-          'text-left': shouldBeLeftAligned,
-          'border-r': shouldRenderRightBorder,
+        key={`${columnIndex}-${column.key}`}
+        colSpan={leafColumns.length}
+        className={cn('p-2 border-y first:border-l', {
           'border-b-0': column.children?.length,
+          'border-r': shouldRenderRightBorder,
           'sticky left-0 z-10 bg-white': isSticky,
           'cursor-pointer': isSortable,
         })}
-        style={column.minWidth ? { minWidth: column.minWidth } : {}}
+        style={minColumnWidth ? {
+          minWidth: (isRowHeader ? minHeaderColumnWidth : minColumnWidth) || 'auto'
+        } : {}}
         {...(
           isSortable
             ? {
               onClick: () => {
-                onSortingChange?.(column, sortBy?.key === column.key && sortDirection === SortDirection.DESCENDING ? SortDirection.ASCENDING : SortDirection.DESCENDING)
+                onSortingChange?.(column.key, sortedDirection === SortDirection.DESCENDING ? SortDirection.ASCENDING : SortDirection.DESCENDING)
               }
             }
             : null
         )}
       >
-        {
-          isSortable
-            ? (
-              <div className="flex items-center justify-between">
-                <span
-                  className="text-[#333942]"
-                  style={{ fontSize }}
-                >
-                  {column.label}
-                </span>
-                {
-                  isSorted ? (
-                    sortDirection === SortDirection.ASCENDING
-                      ? <SortUp fill="currentcolor" />
-                      : <SortDown fill="currentcolor" />
-                  ) : <SortDown fill="#c8c8c8" />
-                }
-              </div>
-            )
-            : (
-              <span
-                className="text-[#333942]"
-                style={{ fontSize }}
-              >
-                {column.label}
+        <div
+          className={cn('text-center', {
+            'text-left': shouldBeLeftAligned,
+            'flex justify-between items-center gap-2': isSortable
+          })}
+        >
+          <span
+            className="text-[#333942]"
+            style={{ fontSize }}
+          >
+            {column.label}
+          </span>
+          {
+            isSortable ? (
+              <span className={cn('w-3', {
+                invisible: !sortedDirection
+              })}>
+               { sortedDirection === SortDirection.ASCENDING ? <SortUp fill="currentcolor" /> : <SortDown fill="currentcolor" /> }
               </span>
-            )
-        }
+            ) : null
+          }
+        </div>
       </th>
     )
+  }
+
+  if (!columns.length) {
+    return null;
   }
 
   // Recursively render table headers with all dimensions
@@ -95,14 +98,13 @@ export default function TableHead({ columns, sortBy, sortDirection, onSortingCha
       {
         columns[0].children ? (
           <TableHead
-            columns={columns.map(column => column?.children?.map(child => ({
-              ...child,
-              parent: column
-            })) || []).flat()}
-            sortBy={sortBy}
-            sortDirection={sortDirection}
+            columns={columns.map(column => column?.children || []).flat()}
             onSortingChange={onSortingChange}
             fontSize={fontSize}
+            minColumnWidth={minColumnWidth}
+            minHeaderColumnWidth={minHeaderColumnWidth}
+            enableSorting={enableSorting}
+            sortCriteria={sortCriteria}
           />
         ) : null
       }
