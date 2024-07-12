@@ -11,21 +11,24 @@ export const meta = {
   defaultHeight: 80,
   inputs: [
     {
-      name: 'title',
-      type: 'string',
-      label: 'Title'
-    },
-    {
       name: 'values',
       type: 'string',
       array: true,
-      label: 'Value'
+      label: 'Values',
+      category: 'Button values'
+    },
+    {
+      name: 'title',
+      type: 'string',
+      label: 'Title',
+      category: 'Settings'
     },
     {
       name: 'defaultValue',
       type: 'string',
       array: true,
-      label: 'Default value'
+      label: 'Default value',
+      category: 'Pre-configured variables'
     }
   ],
   events: [

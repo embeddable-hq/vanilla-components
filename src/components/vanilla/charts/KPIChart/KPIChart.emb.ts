@@ -12,73 +12,73 @@ export const meta = {
   classNames: ['inside-card'],
   inputs: [
     {
-      name: 'title',
-      type: 'string',
-      label: 'Title',
-      description: 'The title for the chart',
-      category: 'Configure chart'
+        name: 'ds',
+        type: 'dataset',
+        label: 'Dataset',
+        description: 'Dataset',
+        defaultValue: false,
+        category: 'Chart data'
     },
     {
-      name: 'ds',
-      type: 'dataset',
-      label: 'Dataset',
-      description: 'Dataset',
-      defaultValue: false,
-      category: 'Configure chart'
+        name: 'metric',
+        type: 'measure',
+        label: 'KPI',
+        config: {
+            dataset: 'ds'
+        },
+        category: 'Chart data'
     },
     {
-      name: 'metric',
-      type: 'measure',
-      label: 'KPI',
-      config: {
-        dataset: 'ds'
-      },
-      category: 'Configure chart'
+        name: 'timeProperty',
+        type: 'dimension',
+        label: 'Time Property',
+        description: 'Used by time filters',
+        config: {
+            dataset: 'ds',
+            supportedTypes: ['time']
+        },
+        category: 'Chart data'
     },
     {
-      name: 'prefix',
-      type: 'string',
-      label: 'Prefix',
-      description: 'Prefix',
-      category: 'Chart settings'
+        name: 'timeFilter',
+        type: 'timeRange',
+        label: 'Primary date range',
+        description: 'Date range',
+        category: 'Variables to configure'
     },
     {
-      name: 'suffix',
-      type: 'string',
-      label: 'Suffix',
-      description: 'Suffix',
-      category: 'Chart settings'
+        name: 'prevTimeFilter',
+        type: 'timeRange',
+        label: 'Comparison date range',
+        description: 'Date range',
+        category: 'Variables to configure'
     },
     {
-      name: 'timeProperty',
-      type: 'dimension',
-      label: 'Time Property',
-      description: 'Used by time filters',
-      config: {
-        dataset: 'ds',
-        supportedTypes: ['time']
-      },
-      category: 'Chart settings'
+        name: 'title',
+        type: 'string',
+        label: 'Title',
+        description: 'The title for the chart',
+        category: 'Chart settings'
     },
     {
-      name: 'timeFilter',
-      type: 'timeRange',
-      label: 'Time Filter',
-      description: 'Date range',
-      category: 'Chart settings'
+        name: 'prefix',
+        type: 'string',
+        label: 'Prefix',
+        description: 'Prefix',
+        category: 'Chart settings'
     },
     {
-      name: 'prevTimeFilter',
-      type: 'timeRange',
-      label: 'Previous Time Filter',
-      description: 'Date range',
-      category: 'Chart settings'
+        name: 'suffix',
+        type: 'string',
+        label: 'Suffix',
+        description: 'Suffix',
+        category: 'Chart settings'
     },
     {
-      name: 'dps',
-      type: 'number',
-      label: 'Decimal Places',
-      category: 'Formatting'
+        name: 'dps',
+        type: 'number',
+        label: 'Decimal Places',
+        category: 'Formatting'
     },
     {
       name: 'fontSize',
@@ -88,12 +88,12 @@ export const meta = {
       category: 'Formatting'
     },
     {
-      name: 'enableDownloadAsCSV',
-      type: 'boolean',
-      label: 'Show download as CSV',
-      category: 'Export options',
-      defaultValue: true,
-    }
+        name: 'enableDownloadAsCSV',
+        type: 'boolean',
+        label: 'Show download as CSV',
+        category: 'Export options',
+        defaultValue: true
+    },
   ]
 } as const satisfies EmbeddedComponentMeta;
 

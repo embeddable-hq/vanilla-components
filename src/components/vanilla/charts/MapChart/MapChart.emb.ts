@@ -14,19 +14,12 @@ export const meta = {
   defaultWidth: 1130,
   inputs: [
     {
-      name: 'title',
-      type: 'string',
-      label: 'Title',
-      description: 'The title for the chart',
-      category: 'Configure chart'
-    },
-    {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset',
       description: 'Dataset',
       defaultValue: false,
-      category: 'Configure chart'
+      category: 'Chart data'
     },
     {
       name: 'segments',
@@ -35,7 +28,7 @@ export const meta = {
       config: {
         dataset: 'ds'
       },
-      category: 'Configure chart'
+      category: 'Chart data'
     },
     {
       name: 'metric',
@@ -44,7 +37,14 @@ export const meta = {
       config: {
         dataset: 'ds'
       },
-      category: 'Configure chart'
+      category: 'Chart data'
+    },
+    {
+      name: 'title',
+      type: 'string',
+      label: 'Title',
+      description: 'The title for the chart',
+      category: 'Chart settings'
     },
     {
       name: 'enableDownloadAsCSV',
