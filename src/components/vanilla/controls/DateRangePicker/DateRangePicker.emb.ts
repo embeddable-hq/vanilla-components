@@ -15,13 +15,13 @@ export const meta = {
       name: 'title',
       type: 'string',
       label: 'Title',
-      category: 'Configuration'
+      category: 'Settings'
     },
     {
       name: 'value',
       type: 'timeRange',
       label: 'Initial value',
-      category: 'Settings'
+      category: 'Pre-configured variables'
     }
   ],
   events: [

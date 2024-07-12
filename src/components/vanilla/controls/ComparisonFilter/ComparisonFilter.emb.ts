@@ -18,34 +18,34 @@ export const meta = {
       name: 'title',
       type: 'string',
       label: 'Title',
-      category: 'Configuration'
+      category: 'Settings'
+    },
+    {
+      name: 'showGranularity',
+      type: 'boolean',
+      label: 'Show granularity picker',
+      category: 'Settings',
+      defaultValue: true
     },
     {
       name: 'defaultComparison',
       type: TimeComparisonType,
       label: 'Default comparison option',
       defaultValue: 'Previous period',
-      category: 'Configuration'
+      category: 'Settings'
     },
     {
       name: 'defaultPeriod',
       type: 'timeRange',
       label: 'Primary date range',
-      category: 'Configuration'
+      category: 'Pre-configured variables'
     },
     {
       name: 'defaultGranularity',
       type: 'granularity',
       label: 'Default granularity',
-      category: 'Settings'
+      category: 'Pre-configured variables'
     },
-    {
-      name: 'showGranularity',
-      type: 'boolean',
-      label: 'Show granularity',
-      category: 'Settings',
-      defaultValue: true
-    }
   ],
   events: [
     {

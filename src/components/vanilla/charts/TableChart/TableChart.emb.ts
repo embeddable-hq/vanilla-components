@@ -16,59 +16,59 @@ export const meta = {
   classNames: ['inside-card'],
   inputs: [
     {
-      name: 'title',
-      type: 'string',
-      label: 'Title',
-      category: 'Configure chart'
+        name: 'ds',
+        type: 'dataset',
+        label: 'Dataset to display',
+        description: 'Dataset',
+        defaultValue: false,
+        category: 'Chart data'
     },
     {
-      name: 'ds',
-      type: 'dataset',
-      label: 'Dataset to display',
-      description: 'Dataset',
-      defaultValue: false,
-      category: 'Configure chart'
+        name: 'columns',
+        type: 'dimensionOrMeasure',
+        label: 'Columns',
+        array: true,
+        config: {
+            dataset: 'ds'
+        },
+        category: 'Chart data'
     },
     {
-      name: 'columns',
-      type: 'dimensionOrMeasure',
-      label: 'Columns',
-      array: true,
-      config: {
-        dataset: 'ds'
-      },
-      category: 'Configure chart'
+        name: 'title',
+        type: 'string',
+        label: 'Title',
+        category: 'Chart settings'
     },
     {
-      name: 'maxPageRows',
-      type: 'number',
-      label: 'Max Page Rows',
-      category: 'Chart settings'
+        name: 'maxPageRows',
+        type: 'number',
+        label: 'Max Page Rows',
+        category: 'Chart settings'
     },
     {
-      name: 'defaultSort',
-      type: 'dimensionOrMeasure',
-      config: {
-        dataset: 'ds'
-      },
-      label: 'Default Sort',
-      category: 'Chart settings'
+        name: 'defaultSort',
+        type: 'dimensionOrMeasure',
+        config: {
+            dataset: 'ds'
+        },
+        label: 'Default Sort',
+        category: 'Chart settings'
     },
     {
-      name: 'defaultSortDirection',
-      type: SortDirectionType as never,
-      defaultValue: 'Ascending',
-      label: 'Default Sort Direction',
-      category: 'Chart settings'
+        name: 'defaultSortDirection',
+        type: SortDirectionType as never,
+        defaultValue: 'Ascending',
+        label: 'Default Sort Direction',
+        category: 'Chart settings'
     },
     {
-      name: 'enableDownloadAsCSV',
-      type: 'boolean',
-      label: 'Show download as CSV',
-      category: 'Export options',
-      defaultValue: true,
+        name: 'enableDownloadAsCSV',
+        type: 'boolean',
+        label: 'Show download as CSV',
+        category: 'Export options',
+        defaultValue: true
     }
-  ]
+]
 } as const satisfies EmbeddedComponentMeta;
 
 export default defineComponent<

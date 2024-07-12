@@ -14,106 +14,105 @@ export const meta = {
   classNames: ['inside-card'],
   inputs: [
     {
-      name: 'title',
-      type: 'string',
-      label: 'Title',
-      description: 'The title for the chart',
-      category: 'Table configuration'
+        name: 'ds',
+        type: 'dataset',
+        label: 'Dataset to display',
+        category: 'Chart data'
     },
     {
-      name: 'ds',
-      type: 'dataset',
-      label: 'Dataset to display',
-      category: 'Table configuration'
+        name: 'metrics',
+        type: 'measure',
+        label: 'Metrics',
+        array: true,
+        config: {
+            dataset: 'ds'
+        },
+        category: 'Chart data'
     },
     {
-      name: 'metrics',
-      type: 'measure',
-      label: 'Metrics',
-      array: true,
-      config: {
-        dataset: 'ds'
-      },
-      category: 'Table configuration'
+        name: 'rowValues',
+        type: 'dimension',
+        label: 'Row Values',
+        config: {
+            dataset: 'ds'
+        },
+        category: 'Chart data'
     },
     {
-      name: 'rowValues',
-      type: 'dimension',
-      label: 'Row Values',
-      config: {
-        dataset: 'ds'
-      },
-      category: 'Table configuration'
+        name: 'columnValues',
+        type: 'dimension',
+        label: 'Column Values',
+        config: {
+            dataset: 'ds'
+        },
+        category: 'Chart data'
     },
-    {
-      name: 'columnValues',
-      type: 'dimension',
-      label: 'Column Values',
-      config: {
-        dataset: 'ds'
-      },
-      category: 'Table configuration'
-    },
-    {
-      name: 'measureVisualizationFormat',
-      type: MeasureVisualizationFormatType,
-      label: 'Metrics visualization format',
-      defaultValue: { value: MeasureVisualizationFormat.NUMERIC_VALUES_ONLY },
-      category: 'Table configuration'
-    },
-
     // Table settings
     {
-      name: 'nullValueCharacter',
-      type: 'string',
-      label: 'Null value character',
-      description: 'Character that should be displayed if value does not exist',
-      defaultValue: '∅',
-      category: 'Table settings'
+        name: 'title',
+        type: 'string',
+        label: 'Title',
+        description: 'The title for the chart',
+        category: 'Chart settings'
     },
     {
-      name: 'columnSortingEnabled',
-      type: 'boolean',
-      label: 'Enable column sorting',
-      defaultValue: true,
-      category: 'Table settings'
+        name: 'measureVisualizationFormat',
+        type: MeasureVisualizationFormatType,
+        label: 'Metrics visualization format',
+        defaultValue: { value: MeasureVisualizationFormat.NUMERIC_VALUES_ONLY },
+        category: 'Chart settings'
     },
     {
-      name: 'columnSortDirection',
-      type: SortDirectionType as never,
-      defaultValue: { value: SortDirection.ASCENDING },
-      label: 'Default Column Sort Direction',
-      category: 'Table settings'
+        name: 'nullValueCharacter',
+        type: 'string',
+        label: 'Null value character',
+        description: 'Character that should be displayed if value does not exist',
+        defaultValue: '∅',
+        category: 'Chart settings'
     },
     {
-      name: 'rowSortDirection',
-      type: SortDirectionType as never,
-      defaultValue: { value: SortDirection.ASCENDING },
-      label: 'Default Row Sort Direction',
-      category: 'Table settings'
+        name: 'columnSortingEnabled',
+        type: 'boolean',
+        label: 'Enable column sorting',
+        defaultValue: true,
+        category: 'Chart settings'
+    },
+    {
+        name: 'columnSortDirection',
+        type: SortDirectionType as never,
+        defaultValue: { value: SortDirection.ASCENDING },
+        label: 'Default Column Sort Direction',
+        category: 'Chart settings'
+    },
+    {
+        name: 'rowSortDirection',
+        type: SortDirectionType as never,
+        defaultValue: { value: SortDirection.ASCENDING },
+        label: 'Default Row Sort Direction',
+        category: 'Chart settings'
     },
 
     // Table styling
     {
-      name: 'minColumnWidth',
-      type: 'number',
-      label: 'Minimum metric column width in pixels',
-      defaultValue: 150,
-      category: 'Table styling'
+        name: 'minColumnWidth',
+        type: 'number',
+        label: 'Minimum metric column width in pixels',
+        defaultValue: 150,
+        category: 'Chart styling'
     },
     {
-      name: 'minRowDimensionColumnWidth',
-      type: 'number',
-      label: 'Minimum row value width in pixels',
-      defaultValue: 200,
-      category: 'Table styling'
+        name: 'minRowDimensionColumnWidth',
+        type: 'number',
+        label: 'Minimum row value width in pixels',
+        defaultValue: 200,
+        category: 'Chart styling'
     },
     {
-      name: 'fontSize',
-      type: 'number',
-      label: 'Font size in pixels',
-      category: 'Table styling'
-    },
+        name: 'fontSize',
+        type: 'number',
+        label: 'Font size in pixels',
+        category: 'Chart styling'
+    }
   ]
 } as const satisfies EmbeddedComponentMeta;
 

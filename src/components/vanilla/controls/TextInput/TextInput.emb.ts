@@ -15,13 +15,13 @@ export const meta = {
       type: 'string',
       label: 'Title',
       description: 'The title',
-      category: 'Configuration'
+      category: 'Settings'
     },
     {
       name: 'value',
       type: 'string',
       label: 'Initial value',
-      category: 'Settings'
+      category: 'Pre-configured variables'
     },
     {
       name: 'placeholder',

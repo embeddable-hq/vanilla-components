@@ -182,8 +182,7 @@ function chartData(props: Props) {
   // Chart.js pie expects counts like so: [23, 10, 5]
   const counts = newData?.map((d: Record) => {
     const metricValue = parseFloat(d[metric.name]);
-    const value = displayAsPercentage ? ((metricValue * 100) / sum) : metricValue;
-    return formatValue(value, { type: 'number', dps: props.dps })
+    return displayAsPercentage ? ((metricValue * 100) / sum) : metricValue;
   });
 
   return {
