@@ -55,6 +55,13 @@ export const meta = {
         category: 'Chart settings'
     },
     {
+        name: 'description',
+        type: 'string',
+        label: 'Description',
+        description: 'The description for the chart',
+        category: 'Chart settings'
+    },
+    {
         name: 'measureVisualizationFormat',
         type: MeasureVisualizationFormatType,
         label: 'Metrics visualization format',
