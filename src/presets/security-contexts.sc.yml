@@ -9,9 +9,8 @@
 - name: National Gallery User
   securityContext:
     organisation_id: org_ng
-    venue_id:
-      - venue_ng
-
+    venue_id: venue_ng
+    
 - name: Tower Bridge User
   securityContext:
     organisation_id: org_towerbridge

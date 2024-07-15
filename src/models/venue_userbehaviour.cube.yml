@@ -25,9 +25,6 @@ cubes:
     from `smartify-cc94e.report_venue.venue_overall_table` as a
     where a.partition_date >= "2023-01-01"
     and organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
-    {% if  COMPILE_CONTEXT.securityContext.venue_id is not none %}
-      and venue_sid in {{list(COMPILE_CONTEXT.securityContext.venue_id)}}
-    {% endif %}
 
     union all
     select

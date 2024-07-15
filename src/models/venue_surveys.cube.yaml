@@ -24,9 +24,6 @@ cubes:
     from `smartify-cc94e.smartify_flat_analytics.smartify_ga_flat` as a
     left join `smartify-cc94e.smartify_lookup_tables.device_language_region` as b on a.device.language = b.device_language
     where organization_id = '{COMPILE_CONTEXT.securityContext.organisation_id}'
-    {% if  COMPILE_CONTEXT.securityContext.venue_id is not none %}
-      and venue_id in {{list(COMPILE_CONTEXT.securityContext.venue_id)}}
-    {% endif %}
     and partition_date >= "2024-05-22"
     and event_name = "inapp_click"
     and stream_id = "1913717213"

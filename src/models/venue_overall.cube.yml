@@ -6,9 +6,7 @@ cubes:
     FROM `smartify-cc94e.report_venue.venue_overall_table` as a
     left join `smartify-cc94e.smartify_lookup_tables.device_language_region` as b on a.device_language = b.device_language
     WHERE organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
-    {% if  COMPILE_CONTEXT.securityContext.venue_id is not none %}
-      and venue_sid in {{list(COMPILE_CONTEXT.securityContext.venue_id)}}
-    {% endif %}
+    
 
   dimensions:
     - name: date
