@@ -11,17 +11,11 @@ export const meta = {
   classNames: ['on-top'],
   inputs: [
     {
-      name: 'title',
-      type: 'string',
-      label: 'Title',
-      category: 'Configuration'
-    },
-    {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset',
       description: 'Dataset',
-      category: 'Configuration'
+      category: 'Dropdown values'
     },
     {
       name: 'property',
@@ -30,13 +24,19 @@ export const meta = {
       config: {
         dataset: 'ds'
       },
-      category: 'Configuration'
+      category: 'Dropdown values'
+    },
+    {
+      name: 'title',
+      type: 'string',
+      label: 'Title',
+      category: 'Settings'
     },
     {
       name: 'defaultValue',
       type: 'string',
       label: 'Default value',
-      category: 'Settings'
+      category: 'Pre-configured variables'
     },
     {
       name: 'placeholder',

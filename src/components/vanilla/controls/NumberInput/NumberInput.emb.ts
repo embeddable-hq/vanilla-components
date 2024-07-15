@@ -16,18 +16,19 @@ export const meta = {
       type: 'string',
       label: 'Title',
       description: 'The title',
-      category: 'Configuration'
+      category: 'Settings'
     },
     {
       name: 'value',
       type: 'number',
       label: 'Value',
-      category: 'Settings'
+      category: 'Pre-configured variables'
     },
     {
       name: 'placeholder',
       type: 'string',
       label: 'Placeholder',
+      defaultValue: 'E.g. 3',
       category: 'Settings'
     }
   ],
