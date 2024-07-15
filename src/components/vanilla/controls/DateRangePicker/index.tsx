@@ -14,9 +14,11 @@ const ranges = [
   'This week',
   'Last week',
   'Last 7 days',
-  'This month',
   'Last 30 days',
+  'This month',
+  'Last month',
   'This quarter',
+  'Last quarter',
   'This year',
   'Last year'
 ];
