@@ -136,7 +136,7 @@ export default (props: Props) => {
 
         {!!value && (
           <span
-            className={`absolute w-[calc(100%-2rem)] whitespace-nowrap overflow-hidden truncate rounded-xl left-3 top-1 h-8 leading-8 block pointer-events-none text-sm ${
+            className={`absolute w-[calc(100%-2.5rem)] whitespace-nowrap overflow-hidden truncate rounded-xl left-3 top-1 h-8 leading-8 block pointer-events-none text-sm ${
               focus ? 'hidden' : ''
             }`}
           >
@@ -159,7 +159,7 @@ export default (props: Props) => {
         {props.options.isLoading ? (
           <Spinner show className="absolute right-2 top-2 z-1 pointer-events-none" />
         ) : (
-          <ChevronDown className="absolute right-2.5 top-2.5 z-1 pointer-events-none" />
+          <ChevronDown className="absolute right-2 top-2.5 z-1 pointer-events-none" />
         )}
 
         {!props.unclearable && !!value && (
