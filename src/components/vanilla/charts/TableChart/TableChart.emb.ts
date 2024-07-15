@@ -39,6 +39,13 @@ export const meta = {
         category: 'Chart settings'
     },
     {
+        name: 'description',
+        type: 'string',
+        label: 'Description',
+        description: 'The description for the chart',
+        category: 'Chart settings'
+    },
+    {
         name: 'maxPageRows',
         type: 'number',
         label: 'Max Page Rows',

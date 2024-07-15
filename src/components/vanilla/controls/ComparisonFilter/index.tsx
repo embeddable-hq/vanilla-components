@@ -200,10 +200,10 @@ export default (props: Props) => {
             }}
           />
         </div>
-        <div className="shrink whitespace-nowrap text-[14px] font-normal text-[#101010] mx-1.5 leading-none">
+        <div className="hidden md:block shrink whitespace-nowrap text-[14px] font-normal text-[#101010] leading-none ml-2">
           compare to
         </div>
-        <div className="grow basis-0 max-w-[150px] h-full">
+        <div className="grow basis-0 max-w-[150px] h-full ml-2">
           <Dropdown
             unclearable
             minDropdownWidth={320}
@@ -215,7 +215,7 @@ export default (props: Props) => {
           />
         </div>
         {!!props.showGranularity && (
-          <div className="grow basis-0 max-w-[115px] h-full ml-3">
+          <div className="grow basis-0 max-w-[115px] h-full ml-2">
             <Dropdown
               unclearable
               minDropdownWidth={80}
