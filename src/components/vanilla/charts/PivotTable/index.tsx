@@ -24,8 +24,7 @@ type Props = {
 
 export default ({ results, rowValues, columnValues, metrics, ...props }: Props) => (
   <Container
-    title={props.title}
-    results={results}
+    {...props}
     className="overflow-auto"
   >
     {
