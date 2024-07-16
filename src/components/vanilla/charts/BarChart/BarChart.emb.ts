@@ -9,28 +9,21 @@ export const meta = {
   classNames: ['inside-card'],
   inputs: [
     {
-      name: 'title',
-      type: 'string',
-      label: 'Title',
-      description: 'The title for the chart',
-      category: 'Configure chart'
-    },
-    {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset',
       description: 'Dataset',
       defaultValue: false,
-      category: 'Configure chart'
+      category: 'Chart data'
     },
     {
       name: 'xAxis',
       type: 'dimension',
       label: 'X-Axis',
       config: {
-        dataset: 'ds'
+          dataset: 'ds'
       },
-      category: 'Configure chart'
+      category: 'Chart data'
     },
     {
       name: 'metrics',
@@ -38,18 +31,32 @@ export const meta = {
       array: true,
       label: 'Metrics',
       config: {
-        dataset: 'ds'
+          dataset: 'ds'
       },
-      category: 'Configure chart'
+      category: 'Chart data'
     },
     {
       name: 'sortBy',
       type: 'dimensionOrMeasure',
       label: 'Sort by (optional)',
-      category: 'Configure chart',
       config: {
-        dataset: 'ds'
-      }
+          dataset: 'ds'
+      },
+      category: 'Chart data'
+    },
+    {
+      name: 'title',
+      type: 'string',
+      label: 'Title',
+      description: 'The title for the chart',
+      category: 'Chart settings'
+    },
+    {
+      name: 'description',
+      type: 'string',
+      label: 'Description',
+      description: 'The description for the chart',
+      category: 'Chart settings'
     },
     {
       name: 'showLegend',
@@ -91,19 +98,19 @@ export const meta = {
       label: 'Y-Axis Title',
       category: 'Chart settings'
     },
-    {name: 'dps',
+    {
+      name: 'dps',
       type: 'number',
       label: 'Decimal Places',
       category: 'Formatting'
     },
     {
-
       name: 'enableDownloadAsCSV',
       type: 'boolean',
       label: 'Show download as CSV',
       category: 'Export options',
-      defaultValue: true,
-    }
+      defaultValue: true
+  }
   ]
 } as const satisfies EmbeddedComponentMeta;
 

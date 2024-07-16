@@ -11,97 +11,105 @@ export const meta = {
   classNames: ['inside-card'],
   inputs: [
     {
-      name: 'title',
-      type: 'string',
-      label: 'Title',
-      description: 'The title for the chart',
-      category: 'Configure chart'
+        name: 'ds',
+        type: 'dataset',
+        label: 'Dataset',
+        description: 'Dataset',
+        defaultValue: false,
+        category: 'Chart data'
     },
     {
-      name: 'ds',
-      type: 'dataset',
-      label: 'Dataset',
-      description: 'Dataset',
-      defaultValue: false,
-      category: 'Configure chart'
+        name: 'xAxis',
+        type: 'dimension',
+        label: 'X-Axis',
+        config: {
+            dataset: 'ds',
+            supportedTypes: ['time']
+        },
+        category: 'Chart data'
     },
     {
-      name: 'xAxis',
-      type: 'dimension',
-      label: 'X-Axis',
-      config: {
-        dataset: 'ds',
-        supportedTypes: ['time']
-      },
-      category: 'Configure chart'
+        name: 'metrics',
+        type: 'measure',
+        array: true,
+        label: 'Metrics',
+        config: {
+            dataset: 'ds'
+        },
+        category: 'Chart data'
     },
     {
-      name: 'granularity',
-      type: 'granularity',
-      label: 'Granularity',
-      category: 'Configure chart'
+        name: 'granularity',
+        type: 'granularity',
+        label: 'Granularity',
+        defaultValue: 'day',
+        category: 'Variables to configure'
     },
     {
-      name: 'metrics',
-      type: 'measure',
-      array: true,
-      label: 'Metrics',
-      config: {
-        dataset: 'ds'
-      },
-      category: 'Configure chart'
+        name: 'title',
+        type: 'string',
+        label: 'Title',
+        description: 'The title for the chart',
+        category: 'Chart settings'
     },
     {
-      name: 'xAxisTitle',
-      type: 'string',
-      label: 'X-Axis Title',
-      category: 'Chart settings'
+        name: 'description',
+        type: 'string',
+        label: 'Description',
+        description: 'The description for the chart',
+        category: 'Chart settings'
     },
     {
-      name: 'yAxisTitle',
-      type: 'string',
-      label: 'Y-Axis Title',
-      category: 'Chart settings'
+        name: 'xAxisTitle',
+        type: 'string',
+        label: 'X-Axis Title',
+        category: 'Chart settings'
     },
     {
-      name: 'showLabels',
-      type: 'boolean',
-      label: 'Show Labels',
-      category: 'Chart settings',
-      defaultValue: false
+        name: 'yAxisTitle',
+        type: 'string',
+        label: 'Y-Axis Title',
+        category: 'Chart settings'
     },
     {
-      name: 'applyFill',
-      type: 'boolean',
-      label: 'Color fill space under line',
-      category: 'Chart settings',
-      defaultValue: false
+        name: 'showLabels',
+        type: 'boolean',
+        label: 'Show Labels',
+        category: 'Chart settings',
+        defaultValue: false
     },
     {
-      name: 'yAxisMin',
-      type: 'number',
-      label: 'Y-Axis minimum value',
-      category: 'Chart settings'
+        name: 'applyFill',
+        type: 'boolean',
+        label: 'Color fill space under line',
+        category: 'Chart settings',
+        defaultValue: false
     },
     {
-      name: 'showLegend',
-      type: 'boolean',
-      label: 'Show Legend',
-      category: 'Chart settings',
-      defaultValue: true
+        name: 'yAxisMin',
+        type: 'number',
+        label: 'Y-Axis minimum value',
+        category: 'Chart settings'
     },
     {
-      name: 'dps',
-      type: 'number',
-      label: 'Decimal Places',
-      category: 'Formatting'
+        name: 'showLegend',
+        type: 'boolean',
+        label: 'Show Legend',
+        category: 'Chart settings',
+        defaultValue: true
     },
     {
-      name: 'enableDownloadAsCSV',
-      type: 'boolean',
-      label: 'Show download as CSV',
-      category: 'Export options',
-      defaultValue: true,
+        name: 'dps',
+        type: 'number',
+        label: 'Decimal Places',
+        category: 'Formatting'
+    },
+    {
+        name: 'enableDownloadAsCSV',
+        type: 'boolean',
+        label: 'Show download as CSV',
+        category: 'Export options',
+        defaultValue: true
     }
   ]
 } as const satisfies EmbeddedComponentMeta;

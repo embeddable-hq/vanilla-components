@@ -10,35 +10,22 @@ export const meta = {
   classNames: ['inside-card'],
   inputs: [
     {
-      name: 'title',
-      type: 'string',
-      label: 'Title',
-      description: 'The title for the chart',
-      category: 'Configure chart'
-    },
-    {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset',
       description: 'Dataset',
       defaultValue: false,
-      category: 'Configure chart'
+      category: 'Chart data'
     },
     {
       name: 'xAxis',
       type: 'dimension',
       label: 'X-Axis',
       config: {
-        dataset: 'ds',
-        supportedTypes: ['time']
+          dataset: 'ds',
+          supportedTypes: ['time']
       },
-      category: 'Configure chart'
-    },
-    {
-      name: 'granularity',
-      type: 'granularity',
-      label: 'Granularity',
-      category: 'Configure chart'
+      category: 'Chart data'
     },
     {
       name: 'metrics',
@@ -46,23 +33,44 @@ export const meta = {
       array: true,
       label: 'Metrics',
       config: {
-        dataset: 'ds'
+          dataset: 'ds'
       },
-      category: 'Configure chart'
+      category: 'Chart data'
+    },
+    {
+      name: 'granularity',
+      type: 'granularity',
+      label: 'Granularity',
+      defaultValue: 'day',
+      category: 'Variables to configure'
     },
     {
       name: 'timeFilter',
       type: 'timeRange',
       label: 'Primary date range',
       description: 'Date range',
-      category: 'Chart settings'
+      category: 'Variables to configure'
     },
     {
       name: 'prevTimeFilter',
       type: 'timeRange',
       label: 'Comparison date range',
       description: 'Date range',
+      category: 'Variables to configure'
+    },
+    {
+      name: 'title',
+      type: 'string',
+      label: 'Title',
+      description: 'The title for the chart',
       category: 'Chart settings'
+    },
+    {
+        name: 'description',
+        type: 'string',
+        label: 'Description',
+        description: 'The description for the chart',
+        category: 'Chart settings'
     },
     {
       name: 'xAxisTitle',
@@ -104,17 +112,17 @@ export const meta = {
       defaultValue: true
     },
     {
-      name: 'dps',
-      type: 'number',
-      label: 'Decimal Places',
-      category: 'Formatting'
-    },
-    {
       name: 'enableDownloadAsCSV',
       type: 'boolean',
       label: 'Show download as CSV',
       category: 'Export options',
       defaultValue: true
+    },
+    {
+      name: 'dps',
+      type: 'number',
+      label: 'Decimal Places',
+      category: 'Formatting'
     }
   ]
 } as const satisfies EmbeddedComponentMeta;
