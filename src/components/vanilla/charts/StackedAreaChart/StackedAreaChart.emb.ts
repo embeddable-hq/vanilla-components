@@ -46,6 +46,7 @@ export const meta = {
         name: 'granularity',
         type: 'granularity',
         label: 'Granularity',
+        defaultValue: 'week',
         category: 'Variables to configure'
     },
     {

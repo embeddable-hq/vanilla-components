@@ -9,17 +9,10 @@ export const meta = {
   classNames: ['inside-card'],
   inputs: [
     {
-      name: 'title',
-      type: 'string',
-      label: 'Title',
-      description: 'The title for the chart',
-      category: 'Configure chart'
-    },
-    {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset to display',
-      category: 'Configure chart'
+      category: 'Chart data'
     },
     {
       name: 'xAxis',
@@ -29,13 +22,14 @@ export const meta = {
         dataset: 'ds',
         supportedTypes: ['time']
       },
-      category: 'Configure chart'
+      category: 'Chart data'
     },
     {
       name: 'granularity',
       type: 'granularity',
       label: 'Granularity',
-      category: 'Configure chart'
+      defaultValue: 'week',
+      category: 'Variables to configure'
     },
     {
       name: 'segment',
@@ -44,7 +38,7 @@ export const meta = {
       config: {
         dataset: 'ds'
       },
-      category: 'Configure chart'
+      category: 'Chart data'
     },
     {
       name: 'metric',
@@ -53,7 +47,21 @@ export const meta = {
       config: {
         dataset: 'ds'
       },
-      category: 'Configure chart'
+      category: 'Chart data'
+    },
+    {
+      name: 'title',
+      type: 'string',
+      label: 'Title',
+      description: 'The title for the chart',
+      category: 'Chart settings'
+    },
+    {
+      name: 'description',
+      type: 'string',
+      label: 'Description',
+      description: 'The description for the chart',
+      category: 'Chart settings'
     },
     {
       name: 'showLegend',
@@ -112,9 +120,13 @@ export default defineComponent(Component, meta, {
           }
         ],
         dimensions: [inputs.segment],
-        measures: [inputs.metric]
-        // orderBy: [{ property: inputs.xAxis, direction: 'desc' }],
-        // limit: 12
+        measures: [inputs.metric],
+        orderBy: [
+          { 
+            property: inputs.xAxis, 
+            direction: 'desc' 
+          }
+        ]
       })
     };
   }
