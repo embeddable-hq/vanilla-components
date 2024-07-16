@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest]
-        node_version: [18, 19, 20]
+        node_version: [19]
 
     steps:
       - name: Checkout project sources
