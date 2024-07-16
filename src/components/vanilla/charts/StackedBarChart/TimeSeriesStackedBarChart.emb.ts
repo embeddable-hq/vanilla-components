@@ -111,6 +111,7 @@ export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
     return {
       ...inputs,
+      isTimeSeriesStackedBarChart: true,
       results: loadData({
         from: inputs.ds,
         timeDimensions: [

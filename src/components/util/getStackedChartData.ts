@@ -36,6 +36,7 @@ export default function getStackedChartData(
   datasetsMeta: DatasetsMeta,
   options?: Options,
 ): ChartData<'line' | 'bar', number[], unknown> {
+  
   const { results, xAxis, metric, segment, maxSegments, displayAsPercentage, granularity } = props;
   const labels = [...new Set(results?.data?.map((d: Record) => d[xAxis?.name || '']))] as string[];
   const segments = segmentsToInclude();
