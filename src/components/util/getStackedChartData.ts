@@ -1,7 +1,7 @@
 import { DataResponse, Dataset, Dimension, Granularity, Measure } from '@embeddable.com/core';
 import { ChartData } from 'chart.js';
 
-import { COLORS } from '../constants';
+import { COLORS, DATE_DISPLAY_FORMATS } from '../constants';
 import formatValue from '../util/format';
 
 type DatasetsMeta = {
@@ -36,7 +36,8 @@ export default function getStackedChartData(
   datasetsMeta: DatasetsMeta,
   options?: Options,
 ): ChartData<'line' | 'bar', number[], unknown> {
-  const { results, xAxis, metric, segment, maxSegments, displayAsPercentage } = props;
+  
+  const { results, xAxis, metric, segment, maxSegments, displayAsPercentage, granularity } = props;
   const labels = [...new Set(results?.data?.map((d: Record) => d[xAxis?.name || '']))] as string[];
   const segments = segmentsToInclude();
   const resultMap = {};
@@ -71,8 +72,10 @@ export default function getStackedChartData(
     }
   });
 
+  const dateFormat = granularity && DATE_DISPLAY_FORMATS[granularity];
+
   return {
-    labels: labels.map((l) => formatValue(l, { meta: xAxis?.meta })),
+    labels: labels.map((l) => formatValue(l, { meta: xAxis?.meta, dateFormat: dateFormat })),
     datasets: segments.map((s, i) => {
       const dataset = {
         ...datasetsMeta,
