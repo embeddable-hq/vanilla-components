@@ -1,21 +1,17 @@
 import { loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
-
-
 import Component from './index';
 
 export const meta = {
-  name: 'LineChart',
-  label: 'Chart: Multi-metric Line (time-series)',
+  name: 'MultiDimensionLineChart',
+  label: 'Chart: Multi-dimension Line (time-series)',
   classNames: ['inside-card'],
   inputs: [
     {
         name: 'ds',
         type: 'dataset',
-        label: 'Dataset',
-        description: 'Dataset',
-        defaultValue: false,
+        label: 'Dataset to display',
         category: 'Chart data'
     },
     {
@@ -29,10 +25,18 @@ export const meta = {
         category: 'Chart data'
     },
     {
-        name: 'metrics',
+        name: 'segment',
+        type: 'dimension',
+        label: 'Segment',
+        config: {
+            dataset: 'ds'
+        },
+        category: 'Chart data'
+    },
+    {
+        name: 'metric',
         type: 'measure',
-        array: true,
-        label: 'Metrics',
+        label: 'Metric',
         config: {
             dataset: 'ds'
         },
@@ -42,7 +46,7 @@ export const meta = {
         name: 'granularity',
         type: 'granularity',
         label: 'Granularity',
-        defaultValue: 'day',
+        defaultValue: 'week',
         category: 'Variables to configure'
     },
     {
@@ -60,43 +64,31 @@ export const meta = {
         category: 'Chart settings'
     },
     {
-        name: 'xAxisTitle',
-        type: 'string',
-        label: 'X-Axis Title',
+        name: 'showLegend',
+        type: 'boolean',
+        label: 'Show legend',
+        defaultValue: true,
         category: 'Chart settings'
     },
     {
-        name: 'yAxisTitle',
-        type: 'string',
-        label: 'Y-Axis Title',
+        name: 'maxSegments',
+        type: 'number',
+        label: 'Max Legend Items',
+        defaultValue: 8,
         category: 'Chart settings'
     },
     {
         name: 'showLabels',
         type: 'boolean',
         label: 'Show Labels',
-        category: 'Chart settings',
-        defaultValue: false
-    },
-    {
-        name: 'applyFill',
-        type: 'boolean',
-        label: 'Color fill space under line',
-        category: 'Chart settings',
-        defaultValue: false
+        defaultValue: false,
+        category: 'Chart settings'
     },
     {
         name: 'yAxisMin',
         type: 'number',
         label: 'Y-Axis minimum value',
         category: 'Chart settings'
-    },
-    {
-        name: 'showLegend',
-        type: 'boolean',
-        label: 'Show Legend',
-        category: 'Chart settings',
-        defaultValue: true
     },
     {
         name: 'dps',
@@ -118,6 +110,7 @@ export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
     return {
       ...inputs,
+      isMultiDimensionLine: true,
       results: loadData({
         from: inputs.ds,
         timeDimensions: [
@@ -126,7 +119,13 @@ export default defineComponent(Component, meta, {
             granularity: inputs.granularity
           }
         ],
-        measures: inputs.metrics
+        dimensions: [inputs.segment],
+        measures: [inputs.metric],
+        filters: [{
+          property: inputs.xAxis,
+          operator: 'notEquals',
+          value: [null]
+        }]
       })
     };
   }

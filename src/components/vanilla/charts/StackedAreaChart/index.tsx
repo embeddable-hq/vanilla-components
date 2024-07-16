@@ -1,3 +1,4 @@
+import { DataResponse } from '@embeddable.com/core';
 import {
   CategoryScale,
   ChartData,
@@ -42,15 +43,33 @@ ChartJS.defaults.color = LIGHT_FONT;
 ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
 
+type Props = {
+  isMultiDimensionLine?: boolean;
+  results: DataResponse;
+  showLegend?: boolean;
+  granularity: string;
+  yAxisMin?: number;
+  displayAsPercentage?: boolean;
+  xAxisTitle?: string;
+  yAxisTitle?: string;
+  dps?: number;
+}
+
 export default (props: Props) => {
+
+  const { isMultiDimensionLine = false } = props;
+
   const { fillGaps } = useTimeseries(props);
 
   const chartData = useMemo(() => {
     const data = props?.results?.data?.reduce(fillGaps, []);
 
     const datasetsMeta = {
-      fill: true,
-      cubicInterpolationMode: 'monotone' as const
+      fill: !isMultiDimensionLine,
+      cubicInterpolationMode: 'monotone' as const,
+      pointRadius: 0,
+      tension: 0.1,
+      pointHoverRadius: 3,
     };
 
     return getStackedChartData(
@@ -84,7 +103,7 @@ export default (props: Props) => {
       },
       scales: {
         y: {
-          stacked: true,
+          stacked: !isMultiDimensionLine,
           min: props.yAxisMin,
           grace: '0%', // Add percent to add numbers on the y-axis above and below the max and min values
           grid: {

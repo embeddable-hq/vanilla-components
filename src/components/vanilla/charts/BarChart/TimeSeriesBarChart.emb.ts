@@ -117,7 +117,8 @@ export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
     return {
       ...inputs,
-      isTimeSeriesChart: true,
+      reverseXAxis: true,
+      useCustomDateFormat: true,
       results: loadData({
         from: inputs.ds,
         timeDimensions: [

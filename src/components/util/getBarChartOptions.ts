@@ -13,13 +13,13 @@ export default function getBarChartOptions({
   yAxisTitle = '',
   xAxisTitle = '',
   dps = undefined,
-  isTimeSeriesChart = false
+  reverseXAxis = false
 }: Partial<Props> & {
   stacked?: boolean;
   stackMetrics?: boolean;
   yAxisTitle?: string;
   xAxisTitle?: string;
-  isTimeSeriesChart?: boolean;
+  reverseXAxis?: boolean;
 }): ChartOptions<'bar' | 'line'> {
   return {
     responsive: true,
@@ -61,7 +61,7 @@ export default function getBarChartOptions({
         }
       },
       x: {
-        reverse: isTimeSeriesChart && !displayHorizontally,
+        reverse: reverseXAxis && !displayHorizontally,
         stacked: stacked || stackMetrics,
         grid: {
           display: false
