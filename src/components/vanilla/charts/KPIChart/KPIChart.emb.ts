@@ -5,10 +5,11 @@ import Component from './index';
 
 export const meta = {
   name: 'KPIChart',
-  label: 'Chart: Single KPI',
+  label: 'Single KPI comparison',
   defaultWidth: 200,
   defaultHeight: 150,
   classNames: ['inside-card'],
+  category: 'Charts: time-series comparison',
   inputs: [
     {
         name: 'ds',

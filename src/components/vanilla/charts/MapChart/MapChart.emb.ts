@@ -7,10 +7,11 @@ import Component from './index';
 
 export const meta = {
   name: 'MapChart',
-  label: 'Chart: Map',
+  label: 'World map',
   classNames: ['inside-card'],
   defaultHeight: 650,
   defaultWidth: 1130,
+  category: 'Geographical',
   inputs: [
     {
       name: 'ds',

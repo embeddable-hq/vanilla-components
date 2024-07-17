@@ -61,7 +61,7 @@ export default function getBarChartOptions({
         }
       },
       x: {
-        reverse: reverseXAxis && !displayHorizontally,
+        reverse: reverseXAxis,
         stacked: stacked || stackMetrics,
         grid: {
           display: false

@@ -9,10 +9,11 @@ import Component, { Props } from './index';
 
 export const meta = {
   name: 'TableChart',
-  label: 'Chart: Table',
+  label: 'Table',
   defaultHeight: 300,
   defaultWidth: 900,
   classNames: ['inside-card'],
+  category: 'Charts: essentials',
   inputs: [
     {
         name: 'ds',

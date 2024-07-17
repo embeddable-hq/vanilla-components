@@ -9,8 +9,9 @@ import { MeasureVisualizationFormat } from './enums/MeasureVisualizationFormat';
 
 export const meta = {
   name: 'PivotTable',
-  label: 'Chart: Pivot Table',
+  label: 'Pivot table',
   classNames: ['inside-card'],
+  category: 'Charts: essentials',
   inputs: [
     {
         name: 'ds',
