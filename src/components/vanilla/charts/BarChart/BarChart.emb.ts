@@ -135,13 +135,11 @@ export default defineComponent(Component, meta, {
     const orderProp = [];
 
     if(inputs.sortBy) {
-      const order = 
       orderProp.push({
         property: inputs.sortBy,
         direction: inputs.sortBy.nativeType == 'string' ? 'asc' : 'desc'
       });
     } else if (inputs.limit) {
-      const order = 
       orderProp.push({
         property: inputs.metrics[0],
         direction: 'desc'
