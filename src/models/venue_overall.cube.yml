@@ -1,5 +1,6 @@
 cubes:
 - name: venue_overall
+  data_source: default
   #sql_table: smartify-cc94e.report_venue.venue_overall_table
   sql: >
     SELECT a.*, b.language_name

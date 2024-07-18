@@ -1,5 +1,6 @@
 cubes:
 - name: venue_visitors
+  data_source: default
   sql: >
     select
       a.partition_date

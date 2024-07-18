@@ -1,5 +1,6 @@
 cubes:
 - name: venue_surveys
+  data_source: default
   sql: >
     select
       date(timestamp_micros(a.event_timestamp)) as partition_date

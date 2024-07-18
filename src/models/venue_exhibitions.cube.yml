@@ -1,5 +1,6 @@
 cubes:
 - name: venue_exhibitions
+  data_source: default
   #sql_table: smartify-cc94e.report_venue.venue_exhibition_table
   sql: >
     SELECT *

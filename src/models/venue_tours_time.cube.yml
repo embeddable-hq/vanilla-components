@@ -1,5 +1,6 @@
 cubes:
 - name: venue_tours_time
+  data_source: default
   #sql_table: smartify-cc94e.report_venue.venue_tourtrack_table
   sql: >
     SELECT *
