@@ -12,12 +12,14 @@ export default function getBarChartOptions({
   displayAsPercentage = false,
   yAxisTitle = '',
   xAxisTitle = '',
-  dps = undefined
+  dps = undefined,
+  isTimeSeriesStackedBarChart = false
 }: Partial<Props> & {
   stacked?: boolean;
   stackMetrics?: boolean;
   yAxisTitle?: string;
   xAxisTitle?: string;
+  isTimeSeriesStackedBarChart?: boolean;
 }): ChartOptions<'bar' | 'line'> {
   return {
     responsive: true,
@@ -59,6 +61,7 @@ export default function getBarChartOptions({
         }
       },
       x: {
+        reverse: isTimeSeriesStackedBarChart,
         stacked: stacked || stackMetrics,
         grid: {
           display: false

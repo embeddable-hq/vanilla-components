@@ -21,6 +21,8 @@ function numberFormatter(dps: number | undefined | null) {
 const dateFormatter = new Intl.DateTimeFormat();
 
 export default function formatValue(str: string = '', opt: Type | Options = 'string') {
+  if(str === null) return null;
+
   const { type, dateFormat, meta, truncate, dps }: Options =
     typeof opt === 'string' ? { type: opt } : opt;
 
