@@ -42,11 +42,11 @@ cube(`content_exhibition`, {
       type: 'string',
       sql: 'venue_sid'
     },
-    organization_sid: {
+    organisation_sid: {
       type: 'string',
       sql: 'organisation_sid'
     },
-    exhibition_image_url: {
+    exhibition_image: {
       type: 'string',
       sql: 'exhibition_image_url'
     }

@@ -42,7 +42,7 @@ cube(`content_organisation`, {
       type: 'string',
       sql: 'org_url'
     },
-    organization_image_url: {
+    organization_image: {
       type: 'string',
       sql: 'org_image_url'
     }

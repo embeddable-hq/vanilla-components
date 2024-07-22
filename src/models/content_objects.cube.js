@@ -70,7 +70,7 @@ cube(`content_object`, {
       type: 'string',
       sql: 'image_nudity'
     },
-    art_image_url: {
+    art_image: {
       type: 'string',
       sql: 'art_image_url'
     },
@@ -82,7 +82,7 @@ cube(`content_object`, {
       type: 'string',
       sql: 'venue_sid'
     },
-    organization_sid: {
+    organisation_sid: {
       type: 'string',
       sql: 'organization_sid'
     },

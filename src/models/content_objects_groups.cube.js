@@ -30,7 +30,7 @@ cube(`content_object_group`, {
       type: 'string',
       sql: 'art_status'
     },
-    art_image_url: {
+    art_image: {
       type: 'string',
       sql: 'art_image_url'
     },
@@ -42,7 +42,7 @@ cube(`content_object_group`, {
       type: 'string',
       sql: 'venue_sid'
     },
-    organization_sid: {
+    organisation_sid: {
       type: 'string',
       sql: 'organisation_sid'
     }

@@ -1,4 +1,4 @@
-cube(`content_exhibition`, {
+cube(`content_experience`, {
   sql: `
     select
         sid as experience_id
@@ -32,11 +32,11 @@ cube(`content_exhibition`, {
       type: 'string',
       sql: 'venue_sid'
     },
-    organization_sid: {
+    organisation_sid: {
       type: 'string',
       sql: 'organisation_sid'
     },
-    experience_image_url: {
+    experience_image: {
       type: 'string',
       sql: 'experience_image_url'
     }
