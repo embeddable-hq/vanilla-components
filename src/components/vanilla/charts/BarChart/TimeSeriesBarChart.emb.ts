@@ -4,15 +4,17 @@ import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/
 import Component from './index';
 
 export const meta = {
-  name: 'TimeSeriesStackedBarChart',
-  label: 'Stacked bar chart (time-series)',
-  category: 'Charts: time-series',
+  name: 'TimeSeriesBarChart',
+  label: 'Bar chart (time-series)',
   classNames: ['inside-card'],
+  category: 'Charts: time-series',
   inputs: [
     {
       name: 'ds',
       type: 'dataset',
-      label: 'Dataset to display',
+      label: 'Dataset',
+      description: 'Dataset',
+      defaultValue: false,
       category: 'Chart data'
     },
     {
@@ -26,29 +28,21 @@ export const meta = {
       category: 'Chart data'
     },
     {
+      name: 'metrics',
+      type: 'measure',
+      array: true,
+      label: 'Metrics',
+      config: {
+          dataset: 'ds'
+      },
+      category: 'Chart data'
+    },
+    {
       name: 'granularity',
       type: 'granularity',
       label: 'Granularity',
       defaultValue: 'week',
       category: 'Variables to configure'
-    },
-    {
-      name: 'segment',
-      type: 'dimension',
-      label: 'Segment',
-      config: {
-        dataset: 'ds'
-      },
-      category: 'Chart data'
-    },
-    {
-      name: 'metric',
-      type: 'measure',
-      label: 'Metric',
-      config: {
-        dataset: 'ds'
-      },
-      category: 'Chart data'
     },
     {
       name: 'title',
@@ -67,23 +61,16 @@ export const meta = {
     {
       name: 'showLegend',
       type: 'boolean',
-      label: 'Show legend',
-      defaultValue: true,
-      category: 'Chart settings'
-    },
-    {
-      name: 'maxSegments',
-      type: 'number',
-      label: 'Max Legend Items',
-      defaultValue: 8,
-      category: 'Chart settings'
+      label: 'Show Legend',
+      category: 'Chart settings',
+      defaultValue: true
     },
     {
       name: 'showLabels',
       type: 'boolean',
       label: 'Show Labels',
-      defaultValue: false,
-      category: 'Chart settings'
+      category: 'Chart settings',
+      defaultValue: false
     },
     {
       name: 'displayHorizontally',
@@ -93,10 +80,22 @@ export const meta = {
       defaultValue: false
     },
     {
-      name: 'displayAsPercentage',
+      name: 'stackMetrics',
       type: 'boolean',
-      label: 'Display as Percentages',
-      defaultValue: false,
+      label: 'Stack Metrics',
+      category: 'Chart settings',
+      defaultValue: false
+    },
+    {
+      name: 'xAxisTitle',
+      type: 'string',
+      label: 'X-Axis Title',
+      category: 'Chart settings'
+    },
+    {
+      name: 'yAxisTitle',
+      type: 'string',
+      label: 'Y-Axis Title',
       category: 'Chart settings'
     },
     {
@@ -110,8 +109,8 @@ export const meta = {
       type: 'boolean',
       label: 'Show download as CSV',
       category: 'Export options',
-      defaultValue: true,
-    }
+      defaultValue: true
+  }
   ]
 } as const satisfies EmbeddedComponentMeta;
 
@@ -129,8 +128,7 @@ export default defineComponent(Component, meta, {
             granularity: inputs.granularity
           }
         ],
-        dimensions: [inputs.segment],
-        measures: [inputs.metric],
+        measures: inputs.metrics,
         filters: [{
           property: inputs.xAxis,
           operator: 'notEquals',

@@ -5,8 +5,9 @@ import Component from './index';
 
 export const meta = {
   name: 'StackedAreaChart',
-  label: 'Chart: Stacked Area (time-series)',
+  label: 'Stacked area chart (time-series)',
   classNames: ['inside-card'],
+  category: 'Charts: time-series',
   inputs: [
     {
         name: 'ds',
