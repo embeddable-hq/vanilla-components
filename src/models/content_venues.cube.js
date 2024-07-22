@@ -1,4 +1,4 @@
-cube(`content_organisation`, {
+cube(`content_venue`, {
   sql: `
         with ven as (
             select
