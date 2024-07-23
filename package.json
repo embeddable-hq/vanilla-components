@@ -21,6 +21,8 @@
     "@types/react-simple-maps": "^3.0.4",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
+    "ag-grid-community": "^32.0.2",
+    "ag-grid-react": "^32.0.2",
     "chart.js": "^4.4.3",
     "chartjs-adapter-date-fns": "^3.0.0",
     "chartjs-plugin-datalabels": "^2.2.0",
@@ -43,10 +45,10 @@
     }
   },
   "devDependencies": {
-    "@embeddable.com/core": "2.6.1",
-    "@embeddable.com/react": "2.7.0",
-    "@embeddable.com/sdk-core": "3.4.1",
-    "@embeddable.com/sdk-react": "3.5.0",
+    "@embeddable.com/core": "file:../embeddable-sdk/packages/core",
+    "@embeddable.com/react": "file:../embeddable-sdk/packages/react",
+    "@embeddable.com/sdk-core": "file:../embeddable-sdk/packages/core-sdk",
+    "@embeddable.com/sdk-react": "file:../embeddable-sdk/packages/react-sdk",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/d3-scale": "^4.0.8",
     "@types/react": "^18.0.37",

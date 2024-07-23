@@ -4,6 +4,7 @@
 
 * {
   -webkit-font-smoothing: antialiased;
+  background: red;
 }
 
 :host(.on-top) {
