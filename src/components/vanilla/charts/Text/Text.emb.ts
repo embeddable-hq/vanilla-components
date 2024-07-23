@@ -4,7 +4,8 @@ import Component from './index';
 
 export const meta = {
   name: 'Text',
-  label: 'Component: Text',
+  label: 'Text component',
+  category: 'Text',
   inputs: [
     {
       name: 'title',
