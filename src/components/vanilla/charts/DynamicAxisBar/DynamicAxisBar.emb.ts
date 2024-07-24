@@ -5,9 +5,9 @@ import Component, { Props } from './index';
 
 export const meta = {
   name: 'DynamicAxisBar',
-  label: 'Dynamic axis bar chart',
+  label: 'Dynamic-axis bar chart',
   classNames: ['inside-card'],
-  category: 'To do',
+  category: 'Misc',
   inputs: [
     {
         name: 'ds',
@@ -56,14 +56,14 @@ export const meta = {
         type: 'string',
         label: 'Title',
         description: 'The title for the button',
-        category: 'Settings'
+        category: 'Chart settings'
     },
     {
         name: 'description',
         type: 'string',
         label: 'Description',
         description: 'The description for the button',
-        category: 'Settings'
+        category: 'Chart settings'
     },
     {
       name: 'showLegend',
