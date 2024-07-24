@@ -64,6 +64,47 @@ export const meta = {
         label: 'Description',
         description: 'The description for the button',
         category: 'Settings'
+    },
+    {
+      name: 'showLegend',
+      type: 'boolean',
+      label: 'Show Legend',
+      category: 'Chart settings',
+      defaultValue: true
+    },
+    {
+      name: 'showLabels',
+      type: 'boolean',
+      label: 'Show Labels',
+      category: 'Chart settings',
+      defaultValue: false
+    },
+    {
+      name: 'displayHorizontally',
+      type: 'boolean',
+      label: 'Display Horizontally',
+      category: 'Chart settings',
+      defaultValue: false
+    },
+    {
+      name: 'reverseXAxis',
+      type: 'boolean',
+      label: 'Reverse X Axis',
+      category: 'Chart settings',
+      defaultValue: false
+    },
+    {
+      name: 'dps',
+      type: 'number',
+      label: 'Decimal Places',
+      category: 'Formatting'
+    },
+    {
+      name: 'enableDownloadAsCSV',
+      type: 'boolean',
+      label: 'Show download as CSV',
+      category: 'Export options',
+      defaultValue: true
     }
   ]
 } as const satisfies EmbeddedComponentMeta;
@@ -78,7 +119,7 @@ export default defineComponent<Props, typeof meta, { page: number }>(Component, 
 
     return {
         ...inputs,
-        reverseXAxis: isTimeDimension ? true : false,
+        reverseXAxis: inputs.reverseXAxis || isTimeDimension,
         results: isTimeDimension 
             ? loadData({
                 from: inputs.ds,
@@ -99,12 +140,20 @@ export default defineComponent<Props, typeof meta, { page: number }>(Component, 
                         property: selectedDimension, 
                         direction: 'desc' 
                     }
-                ]
+                ],
+                limit: inputs.limit || 50
             }) 
             : loadData({
                 from: inputs.ds,
                 dimensions: [selectedDimension],
-                measures: inputs.metrics
+                measures: inputs.metrics,
+                orderBy: [
+                    {
+                        property: inputs.metrics[0],
+                        direction: 'desc'
+                    }
+                ],
+                limit: inputs.limit || 50
             })
     };
   }
