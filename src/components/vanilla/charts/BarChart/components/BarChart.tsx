@@ -1,4 +1,4 @@
-import { DataResponse, Dimension } from '@embeddable.com/core';
+import { DataResponse, Dimension, Measure } from '@embeddable.com/core';
 import {
   BarElement,
   CategoryScale,
@@ -14,11 +14,9 @@ import {
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
-
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE, DATE_DISPLAY_FORMATS } from '../../../../constants';
 import formatValue from '../../../../util/format';
 import getBarChartOptions from '../../../../util/getBarChartOptions';
-import Container from '../../../Container';
 
 ChartJS.register(
   CategoryScale,
@@ -38,11 +36,24 @@ ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
 
 type Props = {
-  results: DataResponse;
+  description?: string;
+  displayHorizontally?: boolean;
+  dps?: number;
+  enableDownloadAsCSV?: boolean;
+  metrics: Measure[];
+  results?: DataResponse;
+  reverseXAxis?: boolean;
+  showLabels?: boolean;
+  showLegend?: boolean;
+  sortBy?: Dimension | Measure;
+  stackMetrics?: boolean;
+  title?: string;
   xAxis: Dimension;
-  metrics: { name: string; title: string }[];
-  granularity: string;
-};
+  xAxisTitle?: string;
+  yAxisTitle?: string;
+  granularity?: string;
+}
+
 
 export default function BarChart({...props}: Props) {
 
@@ -55,8 +66,8 @@ export default function BarChart({...props}: Props) {
   );
 }
 
-function chartData(props: Props, value): ChartData<'bar'> {
-  const { results, xAxis, metrics, granularity, xAxisOptions } = props;
+function chartData(props: Props): ChartData<'bar'> {
+  const { results, xAxis, metrics, granularity } = props;
 
   const dateFormat = xAxis.nativeType === 'time' && granularity && DATE_DISPLAY_FORMATS[granularity];
 

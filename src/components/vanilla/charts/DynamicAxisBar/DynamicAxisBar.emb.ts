@@ -1,7 +1,7 @@
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
-import { loadData, isMeasure, isDimension, Dimension, Measure } from '@embeddable.com/core';
+import { loadData } from '@embeddable.com/core';
 
-import Component, { Props } from './index';
+import Component from './index';
 
 export const meta = {
   name: 'DynamicAxisBar',
@@ -141,7 +141,7 @@ export default defineComponent<Props, typeof meta, { page: number }>(Component, 
                         direction: 'desc' 
                     }
                 ],
-                limit: inputs.limit || 50
+                limit: 100
             }) 
             : loadData({
                 from: inputs.ds,
@@ -153,7 +153,7 @@ export default defineComponent<Props, typeof meta, { page: number }>(Component, 
                         direction: 'desc'
                     }
                 ],
-                limit: inputs.limit || 50
+                limit: 100
             })
     };
   }
