@@ -33,7 +33,10 @@ cubes:
       sql: language_name
     - name: venue_id
       type: string
-      sql: venue_sid
+      sql: IFNULL(venue_sid,organisation_sid)
+    #- name: venue_id_not_null
+    #  type: string
+    #  sql: IFNULL(venue_sid,organisation_sid)
     - name: organisation_id
       type: string
       sql: organisation_sid

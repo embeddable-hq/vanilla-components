@@ -95,7 +95,7 @@ cubes:
       sql: stream_id
     - name: venue_id
       type: string
-      sql: venue_sid
+      sql: IFNULL(venue_sid,organisation_sid)
     - name: organisation_id
       type: string
       sql: organisation_sid
