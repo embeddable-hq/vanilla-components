@@ -5,9 +5,10 @@ import Component from './index';
 
 export const meta = {
   name: 'TextInput',
-  label: 'Control: Text',
+  label: 'Text input',
   defaultWidth: 300,
   defaultHeight: 80,
+  category: 'Controls: inputs & dropdowns',
   inputs: [
     {
       name: 'title',

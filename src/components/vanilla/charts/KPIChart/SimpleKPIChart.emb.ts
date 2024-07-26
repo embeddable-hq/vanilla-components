@@ -1,15 +1,15 @@
 import { loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
-
-
 import Component from './index';
 
 export const meta = {
-  name: 'LineChart',
-  label: 'Multi-metric line (time-series)',
+  name: 'SimpleKPIChart',
+  label: 'Single KPI chart',
+  defaultWidth: 200,
+  defaultHeight: 150,
   classNames: ['inside-card'],
-  category: 'Charts: time-series',
+  category: 'Charts: essentials',
   inputs: [
     {
         name: 'ds',
@@ -20,31 +20,13 @@ export const meta = {
         category: 'Chart data'
     },
     {
-        name: 'xAxis',
-        type: 'dimension',
-        label: 'X-Axis',
-        config: {
-            dataset: 'ds',
-            supportedTypes: ['time']
-        },
-        category: 'Chart data'
-    },
-    {
-        name: 'metrics',
+        name: 'metric',
         type: 'measure',
-        array: true,
-        label: 'Metrics',
+        label: 'KPI',
         config: {
             dataset: 'ds'
         },
         category: 'Chart data'
-    },
-    {
-        name: 'granularity',
-        type: 'granularity',
-        label: 'Granularity',
-        defaultValue: 'day',
-        category: 'Variables to configure'
     },
     {
         name: 'title',
@@ -61,43 +43,18 @@ export const meta = {
         category: 'Chart settings'
     },
     {
-        name: 'xAxisTitle',
+        name: 'prefix',
         type: 'string',
-        label: 'X-Axis Title',
+        label: 'Prefix',
+        description: 'Prefix',
         category: 'Chart settings'
     },
     {
-        name: 'yAxisTitle',
+        name: 'suffix',
         type: 'string',
-        label: 'Y-Axis Title',
+        label: 'Suffix',
+        description: 'Suffix',
         category: 'Chart settings'
-    },
-    {
-        name: 'showLabels',
-        type: 'boolean',
-        label: 'Show Labels',
-        category: 'Chart settings',
-        defaultValue: false
-    },
-    {
-        name: 'applyFill',
-        type: 'boolean',
-        label: 'Color fill space under line',
-        category: 'Chart settings',
-        defaultValue: false
-    },
-    {
-        name: 'yAxisMin',
-        type: 'number',
-        label: 'Y-Axis minimum value',
-        category: 'Chart settings'
-    },
-    {
-        name: 'showLegend',
-        type: 'boolean',
-        label: 'Show Legend',
-        category: 'Chart settings',
-        defaultValue: true
     },
     {
         name: 'dps',
@@ -106,12 +63,19 @@ export const meta = {
         category: 'Formatting'
     },
     {
+      name: 'fontSize',
+      type: 'number',
+      label: 'Text size in pixels',
+      defaultValue: 44,
+      category: 'Formatting'
+    },
+    {
         name: 'enableDownloadAsCSV',
         type: 'boolean',
         label: 'Show download as CSV',
         category: 'Export options',
         defaultValue: true
-    }
+    },
   ]
 } as const satisfies EmbeddedComponentMeta;
 
@@ -121,13 +85,7 @@ export default defineComponent(Component, meta, {
       ...inputs,
       results: loadData({
         from: inputs.ds,
-        timeDimensions: [
-          {
-            dimension: inputs.xAxis?.name,
-            granularity: inputs.granularity
-          }
-        ],
-        measures: inputs.metrics
+        measures: [inputs.metric],
       })
     };
   }

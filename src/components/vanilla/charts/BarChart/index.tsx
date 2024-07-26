@@ -15,7 +15,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
+import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE, DATE_DISPLAY_FORMATS } from '../../../constants';
 import formatValue from '../../../util/format';
 import getBarChartOptions from '../../../util/getBarChartOptions';
 import Container from '../../Container';
@@ -42,6 +42,7 @@ type Props = {
   title: string;
   xAxis: Dimension;
   metrics: { name: string; title: string }[];
+  granularity: string;
 };
 
 export default (props: Props) => {
@@ -62,12 +63,14 @@ export default (props: Props) => {
 };
 
 function chartData(props: Props): ChartData<'bar'> {
-  const { results, xAxis, metrics } = props;
+  const { results, xAxis, metrics, granularity } = props;
+
+  const dateFormat = granularity && DATE_DISPLAY_FORMATS[granularity];
 
   const labels = [
     ...new Set(
       results?.data?.map((d: { [p: string]: string }) =>
-        formatValue(d[xAxis?.name || ''], { meta: xAxis?.meta })
+        formatValue(d[xAxis?.name || ''], { meta: xAxis?.meta, dateFormat: dateFormat })
       )
     )
   ] as string[];
@@ -76,11 +79,11 @@ function chartData(props: Props): ChartData<'bar'> {
     labels,
     datasets:
       metrics?.map((metric, i) => ({
-        barPercentage: 0.6,
+        barPercentage: 0.8,
         barThickness: 'flex',
-        maxBarThickness: 25,
+        maxBarThickness: 50,
         minBarLength: 0,
-        borderRadius: 6,
+        borderRadius: 4,
         label: metric.title,
         data: results?.data?.map((d) => parseFloat(d[metric.name])) || [],
         backgroundColor: COLORS[i % COLORS.length]
