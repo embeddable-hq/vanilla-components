@@ -4,6 +4,7 @@ import Component from './index';
 export const meta: EmbeddedComponentMeta = {
     name: 'SmartifyLogo',
     label: 'Smartify Logo',
+    category: 'Smartify: Report Fortmatting',
     inputs: [
         {
             name: 'logoUrl',

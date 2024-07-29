@@ -14,6 +14,7 @@ type Props = {
   suffix: string;
   metric: { name: string; meta?: object };
   dps: number;
+  fontSize?: number;
 };
 
 // Utility function to format seconds as HH:mm:ss
@@ -37,6 +38,8 @@ export default (props: Props) => {
     };
   }, [props]);
 
+  const fontSize = props.fontSize || 44;
+
   if (props.results?.error) {
     return (
       <div className="h-full flex items-center justify-center font-embeddable text-sm">
@@ -51,7 +54,7 @@ export default (props: Props) => {
       {...props}
       className="overflow-y-hidden">
       <div className="relative grow items-center justify-center flex min-h-[40px]">
-        <div className="flex items-center justify-center font-embeddable text-[#333942] text-[44px] font-bold relative -mt-[10px]">
+        <div className="flex items-center justify-center font-embeddable text-[#333942] text-[44px] font-bold relative -mt-[10px]" style={{ fontSize: `${fontSize}px` }}>
           {props.prevTimeFilter?.to && percentage !== null && (
             <span
               className="absolute left-0 -bottom-[38px] w-full justify-center flex items-center text-[16px]"

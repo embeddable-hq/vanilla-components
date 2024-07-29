@@ -9,6 +9,7 @@ export const meta = {
   defaultWidth: 200,
   defaultHeight: 150,
   classNames: ['inside-card-green'],
+  category: 'Smartify: Timestamp Cards',
   inputs: [
     {
       name: 'title',

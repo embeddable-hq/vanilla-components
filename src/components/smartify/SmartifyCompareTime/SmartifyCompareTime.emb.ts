@@ -9,6 +9,7 @@ export const meta = {
   defaultWidth: 200,
   defaultHeight: 150,
   classNames: ['inside-card'],
+  category: 'Smartify: Timestamp Cards',
   inputs: [
     {
       name: 'title',
@@ -84,6 +85,13 @@ export const meta = {
       name: 'dps',
       type: 'number',
       label: 'Decimal Places',
+      category: 'Formatting'
+    },
+    {
+      name: 'fontSize',
+      type: 'number',
+      label: 'Text size in pixels',
+      defaultValue: 44,
       category: 'Formatting'
     },
     {

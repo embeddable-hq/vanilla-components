@@ -6,6 +6,7 @@ import Component from './index';
 export const meta: EmbeddedComponentMeta = {
     name: 'SmartifySpacing',
     label: 'Smartify Spacing',
+    category: 'Smartify: Report Fortmatting',
     inputs: [
         {
             name: 'spacing',

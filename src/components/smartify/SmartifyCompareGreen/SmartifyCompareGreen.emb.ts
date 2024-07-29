@@ -4,11 +4,11 @@ import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/
 import Component from './index';
 
 export const meta = {
-  name: 'SmartifyCompareBlue',
-  label: 'Smartify Compare Blue Card',
+  name: 'SmartifyCompareGreen',
+  label: 'Smartify Compare Green Card',
   defaultWidth: 200,
   defaultHeight: 150,
-  classNames: ['inside-card-blue'],
+  classNames: ['inside-card-green'],
   category: 'Smartify: Score Cards',
   inputs: [
     {
