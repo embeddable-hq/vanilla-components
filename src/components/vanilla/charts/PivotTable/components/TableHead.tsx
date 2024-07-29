@@ -28,10 +28,10 @@ export default function TableHead({
 }: Props) {
 
   const renderColumn = (column: Column, columnIndex: number): ReactElement => {
-    const isRowHeader = column.type === ColumnType.ROW_HEADER || column.type === ColumnType.ROW_HEADER_GRUOP;
+    const isRowHeader = column.type === ColumnType.ROW_HEADER || column.type === ColumnType.ROW_HEADER_GROUP;
     const shouldBeLeftAligned = column.type !== ColumnType.DIMENSION || column.children?.filter(child => child.type === ColumnType.MEASURE).length === 1;
     const leafColumns = column.getLeafColumns();
-    const isSticky = isRowHeader || leafColumns.some(child => child.type === ColumnType.ROW_HEADER || child.type === ColumnType.ROW_HEADER_GRUOP) ;
+    const isSticky = isRowHeader || leafColumns.some(child => child.type === ColumnType.ROW_HEADER || child.type === ColumnType.ROW_HEADER_GROUP) ;
     const shouldRenderRightBorder = column.depth === 0 || column.type !== ColumnType.MEASURE || column.parent?.children?.at(-1)?.key === column.key;
     const isSortable = enableSorting && (column.type !== ColumnType.DIMENSION);
     const sortedDirection = sortCriteria?.find(criteria => criteria.key === column.key)?.direction;

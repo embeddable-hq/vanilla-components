@@ -56,7 +56,7 @@ const TableRow = ({ columns, row, renderCell, level = 0 }: Props) => {
 
   const renderColumns = (columns: Column[], rowData: Record<string, any>): ReactElement[] => (
     columns.map((column: Column) => (
-      column.type === ColumnType.ROW_HEADER_GRUOP && column.group?.length ? getTableCell(column.group[level], rowData) : getTableCell(column, rowData)
+      column.type === ColumnType.ROW_HEADER_GROUP && column.group?.length ? getTableCell(column.group[level], rowData) : getTableCell(column, rowData)
     ))
   );
 

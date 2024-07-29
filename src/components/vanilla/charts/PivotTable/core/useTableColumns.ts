@@ -36,7 +36,7 @@ export const useTableColumns = (
         label: rowDimensions.map(rowDimension => rowDimension.title).join(' → '),
         key: '__group.key',
         depth: columnDimensions.length,
-        type: ColumnType.ROW_HEADER_GRUOP,
+        type: ColumnType.ROW_HEADER_GROUP,
         group: rowDimensionCols,
         parent
       })]

@@ -1,14 +1,13 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Dimension, Measure } from '@embeddable.com/core';
 import TableHead from './components/TableHead';
 import TableRow from './components/TableRow';
-import { ColumnType } from './enums/ColumnType';
 import { SortDirection } from '../../../../enums/SortDirection';
 import { MeasureVisualizationFormat } from './enums/MeasureVisualizationFormat';
 import { DATE_DISPLAY_FORMATS, REGULAR_FONT_SIZE } from '../../../constants';
 import formatValue from '../../../util/format';
 import { usePivotTable } from './core/usePivotTable';
-import { basicSortFn, multisortFn, SortCriteria } from '../../../util/sortFn';
+import { multisortFn, SortCriteria } from '../../../util/sortFn';
 import { Row } from './core/Row';
 
 type Props<T> = {

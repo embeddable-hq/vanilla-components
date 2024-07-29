@@ -1,5 +1,3 @@
-import { Dimension, Measure } from '@embeddable.com/core';
-
 const DIMENSION_KEY_SEPARATOR = '-->';
 
 export const createGeneralKey = (value: string | number | boolean) => {
