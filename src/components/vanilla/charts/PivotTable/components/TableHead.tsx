@@ -43,7 +43,7 @@ export default function TableHead({
         className={cn('p-2 border-y first:border-l', {
           'border-b-0': column.children?.length,
           'border-r': shouldRenderRightBorder,
-          'sticky left-0 z-10 bg-white': isSticky,
+          'lg:sticky lg:left-0 lg:z-10 bg-white': isSticky,
           'cursor-pointer': isSortable,
         })}
         style={minColumnWidth ? {
