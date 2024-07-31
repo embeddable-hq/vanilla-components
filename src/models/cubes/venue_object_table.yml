@@ -1,0 +1,160 @@
+cubes:
+  - name: venue_object_table
+    sql_table: report_venue.venue_object_table
+    data_source: default
+
+    joins: []
+
+    dimensions:
+      - name: join_key
+        sql: join_key
+        type: string
+
+      - name: event_date
+        sql: event_date
+        type: string
+
+      - name: user_id
+        sql: user_id
+        type: string
+
+      - name: user_pseudo_id
+        sql: user_pseudo_id
+        type: string
+
+      - name: session_id
+        sql: session_id
+        type: string
+
+      - name: session_number
+        sql: session_number
+        type: string
+
+      - name: user_location_access
+        sql: user_location_access
+        type: string
+
+      - name: user_gender
+        sql: user_gender
+        type: string
+
+      - name: user_age
+        sql: user_age
+        type: string
+
+      - name: user_city
+        sql: user_city
+        type: string
+
+      - name: user_language
+        sql: user_language
+        type: string
+
+      - name: user_connectivity
+        sql: user_connectivity
+        type: string
+
+      - name: user_carrier
+        sql: user_carrier
+        type: string
+
+      - name: geo_country
+        sql: geo_country
+        type: string
+
+      - name: geo_city
+        sql: geo_city
+        type: string
+
+      - name: stream_id
+        sql: stream_id
+        type: string
+
+      - name: platform
+        sql: platform
+        type: string
+
+      - name: device_language
+        sql: device_language
+        type: string
+
+      - name: event_name
+        sql: event_name
+        type: string
+
+      - name: nearby_venue_id
+        sql: nearby_venue_id
+        type: string
+
+      - name: organisation_sid
+        sql: organisation_sid
+        type: string
+
+      - name: venue_sid
+        sql: venue_sid
+        type: string
+
+      - name: venue_name
+        sql: venue_name
+        type: string
+
+      - name: art_sid
+        sql: art_sid
+        type: string
+
+      - name: art_name
+        sql: art_name
+        type: string
+
+      - name: art_category
+        sql: art_category
+        type: string
+
+      - name: artist_sid
+        sql: artist_sid
+        type: string
+
+      - name: artist_name
+        sql: artist_name
+        type: string
+
+      - name: object_view
+        sql: object_view
+        type: string
+
+      - name: object_favorite
+        sql: object_favorite
+        type: string
+
+      - name: object_scan
+        sql: object_scan
+        type: string
+
+      - name: host_join
+        sql: host_join
+        type: string
+
+      - name: device_category
+        sql: device_category
+        type: string
+
+      - name: connectivity
+        sql: connectivity
+        type: string
+
+      - name: web_hostname
+        sql: web_hostname
+        type: string
+
+      - name: partition_date
+        sql: partition_date
+        type: time
+
+    measures:
+      - name: count
+        type: count
+
+    pre_aggregations:
+      # Pre-aggregation definitions go here.
+      # Learn more in the documentation: https://cube.dev/docs/caching/pre-aggregations/getting-started
+
