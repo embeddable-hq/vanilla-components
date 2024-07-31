@@ -32,7 +32,6 @@ cube(`content_zones`, {
         ,zones."parentVenueSid" as parent_venue_sid
         ,zones."parentZoneSid" as parent_zone_sid
         ,zones."zoneType" as zone_type
-        ,zones."floorZoneSid" as floor_zone_sid
         ,zones."zoneListOrder" as zone_list_order
         ,case when zones."publishedAt" is null then 'unpublished' else 'published' end as zone_status
         ,concat('https://app.smartify.org/venues/',zones."prettyId") as zone_url
@@ -95,10 +94,6 @@ cube(`content_zones`, {
     zone_type: {
       type: 'string',
       sql: 'zone_type'
-    },
-    floor_zone_sid: {
-      type: 'string',
-      sql: 'floor_zone_sid'
     },
     zone_list_order: {
       type: 'string',

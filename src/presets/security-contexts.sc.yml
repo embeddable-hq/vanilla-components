@@ -16,6 +16,11 @@
     organisation_id: org_towerbridge
     venue_id:
 
+- name: Acropolis Museum User
+  securityContext:
+    organisation_id: org_acropolismuseum
+    venue_id:
+
 - name: HRP
   securityContext:
     organisation_id: org_hrp

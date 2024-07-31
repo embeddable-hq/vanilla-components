@@ -34,9 +34,6 @@ cubes:
     - name: venue_id
       type: string
       sql: IFNULL(venue_sid,organisation_sid)
-    #- name: venue_id_not_null
-    #  type: string
-    #  sql: IFNULL(venue_sid,organisation_sid)
     - name: organisation_id
       type: string
       sql: organisation_sid

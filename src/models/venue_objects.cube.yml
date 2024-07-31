@@ -46,6 +46,7 @@ cubes:
     
     - name: art_sid
       type: string
+      title: "SID"
       sql: art_sid
     
     - name: art_name
@@ -95,6 +96,7 @@ cubes:
     
     - name: object_view
       type: sum
+      title: "Views"
       sql: object_view
     
     - name: object_scan
@@ -104,6 +106,7 @@ cubes:
     
     - name: object_favorite
       type: sum
+      title: "Favourites"
       sql: object_favorite
     
     - name: object_view_users
@@ -131,4 +134,4 @@ cubes:
     - name: object_favorite_per_user
       title: "Object Favorite per User"
       type: number
-      sql: "ROUND({object_favorite} / {object_favorite_users}, 2)"
+      sql: CASE WHEN {object_favorite_users} = 0 THEN 0 ELSE ROUND(({object_favorite} / NULLIF({object_favorite_users}, 0) * 100), 2) END
