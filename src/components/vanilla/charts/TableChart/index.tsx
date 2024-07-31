@@ -1,10 +1,11 @@
 import { DataResponse, DimensionOrMeasure, OrderBy, OrderDirection } from '@embeddable.com/core';
 import { useEmbeddableState } from '@embeddable.com/react';
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import formatValue from '../../../util/format';
 import Container from '../../Container';
 import { ChevronLeft, ChevronRight, SortDown, SortUp } from '../../icons';
+import debounce from 'lodash.debounce';
 
 export type Props = {
   limit?: number;
@@ -23,24 +24,20 @@ export default (props: Props) => {
   const { columns, results } = props;
   const [maxRowsFit, setMaxRowFit] = useState(0);
 
-  useLayoutEffect(() => {
+  const calculateMaxRowFix = useCallback(({ height }: { height: number }) => {
     let val = 0;
 
-    const interval = setInterval(() => {
-      const elem = ref.current?.parentElement?.parentElement;
-      const heightWithoutHead = (elem?.clientHeight || 72) - 72;
-      const newMaxRowsFit = Math.floor(heightWithoutHead / 44);
+    const heightWithoutHead = (height || 72) - 72;
+    const newMaxRowsFit = Math.floor(heightWithoutHead / 44);
 
-      if (
-        (maxRowsFit === newMaxRowsFit && newMaxRowsFit === val) ||
-        props.results?.data?.length === 0
-      ) {
-        return;
-      }
-      setMaxRowFit((val = newMaxRowsFit));
-    }, 100);
+    if (
+      (maxRowsFit === newMaxRowsFit && newMaxRowsFit === val) ||
+      props.results?.data?.length === 0
+    ) {
+      return;
+    }
+    setMaxRowFit((val = newMaxRowsFit));
 
-    return () => clearInterval(interval);
   }, [maxRowsFit, props.results]);
 
   const [meta, setMeta] = useEmbeddableState({
@@ -92,6 +89,7 @@ export default (props: Props) => {
     <Container
       {...props}
       className="overflow-y-hidden"
+      onResize={debounce(calculateMaxRowFix, 400)}
     >
       <div
         ref={ref}

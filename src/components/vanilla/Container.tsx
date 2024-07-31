@@ -3,7 +3,7 @@ import React, { PropsWithChildren, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import useFont from '../hooks/useFont';
-import useResize from '../hooks/useResize';
+import useResize, { Size } from '../hooks/useResize';
 import Spinner from './Spinner';
 import DownloadIcon from './DownloadIcon';
 import Title from './Title';
@@ -17,11 +17,14 @@ type Props = {
   title?: string;
   results?: DataResponse | DataResponse[];
   enableDownloadAsCSV?: boolean;
+  onResize?: (size: Size) => void;
 }
 
-export default ({ children, className, ...props }: PropsWithChildren<Props>) => {
+export default ({ children, className, onResize, ...props }: PropsWithChildren<Props>) => {
   const ref = useRef<HTMLDivElement | null>(null);
-  const [width, height] = useResize(ref);
+
+  const { height } = useResize(ref, onResize || null, { delay: 400 });
+
   const [preppingDownload, setPreppingDownload] = useState(false);
   const { isLoading, error, data } = Array.isArray(props.results) ? {
     isLoading: props.results.some((result) => result.isLoading),
@@ -60,9 +63,16 @@ export default ({ children, className, ...props }: PropsWithChildren<Props>) => 
       <Spinner show={isLoading || preppingDownload} />
       <Title title={props.title} />
       <Description description={props.description} />
-      <div className={twMerge(`relative grow flex flex-col`, className || '')} ref={ref}>
+
+      <div
+        ref={ref}
+        className={twMerge(`relative grow flex flex-col`, className || '')}
+      >
         {!!height && (
-          <div className="flex flex-col" style={{ height: `${height}px` }}>
+          <div
+            className="flex flex-col"
+            style={{ height: `${height}px` }}
+          >
             {children}
           </div>
         )}
