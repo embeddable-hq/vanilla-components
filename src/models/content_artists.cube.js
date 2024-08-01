@@ -20,7 +20,9 @@ cube(`content_artist`, {
   dimensions: {
     artist_sid: {
       type: 'string',
-      sql: `sid`
+      sql: `sid`,
+      primaryKey: true,  // Add this line to define primary key
+      shown: true
     },
     artist_name: {
       type: 'string',

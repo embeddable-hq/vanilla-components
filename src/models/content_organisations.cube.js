@@ -20,7 +20,9 @@ cube(`content_organisation`, {
   dimensions: {
     organisation_sid: {
       type: 'string',
-      sql: `org_sid`
+      sql: `org_sid`,
+      primaryKey: true,  // Define primary key here
+      shown: true  // Hide this dimension from the user interface if necessary
     },
     organisation_name: {
       type: 'string',

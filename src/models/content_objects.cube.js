@@ -32,7 +32,9 @@ cube(`content_object`, {
   dimensions: {
     art_sid: {
       type: 'string',
-      sql: `art_sid`
+      sql: `art_sid`,
+      primaryKey: true,  // Define primary key here
+      shown: true  // Hide this dimension from the user interface if necessary
     },
     art_name: {
     type: 'string',
@@ -89,6 +91,20 @@ cube(`content_object`, {
     artist_sid: {
       type: 'string',
       sql: 'artist_sid'
+    }
+  },
+  joins: {
+    content_artist: {
+      relationship: 'many_to_one',
+      sql: `${CUBE}.artist_sid = ${content_artist}.sid`
+    },
+    content_organisation: {
+      relationship: 'many_to_one',
+      sql: `${CUBE}.organization_sid = ${content_organisation}.org_sid`
+    },
+    content_venue: {
+      relationship: 'many_to_one',
+      sql: `${CUBE}.venue_sid = ${content_venue}.venue_sid`
     }
   }
 });

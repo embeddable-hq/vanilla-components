@@ -36,6 +36,7 @@ cube(`content_zones`, {
         ,case when zones."publishedAt" is null then 'unpublished' else 'published' end as zone_status
         ,concat('https://app.smartify.org/venues/',zones."prettyId") as zone_url
         ,case when image#>>'{"s3Uri"}' is not null then concat('https://smartify-media.s3.eu-west-1.amazonaws.com', substring(image#>>'{"s3Uri"}', 'media(.*)')) else null end as zone_image
+        ,'Zones' as zone_string
     FROM org_data
     JOIN venue_data ON org_data.venue_sid = venue_data.venue_sid
     join content.hosts as zones on venue_data.zone_sid = zones.sid
@@ -77,11 +78,17 @@ cube(`content_zones`, {
     },
     zone_sid: {
       type: 'string',
-      sql: 'zone_sid'
+      sql: 'zone_sid',
+      primaryKey: true,  // Add this line to define primary key
+      shown: true
     },
     zone_name: {
       type: 'string',
       sql: 'zone_name'
+    },
+    zone_string: {
+      type: 'string',
+      sql: 'zone_string'
     },
     parent_venue_sid: {
       type: 'string',
@@ -110,6 +117,12 @@ cube(`content_zones`, {
     zone_image: {
       type: 'string',
       sql: 'zone_image'
+    }
+  },
+  joins: {
+    content_venue: {
+      relationship: 'many_to_one',
+      sql: `${CUBE}.venue_sid = ${content_venue}.venue_sid`
     }
   }
 });

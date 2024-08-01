@@ -31,6 +31,7 @@ cube(`content_venue`, {
             ,concat('https://app.smartify.org/venues/',ven.url) as venue_url
             ,venue_image
             ,concat('https://app.smartify.org/venues/', u."prettyId") as org_url
+            ,'Venues' as venue_string
         from content.hosts u
         cross join jsonb_array_elements_text(u."childHostSids") as tb join ven on tb.value = ven.sid
         where tb.value LIKE 'venue_%'
@@ -68,7 +69,9 @@ cube(`content_venue`, {
     },
     venue_sid: {
       type: 'string',
-      sql: 'venue_sid'
+      sql: 'venue_sid',
+      primaryKey: true,  // Define primary key here
+      shown: true  // Hide this dimension from the user interface if necessary
     },
     venue_id: {
       type: 'string',
@@ -85,6 +88,10 @@ cube(`content_venue`, {
     venue_status: {
       type: 'string',
       sql: 'venue_status'
+    },
+    venue_string: {
+      type: 'string',
+      sql: 'venue_string'
     },
     venue_iso: {
       type: 'string',
@@ -113,6 +120,12 @@ cube(`content_venue`, {
     venue_image: {
       type: 'string',
       sql: 'venue_image'
+    }
+  },
+  joins: {
+    content_organisation: {
+      relationship: 'many_to_one',
+      sql: `${CUBE}.org_sid = ${content_organisation}.org_sid`
     }
   }
 });
