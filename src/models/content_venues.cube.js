@@ -15,9 +15,6 @@ cube(`content_venue`, {
 
         select
             u.sid as org_sid
-            ,"defaultName" as org_name
-            ,case when "publishedAt"::jsonb->>"defaultLocale" is null then 'unpublished' else 'published' end as org_status
-            ,config::jsonb->>'membershipTier' as org_tier
             ,tb.value as venue_sid
             ,upper(substring(tb.value, '\_(.*)')) as venue_id
             ,ven.name as venue_name
@@ -30,7 +27,6 @@ cube(`content_venue`, {
             ,concat(ven.loc->>'latitude',',',ven.loc->>'longitude') as venue_lat_long
             ,concat('https://app.smartify.org/venues/',ven.url) as venue_url
             ,venue_image
-            ,concat('https://app.smartify.org/venues/', u."prettyId") as org_url
             ,'Venues' as venue_string
         from content.hosts u
         cross join jsonb_array_elements_text(u."childHostSids") as tb join ven on tb.value = ven.sid
@@ -46,26 +42,6 @@ cube(`content_venue`, {
     organisation_sid: {
       type: 'string',
       sql: `org_sid`
-    },
-    organisation_name: {
-      type: 'string',
-      sql: `org_name`
-    },
-    organisation_locale: {
-      type: 'string',
-      sql: 'org_locale'
-    },
-    organisation_status: {
-      type: 'string',
-      sql: 'org_status'
-    },
-    organization_tier: {
-      type: 'string',
-      sql: 'org_tier'
-    },
-    org_url: {
-      type: 'string',
-      sql: 'org_url'
     },
     venue_sid: {
       type: 'string',

@@ -37,7 +37,7 @@ cube(`content_object`, {
       shown: true  // Hide this dimension from the user interface if necessary
     },
     art_name: {
-    type: 'string',
+      type: 'string',
       sql: `art_default_name`
     },
     art_status: {

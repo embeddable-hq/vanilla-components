@@ -1,18 +1,20 @@
 cube(`content_track`, {
   sql: `
-        SELECT
-            concat(sid,media_lang) as track_sid_locale
-            ,sid as track_sid
+        select
+            sid as track_sid
+            ,case
+                when "trackableSid" like 'tour_%' then "trackableSid" 
+                else null 
+            end as tour_sid
             ,"defaultTitle" as track_id_name
             ,"orgSid" as organization_sid
             ,replace(replace(replace(replace(replace(replace(replace("aggregateDisplayedOn"::text, "orgSid", ''), '"", ', ''), ', ""', ''),'", "', ','),'"',''),'[',''),']','') as venue_id
-            ,case when images#>>'{0,"s3Uri"}' is null then null else concat('https://smartify-media.s3.eu-west-1.amazonaws.com', substring(images#>>'{0,"s3Uri"}', 'media(.*)')) end as track_image_url
             ,replace(replace(replace(replace(replace(replace("aggregateCategories"::text, '"", ', ''), ', ""', ''),'", "', ','),'"',''),'[',''),']','') as track_object_category
-            ,media_lang AS track_locale
-            ,media_properties->>'mimeType' AS media_type
-            ,CAST(media_properties->>'durationSecs' AS INT) AS duration_sec
-        FROM content.tracks
-        CROSS JOIN LATERAL (SELECT key AS media_lang, value AS media_properties FROM jsonb_each(content.tracks.media)) AS media_info;
+            ,case 
+                when images#>>'{0,"s3Uri"}' is null then null 
+                else concat('https://smartify-media.s3.eu-west-1.amazonaws.com', substring(images#>>'{0,"s3Uri"}', 'media(.*)')) 
+            end as track_image_url
+        from content.tracks
     `,
   dataSource: 'smartify-postgres',
   measures: {
@@ -21,29 +23,20 @@ cube(`content_track`, {
     }
   },
   dimensions: {
-    track_sid_locale: {
-      type: 'string',
-      sql: `track_sid_locale`
-    },
     track_sid: {
       type: 'string',
-      sql: `track_sid`
-    },
-    track_locale: {
-      type: 'string',
-      sql: `track_locale`
-    },
-    media_type: {
-      type: 'string',
-      sql: `media_type`
-    },
-    duration_sec: {
-      type: 'string',
-      sql: `duration_sec`
+      sql: `track_sid`,
+      primaryKey: true,  // Define primary key here
+      shown: true  // Hide this dimension from the user interface if necessary
     },
     track_name: {
       type: 'string',
       sql: 'track_id_name'
+    },
+    },
+    tour_sid: {
+      type: 'string',
+      sql: 'tour_sid'
     },
     track_image: {
       type: 'string',
@@ -53,13 +46,18 @@ cube(`content_track`, {
       type: 'string',
       sql: 'track_object_category'
     },
-    venue_sid: {
+    venue_sids: {
       type: 'string',
       sql: 'venue_id'
     },
     organisation_sid: {
       type: 'string',
       sql: 'organization_sid'
+    },
+    joins: {
+      content_tour: {
+        relationship: 'many_to_one',
+        sql: `${CUBE}.tour_sid = ${content_tour}.tour_sid`
+      }
     }
-  }
 });

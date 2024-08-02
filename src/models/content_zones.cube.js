@@ -4,8 +4,6 @@ cube(`content_zones`, {
         SELECT
             h1.sid AS org_sid
             ,h1.type
-            ,h1."defaultName" AS org_name
-            ,case when h1."publishedAt" is null then 'unpublished' else 'published' end as org_status
             ,jsonb_array_elements_text(h1."childHostSids") AS venue_sid
         FROM content.hosts h1
         WHERE h1.type = 'organisation'
@@ -22,12 +20,8 @@ cube(`content_zones`, {
     SELECT
         org_data.type as host_type
         ,org_data.org_sid as organisation_sid
-        ,org_data.org_name as organisation_name
-        ,org_data.org_status as organisation_status
         ,venue_data.venue_sid as venue_sid
-        ,venue_data.venue_name as venue_name
         ,venue_data.zone_sid as zone_sid
-        ,venue_data.venue_status as venue_status
         ,zones."defaultName" as zone_name
         ,zones."parentVenueSid" as parent_venue_sid
         ,zones."parentZoneSid" as parent_zone_sid
@@ -56,25 +50,9 @@ cube(`content_zones`, {
       type: 'string',
       sql: `organisation_sid`
     },
-    organisation_name: {
-      type: 'string',
-      sql: 'organisation_name'
-    },
-    organisation_status: {
-      type: 'string',
-      sql: 'organisation_status'
-    },
     venue_sid: {
       type: 'string',
       sql: 'venue_sid'
-    },
-    venue_name: {
-      type: 'string',
-      sql: 'venue_name'
-    },
-    venue_status: {
-      type: 'string',
-      sql: 'venue_status'
     },
     zone_sid: {
       type: 'string',

@@ -16,7 +16,7 @@ cube(`content_experience`, {
     }
   },
   dimensions: {
-    experience_id: {
+    experience_sid: {
       type: 'string',
       sql: `experience_id`
     },
