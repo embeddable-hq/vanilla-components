@@ -42,12 +42,10 @@ type Props = {
   title: string;
   xAxis: Dimension;
   metrics: { name: string; title: string }[];
-  granularity: string;
+  granularity?: keyof typeof DATE_DISPLAY_FORMATS;
 };
 
 export default (props: Props) => {
-  const { results, title } = props;
-
   return (
     <Container
       {...props}

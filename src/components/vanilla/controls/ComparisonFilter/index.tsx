@@ -246,7 +246,7 @@ function toSeconds (unit: string, n: number): number {
       quarter: 7889400,  // Roughly 91.31 days
       year: 31557600  // Based on a typical Gregorian year
   };
-  return n * unitsInSeconds[unit];
+  return n * unitsInSeconds[unit as keyof typeof unitsInSeconds];
 }
 
 function getValidGranularities(period?: TimeRange): DataResponse {
@@ -269,7 +269,7 @@ function getValidGranularities(period?: TimeRange): DataResponse {
   const diff = differenceInSeconds(period?.to || new Date(), period?.from || new Date());
 
   granularities.forEach((value) => {
-    const { min, max } = gSettings[value];
+    const { min, max } = gSettings[value as keyof typeof gSettings];
     if (diff < min || diff > max) return;
     data.push({ value: value as Granularity });
   });

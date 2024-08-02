@@ -1,4 +1,4 @@
-import { loadData } from '@embeddable.com/core';
+import { loadData, OrderBy } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
@@ -130,9 +130,7 @@ export const meta = {
 
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
-
-
-    const orderProp = [];
+    const orderProp: OrderBy[] = [];
 
     if(inputs.sortBy) {
       orderProp.push({

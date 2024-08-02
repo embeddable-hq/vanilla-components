@@ -49,7 +49,7 @@ export const meta = {
     },
     {
       name: 'limit',
-      type: 'string',
+      type: 'number',
       label: 'Default number of options',
       defaultValue: 100,
       category: 'Settings'

@@ -1,6 +1,5 @@
 import { loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
-import { addMilliseconds } from 'date-fns';
 
 import Component from './index';
 

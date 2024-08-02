@@ -20,7 +20,7 @@ export default (props: Props) => {
     setValue(props.value);
   }, [props.value]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
     if (timeout) {
       clearTimeout(timeout);

@@ -15,7 +15,6 @@ import {
 import 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { parseJSON } from 'date-fns';
 import React, { useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
 import { parseTime } from '../../../hooks/useTimezone';

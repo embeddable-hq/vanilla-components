@@ -46,8 +46,8 @@ export default ({ children, className, ...props }: Props) => {
           <div className={`${!props.title ? 'h-[40px] w-full' : ''}`}>
             <DownloadIcon
               props={props}
-              show={data?.length > 0 && !isLoading && !preppingDownload}
-              setPreppingDownload={setPreppingDownload}
+              show={!!data?.length && !isLoading && !preppingDownload}
+              setPreppingDownload={preppingDownload}
             />
           </div>
         )

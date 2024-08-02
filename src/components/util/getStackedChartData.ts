@@ -73,7 +73,7 @@ export default function getStackedChartData(
     }
   });
 
-  const dateFormat = useCustomDateFormat && granularity && DATE_DISPLAY_FORMATS[granularity];
+  const dateFormat = useCustomDateFormat && granularity ? DATE_DISPLAY_FORMATS[granularity] : undefined;
 
   return {
     labels: labels.map((l) => formatValue(l, { meta: xAxis?.meta, dateFormat: dateFormat })),

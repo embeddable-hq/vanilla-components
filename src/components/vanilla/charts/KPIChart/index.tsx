@@ -19,15 +19,17 @@ type Props = {
 
 export default (props: Props) => {
   
-  const { n, percentage } = useMemo(() => {
-    if (!props.results?.data?.length || !props.metric?.name) return { percentage: null };
+  const { n, percentage } = useMemo((): { percentage: number | null; n?: string | null} => {
+    if (!props.results?.data?.length || !props.metric?.name) {
+      return { percentage: null };
+    }
     
     const n = parseFloat(props.results.data[0][props.metric?.name] || 0);
     const prev = parseFloat(props.prevResults?.data?.[0]?.[props.metric?.name] || 0);
 
     return {
       percentage: prev ? Math.round((n / prev) * 100) - 100 : null,
-      n: formatValue(n, {
+      n: formatValue(props.results.data[0][props.metric?.name], {
         type: 'number',
         meta: props.metric?.meta,
         dps: props.dps
