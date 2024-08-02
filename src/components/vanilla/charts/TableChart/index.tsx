@@ -1,12 +1,15 @@
 import { DataResponse, DimensionOrMeasure, OrderBy, OrderDirection } from '@embeddable.com/core';
 import { useEmbeddableState } from '@embeddable.com/react';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import formatValue from '../../../util/format';
 import Container from '../../Container';
 import { SortDown, SortUp } from '../../icons';
 import debounce from 'lodash.debounce';
 import Pagination from './components/Pagination';
+import TableHead from './components/TableHead';
+import { REGULAR_FONT_SIZE } from '../../../constants';
+import { SortDirection } from '../../../../enums/SortDirection';
 
 export type Props = {
   limit?: number;
@@ -14,6 +17,8 @@ export type Props = {
   defaultSort?: { property: DimensionOrMeasure; direction: string }[];
   columns: DimensionOrMeasure[];
   title: string;
+  fontSize?: string;
+  minColumnWidth?: number;
 };
 
 type Meta = { page: number; maxRowsFit: number; sort: OrderBy[] };
@@ -21,9 +26,14 @@ type Meta = { page: number; maxRowsFit: number; sort: OrderBy[] };
 type Record = { [p: string]: string };
 
 export default (props: Props) => {
-  const ref = useRef<HTMLDivElement | null>(null);
   const { columns, results } = props;
   const [maxRowsFit, setMaxRowFit] = useState(0);
+
+  const [meta, setMeta] = useEmbeddableState({
+    page: 0,
+    maxRowsFit: 0,
+    sort: props.defaultSort
+  }) as [Meta, (f: (m: Meta) => Meta) => void];
 
   const calculateMaxRowFix = useCallback(({ height }: { height: number }) => {
     let val = 0;
@@ -40,12 +50,6 @@ export default (props: Props) => {
     setMaxRowFit((val = newMaxRowsFit));
 
   }, [maxRowsFit, props.results]);
-
-  const [meta, setMeta] = useEmbeddableState({
-    page: 0,
-    maxRowsFit: 0,
-    sort: props.defaultSort
-  }) as [Meta, (f: (m: Meta) => Meta) => void];
 
   useEffect(() => {
     setMeta((meta) => ({ ...meta, maxRowsFit }));
@@ -71,102 +75,52 @@ export default (props: Props) => {
     [meta, setMeta]
   );
 
-  const rows = useMemo(
-    () =>
-      results?.data?.map(
-        (record: Record) =>
-          columns?.map((prop) => {
-            if (!prop) return '';
-
-            const parsed = parseFloat(record[prop.name]);
-
-            return `${parsed}` === record[prop.name] ? parsed : record[prop.name] || '';
-          }) || []
-      ) || [],
-    [results, columns]
-  );
-
   return (
     <Container
       {...props}
-      className="overflow-y-hidden"
+      className="overflow-auto"
       onResize={debounce(calculateMaxRowFix, 400)}
     >
-      <div
-        ref={ref}
-        className="grow flex flex-col justify-start w-full overflow-x-auto font-embeddable text-sm"
-      >
-        <div
-          className="grow overflow-hidden relative"
-          style={{ minWidth: `${columns.length * 100}px` }}
-        >
-          {!!meta && !(props.results?.isLoading && !props.results?.data?.length) && (
-            <table className="overflow-visible w-full">
-              <thead className="border-y border-[#B8BDC6]">
-                <tr>
-                  {columns?.map((h, i) => {
-                    const sortIndex = meta?.sort?.findIndex((c) => c.property.name === h.name) || 0;
+      <div style={{ minWidth: `${columns.length * 100}px` }}>
+        {!!meta && !(props.results?.isLoading && !props.results?.data?.length) && (
+          <table
+            className="overflow-visible w-full"
+            style={{ fontSize: `${props.fontSize}px` || REGULAR_FONT_SIZE }}
+          >
+            <TableHead
+              columns={columns}
+              sortBy={meta?.sort?.[0]?.property}
+              sortDirection={meta?.sort?.[0]?.direction === 'asc' ? SortDirection.ASCENDING : SortDirection.DESCENDING}
+              onSortingChange={updateSort}
+              minColumnWidth={props.minColumnWidth ? `${props.minColumnWidth}px` : undefined}
+            />
 
-                    return (
-                      <th
-                        onClick={() => updateSort(h)}
-                        key={i}
-                        className="bg-white select-none cursor-pointer text-[#333942] p-3"
+            <tbody>
+              {results?.data?.slice(0, maxRowsFit).map((row, index) => (
+                <tr key={index} className="hover:bg-gray-400/5">
+                  {
+                    columns.map((column, index) => (
+                      <td
+                        key={index}
+                        className="text-dark p-3"
+                        style={{ fontSize: `${props.fontSize}px` || REGULAR_FONT_SIZE }}
                       >
-                        <div className="flex items-center justify-start basis-0 grow h-5 text-[#333942] hover:text-black font-bold text-sm relative w-full">
-                          <div className="absolute left-0 top-0 h-full w-full flex items-center">
-                            <span className="block text-ellipsis overflow-hidden whitespace-nowrap">
-                              {h?.title}
-                            </span>
-                            <div
-                              className={`${
-                                sortIndex === 0 ? 'text-[#FF6B6C]' : 'text-[#333942]'
-                              } ml-1`}
-                            >
-                              {meta?.sort?.[sortIndex]?.direction === 'asc' ? (
-                                <SortUp fill="currentcolor" />
-                              ) : (
-                                <SortDown fill="currentcolor" />
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </th>
-                    );
-                  })}
-                </tr>
-              </thead>
-
-              <tbody>
-                {rows.slice(0, maxRowsFit).map((row, index) => (
-                  <tr key={index} className="hover:bg-gray-400/5">
-                    {row.map((c, i) => (
-                      <td key={i} className="text-sm text-dark p-3">
-                        <span className="text-overflow-dynamic-container">
-                          <span
-                            className="text-overflow-dynamic-ellipsis"
-                            title={formatColumn(c, columns[i])}
-                          >
-                            {formatColumn(c, columns[i])}
-                          </span>
+                        <span>
+                          {formatColumn(row[column.name], column)}
                         </span>
                       </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-
-          {(!meta || (props.results?.isLoading && !props.results?.data?.length)) && (
-            <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
-          )}
-        </div>
+                    ))
+                  }
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
 
       <Pagination
         currentPage={meta?.page || 0}
-        hasNextPage={props.limit ? rows.length < props.limit : false}
+        hasNextPage={props.limit && results?.data?.length ? results?.data?.length < props.limit : false}
         onPageChange={(page) => {
           setMeta((meta) => ({ ...meta, page: page }));
         }}
