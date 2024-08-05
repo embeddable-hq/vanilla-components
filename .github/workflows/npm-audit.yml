@@ -1,0 +1,38 @@
+name: npm audit
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 10 * * *'
+
+jobs:
+  npm-audit:
+    name: npm audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: install dependencies
+        run: npm ci
+      - uses: oke-py/npm-audit-action@v2
+        with:
+          audit_level: moderate
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          create_issues: false
+          create_pr_comments: false
+          production_flag: true
+
+      - name: Send Slack notification on failure
+        uses: ravsamhq/notify-slack-action@v2
+        if: always()
+        with:
+          status: ${{ job.status }}
+          notify_when: 'failure'
+          notification_title: "Vanilla components NPM audit found some vulnerabilities"
+          message_format: ${{npm_audit}}
+          footer: 'Linked to Repo <{repo_url}|{repo}>'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
