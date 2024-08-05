@@ -14,10 +14,6 @@ cubes:
         sql: name
         type: string
 
-      - name: description
-        sql: description
-        type: string
-
       - name: size
         sql: size
         type: string
