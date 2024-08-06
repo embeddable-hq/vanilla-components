@@ -33,14 +33,8 @@ export const basicSortFn = (a: any, b: any, sortDirection: SortDirection): numbe
     const valA = parseInt(a, 10);
     const valB = parseInt(b, 10);
 
-    if (valA < valB) {
-      return sortDirection === SortDirection.ASCENDING ? -1 : 1;
-    }
-    if (valA > valB) {
-      return sortDirection === SortDirection.ASCENDING ? 1 : -1;
-    }
-
-    return 0;
+    return (valA - valB) * (sortDirection === SortDirection.ASCENDING ? 1 : -1);
+    
   } else if (typeof a === 'string' && typeof b === 'string') {
     return a.localeCompare(b, undefined, {
       sensitivity: 'base',
