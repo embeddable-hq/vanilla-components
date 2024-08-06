@@ -8,7 +8,7 @@ type Props = {
   sortBy?: DimensionOrMeasure;
   sortDirection?: SortDirection;
   onSortingChange?: (column: any, sortDirection: SortDirection) => void;
-  minColumnWidth?: string;
+  minColumnWidth?: number;
 }
 
 const TableHead = ({ columns, sortBy, sortDirection, onSortingChange, minColumnWidth }: Props) => {
@@ -23,7 +23,7 @@ const TableHead = ({ columns, sortBy, sortDirection, onSortingChange, minColumnW
               <th
                 key={column.name}
                 className="bg-white select-none cursor-pointer p-3"
-                style={minColumnWidth ? { minWidth: minColumnWidth } : {}}
+                style={minColumnWidth ? { minWidth: `${minColumnWidth}px`, maxWidth: `${minColumnWidth * 1.2}px` } : {}}
                 onClick={() => onSortingChange?.(column, isSorted ? sortDirection === SortDirection.ASCENDING ? SortDirection.DESCENDING : SortDirection.ASCENDING : SortDirection.ASCENDING)}
               >
                 <div className="flex items-center hover:text-black">

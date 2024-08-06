@@ -86,7 +86,7 @@ export default (props: Props) => {
               sortBy={meta?.sort?.[0]?.property}
               sortDirection={meta?.sort?.[0]?.direction === 'asc' ? SortDirection.ASCENDING : SortDirection.DESCENDING}
               onSortingChange={updateSort}
-              minColumnWidth={props.minColumnWidth ? `${props.minColumnWidth}px` : undefined}
+              minColumnWidth={props.minColumnWidth ? props.minColumnWidth : undefined}
             />
 
             <tbody>
@@ -96,12 +96,21 @@ export default (props: Props) => {
                     columns.map((column, index) => (
                       <td
                         key={index}
-                        className="text-dark p-3"
-                        style={{ fontSize: props.fontSize ? `${props.fontSize}px` : REGULAR_FONT_SIZE }}
+                        className="text-dark p-3 truncate"
+                        style={{
+                          fontSize: props.fontSize ? `${props.fontSize}px` : REGULAR_FONT_SIZE,
+                          maxWidth: props.minColumnWidth ? `${props.minColumnWidth * 1.2}px` : 'auto'
+                        }}
                       >
-                        <span>
-                          {formatColumn(row[column.name], column)}
-                        </span>
+                        {/*<span className="text-overflow-dynamic-container">*/}
+                          <span
+                            // className="text-overflow-dynamic-ellipsis"
+                            className=""
+                            title={formatColumn(row[column.name], column) ?? ''}
+                          >
+                            {formatColumn(row[column.name], column)}
+                          </span>
+                        {/*</span>*/}
                       </td>
                     ))
                   }
@@ -109,7 +118,7 @@ export default (props: Props) => {
               ))}
             </tbody>
           </table>
-        )}
+          )}
       </div>
 
       <Pagination
