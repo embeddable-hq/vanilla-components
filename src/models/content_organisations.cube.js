@@ -4,16 +4,17 @@ cube(`content_organisation`, {
         sid as org_sid
         ,"defaultName" as org_name
         ,"defaultLocale" as org_locale
-        ,case when "publishedAt"::jsonb->>"defaultLocale" is null then 'unpublished' else 'published' end as org_status
+        ,case when "publishedAt"::jsonb->>"defaultLocale" is null then '❌ unpublished' else '✅ published' end as org_status
         ,config::jsonb->>'membershipTier' as org_tier
         ,concat('https://app.smartify.org/venues/', "prettyId") as org_url
+        ,'Organisations' as org_string
     ,case when image#>>'{"s3Uri"}' is not null then concat('https://smartify-media.s3.eu-west-1.amazonaws.com', substring(image#>>'{"s3Uri"}', 'media(.*)')) else null end as org_image_url
     from content.hosts
     where type = 'organisation'
     `,
   dataSource: 'smartify-postgres',
   measures: {
-    records: {
+    total_organisations: {
       type: 'count'
     }
   },
@@ -27,6 +28,10 @@ cube(`content_organisation`, {
     organisation_name: {
       type: 'string',
       sql: `org_name`
+    },
+    organisation_string: {
+      type: 'string',
+      sql: `org_string`
     },
     organisation_locale: {
       type: 'string',

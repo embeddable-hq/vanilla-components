@@ -36,7 +36,8 @@ cube(`content_venue_detail`, {
       },
       venue_name: {
         type: 'string',
-        sql: `venue_name`
+        sql: `venue_name`,
+        shown: false
       },
       venue_description_exist: {
         type: 'string',
@@ -52,19 +53,28 @@ cube(`content_venue_detail`, {
       },
       geo_address_exist: {
         type: 'string',
-        sql: 'geo_address_exist'
+        sql: 'geo_address_exist',
+        title: 'Address Exist'
       },
       geo_continent: {
         type: 'string',
-        sql: 'geo_continent'
+        sql: 'geo_continent',
+        title: 'Continent'
+      },
+      geo_country: {
+        type: 'string',
+        sql: 'geo_country',
+        title: 'Country'
       },
       geo_city_en: {
         type: 'string',
-        sql: 'geo_city_en'
+        sql: 'geo_city_en',
+        title: 'City'
       },
       geo_city_exist: {
         type: 'string',
-        sql: 'geo_city_exist'
+        sql: 'geo_city_exist',
+        title: 'City Exist'
       },
       logo_dark_exist: {
         type: 'string',
@@ -84,7 +94,7 @@ cube(`content_venue_detail`, {
       }
     },
     joins: {
-      content_organisation: {
+      content_venue: {
         relationship: 'many_to_one',
         sql: `${CUBE}.venue_sid = ${content_venue}.venue_sid`
       }

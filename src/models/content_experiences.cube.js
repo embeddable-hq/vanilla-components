@@ -5,7 +5,7 @@ cube(`content_experience`, {
         ,label as experience_name
         ,"orgSid" as organisation_sid
         ,REPLACE(REPLACE(REPLACE(REPLACE("venueSids"::text, '[', ''), ']', ''), '"', ''), ' ', '') as venue_sid
-        ,case when "publishedAt" is null then 'Unpublished' else 'Published' end as experience_status
+        ,case when "publishedAt" is null then '❌ unpublished' else '✅ published' end as experience_status
         ,case when image->>'s3Uri' is null then null else  concat('https://smartify-media.s3.eu-west-1.amazonaws.com', substring(image->>'s3Uri', 'media(.*)')) end as experience_image_url
     from content.experiences
       `,

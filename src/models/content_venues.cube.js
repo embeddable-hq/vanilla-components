@@ -9,7 +9,7 @@ cube(`content_venue`, {
                 else null end as venue_image
                 ,location as loc
                 ,"defaultLocale" as default_locale
-                ,case when "publishedAt" is null then 'unpublished' else 'published' end as venue_status
+                ,case when "publishedAt" is null then '❌ unpublished' else '✅ published' end as venue_status
             from content.hosts
         )
 
@@ -34,7 +34,7 @@ cube(`content_venue`, {
       `,
   dataSource: 'smartify-postgres',
   measures: {
-    records: {
+    total_venues: {
       type: 'count'
     }
   },
@@ -71,23 +71,28 @@ cube(`content_venue`, {
     },
     venue_iso: {
       type: 'string',
-      sql: 'venue_iso'
+      sql: 'venue_iso',
+      shown: false
     },
     venue_continent: {
       type: 'string',
-      sql: 'venue_continent'
+      sql: 'venue_continent',
+      shown: false
     },
     venue_country: {
       type: 'string',
-      sql: 'venue_country'
+      sql: 'venue_country',
+      shown: false
     },
     venue_city: {
       type: 'string',
-      sql: 'venue_city'
+      sql: 'venue_city',
+      shown: false
     },
     venue_lat_long: {
       type: 'string',
-      sql: 'venue_lat_long'
+      sql: 'venue_lat_long',
+      shown: false
     },
     venue_url: {
       type: 'string',

@@ -3,7 +3,7 @@ cube(`content_object`, {
         SELECT
             sid as art_sid
             ,versions#>>'{0, "scraperData", "artworkId"}' as art_id
-            ,case when versions#>>'{0, "publishedAt"}' is null then 'unpublished' else 'published' end as art_status
+            ,case when versions#>>'{0, "publishedAt"}' is null then '❌ unpublished' else '✅ published' end as art_status
             ,cast(versions#>>'{0, "publishedAt", "en-GB"}' as timestamp) as published_at
             ,cast("createdAt" as timestamp) as created_at
             ,cast("updatedAt" as timestamp) as updated_at
@@ -25,7 +25,7 @@ cube(`content_object`, {
       `,
   dataSource: 'smartify-postgres',
   measures: {
-    records: {
+    total_objects: {
       type: 'count',
     }
   },
@@ -90,7 +90,8 @@ cube(`content_object`, {
     },
     artist_sid: {
       type: 'string',
-      sql: 'artist_sid'
+      sql: 'artist_sid',
+      shown: false  // Hide this dimension from the user interface if necessary
     }
   },
   joins: {

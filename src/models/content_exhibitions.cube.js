@@ -7,7 +7,7 @@ cube(`content_exhibition`, {
         ,"createdBy" as venue_sid
         ,cast(dates::jsonb->>'endDate' as timestamp) as end_date
         ,cast(dates::jsonb->>'startDate' as timestamp) as start_date
-        ,case when "publishedAt"::text<> '{}' then 'published' else 'unpublished' end as exhibition_status
+        ,case when "publishedAt"::text<> '{}' then '✅ published' else '❌ unpublished' end as exhibition_status
         ,case when (images#>>'{0,"s3Uri"}') is NULL then 'null' else concat('https://smartify-media.s3.eu-west-1.amazonaws.com', SUBSTRING(images#>>'{0, "s3Uri"}', 'media(.*)')) end as exhibition_image_url
     from content.exhibitions
     `,

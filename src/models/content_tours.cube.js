@@ -23,7 +23,7 @@ cube(`content_tour`, {
         ,null as experience_id
         ,"orgSid" as organization_sid
         ,"locatedAt" as venue_sid
-        ,case when "publishedAt"::text<> '{}' then 'published' else 'unpublished' end as tour_status
+        ,case when "publishedAt"::text<> '{}' then '✅ published' else '❌ unpublished' end as tour_status
         ,cast("createdAt" as timestamp) as created_at
         ,cast("updatedAt" as timestamp) as updated_at
         ,cast("publishedAt"->>'en-GB' as timestamp) as published_at

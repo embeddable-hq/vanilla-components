@@ -4,7 +4,7 @@ cube(`content_object_group`, {
             sid as art_sid
             ,"orgSid" as organisation_sid
             ,"scraperData"->>'groupId' as art_id
-            ,case when "publishedAt"::text<> '{}' then 'published' else 'unpublished' end as art_status
+            ,case when "publishedAt"::text<> '{}' then '✅ published' else '❌ unpublished' end as art_status
             ,"locatedAt" as venue_sid
             ,"defaultTitle" as art_name
             ,concat('https://app.smartify.org/objects/', "prettyId") as art_url

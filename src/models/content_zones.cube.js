@@ -27,7 +27,7 @@ cube(`content_zones`, {
         ,zones."parentZoneSid" as parent_zone_sid
         ,zones."zoneType" as zone_type
         ,zones."zoneListOrder" as zone_list_order
-        ,case when zones."publishedAt" is null then 'unpublished' else 'published' end as zone_status
+        ,case when zones."publishedAt" is null then '❌ unpublished' else '✅ published' end as zone_status
         ,concat('https://app.smartify.org/venues/',zones."prettyId") as zone_url
         ,case when image#>>'{"s3Uri"}' is not null then concat('https://smartify-media.s3.eu-west-1.amazonaws.com', substring(image#>>'{"s3Uri"}', 'media(.*)')) else null end as zone_image
         ,'Zones' as zone_string
@@ -37,7 +37,7 @@ cube(`content_zones`, {
         `,
   dataSource: 'smartify-postgres',
   measures: {
-    records: {
+    total_zones: {
       type: 'count'
     }
   },
@@ -101,6 +101,10 @@ cube(`content_zones`, {
     content_venue: {
       relationship: 'many_to_one',
       sql: `${CUBE}.venue_sid = ${content_venue}.venue_sid`
+    },
+    content_venue_detail: {
+      relationship: 'many_to_one',
+      sql: `${CUBE}.venue_sid = ${content_venue_detail}.venue_sid`
     }
   }
 });
