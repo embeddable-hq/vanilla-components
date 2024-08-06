@@ -80,7 +80,7 @@ export const meta = {
     {
       name: 'minColumnWidth',
       type: 'number',
-      label: 'Minimum metric column width in pixels',
+      label: 'Minimum column width in pixels',
       defaultValue: 150,
       category: 'Chart styling'
     },
