@@ -97,7 +97,7 @@ export default (props: Props) => {
                       <td
                         key={index}
                         className="text-dark p-3"
-                        style={{ fontSize: `${props.fontSize}px` || REGULAR_FONT_SIZE }}
+                        style={{ fontSize: props.fontSize ? `${props.fontSize}px` : REGULAR_FONT_SIZE }}
                       >
                         <span>
                           {formatColumn(row[column.name], column)}
