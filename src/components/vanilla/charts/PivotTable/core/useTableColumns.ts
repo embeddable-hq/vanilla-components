@@ -88,7 +88,7 @@ export const useTableColumns = (
           ...(config.granularity && currentColumnDimension.nativeType === 'time' && dimensionValue ? {
             dateFormat: DATE_DISPLAY_FORMATS[config.granularity as keyof typeof DATE_DISPLAY_FORMATS]
           } : {})
-        }) || '-',
+        }) ?? '-',
         key: createColumnKey([...dimensionValuesInARow, dimensionValue]),
         depth,
         type: ColumnType.DIMENSION,

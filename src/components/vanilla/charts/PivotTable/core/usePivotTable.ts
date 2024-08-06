@@ -34,7 +34,7 @@ export const usePivotTable = <T>(
 
   const columnDimensionsValues = useMemo(() => columnDimensions.reduce((acc, columnDimension) => ({
     ...acc,
-    [columnDimension.name]: rowModel.getColumnDimensionValues(columnDimension.name).sort((a, b) => basicSortFn(a, b, config.defaultColumnsSort || SortDirection.ASCENDING))
+    [columnDimension.name]: rowModel.getColumnDimensionValues(columnDimension.name).sort((a, b) => basicSortFn(a, b, config.defaultColumnsSort ?? SortDirection.ASCENDING))
   }), {}), [columnDimensions, rowModel, config.defaultColumnsSort]);
 
   const { columns, getLeafColumns } = useTableColumns(

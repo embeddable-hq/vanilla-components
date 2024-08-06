@@ -105,7 +105,7 @@ class RowModel {
     const rows: Row[] = [];
 
     if (this.#rowDimensions.length) {
-      for (const [key, value] of tableDataRecord.children) {
+      for (const [, value] of tableDataRecord.children) {
         rows.push(new Row(
           value.data,
           this.#getRowsFromParsedTableData(value, depth + 1),

@@ -3,7 +3,6 @@ import { Dimension, Measure } from '@embeddable.com/core';
 import TableHead from './components/TableHead';
 import TableRow from './components/TableRow';
 import { SortDirection } from '../../../../enums/SortDirection';
-import { MeasureVisualizationFormat } from './enums/MeasureVisualizationFormat';
 import { DATE_DISPLAY_FORMATS, REGULAR_FONT_SIZE } from '../../../constants';
 import formatValue from '../../../util/format';
 import { usePivotTable } from './core/usePivotTable';
@@ -21,7 +20,7 @@ type Props<T> = {
   minColumnWidth?: number;
   minRowDimensionColumnWidth?: number;
   nullValueCharacter?: string;
-  measureVisualizationFormat: MeasureVisualizationFormat;
+  // measureVisualizationFormat: MeasureVisualizationFormat;
   columnSortingEnabled?: boolean;
   fontSize?: string;
   aggregateRowDimensions?: boolean;
