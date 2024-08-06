@@ -102,15 +102,9 @@ export default (props: Props) => {
                           maxWidth: props.minColumnWidth ? `${props.minColumnWidth * 1.2}px` : 'auto'
                         }}
                       >
-                        {/*<span className="text-overflow-dynamic-container">*/}
-                          <span
-                            // className="text-overflow-dynamic-ellipsis"
-                            className=""
-                            title={formatColumn(row[column.name], column) ?? ''}
-                          >
-                            {formatColumn(row[column.name], column)}
-                          </span>
-                        {/*</span>*/}
+                        <span title={formatColumn(row[column.name], column) ?? ''}>
+                          {formatColumn(row[column.name], column)}
+                        </span>
                       </td>
                     ))
                   }
