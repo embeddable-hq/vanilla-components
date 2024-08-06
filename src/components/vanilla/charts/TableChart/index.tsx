@@ -1,10 +1,9 @@
 import { DataResponse, DimensionOrMeasure, OrderBy, OrderDirection } from '@embeddable.com/core';
 import { useEmbeddableState } from '@embeddable.com/react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import formatValue from '../../../util/format';
 import Container from '../../Container';
-import { SortDown, SortUp } from '../../icons';
 import debounce from 'lodash.debounce';
 import Pagination from './components/Pagination';
 import TableHead from './components/TableHead';
@@ -23,8 +22,6 @@ export type Props = {
 
 type Meta = { page: number; maxRowsFit: number; sort: OrderBy[] };
 
-type Record = { [p: string]: string };
-
 export default (props: Props) => {
   const { columns, results } = props;
   const [maxRowsFit, setMaxRowFit] = useState(0);
@@ -38,13 +35,10 @@ export default (props: Props) => {
   const calculateMaxRowFix = useCallback(({ height }: { height: number }) => {
     let val = 0;
 
-    const heightWithoutHead = (height || 72) - 72;
+    const heightWithoutHead = (height || 76) - 76;
     const newMaxRowsFit = Math.floor(heightWithoutHead / 44);
 
-    if (
-      (maxRowsFit === newMaxRowsFit && newMaxRowsFit === val) ||
-      props.results?.data?.length === 0
-    ) {
+    if ((maxRowsFit === newMaxRowsFit && newMaxRowsFit === val) || props.results?.data?.length === 0) {
       return;
     }
     setMaxRowFit((val = newMaxRowsFit));
@@ -85,7 +79,7 @@ export default (props: Props) => {
         {!!meta && !(props.results?.isLoading && !props.results?.data?.length) && (
           <table
             className="overflow-visible w-full"
-            style={{ fontSize: `${props.fontSize}px` || REGULAR_FONT_SIZE }}
+            style={{ fontSize: props.fontSize ? `${props.fontSize}px` : REGULAR_FONT_SIZE }}
           >
             <TableHead
               columns={columns}

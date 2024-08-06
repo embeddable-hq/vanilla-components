@@ -42,7 +42,7 @@ const useResize = (
       return;
     }
 
-    resizeObserver.current = new ResizeObserver(throttle(resizeHandler, options?.delay || 200));
+    resizeObserver.current = new ResizeObserver(throttle(resizeHandler, options?.delay ?? 200));
     resizeObserver.current.observe(targetElement);
 
     return () => {
