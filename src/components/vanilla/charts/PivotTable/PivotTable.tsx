@@ -132,7 +132,6 @@ const PivotTable = <T,>({
                     cellValue === undefined || cellValue === null
                       ? nullValueCharacter
                       : formatValue(cellValue, {
-                        // type: column.dataType === 'time' ? 'date' : column.dataType as any,
                         ...(granularity && column.dataType === 'time' ? {
                           dateFormat: DATE_DISPLAY_FORMATS[granularity as keyof typeof DATE_DISPLAY_FORMATS]
                         } : {})
