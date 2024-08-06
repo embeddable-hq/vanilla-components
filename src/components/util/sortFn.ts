@@ -16,8 +16,8 @@ function isNumber(num: any): boolean {
 export const multisortFn = <T>(criteria: SortCriteria<T>[]): (a: T, b: T) => number => {
   return (a: T, b: T): number => {
     for (const { key, direction } of criteria) {
-      const aValue = getValue(a, key);
-      const bValue = getValue(b, key);
+      const aValue = getValue(a, key) || 0;
+      const bValue = getValue(b, key) || 0;
 
       const result = basicSortFn(aValue, bValue, direction);
       if (result !== 0) {
@@ -29,18 +29,6 @@ export const multisortFn = <T>(criteria: SortCriteria<T>[]): (a: T, b: T) => num
 }
 
 export const basicSortFn = (a: any, b: any, sortDirection: SortDirection): number => {
-  if (a === null) {
-    return 1;
-  }
-
-  if (b === null) {
-    return -1;
-  }
-
-  if (a === null && b === null) {
-    return 0;
-  }
-
   if (isNumber(a) && isNumber(b)) {
     const valA = parseInt(a, 10);
     const valB = parseInt(b, 10);

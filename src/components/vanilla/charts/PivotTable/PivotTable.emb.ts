@@ -87,6 +87,13 @@ export const meta = {
       category: 'Chart settings'
     },
     {
+      name: 'isRowGroupDefaultExpanded',
+      type: 'boolean',
+      label: 'Row group expanded by default',
+      defaultValue: true,
+      category: 'Chart settings'
+    },
+    {
       name: 'columnSortingEnabled',
       type: 'boolean',
       label: 'Enable column sorting',

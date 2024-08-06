@@ -11,10 +11,11 @@ type Props = {
   row: Row;
   renderCell?: (row: Record<string, any>, column: Column) => ReactElement;
   level?: number;
+  isRowGroupDefaultExpanded?: boolean;
 }
 
-const TableRow = ({ columns, row, renderCell, level = 0 }: Props) => {
-  const [isExpanded, setIsExpanded] = useState<boolean>(true);
+const TableRow = ({ columns, row, renderCell, level = 0, isRowGroupDefaultExpanded }: Props) => {
+  const [isExpanded, setIsExpanded] = useState<boolean>(isRowGroupDefaultExpanded ?? true);
 
   const toggleExpand = () => {
     setIsExpanded((expanded) => !expanded);

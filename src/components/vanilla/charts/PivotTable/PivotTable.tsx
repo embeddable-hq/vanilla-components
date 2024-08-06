@@ -20,6 +20,7 @@ type Props<T> = {
   minColumnWidth?: number;
   minRowDimensionColumnWidth?: number;
   nullValueCharacter?: string;
+  isRowGroupDefaultExpanded?: boolean;
   // measureVisualizationFormat: MeasureVisualizationFormat;
   columnSortingEnabled?: boolean;
   fontSize?: string;
@@ -37,6 +38,7 @@ const PivotTable = <T,>({
   minColumnWidth,
   minRowDimensionColumnWidth,
   nullValueCharacter = '',
+  isRowGroupDefaultExpanded = true,
   // measureVisualizationFormat,
   fontSize = REGULAR_FONT_SIZE,
   columnSortingEnabled = true,
@@ -122,6 +124,7 @@ const PivotTable = <T,>({
             key={row.id}
             columns={getLeafColumns()}
             row={row}
+            isRowGroupDefaultExpanded={isRowGroupDefaultExpanded}
             renderCell={(rowRecord, column) => {
               const cellValue = rowRecord[column.key];
 

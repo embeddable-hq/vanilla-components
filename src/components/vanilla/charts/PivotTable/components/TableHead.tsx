@@ -47,7 +47,7 @@ export default function TableHead({
           'cursor-pointer': isSortable,
         })}
         style={minColumnWidth ? {
-          minWidth: (isRowHeader ? minHeaderColumnWidth : minColumnWidth) || 'auto'
+          minWidth: (isRowHeader ? minHeaderColumnWidth : minColumnWidth) ?? 'auto'
         } : {}}
         {...(
           isSortable

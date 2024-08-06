@@ -22,6 +22,7 @@ type Props = {
   rowSortDirection?: SortDirection;
   columnSortDirection?: SortDirection;
   nullValueCharacter?: string;
+  isRowGroupDefaultExpanded?: boolean;
   measureVisualizationFormat: MeasureVisualizationFormat;
   fontSize?: number;
   aggregateRowDimensions?: boolean;
