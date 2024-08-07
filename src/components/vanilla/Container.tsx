@@ -1,5 +1,5 @@
 import { DataResponse } from '@embeddable.com/core';
-import React, { ReactNode, useRef, useState } from 'react';
+import React, { PropsWithChildren, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import useFont from '../hooks/useFont';
@@ -12,24 +12,27 @@ import { WarningIcon } from './icons';
 import './index.css';
 
 type Props = {
-  children?: ReactNode;
   description?: string;
   className?: string;
   title?: string;
-  results?: DataResponse;
+  results?: DataResponse | DataResponse[];
   enableDownloadAsCSV?: boolean;
 }
 
-export default ({ children, className, ...props }: Props) => {
+export default ({ children, className, ...props }: PropsWithChildren<Props>) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, height] = useResize(ref);
   const [preppingDownload, setPreppingDownload] = useState(false);
-  const { isLoading, error, data } = props.results || {};
-  const noData = props.results && !isLoading && !data?.length;
+  const { isLoading, error, data } = Array.isArray(props.results) ? {
+    isLoading: props.results.some((result) => result.isLoading),
+    error: props.results.some((result) => result.error),
+    data: props.results.flatMap((result) => result.data),
+  } : props.results || {};
+  const noData = !isLoading && !data?.length;
 
   useFont();
 
-  if (error || noData) {
+  if (props.results && (error || noData)) {
     return (
       <div className="h-full flex items-center justify-center font-embeddable text-sm">
         <WarningIcon />
@@ -46,7 +49,7 @@ export default ({ children, className, ...props }: Props) => {
           <div className={`${!props.title ? 'h-[40px] w-full' : ''}`}>
             <DownloadIcon
               props={props}
-              show={data?.length > 0 && !isLoading && !preppingDownload}
+              show={data && data.length > 0 && !isLoading && !preppingDownload}
               setPreppingDownload={setPreppingDownload}
             />
           </div>
@@ -63,7 +66,7 @@ export default ({ children, className, ...props }: Props) => {
             {children}
           </div>
         )}
-        {props.results?.isLoading && !props.results?.data?.length && (
+        {isLoading && (
           <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
         )}
       </div>
