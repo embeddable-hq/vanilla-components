@@ -23,20 +23,26 @@ const TableHead = ({ columns, sortBy, sortDirection, onSortingChange, minColumnW
               <th
                 key={column.name}
                 className="bg-white select-none cursor-pointer p-3"
-                style={minColumnWidth ? { minWidth: `${minColumnWidth}px`, maxWidth: `${minColumnWidth * 1.2}px` } : {}}
+                style={minColumnWidth
+                  ? {
+                    minWidth: `${minColumnWidth}px`,
+                    maxWidth: `${minColumnWidth * 1.2}px`
+                  }
+                  : {}
+                }
                 onClick={() => onSortingChange?.(column, isSorted ? sortDirection === SortDirection.ASCENDING ? SortDirection.DESCENDING : SortDirection.ASCENDING : SortDirection.ASCENDING)}
               >
-                <div className="flex items-center hover:text-black">
-                  <span className="text-[#333942] mr-1">
+                <div className="flex items-center gap-1 hover:text-black">
+                  <span className="text-[#333942] mr-1 truncate">
                     {column.title}
                   </span>
 
                   {
                     isSorted ? (
-                      sortDirection === SortDirection.ASCENDING
-                        ? <SortUp fill="currentcolor" />
-                        : <SortDown fill="currentcolor" />
-                    ) : <SortDown fill="#c8c8c8" />
+                      <span className="w-3">
+                        {sortDirection === SortDirection.ASCENDING ? <SortUp fill="currentcolor" /> : <SortDown fill="currentcolor" />}
+                      </span>
+                    ) : null
                   }
                 </div>
               </th>
@@ -45,7 +51,7 @@ const TableHead = ({ columns, sortBy, sortDirection, onSortingChange, minColumnW
         }
       </tr>
     </thead>
-);
+  );
 }
 
 export default TableHead;
