@@ -29,10 +29,10 @@ export default ({ children, className, onResize, ...props }: PropsWithChildren<P
   const { isLoading, error, data } = Array.isArray(props.results) ? {
     isLoading: props.results.some((result) => result.isLoading),
     error: props.results.some((result) => result.error),
-    data: props.results.flatMap((result) => result.data),
+    data: props.results.flatMap((result) => result.data).filter((data) => data),
   } : props.results || {};
   const noData = !isLoading && !data?.length;
-
+  
   useFont();
 
   if (props.results && (error || noData)) {
@@ -76,7 +76,7 @@ export default ({ children, className, onResize, ...props }: PropsWithChildren<P
             {children}
           </div>
         )}
-        {isLoading && (
+        {isLoading && !data?.length && (
           <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
         )}
       </div>

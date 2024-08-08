@@ -75,7 +75,7 @@ export default (props: Props) => {
       className="overflow-auto"
       onResize={debounce(calculateMaxRowFix, 400)}
     >
-      <div style={{ minWidth: `${columns.length * 100}px` }}>
+      <div style={{ minWidth: `${columns.length * (props.minColumnWidth ?? 100) }px` }}>
         {!!meta && !(props.results?.isLoading && !props.results?.data?.length) && (
           <table
             className="overflow-visible w-full"
@@ -112,7 +112,7 @@ export default (props: Props) => {
               ))}
             </tbody>
           </table>
-          )}
+        )}
       </div>
 
       <Pagination
