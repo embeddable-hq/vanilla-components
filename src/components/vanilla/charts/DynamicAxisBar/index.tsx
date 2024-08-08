@@ -1,5 +1,5 @@
 import { useEmbeddableState } from '@embeddable.com/react';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from '../../Container';
 import BarChart from '../BarChart/components/BarChart';
 import { DataResponse, Dataset, Dimension, Granularity, Measure } from '@embeddable.com/core';
