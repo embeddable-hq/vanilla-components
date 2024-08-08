@@ -10,6 +10,8 @@ export const FONTS = {
 export const SMALL_FONT_SIZE = '12px';
 export const LIGHT_FONT = '#333942';
 export const REGULAR_FONT_SIZE = '14px'
+export const H1_FONT_SIZE = '36px'
+export const H2_FONT_SIZE = '24px'
 
 //general chart colors
 //degrade

@@ -1,9 +1,16 @@
 import React from "react";
 import { Inputs } from "./SmartifyH2Title.emb";
+import H2Title from "../../vanilla/H2Title";
 
 
+export default (props: Inputs) => {
+    const {title} = props;
+
+    return <H2Title title={title} />
+}
 
 
+/*
 export default (props: Inputs) => {
     const {title} = props;
 
@@ -15,3 +22,4 @@ export default (props: Inputs) => {
         </div>
     )
 }
+*/

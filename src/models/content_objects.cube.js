@@ -27,6 +27,10 @@ cube(`content_object`, {
   measures: {
     total_objects: {
       type: 'count',
+    },
+    published_objects: {
+      type: 'count',
+      filters: [{ sql: `${CUBE}.art_status = '✅ published'` }],
     }
   },
   dimensions: {
@@ -82,11 +86,13 @@ cube(`content_object`, {
     },
     venue_sid: {
       type: 'string',
-      sql: 'venue_sid'
+      sql: 'venue_sid',
+      shown: false
     },
     organisation_sid: {
       type: 'string',
-      sql: 'organization_sid'
+      sql: 'organization_sid',
+      shown: false
     },
     artist_sid: {
       type: 'string',

@@ -58,17 +58,17 @@ cube(`content_venue_detail`, {
       },
       geo_continent: {
         type: 'string',
-        sql: 'geo_continent',
+        sql: `case when geo_continent is null then '(not set)' else geo_continent end`,
         title: 'Continent'
       },
       geo_country: {
         type: 'string',
-        sql: 'geo_country',
+        sql: `case when geo_country is null then '(not set)' else geo_country end`,
         title: 'Country'
       },
       geo_city_en: {
         type: 'string',
-        sql: 'geo_city_en',
+        sql: `case when geo_city_en is null then '(not set)' else geo_city_en end`,
         title: 'City'
       },
       geo_city_exist: {
