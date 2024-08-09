@@ -154,7 +154,7 @@ export default defineComponent(Component, meta, {
         dimensions: [inputs.xAxis],
         measures: inputs.metrics,
         orderBy: orderProp,
-        limit: inputs.limit || 500
+        limit: inputs.limit || 50
       })
     };
   }
