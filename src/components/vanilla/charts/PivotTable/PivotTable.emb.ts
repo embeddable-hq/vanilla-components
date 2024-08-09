@@ -143,8 +143,12 @@ const aggregateRowDimensions = true; // This is unfinished functionality to disa
 
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>, [state]) => {
-    const rowDimensions = (inputs.rowValues || []).filter((input) => isDimension(input)) as Dimension[];
-    const columnDimensions = (inputs.columnValues || []).filter((input) => isDimension(input)) as Dimension[];
+    // This is necessary for backward compatibility with previous version of Pivot Table
+    const rowValuesInputData = Array.isArray(inputs.rowValues) ? inputs.rowValues : [inputs.rowValues];
+    const columnValuesInputData = Array.isArray(inputs.columnValues) ? inputs.columnValues : [inputs.columnValues];
+
+    const rowDimensions = (rowValuesInputData || []).filter((input) => isDimension(input)) as Dimension[];
+    const columnDimensions = (columnValuesInputData || []).filter((input) => isDimension(input)) as Dimension[];
     const measures = inputs.metrics?.filter((metric) => isMeasure(metric)) as Measure[];
 
     const filteredRowDimensions: Dimension[] = rowDimensions.filter((dimension) => dimension && isDimension(dimension));
@@ -195,6 +199,7 @@ export default defineComponent(Component, meta, {
 
     return {
       ...inputs,
+      rowValues: rowValuesInputData,
       columnValues: columnDimensions,
       rowSortDirection: inputs.rowSortDirection?.value,
       columnSortDirection: inputs.columnSortDirection?.value,
