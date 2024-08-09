@@ -36,7 +36,11 @@ cube(`content_venue`, {
   measures: {
     total_venues: {
       type: 'count'
-    }
+    },
+    published_venues: {
+      type: 'count',
+      filters: [{ sql: `${CUBE}.venue_status = '✅ published'` }],
+    },
   },
   dimensions: {
     organisation_sid: {

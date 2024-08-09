@@ -11,14 +11,20 @@ cube(`content_experience`, {
       `,
   dataSource: 'smartify-postgres',
   measures: {
-    records: {
+    total_experiences: {
       type: 'count'
+    },
+    published_experiences: {
+      type: 'count',
+      filters: [{ sql: `${CUBE}.experience_status = '✅ published'` }],
     }
   },
   dimensions: {
     experience_sid: {
       type: 'string',
-      sql: `experience_id`
+      sql: `experience_id`,
+      primaryKey: true,
+      shown: true
     },
     experience_name: {
       type: 'string',
@@ -30,15 +36,27 @@ cube(`content_experience`, {
     },
     venue_sid: {
       type: 'string',
-      sql: 'venue_sid'
+      sql: 'venue_sid',
+      shown: false
     },
     organisation_sid: {
       type: 'string',
-      sql: 'organisation_sid'
+      sql: 'organisation_sid',
+      shown: false
     },
     experience_image: {
       type: 'string',
       sql: 'experience_image_url'
+    }
+  },
+  joins: {
+    content_organisation: {
+      relationship: 'many_to_one',
+      sql: `${CUBE}.organisation_sid = ${content_organisation}.org_sid`
+    },
+    content_venue: {
+      relationship: 'many_to_one',
+      sql: `${CUBE}.venue_sid = ${content_venue}.venue_sid`
     }
   }
 });

@@ -16,6 +16,10 @@ cube(`content_organisation`, {
   measures: {
     total_organisations: {
       type: 'count'
+    },
+    published_organisations: {
+      type: 'count',
+      filters: [{ sql: `${CUBE}.org_status = '✅ published'` }],
     }
   },
   dimensions: {

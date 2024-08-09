@@ -13,14 +13,20 @@ cube(`content_exhibition`, {
     `,
   dataSource: 'smartify-postgres',
   measures: {
-    records: {
+    total_exhibitions: {
       type: 'count'
+    },
+    published_exhibitions: {
+      type: 'count',
+      filters: [{ sql: `${CUBE}.exhibition_status = '✅ published'` }],
     }
   },
   dimensions: {
     exhibition_sid: {
       type: 'string',
-      sql: `exhibition_sid`
+      sql: `exhibition_sid`,
+      primaryKey: true,
+      shown: true
     },
     exhibition_name: {
       type: 'string',
@@ -40,15 +46,27 @@ cube(`content_exhibition`, {
     },
     venue_sid: {
       type: 'string',
-      sql: 'venue_sid'
+      sql: 'venue_sid',
+      shown: false
     },
     organisation_sid: {
       type: 'string',
-      sql: 'organisation_sid'
+      sql: 'organisation_sid',
+      shown: false
     },
     exhibition_image: {
       type: 'string',
       sql: 'exhibition_image_url'
+    }
+  },
+  joins: {
+    content_organisation: {
+      relationship: 'many_to_one',
+      sql: `${CUBE}.organisation_sid = ${content_organisation}.org_sid`
+    },
+    content_venue: {
+      relationship: 'many_to_one',
+      sql: `${CUBE}.venue_sid = ${content_venue}.venue_sid`
     }
   }
 });

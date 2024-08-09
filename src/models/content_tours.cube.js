@@ -38,14 +38,24 @@ cube(`content_tour`, {
     `,
   dataSource: 'smartify-postgres',
   measures: {
-    records: {
+    total_tours: {
       type: 'count'
-    }
+    },
+    published_tours: {
+      type: 'count',
+      filters: [{ sql: `${CUBE}.tour_status = '✅ published'` }],
+    },
+    bespoke_tours: {
+      type: 'count',
+      filters: [{ sql: `${CUBE}.tour_sid LIKE 'ptour_%'` }],
+    },
   },
   dimensions: {
     tour_sid: {
       type: 'string',
-      sql: `tour_sid`
+      sql: `tour_sid`,
+      shown: true,
+      primaryKey: true
     },
     tour_type: {
       type: 'string',
@@ -53,15 +63,18 @@ cube(`content_tour`, {
     },
     experience_id: {
       type: 'string',
-      sql: 'experience_id'
+      sql: 'experience_id',
+      shown: false
     },
     organisation_sid: {
       type: 'string',
-      sql: 'organization_sid'
+      sql: 'organization_sid',
+      shown: false
     },
     venue_sid: {
       type: 'string',
-      sql: 'venue_sid'
+      sql: 'venue_sid',
+      shown: false
     },
     tour_status: {
       type: 'string',
@@ -106,6 +119,20 @@ cube(`content_tour`, {
     tour_url: {
       type: 'string',
       sql: 'tour_url'
+    }
+  },
+  joins: {
+    content_experience: {
+      relationship: 'many_to_one',
+      sql: `${CUBE}.experience_id = ${content_experience}.experience_id`
+    },
+    content_organisation: {
+      relationship: 'many_to_one',
+      sql: `${CUBE}.organization_sid = ${content_organisation}.org_sid`
+    },
+    content_venue: {
+      relationship: 'many_to_one',
+      sql: `${CUBE}.venue_sid = ${content_venue}.venue_sid`
     }
   }
 });

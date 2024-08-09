@@ -39,6 +39,10 @@ cube(`content_zones`, {
   measures: {
     total_zones: {
       type: 'count'
+    },
+    published_zones: {
+      type: 'count',
+      filters: [{ sql: `${CUBE}.zone_status = '✅ published'` }],
     }
   },
   dimensions: {

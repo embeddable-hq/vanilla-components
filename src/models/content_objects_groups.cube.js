@@ -13,14 +13,20 @@ cube(`content_object_group`, {
         `,
   dataSource: 'smartify-postgres',
   measures: {
-    records: {
+    total_obj_groups: {
       type: 'count'
+    },
+    published_obj_groups: {
+      type: 'count',
+      filters: [{ sql: `${CUBE}.art_status = '✅ published'` }],
     }
   },
   dimensions: {
     art_sid: {
       type: 'string',
-      sql: `art_sid`
+      sql: `art_sid`,
+      primaryKey: true,
+      shown: true
     },
     art_name: {
       type: 'string',
@@ -40,11 +46,23 @@ cube(`content_object_group`, {
     },
     venue_sid: {
       type: 'string',
-      sql: 'venue_sid'
+      sql: 'venue_sid',
+      shown: false
     },
     organisation_sid: {
       type: 'string',
-      sql: 'organisation_sid'
+      sql: 'organisation_sid',
+      shown: false
+    }
+  },
+  joins: {
+    content_organisation: {
+      relationship: 'many_to_one',
+      sql: `${CUBE}.organisation_sid = ${content_organisation}.org_sid`
+    },
+    content_venue: {
+      relationship: 'many_to_one',
+      sql: `${CUBE}.venue_sid = ${content_venue}.venue_sid`
     }
   }
 });

@@ -13,7 +13,7 @@ cube(`content_artist`, {
     `,
   dataSource: 'smartify-postgres',
   measures: {
-    records: {
+    total_artists: {
       type: 'count'
     }
   },
