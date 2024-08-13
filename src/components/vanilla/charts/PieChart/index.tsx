@@ -63,7 +63,7 @@ export default (props: Props) => {
       return;
     } 
     const { datasetIndex, index } = element[0];
-    if(index + 1 >= maxSegments) {
+    if(maxSegments && index + 1 >= maxSegments) {
       //clicked OTHER
       return;
     }
