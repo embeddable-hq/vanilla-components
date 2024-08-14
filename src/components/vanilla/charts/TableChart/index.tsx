@@ -25,6 +25,7 @@ type Meta = { page: number; maxRowsFit: number; sort: OrderBy[] };
 export default (props: Props) => {
   const { columns, results } = props;
   const [maxRowsFit, setMaxRowFit] = useState(0);
+  const [resizing, setResizing] = useState(false);
 
   const [meta, setMeta] = useEmbeddableState({
     page: 0,
@@ -46,8 +47,10 @@ export default (props: Props) => {
   }, [maxRowsFit, props.results]);
 
   useEffect(() => {
-    setMeta((meta) => ({ ...meta, maxRowsFit }));
-  }, [props.columns, maxRowsFit, setMeta]);
+    if (!resizing) {
+      setMeta((meta) => ({ ...meta, maxRowsFit }));
+    }
+  }, [props.columns, maxRowsFit, setMeta, resizing]);
 
   const updateSort = useCallback(
     (column: DimensionOrMeasure) => {
@@ -69,11 +72,14 @@ export default (props: Props) => {
     [meta, setMeta]
   );
 
+  console.log("resizing", resizing);
+
   return (
     <Container
       {...props}
       className="overflow-auto"
-      onResize={debounce(calculateMaxRowFix, 400)}
+      onResize={calculateMaxRowFix}
+      setResizeState={(value) => setResizing(value)}
     >
       <div style={{ minWidth: `${columns.length * (props.minColumnWidth ?? 100) }px` }}>
         {!!meta && !(props.results?.isLoading && !props.results?.data?.length) && (

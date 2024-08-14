@@ -1,5 +1,5 @@
 import { DataResponse } from '@embeddable.com/core';
-import React, { PropsWithChildren, useRef, useState } from 'react';
+import React, { PropsWithChildren, useRef, useState, useEffect } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import useFont from '../hooks/useFont';
@@ -20,10 +20,44 @@ type Props = {
   onResize?: (size: Size) => void;
 }
 
-export default ({ children, className, onResize, ...props }: PropsWithChildren<Props>) => {
+export default ({ children, className, onResize, setResizeState, ...props  }: PropsWithChildren<Props>) => {
   const ref = useRef<HTMLDivElement | null>(null);
+  const prevHeightRef = useRef<number | null>(null);
 
-  const { height } = useResize(ref, onResize || null, { delay: 400 });
+  const { height } = useResize(ref, onResize || null);
+
+  useEffect(() => {
+    const currentHeight = height; // Assume height is obtained from ref or state
+
+    // If prevHeightRef is null, this is the first render, so initialize it
+    if (prevHeightRef.current === null) {
+      prevHeightRef.current = currentHeight;
+    }
+
+    if (currentHeight !== prevHeightRef.current) {
+      setResizeState(true);
+
+      // Clear the timeout if it exists, to debounce the resize state reset
+      if (prevHeightRef.timeoutId) {
+        clearTimeout(prevHeightRef.timeoutId);
+      }
+
+      // Set a timer to reset the resize state after 400ms
+      prevHeightRef.timeoutId = setTimeout(() => {
+        setResizeState(false);
+      }, 400);
+    }
+
+    // Update the previous height with the current height
+    prevHeightRef.current = currentHeight;
+
+    // Clean up the timeout when the component unmounts
+    return () => {
+      if (prevHeightRef.timeoutId) {
+        clearTimeout(prevHeightRef.timeoutId);
+      }
+    };
+  }, [height]); // Depend on height, so it runs whenever height changes
 
   const [preppingDownload, setPreppingDownload] = useState(false);
   const { isLoading, error, data } = Array.isArray(props.results) ? {
