@@ -3,14 +3,16 @@ import { SMALL_FONT_SIZE } from '../constants';
 
 type Props = {
   description?: string;
+  style?: React.CSSProperties;
 }
 
-export default function Description({ description }: Props) {
+export default function Description({ description, style }: Props) {
 
-  if(!description) return null;
-
-  return (
-    <p className={`w-full text-[#333942] text-[${SMALL_FONT_SIZE}] font-embeddable justify-start flex mb-4`}>
+  return !!description && (
+    <p
+      className={`w-full text-[#333942] text-[${SMALL_FONT_SIZE}] font-embeddable justify-start flex mb-4`}
+      style={style || {}}
+    >
       {description}
     </p>
   );
