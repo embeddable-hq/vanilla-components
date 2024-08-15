@@ -5,7 +5,7 @@ import Component from './index';
 
 export const meta = {
   name: 'KPIChart',
-  label: 'Single KPI comparison',
+  label: 'KPI number comparison',
   defaultWidth: 200,
   defaultHeight: 150,
   classNames: ['inside-card'],
@@ -99,7 +99,7 @@ export const meta = {
         type: 'boolean',
         label: 'Show download as CSV',
         category: 'Export options',
-        defaultValue: true
+        defaultValue: false
     },
   ]
 } as const satisfies EmbeddedComponentMeta;

@@ -1,12 +1,14 @@
 import { loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
+import SortDirectionType from '../../../../types/SortDirection.type.emb';
+import { SortDirection } from '../../../../enums/SortDirection';
 
 import Component from './index';
 
 export const meta = {
-  name: 'SimpleKPIChart',
-  label: 'KPI number',
-  defaultWidth: 200,
+  name: 'KPIChartText',
+  label: 'KPI text',
+  defaultWidth: 300,
   defaultHeight: 150,
   classNames: ['inside-card'],
   category: 'Charts: essentials',
@@ -20,13 +22,29 @@ export const meta = {
         category: 'Chart data'
     },
     {
-        name: 'metric',
-        type: 'measure',
-        label: 'KPI',
+        name: 'dimension',
+        type: 'dimension',
+        label: 'Value to display',
         config: {
             dataset: 'ds'
         },
         category: 'Chart data'
+    },
+    {
+        name: 'metric',
+        type: 'measure',
+        label: 'Sort values by',
+        config: {
+            dataset: 'ds'
+        },
+        category: 'Chart data'
+    },
+    {
+      name: 'rowSortDirection',
+      type: SortDirectionType,
+      defaultValue: { value: SortDirection.DESCENDING },
+      label: 'Sort direction',
+      category: 'Chart data'
     },
     {
         name: 'title',
@@ -43,30 +61,24 @@ export const meta = {
         category: 'Chart settings'
     },
     {
-        name: 'prefix',
-        type: 'string',
-        label: 'Prefix',
-        description: 'Prefix',
+        name: 'displayMetric',
+        type: 'boolean',
+        label: 'Display metric',
+        description: 'Display the metric',
+        defaultValue: true,
         category: 'Chart settings'
-    },
-    {
-        name: 'suffix',
-        type: 'string',
-        label: 'Suffix',
-        description: 'Suffix',
-        category: 'Chart settings'
-    },
-    {
-        name: 'dps',
-        type: 'number',
-        label: 'Decimal Places',
-        category: 'Formatting'
     },
     {
       name: 'fontSize',
       type: 'number',
       label: 'Text size in pixels',
       defaultValue: 44,
+      category: 'Formatting'
+    },
+    {
+      name: 'dps',
+      type: 'number',
+      label: 'Metric decimal places',
       category: 'Formatting'
     },
     {
@@ -81,11 +93,20 @@ export const meta = {
 
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
+
+    const defaultSortDirection = inputs.rowSortDirection?.value === 'Ascending' ? 'asc' : 'desc';
+
     return {
       ...inputs,
       results: loadData({
         from: inputs.ds,
         measures: [inputs.metric],
+        dimensions: [inputs.dimension],
+        orderBy: [{
+            property: inputs.metric,
+            direction: defaultSortDirection
+        }],
+        limit: 1
       })
     };
   }
