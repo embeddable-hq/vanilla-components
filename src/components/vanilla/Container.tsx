@@ -18,11 +18,13 @@ type Props = {
   results?: DataResponse | DataResponse[];
   enableDownloadAsCSV?: boolean;
   onResize?: (size: Size) => void;
+  setResizeState?: (resizing: boolean) => void;
 }
 
 export default ({ children, className, onResize, setResizeState, ...props  }: PropsWithChildren<Props>) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const prevHeightRef = useRef<number | null>(null);
+  const resizingTimeoutRef = useRef<number | null>(null);
 
   const { height } = useResize(ref, onResize || null);
 
@@ -35,16 +37,16 @@ export default ({ children, className, onResize, setResizeState, ...props  }: Pr
     }
 
     if (currentHeight !== prevHeightRef.current) {
-      setResizeState(true);
+      setResizeState?.(true);
 
       // Clear the timeout if it exists, to debounce the resize state reset
-      if (prevHeightRef.timeoutId) {
-        clearTimeout(prevHeightRef.timeoutId);
+      if (resizingTimeoutRef.current) {
+       window.clearTimeout(resizingTimeoutRef.current);
       }
 
       // Set a timer to reset the resize state after 400ms
-      prevHeightRef.timeoutId = setTimeout(() => {
-        setResizeState(false);
+      resizingTimeoutRef.current = window.setTimeout(() => {
+        setResizeState?.(false);
       }, 400);
     }
 
@@ -53,8 +55,8 @@ export default ({ children, className, onResize, setResizeState, ...props  }: Pr
 
     // Clean up the timeout when the component unmounts
     return () => {
-      if (prevHeightRef.timeoutId) {
-        clearTimeout(prevHeightRef.timeoutId);
+      if (resizingTimeoutRef.current) {
+        window.clearTimeout(resizingTimeoutRef.current);
       }
     };
   }, [height]); // Depend on height, so it runs whenever height changes

@@ -48,7 +48,7 @@ const useResize = (
     return () => {
       resizeObserver.current?.unobserve(targetElement);
     }
-  }, [target, resizeHandler, /* handleMouseUp, */ options?.delay]);
+  }, [target, resizeHandler, options?.delay]);
 
   return size
 };

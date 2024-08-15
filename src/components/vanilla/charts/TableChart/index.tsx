@@ -4,7 +4,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import formatValue from '../../../util/format';
 import Container from '../../Container';
-import debounce from 'lodash.debounce';
 import Pagination from './components/Pagination';
 import TableHead from './components/TableHead';
 import { REGULAR_FONT_SIZE } from '../../../constants';
@@ -71,8 +70,6 @@ export default (props: Props) => {
     },
     [meta, setMeta]
   );
-
-  console.log("resizing", resizing);
 
   return (
     <Container
