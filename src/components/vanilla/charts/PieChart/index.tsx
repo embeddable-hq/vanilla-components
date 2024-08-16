@@ -12,7 +12,7 @@ import {
   Tooltip
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Pie, getElementAtEvent } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
@@ -54,23 +54,27 @@ type Record = { [p: string]: string };
 export default (props: Props) => {
   const { results, title, enableDownloadAsCSV, maxSegments, metric, slice, onClick } = props;
 
+  const [clickedIndex, setClickedIndex] = useState(null);
+
   const chartRef = useRef<ChartJS>(null);
 
   const fireClickEvent = (element: InteractionItem[]) => {
-    if (!element.length) {
-      //clicked outside pie
+    if (!element.length || element[0].index === clickedIndex) {
+      //clicked outside pie, or re-clicked slice
       onClick({ slice: null, metric: null });
-      return;
-    } 
-    const { datasetIndex, index } = element[0];
-    if(index + 1 >= maxSegments) {
-      //clicked OTHER
+      setClickedIndex(null);
       return;
     }
+    const { datasetIndex, index } = element[0];
+    if (maxSegments && index + 1 >= maxSegments) {
+      // clicked "OTHER"
+      return;
+    }
+    setClickedIndex(index);
     onClick({ 
       slice: results.data[index][slice.name], 
-      metric: results.data[index][metric.name]
-    })
+      metric: results.data[index][metric.name],
+    });
   };
 
   const handleClick = (event: MouseEvent<HTMLCanvasElement>) => {
