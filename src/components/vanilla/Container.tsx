@@ -28,31 +28,29 @@ export default ({ children, className, onResize, setResizeState, ...props  }: Pr
 
   const { height } = useResize(ref, onResize || null);
 
+  //Detect when the component is being resized by the user
   useEffect(() => {
-    const currentHeight = height; // Assume height is obtained from ref or state
-
+    if(!setResizeState) {
+      return;
+    }
+    const currentHeight = height;
     // If prevHeightRef is null, this is the first render, so initialize it
     if (prevHeightRef.current === null) {
       prevHeightRef.current = currentHeight;
     }
-
     if (currentHeight !== prevHeightRef.current) {
       setResizeState?.(true);
-
       // Clear the timeout if it exists, to debounce the resize state reset
       if (resizingTimeoutRef.current) {
        window.clearTimeout(resizingTimeoutRef.current);
       }
-
-      // Set a timer to reset the resize state after 400ms
+      // Set a timer to reset the resize state after 300ms
       resizingTimeoutRef.current = window.setTimeout(() => {
         setResizeState?.(false);
-      }, 400);
+      }, 300);
     }
-
     // Update the previous height with the current height
     prevHeightRef.current = currentHeight;
-
     // Clean up the timeout when the component unmounts
     return () => {
       if (resizingTimeoutRef.current) {
