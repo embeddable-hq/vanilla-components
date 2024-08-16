@@ -72,7 +72,7 @@ export const meta = {
       name: 'fontSize',
       type: 'number',
       label: 'Text size in pixels',
-      defaultValue: 44,
+      defaultValue: 32,
       category: 'Formatting'
     },
     {

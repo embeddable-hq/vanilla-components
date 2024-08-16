@@ -23,7 +23,7 @@ export default (props: Props) => {
   const { results, prevResults, prevTimeFilter, metric, displayMetric, dimension, dps, prefix, suffix } = props;
 
   const { n, percentage } = useMemo(() => {
-    if (dimension || !metric?.name || !props.results?.data?.length) {
+    if (dimension || !metric?.name || !results?.data?.length) {
       return { percentage: null, n: null }; // Skip calculations
     }
 
@@ -58,7 +58,7 @@ export default (props: Props) => {
         {dimension ? (
           <>
             <div style={{ fontSize: `${fontSize}px` }}>
-              <p>{results?.data?.[0][dimension.name]}</p>
+              <p>{results?.data?.[0]?.[dimension.name]}</p>
             </div>
             {displayMetric && metric && (
               <p
@@ -68,7 +68,7 @@ export default (props: Props) => {
                   color: `${LIGHTEST_FONT}`
                 }}
               >
-                {`${metric.title}: ${formatValue(`${results?.data?.[0][metric.name]}`, { type: 'number', dps: dps })}`}
+                {`${metric.title}: ${formatValue(`${results?.data?.[0]?.[metric.name]}`, { type: 'number', dps: dps })}`}
               </p>
             )}
           </>
