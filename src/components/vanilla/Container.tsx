@@ -14,6 +14,7 @@ import './index.css';
 type Props = {
   description?: string;
   className?: string;
+  childContainerClassName?: string;
   title?: string;
   results?: DataResponse | DataResponse[];
   enableDownloadAsCSV?: boolean;
@@ -21,7 +22,7 @@ type Props = {
   setResizeState?: (resizing: boolean) => void;
 }
 
-export default ({ children, className, onResize, setResizeState, ...props  }: PropsWithChildren<Props>) => {
+export default ({ children, className, childContainerClassName, onResize, setResizeState, ...props  }: PropsWithChildren<Props>) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const prevHeightRef = useRef<number | null>(null);
   const resizingTimeoutRef = useRef<number | null>(null);
@@ -103,8 +104,8 @@ export default ({ children, className, onResize, setResizeState, ...props  }: Pr
         className={twMerge(`relative grow flex flex-col`, className || '')}
       >
         {!!height && (
-          <div
-            className="flex flex-col"
+          <div 
+            className={twMerge(`flex flex-col`, childContainerClassName || '')}
             style={{ height: `${height}px` }}
           >
             {children}

@@ -74,9 +74,10 @@ export default (props: Props) => {
   return (
     <Container
       {...props}
-      className="overflow-auto"
       onResize={calculateMaxRowFix}
       setResizeState={(value) => setResizing(value)}
+      className="overflow-y-auto"
+      childContainerClassName="overflow-x-auto"
     >
       <div style={{ minWidth: `${columns.length * (props.minColumnWidth ?? 100) }px` }}>
         {!!meta && !(props.results?.isLoading && !props.results?.data?.length) && (

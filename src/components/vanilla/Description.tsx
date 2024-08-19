@@ -10,7 +10,7 @@ export default function Description({ description, style }: Props) {
 
   return !!description && (
     <p
-      className={`w-full text-[#333942] text-[${SMALL_FONT_SIZE}] font-embeddable justify-start flex mb-1`}
+      className={`w-full text-[#333942] text-[${SMALL_FONT_SIZE}] font-embeddable justify-start flex mb-2`}
       style={style || {}}
     >
       {description}
