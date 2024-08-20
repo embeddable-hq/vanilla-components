@@ -1,11 +1,11 @@
 cube(`content_organisation`, {
   sql: `
     select
-        sid as org_sid
+        sid as organisation_sid
         ,"defaultName" as org_name
         ,"defaultLocale" as org_locale
         ,case when "publishedAt"::jsonb->>"defaultLocale" is null then '❌ unpublished' else '✅ published' end as org_status
-        ,config::jsonb->>'membershipTier' as org_tier
+        ,case when config::jsonb->>'membershipTier' is null then '(not set)' else config::jsonb->>'membershipTier' end as org_tier
         ,concat('https://app.smartify.org/venues/', "prettyId") as org_url
         ,'Organisations' as org_string
     ,case when image#>>'{"s3Uri"}' is not null then concat('https://smartify-media.s3.eu-west-1.amazonaws.com', substring(image#>>'{"s3Uri"}', 'media(.*)')) else null end as org_image_url
@@ -25,7 +25,7 @@ cube(`content_organisation`, {
   dimensions: {
     organisation_sid: {
       type: 'string',
-      sql: `org_sid`,
+      sql: `organisation_sid`,
       primaryKey: true,  // Define primary key here
       shown: true  // Hide this dimension from the user interface if necessary
     },

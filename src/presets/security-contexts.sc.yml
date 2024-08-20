@@ -49,3 +49,7 @@
     organisation_id: org_louvre
     venue_id:
       - venue_louvre
+
+- name: QR Code
+  securityContext:
+    qrcode_id: qrcode_6aLSdVssC3QYALtjHxPO

@@ -1,0 +1,99 @@
+cubes:
+- name: test_venue_qrcodes
+  data_source: default
+  sql: >
+    select
+      event_timestamp
+      ,datetime(timestamp_micros(event_timestamp)) as event_datetime
+      ,event_name
+      ,user_pseudo_id
+      ,(select value.string_value from unnest(event_params) where key = "organization_id") as organization_id
+      ,(select value.string_value from unnest(event_params) where key = "qrcode_id") as qrcode_id
+      ,(select value.string_value from unnest(event_params) where key = "qrcode_label") as qrcode_label
+      ,(select value.string_value from unnest(event_params) where key = "content_category") as content_category
+      ,(select value.string_value from unnest(event_params) where key = "event_label") as event_label
+      ,(select value.string_value from unnest(event_params) where key = "art_id") as art_id
+      ,(select value.string_value from unnest(event_params) where key = "tour_id") as tour_id
+      ,(select value.string_value from unnest(event_params) where key = "exhibition_id") as exhibition_id
+      ,collected_traffic_source.manual_campaign_id
+      ,collected_traffic_source.manual_campaign_name
+      ,collected_traffic_source.manual_source
+      ,collected_traffic_source.manual_medium
+      ,collected_traffic_source.manual_term
+      ,collected_traffic_source.manual_content
+      ,geo.country as geo_country
+      ,geo.city as geo_city
+      ,device.category as device_category
+      ,device.operating_system as device_operating_system
+      --,event_params
+      from `smartify-cc94e.analytics_151371783.events_intraday_20240820`
+    where event_name = 'qrcode_open'
+    and (select value.string_value from unnest(event_params) where key = "qrcode_id") = '{COMPILE_CONTEXT.securityContext.qrcode_id}'
+
+  
+  dimensions:
+    - name: datetime
+      sql: timestamp(event_datetime)
+      type: time
+  
+    - name: event_name
+      sql: event_name
+      type: string
+  
+    - name: organization_id
+      sql: organization_id
+      type: string
+  
+    - name: qrcode_id
+      sql: qrcode_id
+      type: string
+  
+    - name: qrcode_label
+      sql: qrcode_label
+      type: string
+  
+    - name: content_category
+      sql: content_category
+      type: string
+  
+    - name: event_label
+      sql: event_label
+      type: string
+  
+    - name: art_id
+      sql: art_id
+      type: string
+  
+    - name: tour_id
+      sql: tour_id
+      type: string
+  
+    - name: exhibition_id
+      sql: exhibition_id
+      type: string
+
+    - name: country
+      type: string
+      sql: if(geo_country = "", null, geo_country)
+    
+    - name: city
+      type: string
+      sql: geo_city
+    
+    - name: device_os
+      type: string
+      sql: device_operating_system
+    
+    - name: device_category
+      type: string
+      sql: device_category
+
+  measures:
+    - name: total_opens
+      type: count
+      title: Total Opens
+
+    - name: users
+      sql: user_pseudo_id
+      type: count_distinct
+      title: Total Users

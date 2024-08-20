@@ -114,7 +114,7 @@ export default defineComponent<
         from: inputs.ds,
         dimensions: (inputs.columns?.filter((c) => isDimension(c)) as Dimension[]) || [],
         measures: (inputs.columns?.filter((c) => isMeasure(c)) as Measure[]) || [],
-        limit,
+        limit: undefined,
         offset: limit * (state?.page || 0),
         orderBy: state?.sort || defaultSort
       })

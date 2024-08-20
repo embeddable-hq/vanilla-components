@@ -70,7 +70,12 @@ export default (props: Props) => {
               {percentage === Infinity ? '∞' : formatValue(`${Math.abs(percentage)}`, 'number')}%
             </span>
           )}
-          <span className="text-center">{`${props.prefix || ''}${n || 0}${props.suffix || ''}`}</span>
+          {/* <span className="text-center">{`${props.prefix || ''}${n || 0}${props.suffix || ''}`}</span> */}
+          <span className="text-center">
+            <span style={{ fontSize: '24px' }}>{props.prefix || ''}</span>
+            {n || 0}
+            <span style={{ fontSize: '24px' }}>{props.suffix || ''}</span>
+          </span>
         </div>
       </div>
     </Container>

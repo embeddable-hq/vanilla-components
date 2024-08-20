@@ -6,9 +6,6 @@ cube(`content_venue_detail`, {
             ,case when description is null then 'false' else 'true' end  as venue_description_exist
             ,ARRAY(SELECT jsonb_object_keys(description::jsonb)) AS venue_description_lang
             ,ARRAY(SELECT jsonb_object_keys(name::jsonb)) AS venue_name_lang
-            --,name::jsonb->>'en-GB' as venue_name_engb
-            --,name
-            --,location
             ,case when location::jsonb->>'address' is null then 'false' else 'true' end  as geo_address_exist
             ,location::jsonb->>'continentName' as geo_continent
             ,location::jsonb->>'countryName' as geo_country
@@ -18,8 +15,8 @@ cube(`content_venue_detail`, {
             ,case when logo::jsonb#>>'{"light", "s3Uri"}' is null then 'false' else 'true' end as logo_light_exist
             ,case when logo::jsonb#>>'{"dark", "s3Uri"}' = logo::jsonb#>>'{"light", "s3Uri"}' then 'true' else 'false' end as logo_dark_equals_light
             ,'Venues' as venue_string
-        from content.hosts
-        where type = 'venue'
+          from content.hosts
+          where type = 'venue'
         `,
     dataSource: 'smartify-postgres',
     measures: {
@@ -91,12 +88,6 @@ cube(`content_venue_detail`, {
       logo_dark_equals_light: {
         type: 'string',
         sql: 'logo_dark_equals_light'
-      }
-    },
-    joins: {
-      content_venue: {
-        relationship: 'many_to_one',
-        sql: `${CUBE}.venue_sid = ${content_venue}.venue_sid`
       }
     }
   });

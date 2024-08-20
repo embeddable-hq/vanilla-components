@@ -3,7 +3,7 @@ cube(`content_track`, {
         select
             sid as track_sid
             ,"defaultTitle" as track_name
-            ,case when "trackableSid" like 'tour_%' then "trackableSid" else "(not set)" end as tour_sid
+            ,case when "trackableSid" like 'tour_%' then "trackableSid" else '(not set)' end as tour_sid
             ,replace(replace(replace(replace(replace(replace(replace("aggregateDisplayedOn"::text, "orgSid", ''), '"", ', ''), ', ""', ''),'", "', ','),'"',''),'[',''),']','') as venue_sid
             ,"orgSid" as organisation_sid
             ,"durationSecs" as track_duration
