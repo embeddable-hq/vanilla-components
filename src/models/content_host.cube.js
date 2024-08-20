@@ -7,6 +7,7 @@ cube(`content_host`, {
       from content.hosts
       where type = 'venue'
       union all
+      select
           'null' as venue_sid
           ,sid as org_sid
           ,concat(sid,'-','null') as host_join_sid
