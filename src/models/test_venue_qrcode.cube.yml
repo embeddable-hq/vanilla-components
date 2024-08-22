@@ -26,11 +26,39 @@ cubes:
       ,device.category as device_category
       ,device.operating_system as device_operating_system
       --,event_params
-      from `smartify-cc94e.analytics_151371783.events_intraday_20240820`
+      from `smartify-cc94e.analytics_151371783.events_intraday_*`
     where event_name = 'qrcode_open'
     and (select value.string_value from unnest(event_params) where key = "qrcode_id") = '{COMPILE_CONTEXT.securityContext.qrcode_id}'
+    union all
+    select
+      event_timestamp
+      ,datetime(timestamp_micros(event_timestamp)) as event_datetime
+      ,event_name
+      ,user_pseudo_id
+      ,(select value.string_value from unnest(event_params) where key = "organization_id") as organization_id
+      ,(select value.string_value from unnest(event_params) where key = "qrcode_id") as qrcode_id
+      ,(select value.string_value from unnest(event_params) where key = "qrcode_label") as qrcode_label
+      ,(select value.string_value from unnest(event_params) where key = "content_category") as content_category
+      ,(select value.string_value from unnest(event_params) where key = "event_label") as event_label
+      ,(select value.string_value from unnest(event_params) where key = "art_id") as art_id
+      ,(select value.string_value from unnest(event_params) where key = "tour_id") as tour_id
+      ,(select value.string_value from unnest(event_params) where key = "exhibition_id") as exhibition_id
+      ,collected_traffic_source.manual_campaign_id
+      ,collected_traffic_source.manual_campaign_name
+      ,collected_traffic_source.manual_source
+      ,collected_traffic_source.manual_medium
+      ,collected_traffic_source.manual_term
+      ,collected_traffic_source.manual_content
+      ,geo.country as geo_country
+      ,geo.city as geo_city
+      ,device.category as device_category
+      ,device.operating_system as device_operating_system
+      --,event_params
+      from `smartify-cc94e.analytics_151371783.events_*`
+    where _TABLE_SUFFIX between "20240819" and "20280820"
+    and event_name = 'qrcode_open'
+    and (select value.string_value from unnest(event_params) where key = "qrcode_id") = '{COMPILE_CONTEXT.securityContext.qrcode_id}'
 
-  
   dimensions:
     - name: datetime
       sql: timestamp(event_datetime)
@@ -91,9 +119,9 @@ cubes:
   measures:
     - name: total_opens
       type: count
-      title: Total Opens
+      title: Total Scans
 
     - name: users
       sql: user_pseudo_id
       type: count_distinct
-      title: Total Users
+      title: Scanned Users
