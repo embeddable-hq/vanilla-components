@@ -11,7 +11,7 @@ cubes:
     from `smartify-cc94e.report_venue.venue_overall_table` as a
     full join `smartify-cc94e.report_ad_hoc.hrp_daily_visitors_bq` as b on concat(a.partition_date,a.venue_sid,a.organisation_sid) = concat(b.date,b.venue_id,b.organization_id)
     where organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
-    and partition_date between "2024-04-01" and "2024-05-31"
+    and partition_date between "2023-01-01" and "2024-12-31"
     group by partition_date, organisation_sid, venue_sid, visitors
   
   dimensions:
