@@ -17,10 +17,11 @@ type Props = {
   dimension?: Dimension;
   dps?: number;
   fontSize?: number;
+  showPrevPeriodLabel?: boolean;
 };
 
 export default (props: Props) => {
-  const { results, prevResults, prevTimeFilter, metric, displayMetric, dimension, dps, prefix, suffix } = props;
+  const { results, prevResults, prevTimeFilter, metric, displayMetric, dimension, dps, prefix, suffix, showPrevPeriodLabel } = props;
 
   const { n, percentage } = useMemo(() => {
     if (dimension || !metric?.name || !results?.data?.length) {
@@ -31,7 +32,7 @@ export default (props: Props) => {
     const prev = parseFloat(prevResults?.data?.[0]?.[metric.name] || 0);
 
     return {
-      percentage: prev ? Math.round((n / prev) * 100) - 100 : null,
+      percentage: prev !== null && prev !== undefined ? Math.round((n / prev) * 100) - 100 : null,
       n: formatValue(n, {
         type: 'number',
         meta: metric?.meta,
@@ -78,15 +79,26 @@ export default (props: Props) => {
               <p>{`${prefix || ''}${n || 0}${suffix || ''}`}</p>
             </div>
             {prevTimeFilter?.to && (
-              <div className="font-normal flex items-center" style={{ color: percentage < 0 ? '#FF6B6C' : '#3BA99C', fontSize: `${metaFontSize}px` }}>
-                {percentage !== null ? (
-                  <>
-                    <Chevron className={`${percentage < 0 ? 'rotate-180' : ''} h-[20px] w-[9px] min-w-[9px] mr-1.5`} />
-                    <span>{percentage === Infinity ? '∞' : `${formatValue(`${Math.abs(percentage)}`, { type: 'number', dps: dps })}%`}</span>
-                  </>
-                ) : (
-                  <span>{'\u00A0'}</span>  // non-breaking space
+              <div
+                className="font-normal flex flex-wrap justify-center items-center text-center"
+                style={{
+                  color: percentage < 0 ? '#FF6B6C' : '#3BA99C', 
+                  fontSize: `${metaFontSize}px` 
+                }}
+              >
+                <Chevron
+                  className={`${percentage < 0 ? 'rotate-180' : ''} h-[20px] w-[9px] min-w-[9px] mr-1.5`}
+                />
+                <span>
+                  {percentage === Infinity ? '∞' : `${formatValue(`${Math.abs(percentage)}`, { type: 'number', dps: dps })}%`}
+                </span>
+                {showPrevPeriodLabel && prevTimeFilter?.relativeTimeString.length > 0 && (
+                  <span style={{ color: `${LIGHTEST_FONT}` }}>
+                    &nbsp;
+                    {`vs ${prevTimeFilter.relativeTimeString}`}
+                  </span>
                 )}
+
               </div>
             )}
           </>
