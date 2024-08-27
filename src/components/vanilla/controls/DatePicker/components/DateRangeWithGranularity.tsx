@@ -11,10 +11,8 @@ import {
   subYears
 } from 'date-fns';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-
-import Container from '../../Container';
-import DateRangePicker from '../DateRangePicker';
-import Dropdown from '../Dropdown';
+import DateRangePicker from './DateRangePicker';
+import Dropdown from '../../Dropdown';
 
 const valueProp: Dimension = {
   __type__: 'dimension',
@@ -24,7 +22,6 @@ const valueProp: Dimension = {
 };
 
 export type Props = {
-  title?: string;
   defaultPeriod?: TimeRange;
   defaultComparison?: string;
   defaultGranularity?: Granularity;
@@ -34,12 +31,13 @@ export type Props = {
   onChangeGranularity: (v: Granularity | null) => void;
 };
 
-export default (props: Props) => {
-  const { onChangeComparison, defaultPeriod, onChangePeriod } = props;
+export default function DateRangeWithGranularity(props: Props) {
+  const { onChangeComparison, onChangePeriod, defaultPeriod } = props;
+
   const ref = useRef<HTMLDivElement | null>(null);
   const [hideDate, setHideDate] = useState(false);
   const [recalcComparison, setRecalcComparison] = useState(true);
-  const [period, setPeriod] = useState(props.defaultPeriod);
+  const [period, setPeriod] = useState(defaultPeriod);
   const [granularity, setGranularity] = useState(props.defaultGranularity);
   const [compareOption, setCompareOption] = useState(props.defaultComparison);
 
@@ -179,8 +177,7 @@ export default (props: Props) => {
   }, [defaultPeriod, onChangePeriod]);
 
 
-  return (
-    <Container title={props.title}>
+  return (    
       <div className="flex items-center h-10">
         <div ref={ref} className="grow basis-0 max-w-96 h-full">
           <DateRangePicker
@@ -200,20 +197,24 @@ export default (props: Props) => {
             }}
           />
         </div>
-        <div className="hidden md:block shrink whitespace-nowrap text-[14px] font-normal text-[#101010] leading-none ml-2">
-          compare to
-        </div>
-        <div className="grow basis-0 max-w-[150px] h-full ml-2">
-          <Dropdown
-            unclearable
-            minDropdownWidth={320}
-            defaultValue={compareOption}
-            options={comparisonOptions}
-            placeholder="Comparison"
-            onChange={changeComparisonOption}
-            property={valueProp}
-          />
-        </div>
+        {!!onChangeComparison && (
+          <>
+            <div className="hidden md:block shrink whitespace-nowrap text-[14px] font-normal text-[#101010] leading-none ml-2">
+              compare to
+            </div>
+            <div className="grow basis-0 max-w-[150px] h-full ml-2">
+              <Dropdown
+                unclearable
+                minDropdownWidth={320}
+                defaultValue={compareOption}
+                options={comparisonOptions}
+                placeholder="Comparison"
+                onChange={changeComparisonOption}
+                property={valueProp}
+              />
+            </div>
+          </>
+        )}        
         {!!props.showGranularity && (
           <div className="grow basis-0 max-w-[115px] h-full ml-2">
             <Dropdown
@@ -231,10 +232,9 @@ export default (props: Props) => {
             />
           </div>
         )}
-      </div>
-    </Container>
+      </div>    
   );
-};
+}
 
 function toSeconds (unit: string, n: number): number {
   const unitsInSeconds = {
