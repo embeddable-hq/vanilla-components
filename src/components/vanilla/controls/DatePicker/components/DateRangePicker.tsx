@@ -164,7 +164,7 @@ export default function DateRangePicker(props: Props) {
       </div>
     </Container>
   );
-};
+}
 
 const CustomCaption = (props: CaptionProps) => {
   const { goToMonth, nextMonth, previousMonth } = useNavigation();
