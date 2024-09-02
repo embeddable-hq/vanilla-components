@@ -19,13 +19,7 @@ return (
 		{...props}
 	>
 		<DateRangeWithGranularity
-			defaultPeriod={props.defaultPeriod}
-			defaultComparison={props.defaultComparison}
-			defaultGranularity={props.defaultGranularity}
-			showGranularity={props.showGranularity}
-			onChangePeriod={props.onChangePeriod}
-			onChangeComparison={props.onChangeComparison}
-			onChangeGranularity={props.onChangeGranularity}
+			{...props}
 		/>
 	</Container>
 )
