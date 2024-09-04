@@ -3,10 +3,10 @@ import { endOfDay, getYear } from 'date-fns';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-import formatValue from '../../../util/format';
-import Container from '../../Container';
-import { CalendarIcon, ChevronLeft, ChevronRight } from '../../icons';
-import Dropdown from '../Dropdown';
+import formatValue from '../../../../util/format';
+import Container from '../../../Container';
+import { CalendarIcon, ChevronLeft, ChevronRight } from '../../../icons';
+import Dropdown from '../../Dropdown';
 
 const ranges = [
   'Today',
@@ -37,7 +37,7 @@ type Props = {
   hideDate?: boolean;
 };
 
-export default (props: Props) => {
+export default function DateRangePicker(props: Props) {
   const [focus, setFocus] = useState(false);
   const ref = useRef<HTMLInputElement | null>(null);
   const [triggerBlur, setTriggerBlur] = useState(false);
@@ -164,7 +164,7 @@ export default (props: Props) => {
       </div>
     </Container>
   );
-};
+}
 
 const CustomCaption = (props: CaptionProps) => {
   const { goToMonth, nextMonth, previousMonth } = useNavigation();
