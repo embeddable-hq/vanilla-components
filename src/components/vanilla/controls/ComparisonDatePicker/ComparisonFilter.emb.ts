@@ -10,7 +10,7 @@ export const meta = {
   name: 'ComparisonFilter',
   label: 'Comparison filter',
   defaultWidth: 920,
-  defaultHeight: 80,
+  defaultHeight: 50,
   classNames: ['on-top'],
   category: 'Charts: time-series comparison',
   inputs: [
