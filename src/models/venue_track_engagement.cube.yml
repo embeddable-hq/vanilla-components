@@ -1,0 +1,93 @@
+cubes:
+- name: venue_track_eng
+  data_source: default
+  #sql_table: smartify-cc94e.report_venue.venue_tourtrack_table
+  sql: >
+    SELECT a.*
+      ,b.duration_sec
+    FROM `smartify-cc94e.report_venue.venue_listen_time_table` as a
+    left join `smartify-cc94e.smartify_lookup_tables.track_lookup` as b on concat(a.track_sid,a.track_audio_language) = b.track_sid_locale
+    WHERE organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+
+  dimensions:
+    - name: date
+      type: time
+      sql: timestamp(partition_date)
+    
+    - name: event_name
+      type: string
+      sql: event_name
+    
+    - name: country
+      type: string
+      sql: geo_country
+    
+    - name: city
+      type: string
+      sql: geo_city
+    
+    - name: stream
+      type: string
+      sql: stream_id
+    
+    - name: venue_id
+      type: string
+      sql: IFNULL(venue_sid,organisation_sid)
+    
+    - name: organisation_id
+      type: string
+      sql: organisation_sid
+    
+    - name: user_location_type
+      type: string
+      sql: case when venue_sid = nearby_venue_id then "Onsite User" when user_location_access = "false" then "Unknown" else "Offsite User" end
+    
+    - name: platform_device
+      type: string
+      sql: case when platform = "IOS" then "iOS" when platform = "ANDROID" then "Android" when (platform = "WEB" and device_category = "desktop") then "Desktop" else "Webapp" end
+    
+    - name: tour_name
+      type: string
+      sql: tour_name
+    
+    - name: track_name
+      type: string
+      sql: track_name
+
+    - name: user_connectivity
+      type: string
+      sql: case when user_connectivity in ("Internet Highspeed","Internet Corporate") then "Wi-Fi" else user_connectivity end
+    
+    - name: track_audio_language
+      type: string
+      sql: track_audio_language
+    
+  measures:
+    - name: total_events
+      type: count
+      title: Total Events
+    
+    - name: users
+      sql: user_pseudo_id
+      type: count_distinct
+      title: Total Users
+    
+    - name: track_play
+      title: Track Play
+      type: sum
+      sql: track_play      
+    
+    - name: track_complete
+      title: Track Complete
+      type: sum
+      sql: track_complete
+    
+    - name: track_listen_time
+      title: Listen Time
+      type: sum
+      sql: round(sum(track_listen_time)/1000, 0)
+
+    - name: track_avg_listen_time
+      title: Track Avg Listen Time
+      type: number
+      sql: CASE WHEN {track_listen_time} = 0 THEN 0 ELSE ROUND({track_listen_time} / NULLIF({track_play},0),0) END
