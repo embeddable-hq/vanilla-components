@@ -45,26 +45,26 @@ export function getComparisonOptions(period) {
 export function getComparisonPeriod(rts, period) {
 	if (rts === 'Previous month') {
 		return {
-			relativeTimeString: '',
+			relativeTimeString: 'previous month',
 			from: subMonths(period.from, 1),
 			to: subMonths(period.to, 1) 
 		}
 	} else if (rts ===  'Previous quarter') {
 		return {
-			relativeTimeString: '',
+			relativeTimeString: 'previous quarter',
 			from: subQuarters(period.from, 1),
 			to: subQuarters(period.to, 1)
 		}
 	} else if ( rts === 'Previous year') {
 		return {
-			relativeTimeString: '',
+			relativeTimeString: 'previous year',
 			from: subYears(period.from, 1),
 			to: subYears(period.to, 1)
 		}
 	} else {// Previous period
 		const days = Math.abs(differenceInCalendarDays(period.from, period.to)) + 1;
 		return {
-			relativeTimeString: '',
+			relativeTimeString: 'previous period',
 			from: subDays(period.from, days),
 			to: subDays(period.to, days)
 		}
