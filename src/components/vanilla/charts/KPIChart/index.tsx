@@ -32,7 +32,7 @@ export default (props: Props) => {
     const prev = parseFloat(prevResults?.data?.[0]?.[metric.name] || 0);
 
     return {
-      percentage: prev !== null && prev !== undefined ? Math.round((n / prev) * 100) - 100 : null,
+      percentage: prev || prev === 0 ? Math.round((n / prev) * 100) - 100 : null,
       n: formatValue(n, {
         type: 'number',
         meta: metric?.meta,
