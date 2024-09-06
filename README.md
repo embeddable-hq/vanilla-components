@@ -7,7 +7,7 @@ Hello and welcome to our Embeddable components **starter pack** built just for y
 
 ### Installation
 
-`npm i` # requires node 18 or later
+`npm i` # requires node 20 or later
 
 ### Build & Deploy
 This is how you push code changes to your Embeddable workspace

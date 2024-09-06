@@ -33,6 +33,7 @@ export const meta = {
         },
         category: 'Chart data'
     },
+    // Chart settings
     {
         name: 'title',
         type: 'string',
@@ -74,6 +75,20 @@ export const meta = {
         label: 'Show download as CSV',
         category: 'Export options',
         defaultValue: true
+    },
+    // Table styling
+    {
+      name: 'minColumnWidth',
+      type: 'number',
+      label: 'Minimum column width in pixels',
+      defaultValue: 150,
+      category: 'Chart styling'
+    },
+    {
+      name: 'fontSize',
+      type: 'number',
+      label: 'Font size in pixels',
+      category: 'Chart styling'
     }
 ]
 } as const satisfies EmbeddedComponentMeta;
@@ -86,7 +101,7 @@ export default defineComponent<
   props: (inputs: Inputs<typeof meta>, [state]) => {
     const limit =
       inputs.maxPageRows || state?.maxRowsFit
-        ? Math.min(inputs.maxPageRows || 1000, state?.maxRowsFit || 1000)
+        ? Math.min(inputs.maxPageRows || 1000, Math.max(state?.maxRowsFit, 1) || 1000)
         : 1;
 
     const defaultSortDirection = inputs.defaultSortDirection?.value === 'Ascending' ? 'asc' : 'desc';
