@@ -18,6 +18,11 @@ const TableHead = ({ columns, sortBy, sortDirection, onSortingChange, minColumnW
         {
           columns.map((column) => {
             const isSorted = sortBy?.name === column.name;
+            const newSortDirection = isSorted 
+              ? sortDirection === SortDirection.ASCENDING 
+                ? SortDirection.DESCENDING 
+                : SortDirection.ASCENDING 
+              : SortDirection.ASCENDING;
 
             return (
               <th
@@ -30,7 +35,7 @@ const TableHead = ({ columns, sortBy, sortDirection, onSortingChange, minColumnW
                   }
                   : {}
                 }
-                onClick={() => onSortingChange?.(column, isSorted ? sortDirection === SortDirection.ASCENDING ? SortDirection.DESCENDING : SortDirection.ASCENDING : SortDirection.ASCENDING)}
+                onClick={() => onSortingChange?.(column, newSortDirection)}
               >
                 <div className="flex items-center gap-1 hover:text-black">
                   <span className="text-[#333942] mr-1 truncate">
