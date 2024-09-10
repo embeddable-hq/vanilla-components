@@ -3,10 +3,8 @@ cubes:
   data_source: default
   #sql_table: smartify-cc94e.report_venue.venue_tourtrack_table
   sql: >
-    SELECT a.*
-      ,b.duration_sec
-    FROM `smartify-cc94e.report_venue.venue_listen_time_table` as a
-    left join `smartify-cc94e.smartify_lookup_tables.track_lookup` as b on concat(a.track_sid,a.track_audio_language) = b.track_sid_locale
+    SELECT *
+    FROM `smartify-cc94e.report_venue.test_track_engagement`
     WHERE organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
 
   dimensions:
@@ -61,6 +59,10 @@ cubes:
     - name: track_audio_language
       type: string
       sql: track_audio_language
+
+    - name: track_avg_listen_time_out
+      type: string
+      sql: avg_listen_time_out
     
   measures:
     - name: total_events
@@ -75,19 +77,19 @@ cubes:
     - name: track_play
       title: Track Play
       type: sum
-      sql: track_play      
+      sql: plays      
     
     - name: track_complete
       title: Track Complete
       type: sum
       sql: track_complete
     
+    - name: duration_sec
+      title: Duration Seconds
+      type: max
+      sql: duration_sec
+    
     - name: track_listen_time
       title: Listen Time
       type: sum
-      sql: round(sum(track_listen_time)/1000, 0)
-
-    - name: track_avg_listen_time
-      title: Track Avg Listen Time
-      type: number
-      sql: CASE WHEN {track_listen_time} = 0 THEN 0 ELSE ROUND({track_listen_time} / NULLIF({track_play},0),0) END
+      sql: track_listen_time

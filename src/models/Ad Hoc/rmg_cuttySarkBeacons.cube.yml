@@ -1,0 +1,106 @@
+cubes:
+- name: rmg_cutty_sark_soundscape
+  data_source: default
+  sql: >
+    select
+      date(timestamp_micros(a.event_timestamp)) as partition_date
+      ,a.event_name
+      ,a.user_id
+      ,a.user_pseudo_id
+      ,a.stream_id
+      ,a.content_category
+      ,a.device.language as device_language
+      ,a.event_label
+      ,a.platform
+      ,a.venue_id
+      ,a.organization_id
+      ,a.beacon_id
+      ,a.beacon_group
+      ,a.weather_group
+      ,a.weather
+      ,a.connectivity
+      ,a.device.category as device_category
+      ,"Experience Page Funnel" as beacon_funnel
+      ,a.firebase_screen_class
+    from `smartify-cc94e.smartify_flat_analytics.smartify_ga_flat` as a
+    where partition_date >= "2024-05-22"
+    and stream_id in ("1047860117","1047860114")
+  
+  dimensions:
+    - name: date
+      type: time
+      sql: timestamp(partition_date)
+    
+    - name: event_name
+      type: string
+      sql: event_name
+    
+    - name: beacon_id
+      type: string
+      sql: beacon_id
+    
+    - name: platform
+      type: string
+      sql: platform
+    
+    - name: beacon_weather
+      type: string
+      sql: weather
+    
+    - name: beacon_weather_group
+      type: string
+      sql: weather_group
+    
+    - name: beacon_funnel
+      type: string
+      sql: beacon_funnel
+
+    - name: beacon_name
+      type: string
+      sql: CASE WHEN beacon_id = 'D99F2A572974' then 'LH1' WHEN beacon_id = 'EDD74AFB1CF0' then 'LH1b' WHEN beacon_id = 'D08BA62BB39F' then 'LH2' WHEN beacon_id = 'FDDF66912551' then 'Bottles' WHEN beacon_id = 'F53A161563FE' then 'Crates' WHEN beacon_id = 'C581AEEB9635' then 'TD3' WHEN beacon_id = 'F43006D97FB5' then 'TD3b' WHEN beacon_id = 'E3558971C519' then 'Piano' WHEN beacon_id = 'C5594CEE11BC' then 'TDport' WHEN beacon_id = 'C2AD677EC944' then 'TDstar' WHEN beacon_id = 'ED9A7CD770D4' then 'MD5' WHEN beacon_id = 'D4661254BDA3' then 'MD6' WHEN beacon_id = 'F775C1C2F97C' then 'MD1SFX' WHEN beacon_id = 'F89B8E6ACBFD' then 'Pigs' WHEN beacon_id = 'C67501CB7A5B' then 'MD2SFXStar' WHEN beacon_id = 'C8863C9E4A42' then 'MD2SFXPort' WHEN beacon_id = 'F05E0277361F' then 'GalleyStar' WHEN beacon_id = 'EEB458A734E9' then 'GalleyPort' WHEN beacon_id = 'C70D9B512324' then 'MD4SFX' WHEN beacon_id = 'E96B1E5D33AE' then 'TB13' WHEN beacon_id = 'FA490C1F993F' then 'MD8' WHEN beacon_id = 'F2879DDC86D2' then 'MD7' WHEN beacon_id = 'E7769BDBD93C' then 'MD9' WHEN beacon_id = 'D84584C4B1BF' then 'MD10' WHEN beacon_id = 'E11684FB20CB' then 'MD12' WHEN beacon_id = 'C5CE2B46405B' then 'TB14' WHEN beacon_id = 'C154CDF7BC6B' then 'DB15' WHEN beacon_id = 'F09C28044AF0' then 'DB8SFX' else "TEST BEACON" END
+    
+    - name: beacon_location
+      type: string
+      sql: CASE WHEN beacon_id = 'D99F2A572974' then 'LH-entrance' WHEN beacon_id = 'EDD74AFB1CF0' then 'LH-entrance' WHEN beacon_id = 'D08BA62BB39F' then 'LH-bottom of stairs' WHEN beacon_id = 'FDDF66912551' then 'LH-sign near bottles' WHEN beacon_id = 'F53A161563FE' then 'LH-thin column by theatre' WHEN beacon_id = 'C581AEEB9635' then 'TD-above info panel' WHEN beacon_id = 'F43006D97FB5' then 'TD-near info panel' WHEN beacon_id = 'E3558971C519' then 'TD-Oppposite the piano' WHEN beacon_id = 'C5594CEE11BC' then 'TD-cargo hatch (port)' WHEN beacon_id = 'C2AD677EC944' then 'TD-cargo hatch (starbd)' WHEN beacon_id = 'ED9A7CD770D4' then 'MD-top of stairs' WHEN beacon_id = 'D4661254BDA3' then 'MD-forward deckhouse, entrance, right side' WHEN beacon_id = 'F775C1C2F97C' then "MD-Ship's bell, ship's bell" WHEN beacon_id = 'F89B8E6ACBFD' then 'MD - pigpen' WHEN beacon_id = 'C67501CB7A5B' then 'MD-Carpenter, woodshop sounds' WHEN beacon_id = 'C8863C9E4A42' then 'MD-Carpenter, woodshop sounds' WHEN beacon_id = 'F05E0277361F' then 'MD-Galley, cooking sounds' WHEN beacon_id = 'EEB458A734E9' then 'MD-Galley, cooking sounds' WHEN beacon_id = 'C70D9B512324' then 'MD-Main winch, winch sounds' WHEN beacon_id = 'E96B1E5D33AE' then 'TB- tower bridge entrance (from ship)' WHEN beacon_id = 'FA490C1F993F' then 'MD-forward deckhouse, entrance, left side' WHEN beacon_id = 'F2879DDC86D2' then 'MD- forward deckhouse, inside' WHEN beacon_id = 'E7769BDBD93C' then "MD-l'pool house, ship's wheel entrance (top of stairs)" WHEN beacon_id = 'D84584C4B1BF' then "MD-l'pool house, dining area beam" WHEN beacon_id = 'E11684FB20CB' then "MD-l'pool house exit leading to poop deck (north)" WHEN beacon_id = 'C5CE2B46405B' then "TB-tower bridge exit (from ship)" WHEN beacon_id = 'C154CDF7BC6B' then 'DB-bottom of stairs' WHEN beacon_id = 'F09C28044AF0' then 'DB-whale song, entrance to dry berth from corridor (lower level)' ELSE "TEST BEACON" END
+    
+    - name: beacon_location_type
+      type: string
+      sql: CASE WHEN beacon_id = 'D99F2A572974' then 'Lower Hold' WHEN beacon_id = 'EDD74AFB1CF0' then 'Lower Hold' WHEN beacon_id = 'D08BA62BB39F' then 'Lower Hold' WHEN beacon_id = 'FDDF66912551' then 'Lower Hold' WHEN beacon_id = 'F53A161563FE' then 'Lower Hold' WHEN beacon_id = 'C581AEEB9635' then 'Tween Deck' WHEN beacon_id = 'F43006D97FB5' then 'Tween Deck' WHEN beacon_id = 'E3558971C519' then 'Tween Deck' WHEN beacon_id = 'C5594CEE11BC' then 'Tween Deck' WHEN beacon_id = 'C2AD677EC944' then 'Tween Deck' WHEN beacon_id = 'ED9A7CD770D4' then 'Main Deck' WHEN beacon_id = 'D4661254BDA3' then 'Main Deck' WHEN beacon_id = 'F775C1C2F97C' then 'Main Deck' WHEN beacon_id = 'F89B8E6ACBFD' then 'Main Deck' WHEN beacon_id = 'C67501CB7A5B' then 'Main Deck' WHEN beacon_id = 'C8863C9E4A42' then 'Main Deck' WHEN beacon_id = 'F05E0277361F' then 'Main Deck' WHEN beacon_id = 'EEB458A734E9' then 'Main Deck' WHEN beacon_id = 'C70D9B512324' then 'Main Deck' WHEN beacon_id = 'E96B1E5D33AE' then 'Main Deck' WHEN beacon_id = 'FA490C1F993F' then 'Main Deck' WHEN beacon_id = 'F2879DDC86D2' then 'Main Deck' WHEN beacon_id = 'E7769BDBD93C' then 'Main Deck' WHEN beacon_id = 'D84584C4B1BF' then 'Main Deck' WHEN beacon_id = 'E11684FB20CB' then 'Main Deck' WHEN beacon_id = 'C5CE2B46405B' then 'Dry Birth' WHEN beacon_id = 'C154CDF7BC6B' then 'Dry Birth' WHEN beacon_id = 'F09C28044AF0' then 'Dry Birth' ELSE "TEST BEACON" END
+
+    - name: user_connectivity
+      type: string
+      sql: case when connectivity in ("Internet Highspeed","Internet Corporate") then "Wi-Fi" else connectivity end
+    
+    - name: platform_device
+      type: string
+      sql: case when platform = "IOS" then "iOS" when platform = "ANDROID" then "Android" when (platform = "WEB" and device_category = "desktop") then "Desktop" else "Webapp" end
+    
+  measures:
+    - name: total_events
+      type: count
+      title: Total Events
+    
+    - name: beacon_detect
+      type: sum
+      title: Beacon Detected
+      sql: case when event_name = "beacon_detected" then 1 else 0 end
+    
+    - name: beacon_users
+      type: count_distinct
+      title: Beacon Users
+      sql: case when beacon_group = "bcng_csasmr" then user_pseudo_id else null end
+    
+    - name: beacon_screen_loading
+      type: count_distinct
+      title: Loading Screen
+      sql: case when (beacon_group = "bcng_csasmr" and firebase_screen_class = "/places/cutty-sark-cxfmt/1/loading") then user_pseudo_id else null end
+    
+    - name: beacon_screen_weather
+      type: count_distinct
+      title: Weather Screen
+      sql: case when (beacon_group = "bcng_csasmr" and firebase_screen_class = "/places/cutty-sark-cxfmt/1/weather") then user_pseudo_id else null end
+    
+    - name: beacon_screen_intro
+      type: count_distinct
+      title: Intro Screen
+      sql: case when (beacon_group = "bcng_csasmr" and firebase_screen_class = "/places/cutty-sark-cxfmt/1/introduction") then user_pseudo_id else null end
