@@ -1,0 +1,77 @@
+cubes:
+- name: rmg_cutty_sark_liverpoolhouse
+  data_source: default
+  sql: >
+    select
+      join_key
+      ,partition_date
+      ,event_name
+      ,user_id
+      ,user_pseudo_id
+      ,stream_id
+      ,list_location_id
+      ,content_category
+      ,device.language as device_language
+      ,device.category as device_category
+      ,event_label
+      ,platform
+      ,venue_id
+      ,organization_id
+      ,connectivity
+      ,firebase_screen_class  
+      ,page_location
+      ,device.web_info.hostname as hostname
+    from `smartify-cc94e.smartify_flat_analytics.smartify_ga_flat`
+    where partition_date >= "2024-01-01"
+    and stream_id in ("1047860117","1047860114","1913717213","2817285551")
+  
+  dimensions:
+    - name: date
+      type: time
+      sql: timestamp(partition_date)
+    
+    - name: platform
+      type: string
+      sql: platform
+    
+    - name: device_category
+      type: string
+      sql: device_category
+    
+    - name: page_location
+      type: string
+      sql: page_location
+    
+    - name: location_id
+      type: string
+      sql: list_location_id
+    
+    - name: firebase_screen_class
+      type: string
+      sql: firebase_screen_class
+
+  measures:
+    - name: total_events
+      type: count
+      title: Total Events
+
+    - name: ar_total_users
+      type: count_distinct
+      title: AR Total Users
+      sql: case when hostname = 'ar.smartify.org' and (page_location LIKE '%liverpoolhouse%' or firebase_screen_class like '%liverpoolhouse%') then user_pseudo_id else null end
+
+    - name: ar_page_views
+      type: sum
+      title: AR Page Views
+      sql: case when hostname = 'ar.smartify.org' and (contains_substr(page_location, 'liverpoolhouse') or contains_substr(firebase_screen_class, 'liverpoolhouse')) then 1 else 0 end
+      # case when hostname = 'ar.smartify.org' and (page_location LIKE '%liverpoolhouse%' or firebase_screen_class like '%liverpoolhouse%') then user_pseudo_id else null end
+
+    - name: banner_impressions
+      type: sum
+      title: Banner Impressions
+      sql: case when event_name = "view_component" then 1 else 0 end
+    
+    - name: ar_banner_impressions
+      type: sum
+      title: AR Banner Impressions
+      sql: case when event_name = 'view_component' and list_location_id = 'venue_dp:cutty_sark_banner' then 1 else 0 end
