@@ -90,7 +90,7 @@ export const meta = {
       name: 'isRowGroupDefaultExpanded',
       type: 'boolean',
       label: 'Row group expanded by default',
-      defaultValue: true,
+      defaultValue: false,
       category: 'Chart settings'
     },
     {

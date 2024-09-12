@@ -4,10 +4,6 @@ import downloadAsCSV from '../../../util/downloadAsCSV';
 import Container from '../../Container';
 import Button from '../../Button';
 
-import { REGULAR_FONT_SIZE } from '../../../constants';
-import Spinner from '../../Spinner';
-
-
 export type Props = {
   columns: DimensionOrMeasure[];
   results: DataResponse;

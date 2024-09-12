@@ -19,7 +19,9 @@ type Props = {
   xAxis: Dimension;
   xAxisTitle?: string;
   yAxisTitle?: string;
-}
+  metrics: Measure[];
+  granularity?: Granularity;
+};
 
 export default (props: Props) => {
 
