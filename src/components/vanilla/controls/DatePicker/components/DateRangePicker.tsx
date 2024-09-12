@@ -31,7 +31,7 @@ type TimeRange = {
 
 type Props = {
   placeholder?: string;
-  onChange: (v?: TimeRange) => void;
+  onChange?: (v?: TimeRange) => void;
   title?: string;
   value?: TimeRange;
   hideDate?: boolean;
@@ -100,7 +100,7 @@ export default function DateRangePicker(props: Props) {
 
             setRange(range);
 
-            props.onChange(range);
+            props.onChange?.(range);
           }}
           options={{
             isLoading: false,
@@ -156,7 +156,7 @@ export default function DateRangePicker(props: Props) {
 
                 range.to = endOfDay(range.to);
 
-                props.onChange(range);
+                props.onChange?.(range);
               }}
             />
           </div>

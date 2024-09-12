@@ -9,7 +9,7 @@ import {
   LinearScale,
   PointElement,
   Title,
-  Tooltip
+  Tooltip, InteractionItem
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React, { useRef, useState } from 'react';
@@ -41,12 +41,14 @@ type Props = {
   results: DataResponse;
   title: string;
   dps?: number;
-  slice: { name: string; meta: object };
+  slice: { name: string; meta?: object };
   metric: { name: string; title: string };
   showLabels?: boolean;
   showLegend?: boolean;
   maxSegments?: number;
   displayAsPercentage?: boolean;
+  enableDownloadAsCSV?: boolean;
+  onClick: (args: { slice: string | null; metric: string | null }) => void;
 };
 
 type Record = { [p: string]: string };
@@ -72,12 +74,12 @@ export default (props: Props) => {
     }
     setClickedIndex(index);
     onClick({ 
-      slice: results.data[index][slice.name], 
-      metric: results.data[index][metric.name],
+      slice: results.data?.[index][slice.name], 
+      metric: results.data?.[index][metric.name],
     });
   };
 
-  const handleClick = (event: MouseEvent<HTMLCanvasElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
     const { current: chart } = chartRef;
 
     if (!chart) {
@@ -186,7 +188,7 @@ function chartData(props: Props) {
   // Chart.js pie expects counts like so: [23, 10, 5]
   const counts = newData?.map((d: Record) => {
     const metricValue = parseFloat(d[metric.name]);
-    return displayAsPercentage ? ((metricValue * 100) / sum) : metricValue;
+    return displayAsPercentage && sum ? ((metricValue * 100) / sum) : metricValue;
   });
 
   return {

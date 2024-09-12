@@ -21,6 +21,7 @@ type Props = {
 };
 
 export default (props: Props) => {
+
   const { results, prevResults, prevTimeFilter, metric, displayMetric, dimension, dps, prefix, suffix, showPrevPeriodLabel } = props;
 
   const { n, percentage } = useMemo(() => {
