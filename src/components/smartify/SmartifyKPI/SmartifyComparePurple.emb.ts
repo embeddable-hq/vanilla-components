@@ -67,6 +67,13 @@ export const meta = {
         description: 'The description for the chart',
         category: 'Chart settings'
     },
+     {
+        name: 'showPrevPeriodLabel',
+        type: 'boolean',
+        label: 'Display comparison period label',
+        defaultValue: true,
+        category: 'Chart settings'
+    },
     {
         name: 'prefix',
         type: 'string',
@@ -99,7 +106,7 @@ export const meta = {
         type: 'boolean',
         label: 'Show download as CSV',
         category: 'Export options',
-        defaultValue: true
+        defaultValue: false
     },
   ]
 } as const satisfies EmbeddedComponentMeta;
@@ -131,9 +138,13 @@ export default defineComponent(Component, meta, {
           filters: inputs.prevTimeFilter?.from
             ? [
                 {
-                  property: inputs.timeProperty,
-                  operator: 'inDateRange',
-                  value: inputs.prevTimeFilter
+                    property: inputs.timeProperty,
+                    operator: 'inDateRange',
+                    value: {
+                        from: inputs.prevTimeFilter.from,
+                        relativeTimeString: '',
+                        to: inputs.prevTimeFilter.to
+                    }
                 }
               ]
             : undefined
