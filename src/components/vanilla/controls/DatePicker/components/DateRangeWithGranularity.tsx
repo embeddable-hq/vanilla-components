@@ -24,7 +24,6 @@ export type Props = {
 
 export default function DateRangeWithGranularity(props: Props) {
   const { onChangeComparison, onChangePeriod, defaultPeriod } = props;
-
   const ref = useRef<HTMLDivElement | null>(null);
   const [hideDate, setHideDate] = useState(false);
   const [period, setPeriod] = useState(defaultPeriod);
@@ -85,7 +84,6 @@ export default function DateRangeWithGranularity(props: Props) {
       onChangePeriod(defaultPeriod as TimeRange);
       return;
     }
-    setPeriod(defaultPeriod);
   }, [defaultPeriod, onChangePeriod]);
 
 

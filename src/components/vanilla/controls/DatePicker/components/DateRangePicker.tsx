@@ -19,6 +19,7 @@ const ranges = [
   'Last month',
   'This quarter',
   'Last quarter',
+  'Last 6 months',
   'This year',
   'Last year'
 ];
@@ -138,7 +139,8 @@ export default function DateRangePicker(props: Props) {
           >
             <DayPicker
               showOutsideDays
-              className="border border-[#d8dad9] bg-white rounded-xl shadow px-4 py-3 text-[#101010] !m-0"
+              required={true}
+              className="border border-[#d8dad9] bg-white rounded-xl px-4 py-3 text-[#101010] !m-0"
               components={{
                 Caption: CustomCaption
               }}
@@ -146,6 +148,7 @@ export default function DateRangePicker(props: Props) {
               mode="range"
               selected={{ from: range?.from, to: range?.to }}
               onSelect={(range) => {
+
                 setRange({ ...range, relativeTimeString: 'Custom' });
 
                 if (!range?.from || !range?.to) return;
@@ -172,7 +175,7 @@ const CustomCaption = (props: CaptionProps) => {
   return (
     <h2 className="flex items-center">
       <button
-        className="w-7 h-7 bg-white rounded shadow border border-slate-500 justify-center items-center inline-flex"
+        className="w-7 h-7 bg-white rounded border border-slate-400 justify-center items-center inline-flex"
         disabled={!previousMonth}
         onClick={() => previousMonth && goToMonth(previousMonth)}
       >
@@ -182,7 +185,7 @@ const CustomCaption = (props: CaptionProps) => {
         {formatValue(props.displayMonth.toJSON(), { dateFormat: 'MMMM yyy' })}
       </span>
       <button
-        className="w-7 h-7 bg-white rounded shadow border border-slate-500 justify-center items-center inline-flex"
+        className="w-7 h-7 bg-white rounded border border-slate-400 justify-center items-center inline-flex"
         disabled={!nextMonth}
         onClick={() => nextMonth && goToMonth(nextMonth)}
       >

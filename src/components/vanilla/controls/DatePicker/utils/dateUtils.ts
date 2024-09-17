@@ -72,15 +72,20 @@ export function getComparisonPeriod(rts, period) {
 }
 
 export function getNote(from: Date, to: Date) {
-	return `${format(
-	from,
-	getYear(from) === getYear(new Date()) ? 'd MMM' : 'd MMM yyyy'
-	)} - ${format(to, getYear(to) === getYear(new Date()) ? 'd MMM' : 'd MMM yyyy')}`;
+
+  const formattedFrom = format(from, getYear(from) === getYear(new Date()) ? 'd MMM' : 'd MMM yyyy');
+
+  const formattedTo = format(to, getYear(to) === getYear(new Date()) ? 'd MMM' : 'd MMM yyyy');
+
+  if (formattedFrom === formattedTo) {
+    return formattedFrom;
+  } else {
+    return `${formattedFrom} - ${formattedTo}`;
+  }	
 }
 
 export function getValidGranularities(period?: TimeRange): DataResponse {
   const data: { value: Granularity }[] = [];
-
   
   //period boundaries for valid granularity options
   const gSettings = {
