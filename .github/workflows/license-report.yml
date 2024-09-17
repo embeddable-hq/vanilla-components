@@ -8,6 +8,9 @@ on:
   push:
     branches: [ 'main' ]
 
+env:
+  BUILD_NODE_VERSION: 20
+
 jobs:
   run-sonar:
     name: Run License report
@@ -20,7 +23,7 @@ jobs:
       - name: Setup NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ vars.BUILD_NODE_VERSION }}
+          node-version: ${{ env.BUILD_NODE_VERSION }}
       - name: Run License report
         run: npm ci && npm run license-report
       - name: Archive code license report
