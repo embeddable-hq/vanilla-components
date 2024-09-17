@@ -55,7 +55,7 @@ cubes:
       ,device.operating_system as device_operating_system
       --,event_params
       from `smartify-cc94e.analytics_151371783.events_*`
-    where _TABLE_SUFFIX between "20240819" and "20280820"
+    where _TABLE_SUFFIX >= "20240819"
     and event_name = 'qrcode_open'
     and (select value.string_value from unnest(event_params) where key = "qrcode_id") = '{COMPILE_CONTEXT.securityContext.qrcode_id}'
 

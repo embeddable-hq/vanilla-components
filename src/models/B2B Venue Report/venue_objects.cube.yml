@@ -134,4 +134,5 @@ cubes:
     - name: object_favorite_per_user
       title: "Object Favorite per User"
       type: number
-      sql: CASE WHEN {object_favorite_users} = 0 THEN 0 ELSE ROUND(({object_favorite} / NULLIF({object_favorite_users}, 0) * 100), 2) END
+      sql: case when {object_favorite_users} = 0 then 0 else round({object_favorite} / {object_favorite_users}, 2) end
+      #sql: CASE WHEN {object_favorite_users} = 0 THEN 0 ELSE ROUND(({object_favorite} / NULLIF({object_favorite_users}, 0) * 100), 2) END
