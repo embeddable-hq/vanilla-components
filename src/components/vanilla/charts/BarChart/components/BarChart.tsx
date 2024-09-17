@@ -1,4 +1,4 @@
-import { DataResponse, Dimension, Measure } from '@embeddable.com/core';
+import { DataResponse, Dimension, Measure, Granularity } from '@embeddable.com/core';
 import {
   BarElement,
   CategoryScale,
@@ -51,7 +51,7 @@ type Props = {
   xAxis: Dimension;
   xAxisTitle?: string;
   yAxisTitle?: string;
-  granularity?: string;
+  granularity?: Granularity;
 }
 
 
@@ -69,7 +69,9 @@ export default function BarChart({...props}: Props) {
 function chartData(props: Props): ChartData<'bar'> {
   const { results, xAxis, metrics, granularity } = props;
 
-  const dateFormat = xAxis.nativeType === 'time' && granularity && DATE_DISPLAY_FORMATS[granularity];
+  const dateFormat = xAxis.nativeType === 'time' && granularity 
+    ? DATE_DISPLAY_FORMATS[granularity]
+    : undefined;
 
   const labels = [
     ...new Set(

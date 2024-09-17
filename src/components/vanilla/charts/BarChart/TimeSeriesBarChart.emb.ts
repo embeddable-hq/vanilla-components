@@ -132,7 +132,7 @@ export default defineComponent(Component, meta, {
         filters: [{
           property: inputs.xAxis,
           operator: 'notEquals',
-          value: [null]
+          value: [null as any]
         }],
         orderBy: [
           { 
