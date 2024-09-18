@@ -3,9 +3,11 @@ cubes:
   data_source: default
   #sql_table: smartify-cc94e.report_venue.venue_tourtrack_table
   sql: >
-    SELECT *
-    FROM `smartify-cc94e.report_venue.venue_tourtrack_table`
-    WHERE organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+    SELECT a.*, b.language_name, c.user_age, c.user_gender
+    FROM `smartify-cc94e.report_venue.venue_tourtrack_table` as a
+    left join `smartify-cc94e.smartify_lookup_tables.device_language_region` as b on a.device_language = b.device_language
+    left join `smartify-cc94e.report_venue.venue_overall_table` as c on a.join_key = c.join_key
+    WHERE a.organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
 
   dimensions:
     - name: date
@@ -23,6 +25,26 @@ cubes:
     - name: city
       type: string
       sql: geo_city
+    
+    - name: device_language
+      type: string
+      sql: language_name
+    
+    - name: user_age
+      type: string
+      sql: user_age
+    
+    - name: user_age_range
+      type: string
+      sql: case when cast({user_age} as INT64) < 18 then "- 18" when cast({user_age} as INT64) >= 18 and cast({user_age} as INT64) < 25 then "18 - 24" when cast({user_age} as INT64) >= 25 and cast({user_age} as INT64) < 35 then "25 - 34" when cast({user_age} as INT64) >= 35 and cast({user_age} as INT64) < 45 then "35 - 44" when cast({user_age} as INT64) >= 45 and cast({user_age} as INT64) < 55 then "45 - 54" when cast({user_age} as INT64) >= 55 and cast({user_age} as INT64) < 65 then "55 - 64" when cast({user_age} as INT64) >= 65 and cast({user_age} as INT64) < 71 then "65 - 70" when cast({user_age} as INT64) >= 71 then "71 +" end
+    
+    - name: user_gender
+      type: string
+      sql: user_gender
+    
+    - name: user_gender_fix
+      type: string
+      sql: case when {user_gender} IN ( 'Male', 'Männlich', 'Mann', 'Homme', 'Hombre', '男性', 'Man', 'Mand', 'Masculino', 'זכר', 'MALE' ) then 'Male' when {user_gender} IN ( 'Female', 'Woman', 'Femme', 'Mujer', 'Vrouw', 'Weiblich', 'Frau', 'Feminino', '女性', 'Donna', 'Kvinde' ) then 'Female' when {user_gender} IN ('Unspecified', 'Non spécifié', 'Sin especificar') then 'Unspecified' when {user_gender} IN ('Other', 'Autre') then 'Other' else null end
     
     - name: stream
       type: string
