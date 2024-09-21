@@ -1,10 +1,25 @@
-export default (props, data, prevData, setLoadingState) => {
+import { Measure, Dimension, DimensionOrMeasure } from '@embeddable.com/core';
 
-	if (setLoadingState) setLoadingState(true);
+type Props = {
+	[key: string]: Measure |  Measure[] | Dimension | Dimension[] | DimensionOrMeasure[] | any;
+};
+
+type DataRow = {
+	[attr: string]: any;
+};
+
+type SetLoadingState = (state: boolean) => void;
+
+
+export default (props: Props, data?: DataRow[], prevData?: DataRow[], setLoadingState?: SetLoadingState) => {
+
+	if (!data) { return; }
+
+	setLoadingState?.(true);
 
 	const titlesByName = (() => {
-		const titles = {};
-		const extractTitle = input => {
+		const titles: { [key: string]: string } = {};
+		const extractTitle = (input: any): void => {
 			if(['measure', 'dimension'].includes(input?.__type__)) {
 				titles[input.name] = input.title;
 			}
@@ -20,17 +35,17 @@ export default (props, data, prevData, setLoadingState) => {
 		return titles;
 	})();
 
-	const arrayToCsv = (data) => {
+	const arrayToCsv = (data: DataRow[] ) => {
 		return data.map(row =>
 			row
 				.map(String)  // convert every value to String
-				.map(v => v.replaceAll('"', '""'))  // escape double quotes
-				.map(v => `"${v}"`)  // quote it
+				.map((v:string) => v.replaceAll('"', '""'))  // escape double quotes
+				.map((v:string) => `"${v}"`)  // quote it
 				.join(',')  // comma-separated
 			).join('\r\n');  // rows starting on new lines
 	}
 
-	const downloadBlob = (content, filename, contentType) => {
+	const downloadBlob = (content: any, filename: string, contentType: string) => {
 		// Create a blob
 		const blob = new Blob([content], { type: contentType });
 		const url = URL.createObjectURL(blob);
@@ -48,11 +63,11 @@ export default (props, data, prevData, setLoadingState) => {
 		const columns = Object.keys(data[0]);
 		rows.push(columns.map(c => titlesByName[c] || c)); //title row
 
-		data?.map(row => {
+		data?.forEach(row => {
 			const rowValues = columns.map(c => row[c]);
 			rows.push(rowValues);
 		})
-		prevData?.map(row => {
+		prevData?.forEach(row => {
 			const rowValues = columns.map(c => row[c]);
 			rows.push(rowValues);
 		})
