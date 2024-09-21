@@ -12,7 +12,7 @@ type Props = {
   title?: string;
   prefix?: string;
   suffix?: string;
-  metric?: Measure;
+  metric: Measure;
   displayMetric?: boolean;
   dimension?: Dimension;
   dps?: number;
@@ -26,14 +26,14 @@ export default (props: Props) => {
 
   const { n, percentage } = useMemo(() => {
     if (dimension || !metric?.name || !results?.data?.length) {
-      return { percentage: null, n: null }; // Skip calculations
+      return { percentage: 0, n: null }; // Skip calculations
     }
 
     const n = parseFloat(results?.data?.[0]?.[metric.name] || 0);
     const prev = parseFloat(prevResults?.data?.[0]?.[metric.name] || 0);
 
     return {
-      percentage: prev || prev === 0 ? Math.round((n / prev) * 100) - 100 : null,
+      percentage: prev || prev === 0 ? Math.round((n / prev) * 100) - 100 : 0,
       n: formatValue(n, {
         type: 'number',
         meta: metric?.meta,
@@ -93,7 +93,7 @@ export default (props: Props) => {
                 <span>
                   {percentage === Infinity ? '∞' : `${formatValue(`${Math.abs(percentage)}`, { type: 'number', dps: dps })}%`}
                 </span>
-                {showPrevPeriodLabel && prevTimeFilter?.relativeTimeString.length > 0 && (
+                {showPrevPeriodLabel && prevTimeFilter?.relativeTimeString?.length > 0 && (
                   <span style={{ color: `${LIGHTEST_FONT}` }}>
                     &nbsp;
                     {`vs ${prevTimeFilter.relativeTimeString}`}

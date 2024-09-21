@@ -17,14 +17,18 @@ type Props = {
   showLegend?: boolean;
   title?: string;
   xAxis: Dimension;
-  xAxisOptions?: Dimension[];
+  xAxisOptions: Dimension[];
 };
+
+type EmbState = { dimension: Dimension | undefined };
 
 export default (props: Props) => {
   const { results, title } = props;
 
   const [value, setValue] = useState(props.xAxis.name);
-  const [_, setDimension] = useEmbeddableState( { dimension: null } );
+  const [_, setDimension] = useEmbeddableState({ 
+    dimension: undefined
+}) as [EmbState, (newState: EmbState) => void];
 
   useEffect(() => {
     setValue(props.xAxis.name);
@@ -56,7 +60,7 @@ export default (props: Props) => {
           </div>
         </div>
         <div className='flex grow overflow-hidden'>
-          {results.isLoading || results?.data?.[0]?.[xAxis?.name] == null
+          {results.isLoading || results?.data?.[0]?.[value] == null
             ? null 
             : (
               <BarChart

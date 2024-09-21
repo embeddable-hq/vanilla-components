@@ -5,9 +5,11 @@ import Container from '../../Container';
 import Button from '../../Button';
 
 export type Props = {
+  title?: string;
+  description?: string;
   columns: DimensionOrMeasure[];
   results: DataResponse;
-  buttonLabel: string;
+  buttonLabel?: string;
 };
 
 export default (props: Props) => {
@@ -41,7 +43,7 @@ export default (props: Props) => {
         buttonLabel={buttonLabel}
         showSpinner={preppingDownload}
         disabled={results?.isLoading || preppingDownload}
-        onClick={() => downloadAsCSV(props, results?.data, results?.prevData, setPreppingDownload)}
+        onClick={() => downloadAsCSV(props, results?.data, undefined, setPreppingDownload)}
         icon={downloadSVG}
       />
     </Container>
