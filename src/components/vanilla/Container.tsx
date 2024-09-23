@@ -70,15 +70,6 @@ export default ({ children, className, childContainerClassName, onResize, setRes
   
   useFont();
 
-  if (props.results && (error || noData)) {
-    return (
-      <div className="h-full flex items-center justify-center font-embeddable text-sm">
-        <WarningIcon />
-        <div className="whitespace-pre-wrap p-4 max-w-sm text-sm">{error || '0 results'}</div>
-      </div>
-    );
-  }
-
   return (
     <div className="h-full relative font-embeddable text-sm flex flex-col">
 
@@ -103,14 +94,18 @@ export default ({ children, className, childContainerClassName, onResize, setRes
         ref={ref}
         className={twMerge(`relative grow flex flex-col`, className || '')}
       >
-        {!!height && (
-          <div 
-            className={twMerge(`flex flex-col`, childContainerClassName || '')}
-            style={{ height: `${height}px` }}
-          >
-            {children}
-          </div>
-        )}
+        <div 
+          className={twMerge('flex flex-col', childContainerClassName || '')}
+          style={{ height: `${height}px` }}
+        >
+          {height && props.results && (error || noData) ? (
+            <div className="h-full flex items-center justify-center font-embeddable text-sm">
+              <WarningIcon />
+              <div className="whitespace-pre-wrap p-4 max-w-sm text-sm">{error || '0 results'}</div>
+            </div>)
+          : height ? children : null // Ensure height is calculated before rendering charts to prevent libraries (e.g., ChartJS) from overflowing the container
+          }
+        </div>
         {isLoading && !data?.length && (
           <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
         )}
