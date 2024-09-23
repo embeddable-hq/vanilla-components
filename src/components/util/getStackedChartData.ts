@@ -54,11 +54,11 @@ export default function getStackedChartData(
   const defaultSegmentValue = options?.chartType === 'stackedAreaChart' ? 0 : null; // Default is null not 0, to avoid unwanted chart elements
 
   labels.forEach((label) => {
-    const labelRef: { [key: string]: any } = {};
+    const labelRef = {};
 
     segments.forEach((s) => (labelRef[s] = defaultSegmentValue)); 
 
-    (resultMap as { [key: string]: any })[label] = labelRef;
+    resultMap[label] = labelRef;
   });
 
   results?.data?.forEach((d) => {
