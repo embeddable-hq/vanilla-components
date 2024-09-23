@@ -5,7 +5,8 @@ import Component from './index';
 
 export const meta = {
   name: 'TimeSeriesStackedBarChart',
-  label: 'Chart: Stacked Bar (time-series)',
+  label: 'Stacked bar chart (time-series)',
+  category: 'Charts: time-series',
   classNames: ['inside-card'],
   inputs: [
     {
@@ -85,6 +86,13 @@ export const meta = {
       category: 'Chart settings'
     },
     {
+      name: 'displayHorizontally',
+      type: 'boolean',
+      label: 'Display Horizontally',
+      category: 'Chart settings',
+      defaultValue: false
+    },
+    {
       name: 'displayAsPercentage',
       type: 'boolean',
       label: 'Display as Percentages',
@@ -111,7 +119,8 @@ export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
     return {
       ...inputs,
-      isTimeSeriesStackedBarChart: true,
+      reverseXAxis: true,
+      useCustomDateFormat: true,
       results: loadData({
         from: inputs.ds,
         timeDimensions: [

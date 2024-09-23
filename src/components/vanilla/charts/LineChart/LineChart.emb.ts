@@ -1,14 +1,13 @@
 import { loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
-
-
 import Component from './index';
 
 export const meta = {
   name: 'LineChart',
-  label: 'Chart: Line (time-series)',
+  label: 'Multi-metric line (time-series)',
   classNames: ['inside-card'],
+  category: 'Charts: time-series',
   inputs: [
     {
         name: 'ds',

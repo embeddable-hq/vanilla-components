@@ -21,7 +21,7 @@ import { EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE, DATE_DISPLAY_FORMATS } from '../
 import useTimeseries from '../../../hooks/useTimeseries';
 import formatValue from '../../../util/format';
 import formatDateTooltips from '../../../util/formatDateTooltips'
-import getStackedChartData, { Props } from '../../../util/getStackedChartData';
+import getStackedChartData, { Props as GeneralStackedChartDataProps } from '../../../util/getStackedChartData';
 import Container from '../../Container';
 
 ChartJS.register(
@@ -42,15 +42,25 @@ ChartJS.defaults.color = LIGHT_FONT;
 ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
 
+type Props = GeneralStackedChartDataProps & {
+  isMultiDimensionLine?: boolean;
+}
+
 export default (props: Props) => {
+
+  const { isMultiDimensionLine = false } = props;
+
   const { fillGaps } = useTimeseries(props);
 
   const chartData = useMemo(() => {
     const data = props?.results?.data?.reduce(fillGaps, []);
 
     const datasetsMeta = {
-      fill: true,
-      cubicInterpolationMode: 'monotone' as const
+      fill: !isMultiDimensionLine,
+      cubicInterpolationMode: 'monotone' as const,
+      pointRadius: 0,
+      tension: 0.1,
+      pointHoverRadius: 3,
     };
 
     return getStackedChartData(
@@ -84,7 +94,7 @@ export default (props: Props) => {
       },
       scales: {
         y: {
-          stacked: true,
+          stacked: !isMultiDimensionLine,
           min: props.yAxisMin,
           grace: '0%', // Add percent to add numbers on the y-axis above and below the max and min values
           grid: {
@@ -145,7 +155,7 @@ export default (props: Props) => {
               }
               return label;
             },
-            title: (lines: any[]) => formatDateTooltips(lines, props.granularity)
+            title: (lines: any[]) => formatDateTooltips(lines, props.granularity || 'day')
           }
         },
         datalabels: {

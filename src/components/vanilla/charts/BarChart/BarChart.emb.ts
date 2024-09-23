@@ -1,12 +1,13 @@
-import { loadData } from '@embeddable.com/core';
+import { loadData, OrderBy } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
 
 export const meta = {
   name: 'BarChart',
-  label: 'Chart: Bar',
+  label: 'Bar chart',
   classNames: ['inside-card'],
+  category: 'Charts: essentials',
   inputs: [
     {
       name: 'ds',
@@ -42,6 +43,12 @@ export const meta = {
       config: {
           dataset: 'ds'
       },
+      category: 'Chart data'
+    },
+    {
+      name: 'limit',
+      type: 'number',
+      label: 'Limit results',
       category: 'Chart data'
     },
     {
@@ -87,6 +94,13 @@ export const meta = {
       defaultValue: false
     },
     {
+      name: 'reverseXAxis',
+      type: 'boolean',
+      label: 'Reverse X Axis',
+      category: 'Chart settings',
+      defaultValue: false
+    },
+    {
       name: 'xAxisTitle',
       type: 'string',
       label: 'X-Axis Title',
@@ -116,18 +130,29 @@ export const meta = {
 
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
+    const orderProp: OrderBy[] = [];
+
+    if(inputs.sortBy) {
+      orderProp.push({
+        property: inputs.sortBy,
+        direction: inputs.sortBy.nativeType == 'string' ? 'asc' : 'desc'
+      });
+    } else if (inputs.limit) {
+      orderProp.push({
+        property: inputs.metrics[0],
+        direction: 'desc'
+      });
+    }
+
     return {
       ...inputs,
+      reverseXAxis: inputs.reverseXAxis,
       results: loadData({
         from: inputs.ds,
         dimensions: [inputs.xAxis],
         measures: inputs.metrics,
-        orderBy: inputs.sortBy && [
-          {
-            property: inputs.sortBy,
-            direction: inputs.sortBy.nativeType == 'string' ? 'asc' : 'desc'
-          }
-        ]
+        orderBy: orderProp,
+        limit: inputs.limit || 50
       })
     };
   }

@@ -25,6 +25,7 @@ export type Props = {
   yAxisTitle?: string;
   xAxisTitle?: string;
   granularity?: Granularity;
+  useCustomDateFormat?: boolean,
 };
 
 type Options = {
@@ -37,7 +38,7 @@ export default function getStackedChartData(
   options?: Options,
 ): ChartData<'line' | 'bar', number[], unknown> {
   
-  const { results, xAxis, metric, segment, maxSegments, displayAsPercentage, granularity } = props;
+  const { useCustomDateFormat, results, xAxis, metric, segment, maxSegments, displayAsPercentage, granularity } = props;
   const labels = [...new Set(results?.data?.map((d: Record) => d[xAxis?.name || '']))] as string[];
   const segments = segmentsToInclude();
   const resultMap = {};
@@ -72,7 +73,7 @@ export default function getStackedChartData(
     }
   });
 
-  const dateFormat = granularity && DATE_DISPLAY_FORMATS[granularity];
+  const dateFormat = useCustomDateFormat && granularity ? DATE_DISPLAY_FORMATS[granularity] : undefined;
 
   return {
     labels: labels.map((l) => formatValue(l, { meta: xAxis?.meta, dateFormat: dateFormat })),

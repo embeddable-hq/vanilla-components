@@ -47,7 +47,7 @@ export default (props, data, prevData, setLoadingState) => {
 		const rows = [];
 		const columns = Object.keys(data[0]);
 		rows.push(columns.map(c => titlesByName[c] || c)); //title row
-		console.log("columns", columns)
+
 		data?.map(row => {
 			const rowValues = columns.map(c => row[c]);
 			rows.push(rowValues);

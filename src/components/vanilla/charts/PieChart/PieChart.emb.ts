@@ -5,8 +5,9 @@ import Component from './index';
 
 export const meta = {
   name: 'PieChart',
-  label: 'Chart: Pie',
+  label: 'Pie chart',
   classNames: ['inside-card'],
+  category: 'Charts: essentials',
   inputs: [
     {
         name: 'ds',

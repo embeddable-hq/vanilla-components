@@ -1,13 +1,13 @@
 import { loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
-import { addMilliseconds } from 'date-fns';
 
 import Component from './index';
 
 export const meta = {
   name: 'CompareLineChart',
-  label: 'Chart: Line (time-series) comparison',
+  label: 'Line comparison (time-series)',
   classNames: ['inside-card'],
+  category: 'Charts: time-series comparison',
   inputs: [
     {
       name: 'ds',
@@ -168,7 +168,11 @@ export default defineComponent(Component, meta, {
                 {
                   property: inputs.xAxis,
                   operator: 'inDateRange',
-                  value: inputs.prevTimeFilter
+                  value: {
+                    from: inputs.prevTimeFilter.from,
+                    relativeTimeString: '',
+                    to: inputs.prevTimeFilter.to
+                  }
                 }
               ]
             : undefined

@@ -3,10 +3,10 @@ import { endOfDay, getYear } from 'date-fns';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-import formatValue from '../../../util/format';
-import Container from '../../Container';
-import { CalendarIcon, ChevronLeft, ChevronRight } from '../../icons';
-import Dropdown from '../Dropdown';
+import formatValue from '../../../../util/format';
+import Container from '../../../Container';
+import { CalendarIcon, ChevronLeft, ChevronRight } from '../../../icons';
+import Dropdown from '../../Dropdown';
 
 const ranges = [
   'Today',
@@ -19,6 +19,7 @@ const ranges = [
   'Last month',
   'This quarter',
   'Last quarter',
+  'Last 6 months',
   'This year',
   'Last year'
 ];
@@ -31,13 +32,13 @@ type TimeRange = {
 
 type Props = {
   placeholder?: string;
-  onChange: (v?: TimeRange) => void;
+  onChange?: (v?: TimeRange) => void;
   title?: string;
   value?: TimeRange;
   hideDate?: boolean;
 };
 
-export default (props: Props) => {
+export default function DateRangePicker(props: Props) {
   const [focus, setFocus] = useState(false);
   const ref = useRef<HTMLInputElement | null>(null);
   const [triggerBlur, setTriggerBlur] = useState(false);
@@ -100,7 +101,7 @@ export default (props: Props) => {
 
             setRange(range);
 
-            props.onChange(range);
+            props.onChange?.(range);
           }}
           options={{
             isLoading: false,
@@ -138,7 +139,8 @@ export default (props: Props) => {
           >
             <DayPicker
               showOutsideDays
-              className="border border-[#d8dad9] bg-white rounded-xl shadow px-4 py-3 text-[#101010] !m-0"
+              required={true}
+              className="border border-[#d8dad9] bg-white rounded-xl px-4 py-3 text-[#101010] !m-0"
               components={{
                 Caption: CustomCaption
               }}
@@ -146,6 +148,7 @@ export default (props: Props) => {
               mode="range"
               selected={{ from: range?.from, to: range?.to }}
               onSelect={(range) => {
+
                 setRange({ ...range, relativeTimeString: 'Custom' });
 
                 if (!range?.from || !range?.to) return;
@@ -156,7 +159,7 @@ export default (props: Props) => {
 
                 range.to = endOfDay(range.to);
 
-                props.onChange(range);
+                props.onChange?.(range);
               }}
             />
           </div>
@@ -164,7 +167,7 @@ export default (props: Props) => {
       </div>
     </Container>
   );
-};
+}
 
 const CustomCaption = (props: CaptionProps) => {
   const { goToMonth, nextMonth, previousMonth } = useNavigation();
@@ -172,7 +175,7 @@ const CustomCaption = (props: CaptionProps) => {
   return (
     <h2 className="flex items-center">
       <button
-        className="w-7 h-7 bg-white rounded shadow border border-slate-500 justify-center items-center inline-flex"
+        className="w-7 h-7 bg-white rounded border border-slate-400 justify-center items-center inline-flex"
         disabled={!previousMonth}
         onClick={() => previousMonth && goToMonth(previousMonth)}
       >
@@ -182,7 +185,7 @@ const CustomCaption = (props: CaptionProps) => {
         {formatValue(props.displayMonth.toJSON(), { dateFormat: 'MMMM yyy' })}
       </span>
       <button
-        className="w-7 h-7 bg-white rounded shadow border border-slate-500 justify-center items-center inline-flex"
+        className="w-7 h-7 bg-white rounded border border-slate-400 justify-center items-center inline-flex"
         disabled={!nextMonth}
         onClick={() => nextMonth && goToMonth(nextMonth)}
       >

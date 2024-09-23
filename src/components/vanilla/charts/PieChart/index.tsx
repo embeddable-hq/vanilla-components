@@ -9,10 +9,10 @@ import {
   LinearScale,
   PointElement,
   Title,
-  Tooltip
+  Tooltip, InteractionItem
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Pie, getElementAtEvent } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
@@ -41,12 +41,14 @@ type Props = {
   results: DataResponse;
   title: string;
   dps?: number;
-  slice: { name: string; meta: object };
+  slice: { name: string; meta?: object };
   metric: { name: string; title: string };
   showLabels?: boolean;
   showLegend?: boolean;
   maxSegments?: number;
   displayAsPercentage?: boolean;
+  enableDownloadAsCSV?: boolean;
+  onClick: (args: { slice: string | null; metric: string | null }) => void;
 };
 
 type Record = { [p: string]: string };
@@ -54,26 +56,30 @@ type Record = { [p: string]: string };
 export default (props: Props) => {
   const { results, title, enableDownloadAsCSV, maxSegments, metric, slice, onClick } = props;
 
+  const [clickedIndex, setClickedIndex] = useState(null);
+
   const chartRef = useRef<ChartJS>(null);
 
   const fireClickEvent = (element: InteractionItem[]) => {
-    if (!element.length) {
-      //clicked outside pie
+    if (!element.length || element[0].index === clickedIndex) {
+      //clicked outside pie, or re-clicked slice
       onClick({ slice: null, metric: null });
-      return;
-    } 
-    const { datasetIndex, index } = element[0];
-    if(index + 1 >= maxSegments) {
-      //clicked OTHER
+      setClickedIndex(null);
       return;
     }
+    const { datasetIndex, index } = element[0];
+    if (maxSegments && index + 1 >= maxSegments) {
+      // clicked "OTHER"
+      return;
+    }
+    setClickedIndex(index);
     onClick({ 
-      slice: results.data[index][slice.name], 
-      metric: results.data[index][metric.name]
-    })
+      slice: results.data?.[index][slice.name], 
+      metric: results.data?.[index][metric.name],
+    });
   };
 
-  const handleClick = (event: MouseEvent<HTMLCanvasElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
     const { current: chart } = chartRef;
 
     if (!chart) {
@@ -182,7 +188,7 @@ function chartData(props: Props) {
   // Chart.js pie expects counts like so: [23, 10, 5]
   const counts = newData?.map((d: Record) => {
     const metricValue = parseFloat(d[metric.name]);
-    return displayAsPercentage ? ((metricValue * 100) / sum) : metricValue;
+    return displayAsPercentage && sum ? ((metricValue * 100) / sum) : metricValue;
   });
 
   return {

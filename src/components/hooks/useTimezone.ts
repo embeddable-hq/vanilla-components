@@ -31,25 +31,37 @@ export function timeRangeToLocal(range?: TimeRange) {
 }
 
 export function toUTC(date: string | Date): Date | undefined {
-  if (!date) return undefined;
+  if (!date) {
+    return undefined;
+  }
 
-  if (date instanceof Date) return subMinutes(date, date.getTimezoneOffset());
+  if (date instanceof Date) {
+    return subMinutes(date, date.getTimezoneOffset());
+  }
 
   const t = new Date(date);
 
-  if (!t) return undefined;
+  if (!t) {
+    return undefined;
+  }
 
-  return subMinutes(t, date.getTimezoneOffset());
+  return subMinutes(t, t.getTimezoneOffset());
 }
 
 export function toLocal(date: string | Date): Date | undefined {
-  if (!date) return undefined;
+  if (!date) {
+    return undefined;
+  }
 
-  if (date instanceof Date) return addMinutes(date, date.getTimezoneOffset());
+  if (date instanceof Date) {
+    return addMinutes(date, date.getTimezoneOffset());
+  }
 
   const t = new Date(date);
 
-  if (!t) return undefined;
+  if (!t) {
+    return undefined;
+  }
 
-  return addMinutes(t, date.getTimezoneOffset());
+  return addMinutes(t, t.getTimezoneOffset());
 }

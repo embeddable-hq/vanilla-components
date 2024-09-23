@@ -24,8 +24,7 @@ import {
 import 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { format, parseJSON } from 'date-fns';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
 
 import {
@@ -75,6 +74,7 @@ type Props = {
   showLegend?: boolean;
   results: DataResponse;
   prevResults: DataResponse;
+  dps?: number;
 };
 
 type Record = { [p: string]: string };

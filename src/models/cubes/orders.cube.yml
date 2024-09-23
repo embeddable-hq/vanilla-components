@@ -13,9 +13,7 @@ cubes:
         sql: created_at
         type: time
         description: "The time when the order was created"
-        meta:
-          format: "%Y-%m-%d" # will be passed as a prop to your components
-
+       
     measures:
       - name: count
         type: count
