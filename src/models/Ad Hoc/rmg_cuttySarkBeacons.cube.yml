@@ -51,6 +51,10 @@ cubes:
       type: string
       sql: weather_group
     
+    - name: beacon_weather_name
+      type: string
+      sql: case when weather = 'FreshBreezeWeather' then 'Light Air' when weather = 'NearGaleWeather' then 'Near gale' when weather = 'calmWeather' then 'Moderate breeze' else weather end
+    
     - name: beacon_funnel
       type: string
       sql: beacon_funnel

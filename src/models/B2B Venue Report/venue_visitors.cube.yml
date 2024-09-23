@@ -3,17 +3,17 @@ cubes:
   data_source: default
   sql: >
     select
-      a.partition_date
-      ,a.organisation_sid
-      ,a.venue_sid
+      partition_date as partition_date
+      ,a.organisation_sid as organisation_sid
+      ,a.venue_sid as venue_sid
       ,count(distinct(user_pseudo_id)) users
       ,visitors
     from `smartify-cc94e.report_venue.venue_overall_table` as a
-    full join `smartify-cc94e.report_ad_hoc.hrp_daily_visitors_bq` as b on concat(a.partition_date,a.venue_sid,a.organisation_sid) = concat(b.date,b.venue_id,b.organization_id)
-    where organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
-    and partition_date between "2023-01-01" and "2024-12-31"
+    full join `smartify-cc94e.report_ad_hoc.test_visitors_data` as b on concat(a.partition_date,a.venue_sid,a.organisation_sid) = concat(FORMAT_TIMESTAMP('%Y-%m-%d', date),b.venue_sid,b.organisation_sid)
+    where a.organisation_sid = '{COMPILE_CONTEXT.securityContext.organisation_id}'
     group by partition_date, organisation_sid, venue_sid, visitors
-  
+    
+
   dimensions:
     - name: date
       sql: timestamp(partition_date)
