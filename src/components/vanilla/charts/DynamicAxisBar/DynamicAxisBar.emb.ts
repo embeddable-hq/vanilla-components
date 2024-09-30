@@ -1,7 +1,7 @@
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
-import { loadData } from '@embeddable.com/core';
+import { Dimension, loadData } from '@embeddable.com/core';
 
-import Component from './index';
+import Component, { Props } from './index';
 
 export const meta = {
   name: 'DynamicAxisBar',
@@ -109,7 +109,7 @@ export const meta = {
   ]
 } as const satisfies EmbeddedComponentMeta;
 
-export default defineComponent<Props, typeof meta, { page: number }>(Component, meta, {
+export default defineComponent<Props, typeof meta, { dimension: Dimension }>(Component, meta, {
   props: (inputs: Inputs<typeof meta>, [embState]) => {
 
     const selectedDimension = embState?.dimension?.title ? embState.dimension : inputs.xAxis;
@@ -133,7 +133,7 @@ export default defineComponent<Props, typeof meta, { page: number }>(Component, 
                 filters: [{
                     property: selectedDimension,
                     operator: 'notEquals',
-                    value: [null]
+                    value: [null as any]
                 }],
                 orderBy: [
                     { 

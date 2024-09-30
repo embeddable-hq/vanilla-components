@@ -4,7 +4,7 @@ import Container from '../../Container';
 import BarChart from '../BarChart/components/BarChart';
 import { DataResponse, Dataset, Dimension, Granularity, Measure } from '@embeddable.com/core';
 
-type Props = {
+export type Props = {
   description?: string;
   displayHorizontally?: boolean;
   dps?: number;
@@ -35,6 +35,7 @@ export default (props: Props) => {
   }, [props.xAxis])
 
 
+  //if the options don't include the default x-axis, add it.  
   const xAxisOptions = props.xAxisOptions?.find((item) => props.xAxis.name == item.name) 
     ? props.xAxisOptions 
     : [...(props.xAxisOptions || []), props.xAxis ]
@@ -45,8 +46,8 @@ export default (props: Props) => {
     setDimension({ dimension: selectedDimension });
   }
 
-  const xAxis = xAxisOptions.find(item => value === item.name);
-  const updatedProps = {...props, xAxis: xAxis };
+  const updatedXAxis = xAxisOptions.find(item => value === item.name);
+  const updatedProps = {...props, xAxis: updatedXAxis };
 
   return (
     <Container
