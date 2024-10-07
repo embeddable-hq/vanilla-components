@@ -50,7 +50,7 @@ export default (props: Props) => {
 
   const { isMultiDimensionLine = false } = props;
 
-  const { fillGaps } = useTimeseries(props);
+  const { fillGaps } = useTimeseries(props, 'desc');
 
   const chartData = useMemo(() => {
     const data = props?.results?.data?.reduce(fillGaps, []);

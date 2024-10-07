@@ -61,7 +61,7 @@ type Record = { [p: string]: string };
 
 export default (props: Props) => {
   const { results, title } = props;
-  const { fillGaps } = useTimeseries(props);
+  const { fillGaps } = useTimeseries(props, 'desc');
 
   const chartData: ChartData<'line'> = useMemo(() => {
     const { results, metrics, applyFill } = props;
