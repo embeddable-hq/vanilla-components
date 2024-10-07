@@ -1,5 +1,6 @@
 import Container from '../../Container';
 import BarChart from './components/BarChart';
+import useTimeseries from '../../../hooks/useTimeseries';
 import { DataResponse, Dataset, Dimension, Granularity, Measure } from '@embeddable.com/core';
 
 
@@ -21,9 +22,20 @@ type Props = {
   yAxisTitle?: string;
   metrics: Measure[];
   granularity?: Granularity;
+  limit?: number;
 };
 
 export default (props: Props) => {
+
+  //add missing dates to time-series barcharts
+  const { fillGaps } = useTimeseries(props, 'desc');
+  const { results, isTSBarChart } = props;
+  const updatedProps = {
+    ...props,
+    results: isTSBarChart
+      ? { ...props.results, data: results?.data?.reduce(fillGaps, []) }
+      : props.results
+  };
 
   return (
     <Container
@@ -31,7 +43,7 @@ export default (props: Props) => {
       className="overflow-y-hidden"
       >
       <BarChart
-        {...props}
+        {...updatedProps}
       />
     </Container>
   );

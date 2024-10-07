@@ -44,17 +44,18 @@ ChartJS.defaults.plugins.tooltip.enabled = true;
 
 type Props = {
   results: DataResponse;
-  title: string;
+  title?: string;
   dps?: number;
   xAxis: Dimension;
   metrics: { name: string; title: string }[];
-  applyFill: boolean;
-  showLabels: boolean;
-  showLegend: boolean;
-  yAxisMin: number;
-  yAxisTitle: string;
-  xAxisTitle: string;
-  granularity: Granularity;
+  applyFill?: boolean;
+  showLabels?: boolean;
+  showLegend?: boolean;
+  yAxisMin?: number;
+  yAxisTitle?: string;
+  xAxisTitle?: string;
+  granularity?: Granularity;
+  limit?: number;
 };
 
 type Record = { [p: string]: string };
