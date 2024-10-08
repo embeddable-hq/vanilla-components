@@ -18,7 +18,7 @@ jobs:
       - name: Setup NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: ${{ vars.BUILD_NODE_VERSION }}
       - name: install dependencies
         run: npm ci
       - id: run_npm_audit
