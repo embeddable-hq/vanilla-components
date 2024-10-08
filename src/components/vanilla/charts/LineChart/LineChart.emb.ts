@@ -98,6 +98,13 @@ export const meta = {
         defaultValue: true
     },
     {
+        name: 'limit',
+        type: 'number',
+        label: 'Limit results',
+        defaultValue: 100,
+        category: 'Chart settings'
+    },
+    {
         name: 'dps',
         type: 'number',
         label: 'Decimal Places',
@@ -115,10 +122,20 @@ export const meta = {
 
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
+
+    const orderProp = [];
+
+    orderProp.push({
+        property: inputs.xAxis,
+        direction: 'desc',
+    })
+
     return {
       ...inputs,
       results: loadData({
         from: inputs.ds,
+        limit: inputs.limit || 500,
+        orderBy: orderProp,
         timeDimensions: [
           {
             dimension: inputs.xAxis?.name,
