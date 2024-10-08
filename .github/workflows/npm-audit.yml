@@ -4,10 +4,14 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+#on:
+#  workflow_dispatch:
+#  schedule:
+#    - cron: '0 10 * * MON' # Every Monday at 10AM UTC
+
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 10 * * MON' # Every Monday at 10AM UTC
+  pull_request:
+    branches: ['main']
 
 jobs:
   npm-audit:
@@ -15,6 +19,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.BUILD_NODE_VERSION }}
       - name: install dependencies
         run: npm ci
       - id: run_npm_audit
