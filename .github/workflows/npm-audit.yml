@@ -22,7 +22,7 @@ jobs:
       - name: Setup NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ vars.BUILD_NODE_VERSION }}
+          node-version: '20'
       - name: install dependencies
         run: npm ci
       - id: run_npm_audit
