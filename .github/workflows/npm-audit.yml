@@ -4,14 +4,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-#on:
-#  workflow_dispatch:
-#  schedule:
-#    - cron: '0 10 * * MON' # Every Monday at 10AM UTC
-
 on:
-  pull_request:
-    branches: ['main']
+  workflow_dispatch:
+  schedule:
+    - cron: '0 10 * * MON' # Every Monday at 10AM UTC
 
 jobs:
   npm-audit:
