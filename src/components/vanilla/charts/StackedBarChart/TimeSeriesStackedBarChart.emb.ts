@@ -119,6 +119,7 @@ export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
     return {
       ...inputs,
+      isTSStackedBarChart: true,
       reverseXAxis: true,
       useCustomDateFormat: true,
       results: loadData({
