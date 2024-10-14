@@ -85,7 +85,7 @@ export default (propsInitial: Props) => {
     [propsInitial]
   );
 
-  const { fillGaps } = useTimeseries(props);
+  const { fillGaps } = useTimeseries(props, 'desc');
 
   const chartData: ChartData<'line'> = useMemo(() => {
     const { results, prevResults, metrics, applyFill } = props;

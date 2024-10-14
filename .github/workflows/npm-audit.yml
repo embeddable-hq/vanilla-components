@@ -15,6 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.BUILD_NODE_VERSION }}
       - name: install dependencies
         run: npm ci
       - id: run_npm_audit

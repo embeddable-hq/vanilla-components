@@ -129,11 +129,20 @@ export const meta = {
 
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
+
+    const orderProp = [];
+
+    orderProp.push({
+        property: inputs.xAxis,
+        direction: 'desc',
+    })
+
     return {
       ...inputs,
       results: loadData({
         from: inputs.ds,
         limit: 500,
+        orderBy: orderProp,
         timeDimensions: [
           {
             dimension: inputs.xAxis?.name,
@@ -161,6 +170,7 @@ export default defineComponent(Component, meta, {
           }
         ],
         limit: !inputs.prevTimeFilter ? 1 : 500,
+        orderBy: orderProp,
         measures: inputs.metrics,
         filters:
           inputs.prevTimeFilter && inputs.xAxis
