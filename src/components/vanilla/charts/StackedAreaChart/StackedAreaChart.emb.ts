@@ -105,6 +105,13 @@ export const meta = {
         category: 'Formatting'
     },
     {
+        name: 'limit',
+        type: 'number',
+        label: 'Limit results',
+        defaultValue: 100,
+        category: 'Chart settings'
+    },
+    {
         name: 'enableDownloadAsCSV',
         type: 'boolean',
         label: 'Show download as CSV',
@@ -116,10 +123,20 @@ export const meta = {
 
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
+
+    const orderProp = [];
+
+    orderProp.push({
+        property: inputs.xAxis,
+        direction: 'desc',
+    })
+
     return {
       ...inputs,
       results: loadData({
         from: inputs.ds,
+        limit: inputs.limit || 500,
+        orderBy: orderProp,
         timeDimensions: [
           {
             dimension: inputs.xAxis?.name,

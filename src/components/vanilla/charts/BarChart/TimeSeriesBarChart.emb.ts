@@ -105,6 +105,13 @@ export const meta = {
       category: 'Formatting'
     },
     {
+        name: 'limit',
+        type: 'number',
+        label: 'Limit results',
+        defaultValue: 100,
+        category: 'Chart settings'
+    },
+    {
       name: 'enableDownloadAsCSV',
       type: 'boolean',
       label: 'Show download as CSV',
@@ -116,12 +123,15 @@ export const meta = {
 
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
+
     return {
       ...inputs,
+      isTSBarChart: true,
       reverseXAxis: true,
       useCustomDateFormat: true,
       results: loadData({
         from: inputs.ds,
+        limit: inputs.limit || 500,
         timeDimensions: [
           {
             dimension: inputs.xAxis?.name,
