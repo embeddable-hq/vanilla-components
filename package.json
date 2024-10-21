@@ -14,7 +14,8 @@
     "build": "embeddable build",
     "push": "embeddable push",
     "lint": "npx eslint . --ext .ts --ext .tsx",
-    "license-report": "license-report --output=csv --csvHeaders --fields name --fields link --fields licenseType --fields installedVersion --fields author > license-report.csv"
+    "license-report": "license-report --output=csv --csvHeaders --fields name --fields link --fields licenseType --fields installedVersion --fields author > license-report.csv",
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@cubejs-backend/api-gateway": "^0.35.81",
@@ -116,18 +117,22 @@
     }
   },
   "prettier": {
-    "singleQuote": true,
-    "printWidth": 100,
-    "trailingComma": "none",
+    "bracketSpacing": true,
     "endOfLine": "auto",
-    "plugins": [
-      "@trivago/prettier-plugin-sort-imports"
-    ],
-    "importOrderSeparation": true,
-    "importOrderSortSpecifiers": true,
     "importOrder": [
       "^(?!@/)(?!\\.).+",
       "."
-    ]
+    ],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true,
+    "plugins": [
+      "@trivago/prettier-plugin-sort-imports"
+    ],
+    "printWidth": 100,
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "all"
   }
 }
+
