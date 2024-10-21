@@ -1,4 +1,6 @@
-import { DataResponseData } from '@embeddable.com/core';
+// import { DataResponseData } from '@embeddable.com/core';
+
+export type DataResponseData = { [key: string]: any };
 
 type Input = {
   [key: string]: any;
@@ -12,7 +14,7 @@ const downloadAsCSV = (
   props: Props,
   data: DataResponseData[] | undefined,
   prevData: DataResponseData[] | undefined,
-  setLoadingState: React.Dispatch<React.SetStateAction<boolean>>,
+  setLoadingState?: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   if (setLoadingState) {
     setLoadingState(true);
