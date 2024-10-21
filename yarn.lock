@@ -366,15 +366,15 @@
   dependencies:
     "@embeddable.com/core" "*"
 
-"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@3.8.0":
-  version "3.8.0"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-3.8.0.tgz"
-  integrity sha512-uC7OS/v7aDKXdqmOKaCG748FepAVOljAZGCLScN2wiLfP661L5/oqSRG6/U/1/LNP/AloPrGWtHu0xXRHH1Rxw==
+"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@3.9.1":
+  version "3.9.1"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-3.9.1.tgz"
+  integrity sha512-vhKXZe4WoKZQ5Yk/gj2xkFr4sofoRB9zrY/E2UzyPL/PCmBktCfKo8+u14TdGxYq7pvqJWNbgove7ArSlqOh3Q==
   dependencies:
     "@embeddable.com/sdk-utils" "*"
     "@inquirer/prompts" "^7.0.0"
     "@stencil/core" "^4.22.0"
-    "@swc-node/register" "^1.9.0"
+    "@swc-node/register" "^1.10.9"
     archiver "^5.3.1"
     axios "^1.7.2"
     chokidar "^3.6.0"
@@ -389,10 +389,10 @@
     ws "^8.17.0"
     yaml "^2.3.3"
 
-"@embeddable.com/sdk-react@3.7.0":
-  version "3.7.0"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-3.7.0.tgz"
-  integrity sha512-Nys9qnrLNZvctdcA8FI/ZsdPR+sAIGWn9KOm5lNBQQbazjzEdGLlXi/7U7Udvy3AYxatgEt4o+AxqlYlLjKzJw==
+"@embeddable.com/sdk-react@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-3.8.0.tgz"
+  integrity sha512-3jm3CwFweEQ3V5/odu6rIfcgn1v7dC2zPS7rwSpPDbm011MBvRq1xc7Lw7JlNgrQXV0b28S6Cxo/7A0GrADPTA==
   dependencies:
     "@babel/generator" "^7.23.0"
     "@babel/parser" "^7.23.0"
@@ -765,7 +765,7 @@
   resolved "https://registry.npmjs.org/@swc-node/core/-/core-1.13.3.tgz"
   integrity sha512-OGsvXIid2Go21kiNqeTIn79jcaX4l0G93X2rAnas4LFoDyA9wAwVK7xZdm+QsKoMn5Mus2yFLCc4OtX2dD/PWA==
 
-"@swc-node/register@^1.9.0":
+"@swc-node/register@^1.10.9":
   version "1.10.9"
   resolved "https://registry.npmjs.org/@swc-node/register/-/register-1.10.9.tgz"
   integrity sha512-iXy2sjP0phPEpK2yivjRC3PAgoLaT4sjSk0LDWCTdcTBJmR4waEog0E6eJbvoOkLkOtWw37SB8vCkl/bbh4+8A==
