@@ -1,4 +1,4 @@
-import { DataResponse, Dataset, Dimension, Granularity, Measure } from '@embeddable.com/core';
+import { DataResponse, Dimension, Granularity, Measure } from '@embeddable.com/core';
 import { useEmbeddableState } from '@embeddable.com/react';
 import React, { useEffect, useState } from 'react';
 
@@ -10,7 +10,7 @@ export type Props = {
   displayHorizontally?: boolean;
   dps?: number;
   enableDownloadAsCSV?: boolean;
-  granularity?: string;
+  granularity?: Granularity;
   metrics: Measure[];
   results: DataResponse;
   reverseXAxis?: boolean;
@@ -21,15 +21,20 @@ export type Props = {
   xAxisOptions?: Dimension[];
 };
 
+// TODO - not in love with this solution. What is creating the setDimension function?
+type ReactContextValues = [any, (value: any) => void];
+
 export default (props: Props) => {
-  const { results, title } = props;
+  const { results } = props;
 
   const [value, setValue] = useState(props.xAxis.name);
-  const [_, setDimension] = useEmbeddableState({ dimension: null });
+  const [_, setDimension] = useEmbeddableState({ dimension: null }) as ReactContextValues;
 
   useEffect(() => {
     setValue(props.xAxis.name);
   }, [props.xAxis]);
+
+  console.log(setDimension);
 
   const xAxisOptions = props.xAxisOptions?.find((item) => props.xAxis.name == item.name)
     ? props.xAxisOptions
@@ -42,7 +47,7 @@ export default (props: Props) => {
   };
 
   const xAxis = xAxisOptions.find((item) => value === item.name);
-  const updatedProps = { ...props, xAxis: xAxis };
+  const updatedProps = { ...props, xAxis: xAxis ? xAxis : props.xAxis };
 
   return (
     <Container {...props} className="overflow-y-hidden">
@@ -62,7 +67,7 @@ export default (props: Props) => {
         </div>
       </div>
       <div className="flex grow overflow-hidden">
-        {results.isLoading || results?.data?.[0]?.[xAxis?.name] == null ? null : (
+        {results.isLoading || !xAxis || results?.data?.[0]?.[xAxis.name] == null ? null : (
           <BarChart key={value} {...updatedProps} />
         )}
       </div>
