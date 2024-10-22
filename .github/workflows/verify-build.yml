@@ -36,6 +36,9 @@ jobs:
       - name: Verify linting errors
         run: npm run lint
 
+      - name: Run TypeScript type check
+        run: npm run check-types
+
       - name: Build embeddable
         run: npm run embeddable:build
 
