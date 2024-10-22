@@ -1,6 +1,4 @@
-// import { DataResponseData } from '@embeddable.com/core';
-
-export type DataResponseData = { [key: string]: any };
+type DataResponseData = { [key: string]: any };
 
 type Input = {
   [key: string]: any;
