@@ -76,7 +76,7 @@
     "prettier": "3.2.5",
     "tailwindcss": "^3.3.2",
     "tw-colors": "^2.2.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.6.3"
   },
   "eslintConfig": {
     "env": {
@@ -135,4 +135,3 @@
     "trailingComma": "all"
   }
 }
-
