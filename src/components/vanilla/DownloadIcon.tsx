@@ -5,7 +5,7 @@ import downloadAsCSV from '../util/downloadAsCSV';
 
 type Props = {
   props: {
-    results?: DataResponse;
+    results?: DataResponse | DataResponse[];
     prevResults?: DataResponse;
   };
   setPreppingDownload?: Dispatch<SetStateAction<boolean>>;
@@ -15,11 +15,22 @@ type Props = {
 export default function DownloadIcon({ show, setPreppingDownload, props }: Props) {
   if (!show) return;
 
+  // concatenate results data if results is an array (from pivot table)
+  let data: DataResponse['data'] = [];
+  if (Array.isArray(props.results)) {
+    data = props.results.reduce((acc: DataResponse['data'] = [], result) => {
+      if (result?.data) {
+        acc.push(...result.data);
+      }
+      return acc;
+    }, []);
+  } else {
+    data = props.results?.data;
+  }
+
   return (
     <svg
-      onClick={() =>
-        downloadAsCSV(props, props.results?.data, props.prevResults?.data, setPreppingDownload)
-      }
+      onClick={() => downloadAsCSV(props, data, props.prevResults?.data, setPreppingDownload)}
       className={`absolute right-0 top-0 z-1 cursor-pointer hover:opacity-100 opacity-50`}
       xmlns="http://www.w3.org/2000/svg"
       width="24"

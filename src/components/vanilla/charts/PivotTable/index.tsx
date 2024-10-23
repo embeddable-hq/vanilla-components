@@ -1,15 +1,14 @@
+import { DataResponse, Dimension, Measure, isDimension } from '@embeddable.com/core';
 import React from 'react';
 
-import { DataResponse, Dimension, isDimension, Measure } from '@embeddable.com/core';
-
+import { SortDirection } from '../../../../enums/SortDirection';
 import Container from '../../Container';
 import PivotTable from './PivotTable';
-import { SortDirection } from '../../../../enums/SortDirection';
 import { MeasureVisualizationFormat } from './enums/MeasureVisualizationFormat';
 
 type DynamicDimensionsData = {
   [key in `resultsDimension${number}`]: DataResponse;
-}
+};
 
 type Props = {
   title: string;
@@ -48,20 +47,18 @@ export default ({ rowValues, columnValues, metrics, ...props }: Props) => {
       description={props.description}
       className="overflow-auto"
     >
-      {
-        results.every((result) => result && !result.isLoading && !result.error) && (
-          <PivotTable
-            {...props}
-            data={results.map(result => result.data!)}
-            columnDimensions={columnValues}
-            defaultColumnDimensionSortDirection={props.columnSortDirection}
-            rowDimensions={rowValues?.filter((metric) => isDimension(metric)) as Dimension[]}
-            defaultRowDimensionSortDirection={props.rowSortDirection}
-            measures={metrics}
-            fontSize={props.fontSize ? `${props.fontSize}px` : undefined}
-          />
-        )
-      }
+      {results.every((result) => result && !result.isLoading && !result.error) && (
+        <PivotTable
+          {...props}
+          data={results.map((result) => result.data!)}
+          columnDimensions={columnValues}
+          defaultColumnDimensionSortDirection={props.columnSortDirection}
+          rowDimensions={rowValues?.filter((metric) => isDimension(metric)) as Dimension[]}
+          defaultRowDimensionSortDirection={props.rowSortDirection}
+          measures={metrics}
+          fontSize={props.fontSize ? `${props.fontSize}px` : undefined}
+        />
+      )}
     </Container>
   );
-}
+};

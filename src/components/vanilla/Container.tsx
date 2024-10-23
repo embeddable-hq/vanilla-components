@@ -16,7 +16,7 @@ type Props = {
   className?: string;
   childContainerClassName?: string;
   title?: string;
-  results?: DataResponse;
+  results?: DataResponse | DataResponse[];
   prevResults?: DataResponse;
   enableDownloadAsCSV?: boolean;
   onResize?: (size: Size) => void;
