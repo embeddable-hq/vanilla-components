@@ -9,6 +9,7 @@
     "embeddable:login": "embeddable login",
     "embeddable:dev": "cross-env NODE_OPTIONS='--max-old-space-size=4096' embeddable dev",
     "check-types": "tsc --noEmit",
+    "ct": "tsc --noEmit",
     "cube:playground": "docker-compose -f ./src/cube-playground.yml up",
     "cube:cubestore": "mysql -h 127.0.0.1 -P 13306 --user=cubestore -pcubestore",
     "dev": "cross-env NODE_OPTIONS='--max-old-space-size=4096' embeddable dev",
