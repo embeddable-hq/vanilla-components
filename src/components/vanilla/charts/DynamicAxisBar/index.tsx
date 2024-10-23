@@ -34,8 +34,6 @@ export default (props: Props) => {
     setValue(props.xAxis.name);
   }, [props.xAxis]);
 
-  console.log(setDimension);
-
   const xAxisOptions = props.xAxisOptions?.find((item) => props.xAxis.name == item.name)
     ? props.xAxisOptions
     : [...(props.xAxisOptions || []), props.xAxis];
