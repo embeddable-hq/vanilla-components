@@ -26,6 +26,7 @@ export type Props = {
   xAxisTitle?: string;
   granularity?: Granularity;
   useCustomDateFormat?: boolean;
+  isTSStackedBarChart?: boolean;
 };
 
 type Options = {
