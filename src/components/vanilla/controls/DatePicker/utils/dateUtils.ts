@@ -1,4 +1,4 @@
-import { Granularity } from '@embeddable.com/core';
+import { Granularity, TimeRange } from '@embeddable.com/core';
 import {
   differenceInCalendarDays,
   differenceInSeconds,
@@ -22,11 +22,6 @@ function toSeconds(unit: string, n: number): number {
   };
   return n * unitsInSeconds[unit];
 }
-
-type TimeRange = {
-  from: Date;
-  to: Date;
-};
 
 export function getComparisonOptions(period: TimeRange) {
   if (!period?.from || !period?.to) {
@@ -57,6 +52,13 @@ export function getComparisonOptions(period: TimeRange) {
 }
 
 export function getComparisonPeriod(rts: string, period: TimeRange) {
+  if (!period?.from || !period?.to) {
+    return {
+      relativeTimeString: 'No comparison',
+      from: new Date(),
+      to: new Date(),
+    };
+  }
   if (rts === 'Previous month') {
     return {
       relativeTimeString: 'previous month',
