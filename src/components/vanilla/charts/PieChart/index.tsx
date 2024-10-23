@@ -4,12 +4,13 @@ import {
   CategoryScale,
   Chart as ChartJS,
   ChartOptions,
+  InteractionItem,
   Legend,
   LineElement,
   LinearScale,
   PointElement,
   Title,
-  Tooltip, InteractionItem
+  Tooltip,
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React, { useRef, useState } from 'react';
@@ -28,7 +29,7 @@ ChartJS.register(
   ArcElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 ChartJS.defaults.font.size = parseInt(SMALL_FONT_SIZE);
@@ -56,9 +57,9 @@ type Record = { [p: string]: string };
 export default (props: Props) => {
   const { results, title, enableDownloadAsCSV, maxSegments, metric, slice, onClick } = props;
 
-  const [clickedIndex, setClickedIndex] = useState(null);
+  const [clickedIndex, setClickedIndex] = useState<number | null>(null);
 
-  const chartRef = useRef<ChartJS>(null);
+  const chartRef = useRef<ChartJS<'pie', []>>(null);
 
   const fireClickEvent = (element: InteractionItem[]) => {
     if (!element.length || element[0].index === clickedIndex) {
@@ -73,8 +74,8 @@ export default (props: Props) => {
       return;
     }
     setClickedIndex(index);
-    onClick({ 
-      slice: results.data?.[index][slice.name], 
+    onClick({
+      slice: results.data?.[index][slice.name],
       metric: results.data?.[index][metric.name],
     });
   };
@@ -85,17 +86,18 @@ export default (props: Props) => {
     if (!chart) {
       return;
     }
+
+    // this appears to be a deep typing issue with chart.js doughnut animation types. The chart works fine
+    // @ts-expect-error - TODO: file a report with chart.js?
     fireClickEvent(getElementAtEvent(chart, event));
   };
 
   return (
-    <Container
-      {...props}
-      className="overflow-y-hidden">
-      <Pie 
-        height="100%" 
-        options={chartOptions(props)} 
-        data={chartData(props)} 
+    <Container {...props} className="overflow-y-hidden">
+      <Pie
+        height="100%"
+        options={chartOptions(props)}
+        data={chartData(props)}
         ref={chartRef}
         onClick={handleClick}
       />
@@ -109,7 +111,7 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
     maintainAspectRatio: false,
     animation: {
       duration: 400,
-      easing: 'linear'
+      easing: 'linear',
     },
     cutout: '45%',
     plugins: {
@@ -119,12 +121,12 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
         backgroundColor: '#fff',
         borderRadius: 8,
         font: {
-          weight: 'normal'
+          weight: 'normal',
         },
         formatter: (v) => {
           const val = v ? formatValue(v, { type: 'number', dps: props.dps }) : null;
           return props.displayAsPercentage ? `${val}%` : val;
-        }
+        },
       },
       tooltip: {
         //https://www.chartjs.org/docs/latest/configuration/tooltip.html
@@ -134,23 +136,23 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
             if (context.parsed !== null) {
               label += `: ${formatValue(`${context.parsed || ''}`, {
                 type: 'number',
-                dps: props.dps
+                dps: props.dps,
               })}`;
             }
             label = props.displayAsPercentage ? `${label}%` : label;
             return label;
-          }
-        }
+          },
+        },
       },
       legend: {
         display: props.showLegend,
         position: 'bottom',
         labels: {
           usePointStyle: true,
-          boxHeight: 10
-        }
-      }
-    }
+          boxHeight: 10,
+        },
+      },
+    },
   };
 }
 
@@ -178,17 +180,14 @@ function chartData(props: Props) {
   // Chart.js pie expects labels like so: ['US', 'UK', 'Germany']
   const labels = newData?.map((d) => formatValue(d[slice.name], { meta: slice?.meta }));
 
-
-  const sum = displayAsPercentage 
-    ? newData?.reduce(
-        (accumulator, obj) => accumulator + parseFloat(obj[metric.name]), 0
-      )
+  const sum = displayAsPercentage
+    ? newData?.reduce((accumulator, obj) => accumulator + parseFloat(obj[metric.name]), 0)
     : null;
 
   // Chart.js pie expects counts like so: [23, 10, 5]
   const counts = newData?.map((d: Record) => {
     const metricValue = parseFloat(d[metric.name]);
-    return displayAsPercentage && sum ? ((metricValue * 100) / sum) : metricValue;
+    return displayAsPercentage && sum ? (metricValue * 100) / sum : metricValue;
   });
 
   return {
@@ -198,8 +197,8 @@ function chartData(props: Props) {
         data: counts,
         backgroundColor: COLORS,
         borderColor: '#fff',
-        borderWeight: 5
-      }
-    ]
+        borderWeight: 5,
+      },
+    ],
   };
 }
