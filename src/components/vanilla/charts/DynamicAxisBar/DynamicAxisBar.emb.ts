@@ -143,9 +143,7 @@ export default defineComponent<Props, typeof meta, EmbeddableState>(Component, m
             filters: [
               {
                 property: selectedDimension,
-                operator: 'notEquals',
-                // @ts-expect-error - We're going to update core to take null here
-                value: [null],
+                operator: 'notNull',
               },
             ],
             orderBy: [

@@ -147,9 +147,7 @@ export default defineComponent(Component, meta, {
         filters: [
           {
             property: inputs.xAxis,
-            operator: 'notEquals',
-            // @ts-expect-error - We're going to update core to take null here
-            value: [null],
+            operator: 'notNull',
           },
         ],
       }),
