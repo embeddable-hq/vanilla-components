@@ -107,11 +107,13 @@ export const meta = {
 } as const satisfies EmbeddedComponentMeta;
 
 export default defineComponent(Component, meta, {
-  /* The Inputs type is currently set to PICK properties from the "events" section of the meta object.
+  /* The Inputs type is currently set to PICK properties from the "events" section of the meta object
    * and add them to the "inputs" var that we're spreading to props. There are two issues:
    * 1. It's not clear why we're adding events to "inputs" and if we need to spread both to
    *    the props object, it might be better to have two parameters for the props function.
-   * 2. The Inputs type is not correctly PICKing all events - it only takes the first one.
+   * 2. The Inputs type is not correctly PICKing all events - it only takes the first one. That’s
+   *    the reason why it complains about onChangeComparison and onChangeGranularity, but not
+   *    onChangePeriod
    * @ts-expect-error - to be fixed in @embeddable.com/react */
   props: (inputs: Inputs<typeof meta>) => inputs,
   events: {

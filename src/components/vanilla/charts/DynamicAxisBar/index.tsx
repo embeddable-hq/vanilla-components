@@ -21,14 +21,14 @@ export type Props = {
   xAxisOptions?: Dimension[];
 };
 
-// TODO - not in love with this solution. What is creating the setDimension function?
-type ReactContextValues = [any, (value: any) => void];
-
 export default (props: Props) => {
   const { results } = props;
 
   const [value, setValue] = useState(props.xAxis.name);
-  const [_, setDimension] = useEmbeddableState({ dimension: null }) as ReactContextValues;
+  const [_, setDimension] = useEmbeddableState({ dimension: null }) as [
+    { dimension: Dimension | null },
+    (d: { dimension: Dimension | null }) => void,
+  ];
 
   useEffect(() => {
     setValue(props.xAxis.name);
@@ -40,7 +40,7 @@ export default (props: Props) => {
 
   const handleChange = (newValue: string) => {
     setValue(newValue);
-    const selectedDimension = xAxisOptions.find((item) => newValue === item.name);
+    const selectedDimension = xAxisOptions.find((item) => newValue === item.name) || null;
     setDimension({ dimension: selectedDimension });
   };
 

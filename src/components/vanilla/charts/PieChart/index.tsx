@@ -87,8 +87,8 @@ export default (props: Props) => {
       return;
     }
 
-    // this appears to be a deep typing issue with chart.js doughnut animation types. The chart works fine
-    // @ts-expect-error - TODO: file a report with chart.js?
+    // this appears to be a deep typing issue with chart.js doughnut animation types.
+    // @ts-expect-error - chart.js animation issue (chart works as expected)
     fireClickEvent(getElementAtEvent(chart, event));
   };
 
