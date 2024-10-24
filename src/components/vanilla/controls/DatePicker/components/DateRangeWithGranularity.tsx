@@ -1,15 +1,21 @@
 import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser.js';
 import { DataResponse, Dimension, Granularity, TimeRange } from '@embeddable.com/core';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import DateRangePicker from './DateRangePicker';
+
 import Dropdown from '../../Dropdown';
-import { getValidGranularities, getNote, getComparisonOptions, getComparisonPeriod } from '../utils/dateUtils'
+import {
+  getComparisonOptions,
+  getComparisonPeriod,
+  getNote,
+  getValidGranularities,
+} from '../utils/dateUtils';
+import DateRangePicker from './DateRangePicker';
 
 const valueProp: Dimension = {
   __type__: 'dimension',
   name: 'value',
   nativeType: 'string',
-  title: 'Value'
+  title: 'Value',
 };
 
 export type Props = {
@@ -45,12 +51,12 @@ export default function DateRangeWithGranularity(props: Props) {
   const comparisonOptions: DataResponse = useMemo(() => {
     return {
       isLoading: false,
-      data: getComparisonOptions(period)
+      data: getComparisonOptions(period),
     };
   }, [period?.from, period?.to]);
 
   const changeComparisonOption = useCallback(
-    (value: string) => {      
+    (value: string) => {
       setCompareOption(value);
       if (!period?.from || !period?.to) return;
       if (value === 'No comparison') {
@@ -58,10 +64,10 @@ export default function DateRangeWithGranularity(props: Props) {
         return;
       }
       onChangeComparison({
-        ...getComparisonPeriod(value, period)
+        ...getComparisonPeriod(value, period),
       });
     },
-    [onChangeComparison, period, setCompareOption]
+    [onChangeComparison, period, setCompareOption],
   );
 
   useEffect(() => {
@@ -71,11 +77,7 @@ export default function DateRangeWithGranularity(props: Props) {
   //ensure the default period is set correctly on first load
   useEffect(() => {
     if (!defaultPeriod) return;
-    if (
-      !defaultPeriod?.from &&
-      !defaultPeriod?.to &&
-      defaultPeriod?.relativeTimeString
-    ) {
+    if (!defaultPeriod?.from && !defaultPeriod?.to && defaultPeriod?.relativeTimeString) {
       const [from, to] = dateParser(defaultPeriod?.relativeTimeString, '');
       if (!from || !to) return;
       defaultPeriod.from = new Date(from);
@@ -86,60 +88,59 @@ export default function DateRangeWithGranularity(props: Props) {
     }
   }, [defaultPeriod, onChangePeriod]);
 
+  return (
+    <div className="flex items-center h-10">
+      <div ref={ref} className="grow basis-0 max-w-96 h-full">
+        <DateRangePicker
+          hideDate={hideDate}
+          value={period}
+          onChange={(period) => {
+            setPeriod(period as TimeRange);
 
-  return (    
-      <div className="flex items-center h-10">
-        <div ref={ref} className="grow basis-0 max-w-96 h-full">
-          <DateRangePicker
-            hideDate={hideDate}
-            value={period}
-            onChange={(period) => {
-              setPeriod(period as TimeRange);
+            props.onChangePeriod((period as TimeRange) || null);
 
-              props.onChangePeriod((period as TimeRange) || null);
-
-              const g = getValidGranularities(period as TimeRange).recommended.value
-              if (granularity === g) return;
-              setGranularity(g);
-              props.onChangeGranularity(g);
+            const g = getValidGranularities(period as TimeRange).recommended.value;
+            if (granularity === g) return;
+            setGranularity(g);
+            props.onChangeGranularity(g);
+          }}
+        />
+      </div>
+      {!!onChangeComparison && (
+        <>
+          <div className="hidden md:block shrink whitespace-nowrap text-[14px] font-normal text-[#101010] leading-none ml-2">
+            compare to
+          </div>
+          <div className="grow basis-0 max-w-[150px] h-full ml-2">
+            <Dropdown
+              unclearable
+              minDropdownWidth={320}
+              defaultValue={compareOption}
+              options={comparisonOptions}
+              placeholder="Comparison"
+              onChange={changeComparisonOption}
+              property={valueProp}
+            />
+          </div>
+        </>
+      )}
+      {!!props.showGranularity && (
+        <div className="grow basis-0 max-w-[115px] h-full ml-2">
+          <Dropdown
+            unclearable
+            minDropdownWidth={80}
+            defaultValue={granularity}
+            options={granularityOptions}
+            property={valueProp}
+            placeholder="Granularity"
+            onChange={(c) => {
+              const value = c as Granularity;
+              setGranularity(value);
+              props.onChangeGranularity(value);
             }}
           />
         </div>
-        {!!onChangeComparison && (
-          <>
-            <div className="hidden md:block shrink whitespace-nowrap text-[14px] font-normal text-[#101010] leading-none ml-2">
-              compare to
-            </div>
-            <div className="grow basis-0 max-w-[150px] h-full ml-2">
-              <Dropdown
-                unclearable
-                minDropdownWidth={320}
-                defaultValue={compareOption}
-                options={comparisonOptions}
-                placeholder="Comparison"
-                onChange={changeComparisonOption}
-                property={valueProp}
-              />
-            </div>
-          </>
-        )}        
-        {!!props.showGranularity && (
-          <div className="grow basis-0 max-w-[115px] h-full ml-2">
-            <Dropdown
-              unclearable
-              minDropdownWidth={80}
-              defaultValue={granularity}
-              options={granularityOptions}
-              property={valueProp}
-              placeholder="Granularity"
-              onChange={(c) => {
-                const value = c as Granularity;
-                setGranularity(value);
-                props.onChangeGranularity(value);
-              }}
-            />
-          </div>
-        )}
-      </div>    
+      )}
+    </div>
   );
 }

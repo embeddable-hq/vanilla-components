@@ -3,6 +3,7 @@ import { endOfDay, getYear } from 'date-fns';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
+
 import formatValue from '../../../../util/format';
 import Container from '../../../Container';
 import { CalendarIcon, ChevronLeft, ChevronRight } from '../../../icons';
@@ -21,7 +22,7 @@ const ranges = [
   'Last quarter',
   'Last 6 months',
   'This year',
-  'Last year'
+  'Last year',
 ];
 
 type TimeRange = {
@@ -69,18 +70,18 @@ export default function DateRangePicker(props: Props) {
     setRange({
       ...props.value,
       from: new Date(from),
-      to: new Date(to)
+      to: new Date(to),
     });
   }, [props.value]);
 
   const formatFrom = useMemo(
     () => (getYear(range?.from || new Date()) === getYear(new Date()) ? 'd MMM' : 'd MMM yyyy'),
-    [range?.from]
+    [range?.from],
   );
 
   const formatTo = useMemo(
     () => (getYear(range?.to || new Date()) === getYear(new Date()) ? 'd MMM' : 'd MMM yyyy'),
-    [range?.to]
+    [range?.to],
   );
 
   return (
@@ -105,7 +106,7 @@ export default function DateRangePicker(props: Props) {
           }}
           options={{
             isLoading: false,
-            data: ranges.map((value) => ({ value }))
+            data: ranges.map((value) => ({ value })),
           }}
           property={{ name: 'value', title: '', nativeType: 'string', __type__: 'dimension' }}
         />
@@ -123,7 +124,7 @@ export default function DateRangePicker(props: Props) {
               {!!range?.from && !!range?.to
                 ? `${formatValue(range.from.toJSON(), { dateFormat: formatFrom })} - ${formatValue(
                     range.to.toJSON(),
-                    { dateFormat: formatTo }
+                    { dateFormat: formatTo },
                   )}`
                 : 'Select'}
             </span>
@@ -137,18 +138,20 @@ export default function DateRangePicker(props: Props) {
               focus ? 'block' : 'hidden'
             } absolute top-8 right-0 sm:right-auto sm:left-0 z-50 pt-3 pointer-events-auto opacity-100`}
           >
+            {/*
+              DayPicker v8.x does not support the required prop on ranges. Need to upgrade to 9.x
+              required={true}
+            */}
             <DayPicker
               showOutsideDays
-              required={true}
               className="border border-[#d8dad9] bg-white rounded-xl px-4 py-3 text-[#101010] !m-0"
               components={{
-                Caption: CustomCaption
+                Caption: CustomCaption,
               }}
               weekStartsOn={1}
               mode="range"
               selected={{ from: range?.from, to: range?.to }}
               onSelect={(range) => {
-
                 setRange({ ...range, relativeTimeString: 'Custom' });
 
                 if (!range?.from || !range?.to) return;

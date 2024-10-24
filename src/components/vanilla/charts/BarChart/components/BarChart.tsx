@@ -1,4 +1,4 @@
-import { DataResponse, Dimension, Measure } from '@embeddable.com/core';
+import { DataResponse, Dimension, Granularity, Measure } from '@embeddable.com/core';
 import {
   BarElement,
   CategoryScale,
@@ -9,12 +9,19 @@ import {
   LinearScale,
   PointElement,
   Title,
-  Tooltip
+  Tooltip,
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
-import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE, DATE_DISPLAY_FORMATS } from '../../../../constants';
+
+import {
+  COLORS,
+  DATE_DISPLAY_FORMATS,
+  EMB_FONT,
+  LIGHT_FONT,
+  SMALL_FONT_SIZE,
+} from '../../../../constants';
 import formatValue from '../../../../util/format';
 import getBarChartOptions from '../../../../util/getBarChartOptions';
 
@@ -27,7 +34,7 @@ ChartJS.register(
   Tooltip,
   Legend,
   Filler,
-  ChartDataLabels
+  ChartDataLabels,
 );
 
 ChartJS.defaults.font.size = parseInt(SMALL_FONT_SIZE);
@@ -51,33 +58,37 @@ type Props = {
   xAxis: Dimension;
   xAxisTitle?: string;
   yAxisTitle?: string;
-  granularity?: string;
-}
+  granularity?: Granularity;
+};
 
-
-export default function BarChart({...props}: Props) {
-
+export default function BarChart({ ...props }: Props) {
   return (
-      <Bar
-        height="100%"
-        options={getBarChartOptions({ ...props, stacked: false })}
-        data={chartData(props)}
-      />
+    <Bar
+      height="100%"
+      options={getBarChartOptions({ ...props, stacked: false })}
+      data={chartData(props)}
+    />
   );
 }
 
 function chartData(props: Props): ChartData<'bar'> {
   const { results, xAxis, metrics, granularity } = props;
 
-  const dateFormat = xAxis.nativeType === 'time' && granularity && DATE_DISPLAY_FORMATS[granularity];
+  let dateFormat: string | undefined;
+  if (xAxis.nativeType === 'time' && granularity) {
+    dateFormat = DATE_DISPLAY_FORMATS[granularity];
+  }
 
   const labels = [
     ...new Set(
       results?.data?.map((d: { [p: string]: string }) => {
         const value = d[xAxis?.name];
-        return formatValue(value === null ? '' : value, { meta: xAxis?.meta, dateFormat: dateFormat })
-      })
-    )
+        return formatValue(value === null ? '' : value, {
+          meta: xAxis?.meta,
+          dateFormat: dateFormat,
+        });
+      }),
+    ),
   ] as string[];
 
   return {
@@ -91,7 +102,7 @@ function chartData(props: Props): ChartData<'bar'> {
         borderRadius: 4,
         label: metric.title,
         data: results?.data?.map((d) => parseFloat(d[metric.name])) || [],
-        backgroundColor: COLORS[i % COLORS.length]
-      })) || []
+        backgroundColor: COLORS[i % COLORS.length],
+      })) || [],
   };
 }

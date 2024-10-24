@@ -2,12 +2,12 @@ import { DataResponse, DimensionOrMeasure, OrderBy, OrderDirection } from '@embe
 import { useEmbeddableState } from '@embeddable.com/react';
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { SortDirection } from '../../../../enums/SortDirection';
+import { REGULAR_FONT_SIZE } from '../../../constants';
 import formatValue from '../../../util/format';
 import Container from '../../Container';
 import Pagination from './components/Pagination';
 import TableHead from './components/TableHead';
-import { REGULAR_FONT_SIZE } from '../../../constants';
-import { SortDirection } from '../../../../enums/SortDirection';
 
 export type Props = {
   limit?: number;
@@ -15,7 +15,7 @@ export type Props = {
   defaultSort?: { property: DimensionOrMeasure; direction: string }[];
   columns: DimensionOrMeasure[];
   title: string;
-  fontSize?: string;
+  fontSize?: number;
   minColumnWidth?: number;
 };
 
@@ -29,21 +29,26 @@ export default (props: Props) => {
   const [meta, setMeta] = useEmbeddableState({
     page: 0,
     maxRowsFit: 0,
-    sort: props.defaultSort
+    sort: props.defaultSort,
   }) as [Meta, (f: (m: Meta) => Meta) => void];
 
-  const calculateMaxRowFix = useCallback(({ height }: { height: number }) => {
-    let val = 0;
+  const calculateMaxRowFix = useCallback(
+    ({ height }: { height: number }) => {
+      let val = 0;
 
-    const heightWithoutHead = (height || 76) - 76;
-    const newMaxRowsFit = Math.floor(heightWithoutHead / 44);
+      const heightWithoutHead = (height || 76) - 76;
+      const newMaxRowsFit = Math.floor(heightWithoutHead / 44);
 
-    if ((maxRowsFit === newMaxRowsFit && newMaxRowsFit === val) || props.results?.data?.length === 0) {
-      return;
-    }
-    setMaxRowFit((val = newMaxRowsFit));
-
-  }, [maxRowsFit, props.results]);
+      if (
+        (maxRowsFit === newMaxRowsFit && newMaxRowsFit === val) ||
+        props.results?.data?.length === 0
+      ) {
+        return;
+      }
+      setMaxRowFit((val = newMaxRowsFit));
+    },
+    [maxRowsFit, props.results],
+  );
 
   useEffect(() => {
     if (!resizing) {
@@ -68,7 +73,7 @@ export default (props: Props) => {
 
       setMeta((meta) => ({ ...meta, sort, page: 0 }));
     },
-    [meta, setMeta]
+    [meta, setMeta],
   );
 
   return (
@@ -79,7 +84,7 @@ export default (props: Props) => {
       className="overflow-y-auto"
       childContainerClassName="overflow-x-auto"
     >
-      <div style={{ minWidth: `${columns.length * (props.minColumnWidth ?? 100) }px` }}>
+      <div style={{ minWidth: `${columns.length * (props.minColumnWidth ?? 100)}px` }}>
         {!!meta && !(props.results?.isLoading && !props.results?.data?.length) && (
           <table
             className="overflow-visible w-full"
@@ -88,7 +93,11 @@ export default (props: Props) => {
             <TableHead
               columns={columns}
               sortBy={meta?.sort?.[0]?.property}
-              sortDirection={meta?.sort?.[0]?.direction === 'asc' ? SortDirection.ASCENDING : SortDirection.DESCENDING}
+              sortDirection={
+                meta?.sort?.[0]?.direction === 'asc'
+                  ? SortDirection.ASCENDING
+                  : SortDirection.DESCENDING
+              }
               onSortingChange={updateSort}
               minColumnWidth={props.minColumnWidth ? props.minColumnWidth : undefined}
             />
@@ -96,22 +105,20 @@ export default (props: Props) => {
             <tbody>
               {results?.data?.slice(0, maxRowsFit).map((row, index) => (
                 <tr key={index} className="hover:bg-gray-400/5">
-                  {
-                    columns.map((column, index) => (
-                      <td
-                        key={index}
-                        className="text-dark p-3 truncate"
-                        style={{
-                          fontSize: props.fontSize ? `${props.fontSize}px` : REGULAR_FONT_SIZE,
-                          maxWidth: props.minColumnWidth ? `${props.minColumnWidth * 1.2}px` : 'auto'
-                        }}
-                      >
-                        <span title={formatColumn(row[column.name], column) ?? ''}>
-                          {formatColumn(row[column.name], column)}
-                        </span>
-                      </td>
-                    ))
-                  }
+                  {columns.map((column, index) => (
+                    <td
+                      key={index}
+                      className="text-dark p-3 truncate"
+                      style={{
+                        fontSize: props.fontSize ? `${props.fontSize}px` : REGULAR_FONT_SIZE,
+                        maxWidth: props.minColumnWidth ? `${props.minColumnWidth * 1.2}px` : 'auto',
+                      }}
+                    >
+                      <span title={formatColumn(row[column.name], column) ?? ''}>
+                        {formatColumn(row[column.name], column)}
+                      </span>
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>
@@ -121,7 +128,9 @@ export default (props: Props) => {
 
       <Pagination
         currentPage={meta?.page || 0}
-        hasNextPage={props.limit && results?.data?.length ? results?.data?.length < props.limit : false}
+        hasNextPage={
+          props.limit && results?.data?.length ? results?.data?.length < props.limit : false
+        }
         onPageChange={(page) => {
           setMeta((meta) => ({ ...meta, page: page }));
         }}

@@ -8,16 +8,16 @@ import {
   LinearScale,
   PointElement,
   Title,
-  Tooltip
+  Tooltip,
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
+import useTimeseries from '../../../hooks/useTimeseries';
 import getBarChartOptions from '../../../util/getBarChartOptions';
 import getStackedChartData, { Props } from '../../../util/getStackedChartData';
-import useTimeseries from '../../../hooks/useTimeseries';
 import Container from '../../Container';
 
 ChartJS.register(
@@ -29,7 +29,7 @@ ChartJS.register(
   Tooltip,
   Legend,
   Filler,
-  ChartDataLabels
+  ChartDataLabels,
 );
 
 ChartJS.defaults.font.size = parseInt(SMALL_FONT_SIZE);
@@ -43,7 +43,7 @@ export default (props: Props) => {
     barThickness: 'flex',
     maxBarThickness: 25,
     minBarLength: 0,
-    borderRadius: 3
+    borderRadius: 3,
   };
 
   //add missing dates to time-series stacked barcharts
@@ -53,17 +53,17 @@ export default (props: Props) => {
     ...props,
     results: isTSStackedBarChart
       ? { ...props.results, data: results?.data?.reduce(fillGaps, []) }
-      : props.results
+      : props.results,
   };
 
   return (
-    <Container
-      {...props}
-      className="overflow-y-hidden">
+    <Container {...props} className="overflow-y-hidden">
       <Bar
         height="100%"
         options={getBarChartOptions({ ...props, stacked: true })}
-        data={getStackedChartData(updatedProps, datasetsMeta) as ChartData<'bar', number[], unknown>}
+        data={
+          getStackedChartData(updatedProps, datasetsMeta) as ChartData<'bar', number[], unknown>
+        }
       />
     </Container>
   );

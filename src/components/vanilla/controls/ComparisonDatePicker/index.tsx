@@ -1,6 +1,8 @@
-import DateRangeWithGranularity from '../DatePicker/components/DateRangeWithGranularity'
+import { Granularity, TimeRange } from '@embeddable.com/core';
 import React from 'react';
+
 import Container from '../../Container';
+import DateRangeWithGranularity from '../DatePicker/components/DateRangeWithGranularity';
 
 export type Props = {
   defaultPeriod?: TimeRange;
@@ -13,15 +15,9 @@ export type Props = {
 };
 
 export default (props: Props) => {
-
-return (
-	<Container
-		{...props}
-	>
-		<DateRangeWithGranularity
-			{...props}
-		/>
-	</Container>
-)
-
-}
+  return (
+    <Container {...props}>
+      <DateRangeWithGranularity {...props} />
+    </Container>
+  );
+};
