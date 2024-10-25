@@ -1,182 +1,153 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Dimension, Measure } from '@embeddable.com/core';
-import cn from '../../../util/cn';
-import TableHead, { Column } from './components/TableHead';
+import TableHead from './components/TableHead';
 import TableRow from './components/TableRow';
-import { WarningIcon } from '../../icons';
-import { TableHeaderType } from './enums/TableHeaderType';
 import { SortDirection } from '../../../../enums/SortDirection';
-import { MeasureVisualizationFormat } from './enums/MeasureVisualizationFormat';
-import TableCell from './components/TableCell';
-import { COLORS } from '../../../constants';
+import { DATE_DISPLAY_FORMATS, REGULAR_FONT_SIZE } from '../../../constants';
 import formatValue from '../../../util/format';
+import { usePivotTable } from './core/usePivotTable';
+import { multisortFn, SortCriteria } from '../../../util/sortFn';
+import { Row } from './core/Row';
 
-type Props = {
-  rawData: Record<string, any>[];
+type Props<T> = {
+  data: T[][];
   rowDimensions?: Dimension[];
   columnDimensions?: Dimension[];
   measures: Measure[];
-  rowSortDirection?: SortDirection;
-  columnSortDirection?: SortDirection;
+  granularity?: string;
+  defaultRowDimensionSortDirection?: SortDirection;
+  defaultColumnDimensionSortDirection?: SortDirection;
   minColumnWidth?: number;
   minRowDimensionColumnWidth?: number;
   nullValueCharacter?: string;
-  measureVisualizationFormat: MeasureVisualizationFormat;
+  isRowGroupDefaultExpanded?: boolean;
+  // measureVisualizationFormat: MeasureVisualizationFormat;
+  columnSortingEnabled?: boolean;
+  fontSize?: string;
+  aggregateRowDimensions?: boolean;
 }
 
-function getDimensionValues(dataset: Record<string, any>, dimension: Dimension, sortDirection = SortDirection.ASCENDING): string[] {
-  return [...new Set(dataset.map((record: any) => record[dimension.name]))].sort((a: string, b: string): number => {
-    if (!a || !b) {
-      return 0;
-    }
-
-    if (sortDirection === SortDirection.ASCENDING) {
-      return a.localeCompare(b);
-    } else {
-      return b.localeCompare(a);
-    }
-  }) as string[];
-}
-
-export default ({
-  rawData,
+const PivotTable = <T,>({
+  data,
   columnDimensions,
   rowDimensions,
+  defaultRowDimensionSortDirection,
   measures,
-  columnSortDirection,
+  granularity,
+  defaultColumnDimensionSortDirection,
   minColumnWidth,
   minRowDimensionColumnWidth,
-  nullValueCharacter,
-  measureVisualizationFormat,
-}: Props) => {
-  // TODO: This is fixed only for one col dimension for testing purposes, so let's support more nested dimensions
-  const columnDimensionValues = useMemo(() => {
-    if (columnDimensions?.length) {
-      return getDimensionValues(rawData, columnDimensions[0], columnSortDirection);
-    } else {
+  nullValueCharacter = '',
+  isRowGroupDefaultExpanded = true,
+  // measureVisualizationFormat,
+  fontSize = REGULAR_FONT_SIZE,
+  columnSortingEnabled = true,
+  aggregateRowDimensions = true
+}: Props<T>) => {
+
+  const [sortCriteria, setSortCriteria] = useState<SortCriteria<any>[]>(() => {
+    if (!rowDimensions || !defaultRowDimensionSortDirection) {
       return [];
     }
-  }, [rawData, columnDimensions, columnSortDirection]);
 
-  const tableColumns: Column[] | undefined = useMemo(() => {
-    if (columnDimensions?.length) {
-      return [
-        ...(rowDimensions?.length ? [{
-          label: columnDimensions[0].title,
-          key: columnDimensions[0].name,
-          type: TableHeaderType.DIMENSION,
-          children: [{
-            label: rowDimensions[0].title,
-            key: rowDimensions[0].name,
-            type: TableHeaderType.ROW_HEADER,
-            minWidth: minRowDimensionColumnWidth || minColumnWidth || 'auto'
-          }]
-        }] : []),
-        ...columnDimensionValues.map((dimensionValue) => ({
-          label: dimensionValue,
-          key: columnDimensions[0].name,
-          type: TableHeaderType.DIMENSION,
-          children: measures.map((measure) => ({
-            label: measure.title,
-            key: measure.name,
-            type: TableHeaderType.MEASURE,
-            minWidth: minColumnWidth || 'auto',
-          }))
-        }))
-      ]
-    } else if (rowDimensions?.length) {
-      return [
-        {
-          label: rowDimensions[0].title,
-          key: rowDimensions[0].name,
-          type: TableHeaderType.ROW_HEADER,
-          minWidth: minRowDimensionColumnWidth || minColumnWidth || 'auto',
-        },
-        ...(measures?.map((measure) => ({
-          label: measure.title,
-          key: measure.name,
-          type: TableHeaderType.MEASURE,
-          minWidth: minColumnWidth || 'auto',
-        })) || [])
-      ]
+    return [{
+      key: rowDimensions.length === 1 ? rowDimensions[0].name : '__group.key',
+      direction: defaultRowDimensionSortDirection
+    }];
+  });
+
+  const {
+    rows,
+    columns,
+    getLeafColumns
+  } = usePivotTable<T>(
+    data,
+    measures,
+    rowDimensions,
+    columnDimensions,
+    {
+      aggregateRowDimensions,
+      defaultColumnsSort: defaultColumnDimensionSortDirection,
+      granularity
     }
-  }, [rawData, columnDimensions, rowDimensions, measures]);
+  );
 
-  let maxValuesOfMeasures = 0;
+  const sortRows = (rows: Row[], sortCriteria: SortCriteria<any>[]): Row[] => {
+    const sortedRows = [...rows];
+    sortedRows.sort(multisortFn(sortCriteria));
 
-  const tableData = useMemo<Record<string, any>[]>(() => (
-    // TODO: This is fixed only for one col dimension for testing purposes, so let's support more nested dimensions
-    // FIXME: use custom groupBy function of library like lodash or underscore
-    Object.groupBy(rawData, (dataRecord) => {
-      if (measureVisualizationFormat !== MeasureVisualizationFormat.NUMERIC_VALUES_ONLY) {
-        maxValuesOfMeasures = Math.max(maxValuesOfMeasures, ...(measures.map((measure) => parseFloat(dataRecord[measure.name]) || 0)));
+    sortedRows.forEach(row => {
+      if (row.children?.length) {
+        row.children = sortRows(row.children, sortCriteria);
       }
-
-      return dataRecord[rowDimensions?.[0]?.name || '']
     })
-  ), [rawData, rowDimensions, measureVisualizationFormat]);
 
-  if (!tableColumns?.length) {
-    return (
-      <div className="h-full flex items-center justify-center font-embeddable text-sm">
-        <WarningIcon />
-        <div className="whitespace-pre-wrap p-4 max-w-sm text-xs">Please define at least one data dimension</div>
-      </div>
-    )
+    return sortedRows;
   }
+
+  const sortCriteriaWithDataAccessor = useMemo<SortCriteria<any>[]>(() => {
+    const nullValueCharacterAsNumber = parseInt(nullValueCharacter, 10);
+
+    return sortCriteria.map(sortCriterion => ({
+      ...sortCriterion,
+      key: (row: Row) => row.data[sortCriterion.key as string] || (isNaN(nullValueCharacterAsNumber) ? null : nullValueCharacterAsNumber)
+    }));
+  }, [sortCriteria]);
+
+  const sortedRows = useMemo<Row[]>(() => {
+    return sortRows(rows, sortCriteriaWithDataAccessor);
+  }, [rows, sortCriteriaWithDataAccessor]);
 
   return (
     <table className="min-w-full border-separate border-spacing-0 table-fixed">
       <thead className="text-[#333942] sticky top-0 z-20 bg-white">
-        <TableHead columns={tableColumns} />
+        <TableHead
+          columns={columns}
+          minColumnWidth={`${minColumnWidth}px`}
+          minHeaderColumnWidth={`${minRowDimensionColumnWidth}px`}
+          enableSorting={columnSortingEnabled}
+          sortCriteria={sortCriteria}
+          onSortingChange={(columnKey, sortDirection) => {
+            setSortCriteria([{
+              key: columnKey,
+              direction: sortDirection
+            }]);
+          }}
+          fontSize={fontSize}
+        />
       </thead>
 
       <tbody className="overflow-y-auto">
       {
-        Object.entries(tableData).map(([rowDimensionValue, rowData], rowIndex: number) => (
+        sortedRows.map((row => (
           <TableRow
-            key={rowDimensionValue.replaceAll(' ', '-').toLowerCase()}
-            columns={tableColumns}
-            rowData={rowData}
-            renderCell={(cellValue, column, groupedCollumns, columnIndex) => {
-              const isRowHeader = column.type === TableHeaderType.ROW_HEADER;
+            key={row.id}
+            columns={getLeafColumns()}
+            row={row}
+            isRowGroupDefaultExpanded={isRowGroupDefaultExpanded}
+            renderCell={(rowRecord, column) => {
+              const cellValue = rowRecord[column.key];
 
               return (
-                <TableCell
-                  key={`${rowIndex}-${columnIndex}-${column.key}`}
-                  isHeader={isRowHeader}
-                  className={cn('border-b', {
-                    'text-left': isRowHeader,
-                    'border-r': columnIndex === groupedCollumns.length - 1 || isRowHeader
-                  })}
-                >
-                  <span>
-                    {
-                      cellValue === undefined || cellValue === null
-                        ? nullValueCharacter
-                        : formatValue(cellValue, {type: isRowHeader ? 'string' : 'number'})
-                    }
-                    {
-                      cellValue && measureVisualizationFormat === MeasureVisualizationFormat.VALUE_BARS && !isRowHeader
-                        ? (
-                          <div
-                            className="h-1 rounded-sm"
-                            style={{
-                              width: `${(parseFloat(cellValue) / maxValuesOfMeasures) * 80}%`,
-                              backgroundColor: `${COLORS[measures.findIndex((measure) => measure.name === column.key) % COLORS.length]}`
-                            }}
-                          />
-                        )
-                        : null
-                    }
-                  </span>
-                </TableCell>
+                <span style={{ fontSize }}>
+                  {
+                    cellValue === undefined || cellValue === null
+                      ? nullValueCharacter
+                      : formatValue(cellValue, {
+                        ...(granularity && column.dataType === 'time' ? {
+                          dateFormat: DATE_DISPLAY_FORMATS[granularity as keyof typeof DATE_DISPLAY_FORMATS]
+                        } : {})
+                      })
+                  }
+                </span>
               );
             }}
           />
-        ))
+        )))
       }
       </tbody>
     </table>
   )
 }
+
+export default PivotTable;

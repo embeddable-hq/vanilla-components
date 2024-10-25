@@ -11,8 +11,8 @@ export default function TableCell({ isHeader, className, children }: PropsWithCh
 
   return (
     <Cell
-      className={cn('text-sm p-2 z-10 font-normal first:border-l', {
-        'z-10 sticky left-0 bg-white': isHeader,
+      className={cn('px-2 py-1.5 font-normal first:border-l bg-inherit', {
+        'lg:z-10 lg:sticky lg:left-0 text-left': isHeader,
       }, className)}
     >
       { children }

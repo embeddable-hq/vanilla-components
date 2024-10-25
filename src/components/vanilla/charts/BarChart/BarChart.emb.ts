@@ -1,36 +1,30 @@
-import { loadData } from '@embeddable.com/core';
+import { loadData, OrderBy } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
 
 export const meta = {
   name: 'BarChart',
-  label: 'Chart: Bar',
+  label: 'Bar chart',
   classNames: ['inside-card'],
+  category: 'Charts: essentials',
   inputs: [
-    {
-      name: 'title',
-      type: 'string',
-      label: 'Title',
-      description: 'The title for the chart',
-      category: 'Configure chart'
-    },
     {
       name: 'ds',
       type: 'dataset',
       label: 'Dataset',
       description: 'Dataset',
       defaultValue: false,
-      category: 'Configure chart'
+      category: 'Chart data'
     },
     {
       name: 'xAxis',
       type: 'dimension',
       label: 'X-Axis',
       config: {
-        dataset: 'ds'
+          dataset: 'ds'
       },
-      category: 'Configure chart'
+      category: 'Chart data'
     },
     {
       name: 'metrics',
@@ -38,18 +32,38 @@ export const meta = {
       array: true,
       label: 'Metrics',
       config: {
-        dataset: 'ds'
+          dataset: 'ds'
       },
-      category: 'Configure chart'
+      category: 'Chart data'
     },
     {
       name: 'sortBy',
       type: 'dimensionOrMeasure',
       label: 'Sort by (optional)',
-      category: 'Configure chart',
       config: {
-        dataset: 'ds'
-      }
+          dataset: 'ds'
+      },
+      category: 'Chart data'
+    },
+    {
+      name: 'limit',
+      type: 'number',
+      label: 'Limit results',
+      category: 'Chart data'
+    },
+    {
+      name: 'title',
+      type: 'string',
+      label: 'Title',
+      description: 'The title for the chart',
+      category: 'Chart settings'
+    },
+    {
+      name: 'description',
+      type: 'string',
+      label: 'Description',
+      description: 'The description for the chart',
+      category: 'Chart settings'
     },
     {
       name: 'showLegend',
@@ -80,6 +94,13 @@ export const meta = {
       defaultValue: false
     },
     {
+      name: 'reverseXAxis',
+      type: 'boolean',
+      label: 'Reverse X Axis',
+      category: 'Chart settings',
+      defaultValue: false
+    },
+    {
       name: 'xAxisTitle',
       type: 'string',
       label: 'X-Axis Title',
@@ -91,36 +112,47 @@ export const meta = {
       label: 'Y-Axis Title',
       category: 'Chart settings'
     },
-    {name: 'dps',
+    {
+      name: 'dps',
       type: 'number',
       label: 'Decimal Places',
       category: 'Formatting'
     },
     {
-
       name: 'enableDownloadAsCSV',
       type: 'boolean',
       label: 'Show download as CSV',
       category: 'Export options',
-      defaultValue: true,
-    }
+      defaultValue: true
+  }
   ]
 } as const satisfies EmbeddedComponentMeta;
 
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
+    const orderProp: OrderBy[] = [];
+
+    if(inputs.sortBy) {
+      orderProp.push({
+        property: inputs.sortBy,
+        direction: inputs.sortBy.nativeType == 'string' ? 'asc' : 'desc'
+      });
+    } else if (inputs.limit) {
+      orderProp.push({
+        property: inputs.metrics[0],
+        direction: 'desc'
+      });
+    }
+
     return {
       ...inputs,
+      reverseXAxis: inputs.reverseXAxis,
       results: loadData({
         from: inputs.ds,
         dimensions: [inputs.xAxis],
         measures: inputs.metrics,
-        orderBy: inputs.sortBy && [
-          {
-            property: inputs.sortBy,
-            direction: inputs.sortBy.nativeType == 'string' ? 'asc' : 'desc'
-          }
-        ]
+        orderBy: orderProp,
+        limit: inputs.limit || 50
       })
     };
   }

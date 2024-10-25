@@ -8,45 +8,52 @@ export const meta = {
   label: 'Download Button',
   defaultWidth: 200,
   defaultHeight: 100,
+  category: 'Download options',
   inputs: [
     {
-      name: 'title',
-      type: 'string',
-      label: 'Title',
-      description: 'The title for the button',
+        name: 'ds',
+        type: 'dataset',
+        label: 'Dataset to download from',
+        category: 'Data'
     },
     {
-      name: 'description',
-      type: 'string',
-      label: 'Description',
-      description: 'The description for the button',
+        name: 'columns',
+        type: 'dimensionOrMeasure',
+        array: true,
+        label: 'Columns to include in download',
+        config: {
+            dataset: 'ds'
+        },
+        category: 'Data'
     },
     {
-      name: 'ds',
-      type: 'dataset',
-      label: 'Dataset to download from'
+        name: 'title',
+        type: 'string',
+        label: 'Title',
+        description: 'The title for the button',
+        category: 'Settings'
     },
     {
-      name: 'columns',
-      type: 'dimensionOrMeasure',
-      array: true,
-      label: 'Columns to include in download',
-      config: {
-        dataset: 'ds'
-      }
+        name: 'description',
+        type: 'string',
+        label: 'Description',
+        description: 'The description for the button',
+        category: 'Settings'
     },
     {
-      name: 'buttonLabel',
-      type: 'string',
-      label: 'Button label',
-      description: 'The text to show on the button',
-      defaultValue: 'Download'
+        name: 'buttonLabel',
+        type: 'string',
+        label: 'Button label',
+        description: 'The text to show on the button',
+        defaultValue: 'Download',
+        category: 'Settings'
     },
     {
-      name: 'maxRows',
-      type: 'number',
-      label: 'Maximum number of rows to download',
-      defaultValue: 100
+        name: 'maxRows',
+        type: 'number',
+        label: 'Maximum number of rows to download',
+        defaultValue: 100,
+        category: 'Settings'
     }
   ]
 } as const satisfies EmbeddedComponentMeta;

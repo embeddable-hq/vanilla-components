@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest]
-        node_version: [18, 19, 20]
+        node_version: [20]
 
     steps:
       - name: Verify build on ${{ matrix.os }} and Node.js ${{ matrix.node_version }}
@@ -32,6 +32,9 @@ jobs:
 
       - name: Install dependencies
         run: npm i
+
+      - name: Verify linting errors
+        run: npm run lint
 
       - name: Build embeddable
         run: npm run embeddable:build

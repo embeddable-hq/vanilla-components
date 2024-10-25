@@ -1,10 +1,13 @@
 import { DataResponse, DimensionOrMeasure, OrderBy, OrderDirection } from '@embeddable.com/core';
 import { useEmbeddableState } from '@embeddable.com/react';
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
+import { SortDirection } from '../../../../enums/SortDirection';
+import { REGULAR_FONT_SIZE } from '../../../constants';
 import formatValue from '../../../util/format';
 import Container from '../../Container';
-import { ChevronLeft, ChevronRight, SortDown, SortUp } from '../../icons';
+import Pagination from './components/Pagination';
+import TableHead from './components/TableHead';
 
 export type Props = {
   limit?: number;
@@ -12,23 +15,28 @@ export type Props = {
   defaultSort?: { property: DimensionOrMeasure; direction: string }[];
   columns: DimensionOrMeasure[];
   title: string;
+  fontSize?: number;
+  minColumnWidth?: number;
 };
 
 type Meta = { page: number; maxRowsFit: number; sort: OrderBy[] };
 
-type Record = { [p: string]: string };
-
 export default (props: Props) => {
-  const ref = useRef<HTMLDivElement | null>(null);
   const { columns, results } = props;
   const [maxRowsFit, setMaxRowFit] = useState(0);
+  const [resizing, setResizing] = useState(false);
 
-  useLayoutEffect(() => {
-    let val = 0;
+  const [meta, setMeta] = useEmbeddableState({
+    page: 0,
+    maxRowsFit: 0,
+    sort: props.defaultSort,
+  }) as [Meta, (f: (m: Meta) => Meta) => void];
 
-    const interval = setInterval(() => {
-      const elem = ref.current?.parentElement?.parentElement;
-      const heightWithoutHead = (elem?.clientHeight || 72) - 72;
+  const calculateMaxRowFix = useCallback(
+    ({ height }: { height: number }) => {
+      let val = 0;
+
+      const heightWithoutHead = (height || 76) - 76;
       const newMaxRowsFit = Math.floor(heightWithoutHead / 44);
 
       if (
@@ -38,20 +46,15 @@ export default (props: Props) => {
         return;
       }
       setMaxRowFit((val = newMaxRowsFit));
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, [maxRowsFit, props.results]);
-
-  const [meta, setMeta] = useEmbeddableState({
-    page: 0,
-    maxRowsFit: 0,
-    sort: props.defaultSort
-  }) as [Meta, (f: (m: Meta) => Meta) => void];
+    },
+    [maxRowsFit, props.results],
+  );
 
   useEffect(() => {
-    setMeta((meta) => ({ ...meta, maxRowsFit }));
-  }, [props.columns, maxRowsFit, setMeta]);
+    if (!resizing) {
+      setMeta((meta) => ({ ...meta, maxRowsFit }));
+    }
+  }, [props.columns, maxRowsFit, setMeta, resizing]);
 
   const updateSort = useCallback(
     (column: DimensionOrMeasure) => {
@@ -70,122 +73,68 @@ export default (props: Props) => {
 
       setMeta((meta) => ({ ...meta, sort, page: 0 }));
     },
-    [meta, setMeta]
-  );
-
-  const rows = useMemo(
-    () =>
-      results?.data?.map(
-        (record: Record) =>
-          columns?.map((prop) => {
-            if (!prop) return '';
-
-            const parsed = parseFloat(record[prop.name]);
-
-            return `${parsed}` === record[prop.name] ? parsed : record[prop.name] || '';
-          }) || []
-      ) || [],
-    [results, columns]
+    [meta, setMeta],
   );
 
   return (
     <Container
       {...props}
-      className="overflow-y-hidden"
+      onResize={calculateMaxRowFix}
+      setResizeState={(value) => setResizing(value)}
+      className="overflow-y-auto"
+      childContainerClassName="overflow-x-auto"
     >
-      <div
-        ref={ref}
-        className="grow flex flex-col justify-start w-full overflow-x-auto font-embeddable text-sm"
-      >
-        <div
-          className="grow overflow-hidden relative"
-          style={{ minWidth: `${columns.length * 100}px` }}
-        >
-          {!!meta && !(props.results?.isLoading && !props.results?.data?.length) && (
-            <table className="overflow-visible w-full">
-              <thead className="border-y border-[#B8BDC6]">
-                <tr>
-                  {columns?.map((h, i) => {
-                    const sortIndex = meta?.sort?.findIndex((c) => c.property.name === h.name) || 0;
+      <div style={{ minWidth: `${columns.length * (props.minColumnWidth ?? 100)}px` }}>
+        {!!meta && !(props.results?.isLoading && !props.results?.data?.length) && (
+          <table
+            className="overflow-visible w-full"
+            style={{ fontSize: props.fontSize ? `${props.fontSize}px` : REGULAR_FONT_SIZE }}
+          >
+            <TableHead
+              columns={columns}
+              sortBy={meta?.sort?.[0]?.property}
+              sortDirection={
+                meta?.sort?.[0]?.direction === 'asc'
+                  ? SortDirection.ASCENDING
+                  : SortDirection.DESCENDING
+              }
+              onSortingChange={updateSort}
+              minColumnWidth={props.minColumnWidth ? props.minColumnWidth : undefined}
+            />
 
-                    return (
-                      <th
-                        onClick={() => updateSort(h)}
-                        key={i}
-                        className="bg-white select-none cursor-pointer text-[#333942] p-3"
-                      >
-                        <div className="flex items-center justify-start basis-0 grow h-5 text-[#333942] hover:text-black font-bold text-sm relative w-full">
-                          <div className="absolute left-0 top-0 h-full w-full flex items-center">
-                            <span className="block text-ellipsis overflow-hidden whitespace-nowrap">
-                              {h?.title}
-                            </span>
-                            <div
-                              className={`${
-                                sortIndex === 0 ? 'text-[#FF6B6C]' : 'text-[#333942]'
-                              } ml-1`}
-                            >
-                              {meta?.sort?.[sortIndex]?.direction === 'asc' ? (
-                                <SortUp fill="currentcolor" />
-                              ) : (
-                                <SortDown fill="currentcolor" />
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </th>
-                    );
-                  })}
+            <tbody>
+              {results?.data?.slice(0, maxRowsFit).map((row, index) => (
+                <tr key={index} className="hover:bg-gray-400/5">
+                  {columns.map((column, index) => (
+                    <td
+                      key={index}
+                      className="text-dark p-3 truncate"
+                      style={{
+                        fontSize: props.fontSize ? `${props.fontSize}px` : REGULAR_FONT_SIZE,
+                        maxWidth: props.minColumnWidth ? `${props.minColumnWidth * 1.2}px` : 'auto',
+                      }}
+                    >
+                      <span title={formatColumn(row[column.name], column) ?? ''}>
+                        {formatColumn(row[column.name], column)}
+                      </span>
+                    </td>
+                  ))}
                 </tr>
-              </thead>
-
-              <tbody>
-                {rows.slice(0, maxRowsFit).map((row, index) => (
-                  <tr key={index} className="hover:bg-gray-400/5">
-                    {row.map((c, i) => (
-                      <td key={i} className="text-sm text-dark p-3">
-                        <span className="text-overflow-dynamic-container">
-                          <span
-                            className="text-overflow-dynamic-ellipsis"
-                            title={formatColumn(c, columns[i])}
-                          >
-                            {formatColumn(c, columns[i])}
-                          </span>
-                        </span>
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-
-          {(!meta || (props.results?.isLoading && !props.results?.data?.length)) && (
-            <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
-          )}
-        </div>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
 
-      <div className="flex mt-2 items-center justify-center text-[12px] font-bold text-[#333942] select-none">
-        <ChevronLeft
-          onClick={() => {
-            setMeta((meta) => ({ ...meta, page: Math.max(0, (meta?.page || 0) - 1) }));
-          }}
-          className={`cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center ${
-            meta?.page === 0 ? 'opacity-50 pointer-events-none' : ''
-          }`}
-        />
-        <span className="mx-4">Page {(meta?.page || 0) + 1}</span>
-        <ChevronRight
-          onClick={() => {
-            setMeta((meta) => ({ ...meta, page: (meta?.page || 0) + 1 }));
-          }}
-          className={`cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center ${
-            (props.limit ? rows.length < props.limit : false)
-              ? 'opacity-50 pointer-events-none'
-              : ''
-          }`}
-        />
-      </div>
+      <Pagination
+        currentPage={meta?.page || 0}
+        hasNextPage={
+          props.limit && results?.data?.length ? results?.data?.length < props.limit : false
+        }
+        onPageChange={(page) => {
+          setMeta((meta) => ({ ...meta, page: page }));
+        }}
+      />
     </Container>
   );
 };

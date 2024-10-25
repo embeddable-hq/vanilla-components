@@ -5,26 +5,30 @@ import Component from './index';
 
 export const meta = {
   name: 'MultiSelectButtons',
-  label: 'Control: Multiselect Buttons',
+  label: 'Multiselect buttons',
   defaultWidth: 400,
   defaultHeight: 80,
+  category: 'Controls: inputs & dropdowns',
   inputs: [
-    {
-      name: 'title',
-      type: 'string',
-      label: 'Title'
-    },
     {
       name: 'values',
       type: 'string',
       array: true,
-      label: 'Value'
+      label: 'Values',
+      category: 'Button values'
+    },
+    {
+      name: 'title',
+      type: 'string',
+      label: 'Title',
+      category: 'Settings'
     },
     {
       name: 'defaultValue',
       type: 'string',
       array: true,
-      label: 'Default value'
+      label: 'Default value',
+      category: 'Pre-configured variables'
     }
   ],
   events: [

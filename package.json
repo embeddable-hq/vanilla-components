@@ -8,19 +8,22 @@
     "embeddable:push": "embeddable push",
     "embeddable:login": "embeddable login",
     "embeddable:dev": "cross-env NODE_OPTIONS='--max-old-space-size=4096' embeddable dev",
+    "check-types": "tsc --noEmit",
+    "ct": "tsc --noEmit",
     "cube:playground": "docker-compose -f ./src/cube-playground.yml up",
     "cube:cubestore": "mysql -h 127.0.0.1 -P 13306 --user=cubestore -pcubestore",
     "dev": "cross-env NODE_OPTIONS='--max-old-space-size=4096' embeddable dev",
     "build": "embeddable build",
     "push": "embeddable push",
-    "lint": "npx eslint . --ext .ts --ext .tsx"
+    "lint": "npx eslint . --ext .ts --ext .tsx",
+    "license-report": "license-report --output=csv --csvHeaders --fields name --fields link --fields licenseType --fields installedVersion --fields author > license-report.csv"
   },
   "dependencies": {
-    "@cubejs-backend/api-gateway": "^0.35.37",
+    "@cubejs-backend/api-gateway": "^0.35.81",
     "@headlessui/tailwindcss": "^0.2.0",
     "@types/react-simple-maps": "^3.0.4",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
+    "@typescript-eslint/eslint-plugin": "^8.11.0",
+    "@typescript-eslint/parser": "^8.6.0",
     "chart.js": "^4.4.3",
     "chartjs-adapter-date-fns": "^3.0.0",
     "chartjs-plugin-datalabels": "^2.2.0",
@@ -28,13 +31,21 @@
     "clsx": "^2.1.1",
     "d3-scale": "^4.0.2",
     "date-fns": "^3.6.0",
+    "license-report": "^6.7.0",
+    "lodash.debounce": "^4.0.8",
+    "lodash.throttle": "^4.1.1",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-day-picker": "^8.9.1",
     "react-dom": "^18.2.0",
     "react-simple-maps": "^3.0.0",
     "tailwind-merge": "^2.2.1",
+    "uuid": "^10.0.0",
     "vite-plugin-css-injected-by-js": "^3.1.1"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.22.4",
+    "@rollup/rollup-win32-x64-msvc": "4.22.4"
   },
   "overrides": {
     "react-simple-maps": {
@@ -44,28 +55,29 @@
     }
   },
   "devDependencies": {
-    "@embeddable.com/core": "2.5.7",
-    "@embeddable.com/react": "2.5.8",
-    "@embeddable.com/sdk-core": "3.3.1",
-    "@embeddable.com/sdk-react": "3.3.1",
+    "@embeddable.com/core": "2.6.5",
+    "@embeddable.com/react": "2.7.3",
+    "@embeddable.com/sdk-core": "3.8.0",
+    "@embeddable.com/sdk-react": "3.7.0",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/d3-scale": "^4.0.8",
+    "@types/lodash.debounce": "^4.0.9",
+    "@types/lodash.throttle": "^4.1.9",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
+    "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react": "^4.0.0",
     "autoprefixer": "^10.4.14",
     "cross-env": "^7.0.3",
     "eslint": "^8.38.0",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.7",
+    "eslint-plugin-react-refresh": "^0.4.14",
     "postcss": "^8.4.24",
     "prettier": "3.2.5",
     "tailwindcss": "^3.3.2",
-    "tw-colors": "^2.2.0",
-    "typescript": "^5.3.3",
-    "vite": "^4.3.9",
-    "vite-plugin-singlefile": "^0.13.5"
+    "tw-colors": "^3.3.2",
+    "typescript": "^5.3.3"
   },
   "eslintConfig": {
     "env": {
@@ -95,7 +107,8 @@
       "react/prop-types": "off",
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": "off",
-      "react-refresh/only-export-components": "off"
+      "react-refresh/only-export-components": "off",
+      "@typescript-eslint/no-explicit-any": "off"
     }
   },
   "postcss": {
@@ -105,18 +118,21 @@
     }
   },
   "prettier": {
-    "singleQuote": true,
-    "printWidth": 100,
-    "trailingComma": "none",
+    "bracketSpacing": true,
     "endOfLine": "auto",
-    "plugins": [
-      "@trivago/prettier-plugin-sort-imports"
-    ],
-    "importOrderSeparation": true,
-    "importOrderSortSpecifiers": true,
     "importOrder": [
       "^(?!@/)(?!\\.).+",
       "."
-    ]
+    ],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true,
+    "plugins": [
+      "@trivago/prettier-plugin-sort-imports"
+    ],
+    "printWidth": 100,
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "all"
   }
 }

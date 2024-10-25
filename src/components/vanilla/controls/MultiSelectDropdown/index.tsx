@@ -7,12 +7,12 @@ import React, {
   useLayoutEffect,
   useMemo,
   useRef,
-  useState
+  useState,
 } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import checkbox from '../../../icons/checkbox.svg';
-import checkboxEmpty from '../../../icons/checkbox_empty.svg';
+import Checkbox from '../../../icons/Checkbox';
+import CheckboxEmpty from '../../../icons/CheckboxEmpty';
 import Container from '../../Container';
 import Spinner from '../../Spinner';
 import { ChevronDown, ClearIcon } from '../../icons';
@@ -42,7 +42,7 @@ export default (props: Props) => {
   const [value, setValue] = useState(props.defaultValue);
   const [search, setSearch] = useState('');
   const [_, setServerSearch] = useEmbeddableState({
-    [props.searchProperty || 'search']: ''
+    [props.searchProperty || 'search']: '',
   }) as [Record, (f: (m: Record) => Record) => void];
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export default (props: Props) => {
         setServerSearch((s) => ({ ...s, [props.searchProperty || 'search']: newSearch }));
       }, 500);
     },
-    [setSearch, setServerSearch, props.searchProperty]
+    [setSearch, setServerSearch, props.searchProperty],
   );
 
   const set = useCallback(
@@ -83,7 +83,7 @@ export default (props: Props) => {
       clearTimeout(debounce);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [performSearch, props, value]
+    [performSearch, props, value],
   );
 
   useLayoutEffect(() => {
@@ -111,20 +111,17 @@ export default (props: Props) => {
               value?.includes(o[props.property?.name || '']) ? 'bg-black/5' : ''
             } whitespace-nowrap overflow-hidden text-ellipsis`}
           >
-            <img
-              src={value?.includes(o[props.property?.name || '']) ? checkbox : checkboxEmpty}
-              alt=""
-            />
+            {value?.includes(o[props.property?.name || '']) ? <Checkbox /> : <CheckboxEmpty />}
             {o[props.property?.name || '']}
             {o.note && (
               <span className="font-normal ml-auto pl-3 text-xs opacity-70">{o.note}</span>
             )}
-          </div>
+          </div>,
         );
 
         return memo;
       }, []),
-    [props, value, set]
+    [props, value, set],
   ) as ReactNode[];
 
   return (
@@ -132,7 +129,7 @@ export default (props: Props) => {
       <div
         className={twMerge(
           'relative rounded-xl w-full min-w-[50px] h-10 border border-[#DADCE1] flex items-center',
-          props.className
+          props.className,
         )}
       >
         <input

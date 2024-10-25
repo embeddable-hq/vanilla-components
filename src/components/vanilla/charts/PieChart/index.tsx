@@ -4,16 +4,17 @@ import {
   CategoryScale,
   Chart as ChartJS,
   ChartOptions,
+  InteractionItem,
   Legend,
   LineElement,
   LinearScale,
   PointElement,
   Title,
-  Tooltip
+  Tooltip,
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import React from 'react';
-import { Pie } from 'react-chartjs-2';
+import React, { useRef, useState } from 'react';
+import { Pie, getElementAtEvent } from 'react-chartjs-2';
 
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import formatValue from '../../../util/format';
@@ -28,7 +29,7 @@ ChartJS.register(
   ArcElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 ChartJS.defaults.font.size = parseInt(SMALL_FONT_SIZE);
@@ -41,24 +42,65 @@ type Props = {
   results: DataResponse;
   title: string;
   dps?: number;
-  slice: { name: string; meta: object };
+  slice: { name: string; meta?: object };
   metric: { name: string; title: string };
   showLabels?: boolean;
   showLegend?: boolean;
   maxSegments?: number;
   displayAsPercentage?: boolean;
+  enableDownloadAsCSV?: boolean;
+  onClick: (args: { slice: string | null; metric: string | null }) => void;
 };
 
 type Record = { [p: string]: string };
 
 export default (props: Props) => {
-  const { results, title, enableDownloadAsCSV } = props;
+  const { results, title, enableDownloadAsCSV, maxSegments, metric, slice, onClick } = props;
+
+  const [clickedIndex, setClickedIndex] = useState<number | null>(null);
+
+  const chartRef = useRef<ChartJS<'pie', []>>(null);
+
+  const fireClickEvent = (element: InteractionItem[]) => {
+    if (!element.length || element[0].index === clickedIndex) {
+      //clicked outside pie, or re-clicked slice
+      onClick({ slice: null, metric: null });
+      setClickedIndex(null);
+      return;
+    }
+    const { datasetIndex, index } = element[0];
+    if (maxSegments && index + 1 >= maxSegments) {
+      // clicked "OTHER"
+      return;
+    }
+    setClickedIndex(index);
+    onClick({
+      slice: results.data?.[index][slice.name],
+      metric: results.data?.[index][metric.name],
+    });
+  };
+
+  const handleClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    const { current: chart } = chartRef;
+
+    if (!chart) {
+      return;
+    }
+
+    // this appears to be a deep typing issue with chart.js doughnut animation types.
+    // @ts-expect-error - chart.js animation issue (chart works as expected)
+    fireClickEvent(getElementAtEvent(chart, event));
+  };
 
   return (
-    <Container
-      {...props}
-      className="overflow-y-hidden">
-      <Pie height="100%" options={chartOptions(props)} data={chartData(props)} />
+    <Container {...props} className="overflow-y-hidden">
+      <Pie
+        height="100%"
+        options={chartOptions(props)}
+        data={chartData(props)}
+        ref={chartRef}
+        onClick={handleClick}
+      />
     </Container>
   );
 };
@@ -69,7 +111,7 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
     maintainAspectRatio: false,
     animation: {
       duration: 400,
-      easing: 'linear'
+      easing: 'linear',
     },
     cutout: '45%',
     plugins: {
@@ -79,12 +121,12 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
         backgroundColor: '#fff',
         borderRadius: 8,
         font: {
-          weight: 'normal'
+          weight: 'normal',
         },
         formatter: (v) => {
           const val = v ? formatValue(v, { type: 'number', dps: props.dps }) : null;
           return props.displayAsPercentage ? `${val}%` : val;
-        }
+        },
       },
       tooltip: {
         //https://www.chartjs.org/docs/latest/configuration/tooltip.html
@@ -94,23 +136,23 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
             if (context.parsed !== null) {
               label += `: ${formatValue(`${context.parsed || ''}`, {
                 type: 'number',
-                dps: props.dps
+                dps: props.dps,
               })}`;
             }
             label = props.displayAsPercentage ? `${label}%` : label;
             return label;
-          }
-        }
+          },
+        },
       },
       legend: {
         display: props.showLegend,
         position: 'bottom',
         labels: {
           usePointStyle: true,
-          boxHeight: 10
-        }
-      }
-    }
+          boxHeight: 10,
+        },
+      },
+    },
   };
 }
 
@@ -138,18 +180,14 @@ function chartData(props: Props) {
   // Chart.js pie expects labels like so: ['US', 'UK', 'Germany']
   const labels = newData?.map((d) => formatValue(d[slice.name], { meta: slice?.meta }));
 
-
-  const sum = displayAsPercentage 
-    ? newData?.reduce(
-        (accumulator, obj) => accumulator + parseFloat(obj[metric.name]), 0
-      )
+  const sum = displayAsPercentage
+    ? newData?.reduce((accumulator, obj) => accumulator + parseFloat(obj[metric.name]), 0)
     : null;
 
   // Chart.js pie expects counts like so: [23, 10, 5]
   const counts = newData?.map((d: Record) => {
     const metricValue = parseFloat(d[metric.name]);
-    const value = displayAsPercentage ? ((metricValue * 100) / sum) : metricValue;
-    return formatValue(value, { type: 'number', dps: props.dps })
+    return displayAsPercentage && sum ? (metricValue * 100) / sum : metricValue;
   });
 
   return {
@@ -159,8 +197,8 @@ function chartData(props: Props) {
         data: counts,
         backgroundColor: COLORS,
         borderColor: '#fff',
-        borderWeight: 5
-      }
-    ]
+        borderWeight: 5,
+      },
+    ],
   };
 }

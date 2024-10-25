@@ -1,52 +1,84 @@
-import React, { ReactElement, useMemo } from 'react';
-import { Column } from './TableHead';
-import { TableHeaderType } from '../enums/TableHeaderType';
-import { keyBy } from '../../../../util/dataManipulation';
+import React, { ReactElement, useState } from 'react';
+import { Column } from '../core/Column';
+import cn from '../../../../util/cn';
+import TableCell from './TableCell';
+import { Row } from '../core/Row';
+import { ColumnType } from '../enums/ColumnType';
+import { ChevronDown } from '../../../icons';
 
 type Props = {
   columns: Column[];
-  rowData: Record<string, any>;
-  renderCell?: (value: string, column: Column, columns: Column[], columnIndex: number) => ReactElement;
+  row: Row;
+  renderCell?: (row: Record<string, any>, column: Column) => ReactElement;
+  level?: number;
+  isRowGroupDefaultExpanded?: boolean;
 }
 
-export default ( { columns, rowData, renderCell }: Props) => {
-  const rowDataToRender = useMemo(() => {
-    if (columns[0].type === TableHeaderType.DIMENSION) {
-      return keyBy(rowData, (record) => record[columns[0].key])
-    }
+const TableRow = ({ columns, row, renderCell, level = 0, isRowGroupDefaultExpanded }: Props) => {
+  const [isExpanded, setIsExpanded] = useState<boolean>(isRowGroupDefaultExpanded ?? true);
 
-    return rowData[0];
-  }, [columns, rowData]);
+  const toggleExpand = () => {
+    setIsExpanded((expanded) => !expanded);
+  }
 
-  const renderColumns = (columns: Column[], data: Record<string, any>) => (
-    columns.map((column, columnIndex) => {
-      switch (column.type) {
-        case TableHeaderType.ROW_HEADER:
-          // Each group has the same row dimension value, so it doesn't metter which record we use
-          return renderCell
-            ? renderCell(rowData?.[0]?.[column.key], column, columns, columnIndex)
-            : <td key={`${columnIndex}-${column.key}`}>{ rowData?.[0]?.[column.key] }</td>;
+  const getTableCell = (column: Column, rowData: Record<string, any>): ReactElement => {
+    const isRowHeader = column.type === ColumnType.ROW_HEADER;
 
-        case TableHeaderType.DIMENSION: {
-          // In case of dimension, we recursively render children columns
-          return renderColumns(column.children!, data[column.label]);
-        }
+    return (
+      <TableCell
+        key={`${row.id}-${column.key}`}
+        isHeader={isRowHeader}
+        className={cn('border-b', {
+          'border-r': !column.parent || column.parent?.children?.at(-1)?.key === column.key || isRowHeader,
+        })}
+      >
+        <div
+          className="flex items-center"
+          style={{ marginLeft: isRowHeader ? `${level * 30}px` : 0 }}
+        >
+          {
+            row.children?.length && isRowHeader
+              ? (
+                <ChevronDown
+                  className={cn('w-4 h-4 mr-1 cursor-pointer transform', {
+                    '-rotate-90': !isExpanded
+                  })}
+                  onClick={toggleExpand}
+                />
+              )
+              : null
+          }
+          { renderCell?.(rowData, column) || rowData[column.key] }
+        </div>
 
-        case TableHeaderType.MEASURE: {
-          return renderCell
-            ? renderCell(data?.[column.key], column, columns, columnIndex)
-            : <td key={`${columnIndex}-${column.key}`}>{ data?.[column.key] }</td>;
-        }
+      </TableCell>
+    );
+  }
 
-        default:
-          return <td key={`${columnIndex}-${column.key}`}></td>;
-      }
-    })
+  const renderColumns = (columns: Column[], rowData: Record<string, any>): ReactElement[] => (
+    columns.map((column: Column) => (
+      column.type === ColumnType.ROW_HEADER_GROUP && column.group?.length ? getTableCell(column.group[level], rowData) : getTableCell(column, rowData)
+    ))
   );
 
   return (
-    <tr className="hover:bg-gray-400/5">
-      { renderColumns(columns, rowDataToRender) }
-    </tr>
+    <>
+      <tr className="bg-white hover:bg-gray-100">
+        { renderColumns(columns, row.data) }
+      </tr>
+      {
+        isExpanded && row.children?.map(subRow => (
+          <TableRow
+            key={subRow.id}
+            columns={columns}
+            row={subRow}
+            renderCell={renderCell}
+            level={level + 1}
+          />
+        ))
+      }
+    </>
   );
 }
+
+export default TableRow;

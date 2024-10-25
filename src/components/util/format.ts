@@ -11,22 +11,21 @@ type Options = {
 };
 
 function numberFormatter(dps: number | undefined | null) {
-  const fallback = (dps == null || dps < 0);
+  const fallback = dps == null || dps < 0;
   return new Intl.NumberFormat(undefined, {
-      minimumFractionDigits: fallback ? 0 : dps, // Minimum number of digits after the decimal
-      maximumFractionDigits: fallback ? 2 : dps, // Maximum number of digits after the decimal
+    minimumFractionDigits: fallback ? 0 : dps, // Minimum number of digits after the decimal
+    maximumFractionDigits: fallback ? 2 : dps // Maximum number of digits after the decimal
   });
 }
 
 const dateFormatter = new Intl.DateTimeFormat();
 
 export default function formatValue(str: string = '', opt: Type | Options = 'string') {
+  if (str === null) return null;
+
   const { type, dateFormat, meta, truncate, dps }: Options =
     typeof opt === 'string' ? { type: opt } : opt;
 
-  
-  str = str || str === 0 ? str : '';
-  
   if (type === 'number') return wrap(numberFormatter(dps).format(parseFloat(str)));
 
   if (type === 'date' && str.endsWith('T00:00:00.000')) {
@@ -41,7 +40,7 @@ export default function formatValue(str: string = '', opt: Type | Options = 'str
       : wrap(str);
   }
 
-  if (dateFormat) return wrap(formatDate(parseJSON(str), dateFormat));
+  if (dateFormat && str) return wrap(formatDate(parseJSON(str), dateFormat));
 
   return str;
 

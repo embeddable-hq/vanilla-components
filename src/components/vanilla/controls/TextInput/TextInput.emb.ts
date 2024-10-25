@@ -5,22 +5,23 @@ import Component from './index';
 
 export const meta = {
   name: 'TextInput',
-  label: 'Control: Text',
+  label: 'Text input',
   defaultWidth: 300,
   defaultHeight: 80,
+  category: 'Controls: inputs & dropdowns',
   inputs: [
     {
       name: 'title',
       type: 'string',
       label: 'Title',
       description: 'The title',
-      category: 'Configuration'
+      category: 'Settings'
     },
     {
       name: 'value',
       type: 'string',
       label: 'Initial value',
-      category: 'Settings'
+      category: 'Pre-configured variables'
     },
     {
       name: 'placeholder',
