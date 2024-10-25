@@ -15,6 +15,7 @@
     "dev": "cross-env NODE_OPTIONS='--max-old-space-size=4096' embeddable dev",
     "build": "embeddable build",
     "push": "embeddable push",
+    "check-types": "tsc --noemit",
     "lint": "npx eslint . --ext .ts --ext .tsx",
     "license-report": "license-report --output=csv --csvHeaders --fields name --fields link --fields licenseType --fields installedVersion --fields author > license-report.csv"
   },
