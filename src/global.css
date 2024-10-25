@@ -1,0 +1,184 @@
+
+
+/* Custom-canvas 'end-user self-serve' classes */
+
+/* Button Styles */
+
+/* icon button */
+.button-icon { }
+
+/* icon button on hover */
+.button-icon:hover { }
+
+/* icon button on press */
+.button-icon:active { }
+
+/* button */
+.button {
+}
+
+/* button container where the text is */
+.button > div { }
+
+/* button container where the icon is */
+.button > span { }
+
+/* button variant primary */
+.button.primary { 
+}
+
+/* button variant primary on hover */
+.button.primary:hover {
+}
+
+/* button variant primary on press */
+.button.primary:active { }
+
+/* button variant secondary */
+.button.secondary { }
+
+/* button variant secondary on hover */
+.button.secondary:hover { }
+
+/* button variant secondary on press */
+.button.secondary:active { }
+
+/* button when disabled */
+.button:disabled { }
+
+
+
+/* Self-Serve Feature */
+
+/* container where the self-serve feature will appear */
+.self-serve { }
+
+/* container that includes the buttons ‘Add Chart’, ‘Edit Dashboard’ and ‘Done’ */
+.self-serve-controls {
+/*  position: sticky;
+  top: 80px;
+  z-index: 10;*/
+}
+
+/* container where the self-serve components are listed */
+.self-serve-widgets { }
+
+/* on edit mode, this container appears after the last self-serve chart, where the user can click to add a new chart (via the modal) */
+.self-serve-add-chart { }
+
+/* on edit mode, this container appears after the last self-serve chart, where the user can click to add a new chart (via the modal) on hover */
+.self-serve-add-chart:hover { }
+
+
+/* Draggable Controls and Containers */
+
+/* control container to remove the chart from self-serve (has the trash icon inside) */
+.draggable-controls { }
+
+/* control container to remove the chart from self-serve (has the trash icon inside), icon container */
+.draggable-controls > button > span { }
+
+/* container where the chart will be rendered inside (controls + chart) */
+.draggable { }
+
+/* container where the chart will be rendered */
+.draggable-item { }
+
+
+/* Edit Mode - Sorting */
+
+/* draggable container on hover */
+.draggable.sortable:hover { }
+
+/* draggable container when selected to drag */
+.draggable.sortable.sortable-chosen { }
+
+/* chart container */
+.draggable.sortable .draggable-item { }
+
+/* display of controls when container is hovered */
+.draggable.sortable:hover .draggable-controls { }
+
+/* chart container when draggable is hovered */
+.draggable.sortable:hover .draggable-item { }
+
+/* ghost of the dragging element */
+.draggable.sortable.sortable-chosen.sortable-ghost .draggable-item { }
+
+/* content of the chart container when being dragged */
+.draggable.sortable.sortable-chosen.sortable-ghost .draggable-item * { }
+
+/* chart container when draggable is being dragged */
+.draggable.sortable.sortable-drag .draggable-item { }
+
+/* avoid showing the control container when there is a dragging going on */
+.self-serve-widgets:has(.sortable-drag) .draggable.sortable .draggable-controls,
+.self-serve-widgets:has(.sortable-ghost) .draggable.sortable .draggable-controls { }
+
+
+/* Modal Related */
+
+/* modal overlay */
+.overlay { }
+
+/* modal container */
+.modal-window { 
+  max-width: 1200px;
+}
+
+/* modal header container */
+.modal-window__header { }
+
+/* modal header container title */
+.modal-window__header h2 { 
+}
+
+/* modal header container close button */
+.modal-window__header .close { 
+}
+
+/* modal body container */
+.modal-window__body { }
+
+/* modal footer container */
+.modal-window__footer {
+}
+
+/* container where the available self-serve charts are inside the modal */
+.self-serve-modal-widgets { }
+
+/* widget container inside the modal */
+.self-serve-modal-widgets-item { }
+
+/* widget container inside the modal on hover */
+.self-serve-modal-widgets-item:hover { }
+
+/* widget container inside the modal when selected */
+.self-serve-modal-widgets-item.selected { }
+
+/* container inside the widget container inside the modal */
+.self-serve-modal-widgets-item-container { }
+
+
+/* Media Queries */
+
+/* change the number of widget columns if container width is inferior to 914px */
+@container (max-width: 914px) {
+  .self-serve-widgets {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); 
+  }
+}
+
+/* change the number of the widget columns in the modal if window width is inferior to 795px */
+@media (max-width: 795px) {
+  .self-serve-modal-widgets {
+    grid-template-columns: repeat(1, minmax(0, 1fr)); 
+  }
+}
+
+/* change the number of widget columns if container width is inferior to 606px */
+@container (max-width: 606px) {
+  .self-serve-widgets {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); 
+  }
+}
