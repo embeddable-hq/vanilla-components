@@ -1,4 +1,4 @@
-import { loadData } from '@embeddable.com/core';
+import { OrderBy, loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
@@ -22,8 +22,8 @@ export const meta = {
       type: 'dimension',
       label: 'X-Axis',
       config: {
-          dataset: 'ds',
-          supportedTypes: ['time']
+        dataset: 'ds',
+        supportedTypes: ['time']
       },
       category: 'Chart data'
     },
@@ -33,7 +33,7 @@ export const meta = {
       array: true,
       label: 'Metrics',
       config: {
-          dataset: 'ds'
+        dataset: 'ds'
       },
       category: 'Chart data'
     },
@@ -66,11 +66,11 @@ export const meta = {
       category: 'Chart settings'
     },
     {
-        name: 'description',
-        type: 'string',
-        label: 'Description',
-        description: 'The description for the chart',
-        category: 'Chart settings'
+      name: 'description',
+      type: 'string',
+      label: 'Description',
+      description: 'The description for the chart',
+      category: 'Chart settings'
     },
     {
       name: 'xAxisTitle',
@@ -129,11 +129,19 @@ export const meta = {
 
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
+    const orderProp: OrderBy[] = [];
+
+    orderProp.push({
+      property: inputs.xAxis,
+      direction: 'desc'
+    });
+
     return {
       ...inputs,
       results: loadData({
         from: inputs.ds,
         limit: 500,
+        orderBy: orderProp,
         timeDimensions: [
           {
             dimension: inputs.xAxis?.name,
@@ -161,6 +169,7 @@ export default defineComponent(Component, meta, {
           }
         ],
         limit: !inputs.prevTimeFilter ? 1 : 500,
+        orderBy: orderProp,
         measures: inputs.metrics,
         filters:
           inputs.prevTimeFilter && inputs.xAxis

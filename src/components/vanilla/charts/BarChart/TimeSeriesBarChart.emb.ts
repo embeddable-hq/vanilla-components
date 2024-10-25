@@ -15,7 +15,7 @@ export const meta = {
       label: 'Dataset',
       description: 'Dataset',
       defaultValue: false,
-      category: 'Chart data'
+      category: 'Chart data',
     },
     {
       name: 'xAxis',
@@ -23,9 +23,9 @@ export const meta = {
       label: 'X-Axis',
       config: {
         dataset: 'ds',
-        supportedTypes: ['time']
+        supportedTypes: ['time'],
       },
-      category: 'Chart data'
+      category: 'Chart data',
     },
     {
       name: 'metrics',
@@ -33,114 +33,124 @@ export const meta = {
       array: true,
       label: 'Metrics',
       config: {
-          dataset: 'ds'
+        dataset: 'ds',
       },
-      category: 'Chart data'
+      category: 'Chart data',
     },
     {
       name: 'granularity',
       type: 'granularity',
       label: 'Granularity',
       defaultValue: 'week',
-      category: 'Variables to configure'
+      category: 'Variables to configure',
     },
     {
       name: 'title',
       type: 'string',
       label: 'Title',
       description: 'The title for the chart',
-      category: 'Chart settings'
+      category: 'Chart settings',
     },
     {
       name: 'description',
       type: 'string',
       label: 'Description',
       description: 'The description for the chart',
-      category: 'Chart settings'
+      category: 'Chart settings',
     },
     {
       name: 'showLegend',
       type: 'boolean',
       label: 'Show Legend',
       category: 'Chart settings',
-      defaultValue: true
+      defaultValue: true,
     },
     {
       name: 'showLabels',
       type: 'boolean',
       label: 'Show Labels',
       category: 'Chart settings',
-      defaultValue: false
+      defaultValue: false,
     },
     {
       name: 'displayHorizontally',
       type: 'boolean',
       label: 'Display Horizontally',
       category: 'Chart settings',
-      defaultValue: false
+      defaultValue: false,
     },
     {
       name: 'stackMetrics',
       type: 'boolean',
       label: 'Stack Metrics',
       category: 'Chart settings',
-      defaultValue: false
+      defaultValue: false,
     },
     {
       name: 'xAxisTitle',
       type: 'string',
       label: 'X-Axis Title',
-      category: 'Chart settings'
+      category: 'Chart settings',
     },
     {
       name: 'yAxisTitle',
       type: 'string',
       label: 'Y-Axis Title',
-      category: 'Chart settings'
+      category: 'Chart settings',
     },
     {
       name: 'dps',
       type: 'number',
       label: 'Decimal Places',
-      category: 'Formatting'
+      category: 'Formatting',
+    },
+    {
+      name: 'limit',
+      type: 'number',
+      label: 'Limit results',
+      defaultValue: 100,
+      category: 'Chart settings',
     },
     {
       name: 'enableDownloadAsCSV',
       type: 'boolean',
       label: 'Show download as CSV',
       category: 'Export options',
-      defaultValue: true
-  }
-  ]
+      defaultValue: true,
+    },
+  ],
 } as const satisfies EmbeddedComponentMeta;
 
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
     return {
       ...inputs,
+      isTSBarChart: true,
       reverseXAxis: true,
       useCustomDateFormat: true,
       results: loadData({
         from: inputs.ds,
+        limit: inputs.limit || 500,
         timeDimensions: [
           {
             dimension: inputs.xAxis?.name,
-            granularity: inputs.granularity
-          }
+            granularity: inputs.granularity,
+          },
         ],
         measures: inputs.metrics,
-        filters: [{
-          property: inputs.xAxis,
-          operator: 'notEquals',
-          value: [null]
-        }],
+        filters: [
+          {
+            property: inputs.xAxis,
+            operator: 'notNull',
+          },
+        ],
         orderBy: [
-          { 
-            property: inputs.xAxis, 
-            direction: 'desc' 
-          }
-        ]
-      })
+          {
+            property: inputs.xAxis,
+            direction: 'desc',
+          },
+        ],
+      }),
     };
-  }
+  },
 });

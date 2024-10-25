@@ -1,14 +1,18 @@
+import { DataResponse, Dimension, Granularity, Measure } from '@embeddable.com/core';
+
+import useTimeseries from '../../../hooks/useTimeseries';
 import Container from '../../Container';
 import BarChart from './components/BarChart';
-import { DataResponse, Dataset, Dimension, Granularity, Measure } from '@embeddable.com/core';
-
 
 type Props = {
   description?: string;
   displayHorizontally?: boolean;
   dps?: number;
   enableDownloadAsCSV?: boolean;
-  metrics: Array<Measure>;
+  granularity?: Granularity;
+  isTSBarChart?: boolean;
+  limit?: number;
+  metrics: Measure[];
   results: DataResponse;
   reverseXAxis?: boolean;
   showLabels?: boolean;
@@ -19,21 +23,22 @@ type Props = {
   xAxis: Dimension;
   xAxisTitle?: string;
   yAxisTitle?: string;
-  metrics: Measure[];
-  granularity?: Granularity;
 };
 
 export default (props: Props) => {
+  //add missing dates to time-series barcharts
+  const { fillGaps } = useTimeseries(props, 'desc');
+  const { results, isTSBarChart } = props;
+  const updatedProps = {
+    ...props,
+    results: isTSBarChart
+      ? { ...props.results, data: results?.data?.reduce(fillGaps, []) }
+      : props.results,
+  };
 
   return (
-    <Container
-      {...props}
-      className="overflow-y-hidden"
-      >
-      <BarChart
-        {...props}
-      />
+    <Container {...props} className="overflow-y-hidden">
+      <BarChart {...updatedProps} />
     </Container>
   );
 };
-
