@@ -1,4 +1,4 @@
-import { loadData } from '@embeddable.com/core';
+import { OrderBy, loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
@@ -22,8 +22,8 @@ export const meta = {
       type: 'dimension',
       label: 'X-Axis',
       config: {
-          dataset: 'ds',
-          supportedTypes: ['time']
+        dataset: 'ds',
+        supportedTypes: ['time']
       },
       category: 'Chart data'
     },
@@ -33,7 +33,7 @@ export const meta = {
       array: true,
       label: 'Metrics',
       config: {
-          dataset: 'ds'
+        dataset: 'ds'
       },
       category: 'Chart data'
     },
@@ -66,11 +66,11 @@ export const meta = {
       category: 'Chart settings'
     },
     {
-        name: 'description',
-        type: 'string',
-        label: 'Description',
-        description: 'The description for the chart',
-        category: 'Chart settings'
+      name: 'description',
+      type: 'string',
+      label: 'Description',
+      description: 'The description for the chart',
+      category: 'Chart settings'
     },
     {
       name: 'xAxisTitle',
@@ -129,13 +129,12 @@ export const meta = {
 
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
-
-    const orderProp = [];
+    const orderProp: OrderBy[] = [];
 
     orderProp.push({
-        property: inputs.xAxis,
-        direction: 'desc',
-    })
+      property: inputs.xAxis,
+      direction: 'desc'
+    });
 
     return {
       ...inputs,

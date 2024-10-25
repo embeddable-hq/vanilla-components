@@ -1,8 +1,8 @@
-import { Value } from '@embeddable.com/core';
-import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
+import { Granularity, TimeRange, Value } from '@embeddable.com/core';
+import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 import { endOfDay, startOfDay } from 'date-fns';
-import { timeRangeToUTC } from '../../../hooks/useTimezone';
 
+import { timeRangeToUTC } from '../../../hooks/useTimezone';
 import Component from './index';
 
 export const meta = {
@@ -17,26 +17,26 @@ export const meta = {
       name: 'title',
       type: 'string',
       label: 'Title',
-      category: 'Settings'
+      category: 'Settings',
     },
     {
       name: 'showGranularity',
       type: 'boolean',
       label: 'Show granularity picker',
       category: 'Settings',
-      defaultValue: false
+      defaultValue: false,
     },
     {
       name: 'value',
       type: 'timeRange',
       label: 'Primary date range',
-      category: 'Pre-configured variables'
+      category: 'Pre-configured variables',
     },
     {
       name: 'defaultGranularity',
       type: 'granularity',
       label: 'Default granularity',
-      category: 'Pre-configured variables'
+      category: 'Pre-configured variables',
     },
   ],
   events: [
@@ -47,9 +47,9 @@ export const meta = {
         {
           name: 'value',
           type: 'timeRange',
-          label: 'value'
-        }
-      ]
+          label: 'value',
+        },
+      ],
     },
     {
       name: 'onChangeGranularity',
@@ -58,10 +58,10 @@ export const meta = {
         {
           name: 'value',
           type: 'granularity',
-          label: 'value'
-        }
-      ]
-    }
+          label: 'value',
+        },
+      ],
+    },
   ],
   variables: [
     {
@@ -69,24 +69,29 @@ export const meta = {
       type: 'timeRange',
       inputs: ['value'],
       defaultValue: { relativeTimeString: 'Last 30 days' },
-      events: [{ name: 'onChange', property: 'value' }]
+      events: [{ name: 'onChange', property: 'value' }],
     },
     {
       name: 'granularity',
       type: 'granularity',
       inputs: ['defaultGranularity'],
       defaultValue: 'day',
-      events: [{ name: 'onChangeGranularity', property: 'value' }]
-    }
-  ]
+      events: [{ name: 'onChangeGranularity', property: 'value' }],
+    },
+  ],
 } as const satisfies EmbeddedComponentMeta;
 
 export default defineComponent(Component, meta, {
-
+  /* The Inputs type is currently set to PICK properties from the "events" section of the meta object.
+   * and add them to the "inputs" var that we're spreading to props. There are two issues:
+   * 1. It's not clear why we're adding events to "inputs" and if we need to spread both to
+   *    the props object, it might be better to have two parameters for the props function.
+   * 2. The Inputs type is not correctly PICKing all events - it only takes the first one.
+   * @ts-expect-error - to be fixed in @embeddable.com/react */
   props: (inputs: Inputs<typeof meta>) => {
     return {
-      ...inputs
-    }
+      ...inputs,
+    };
   },
   events: {
     onChange: (v) => {
@@ -98,6 +103,6 @@ export default defineComponent(Component, meta, {
     },
     onChangeGranularity: (value) => {
       return { value: value || Value.noFilter() };
-    }
-  }
+    },
+  },
 });
