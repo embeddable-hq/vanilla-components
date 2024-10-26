@@ -114,6 +114,12 @@ export const meta = {
       category: 'Chart settings'
     },
     {
+      name: 'yAxisMin',
+      type: 'number',
+      label: 'Y-Axis minimum value',
+      category: 'Chart settings'
+    },
+    {
       name: 'dps',
       type: 'number',
       label: 'Decimal Places',

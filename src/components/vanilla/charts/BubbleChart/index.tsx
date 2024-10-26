@@ -4,6 +4,7 @@ import { DataResponse, Dataset, Dimension, Granularity, Measure } from '@embedda
 import {
   CategoryScale,
   ChartData,
+  ChartOptions,
   Chart as ChartJS,
   Filler,
   Legend,
@@ -41,8 +42,25 @@ ChartJS.defaults.plugins.tooltip.enabled = true;
 
 
 type Props = {
-
+  xAxis: Dimension
+  yAxis: Measure;
+  bubbleSize: Measure;
+  results: DataResponse;
+  granularity?: Granularity;
+  xAxisTitle?: string;
+  yAxisTitle?: string;
+  title?: string;
+  description?: string;
+  showLegend?: string;
+  showLabels?: string;
+  reverseXAxis?: boolean;
+  yAxisMin?: number;
+  dps?: number;
+  enableDownloadAsCSV?: boolean;
+  isTimeDimension: boolean;
 };
+
+type Record = { [p: string]: any };
 
 export default (props: Props) => {
 
@@ -69,18 +87,20 @@ export default (props: Props) => {
   );
 };
 
-function chartOptions(props: Props, updatedData, bubbleData) {
+function chartOptions(props: Props, updatedData: Record[] | undefined, bubbleData: ChartData<'bubble'>): ChartOptions<'bubble'> {
 
   const data = bubbleData.datasets[0].data;
 
-  //base y-axis padding on size of first item
+  //y-axis padding based on size of first item
   const firstItemRadius = props.reverseXAxis
-  ? (props.isTimeDimension ? data?.[0]?.r : data?.[data.length - 1]?.r)
-  : (props.isTimeDimension ? data?.[data.length - 1]?.r : data?.[0]?.r);
+  ? (props.isTimeDimension ? data[0]?.r : data?.[data.length - 1]?.r)
+  : (props.isTimeDimension ? data[data.length - 1]?.r : data?.[0]?.r);
 
-  //base top padding on size of top vertical item
-    const highestItem = data?.reduce((max, current) => (current.y > max.y ? current : max), data[0]);
-    const highestItemRadius = highestItem?.r;
+  //top padding based on size of top vertical item
+  const highestItem = data.reduce((max, current) => (current?.y > max?.y ? current : max), data[0]);
+  const highestItemRadius = highestItem?.r;
+
+  const yAxisContainsFractions = data?.some(row => !Number.isInteger(row.y));
 
   return {
     responsive: true,
@@ -89,14 +109,14 @@ function chartOptions(props: Props, updatedData, bubbleData) {
       duration: 400,
       easing: 'linear'
     },
-    cutout: '45%',
     scales: {
       y: {
+        min: props.yAxisMin,
         grid: {
           display: false
         },
         ticks: {
-          stepSize: 1,
+          stepSize: !yAxisContainsFractions ? 1 : undefined,
           padding: firstItemRadius          
         },
         title: {
@@ -126,20 +146,20 @@ function chartOptions(props: Props, updatedData, bubbleData) {
       padding: {
         left: 0,
         right: 0,
-        top: highestItemRadius + (props.showLabels ? 30 : 0), // TODO - Buffer for data labels
+        top: (highestItemRadius || 0) + (props.showLabels ? 30 : 0),
         bottom: 0
       }
     },
     plugins: {
       datalabels: {
-        display: props.showLabels ? 'auto' : false, //TODO
+        display: props.showLabels ? 'auto' : false,
         anchor: 'end',
         align: 'end',
         font: {
           weight: 'normal'
         },
         formatter: (_, {dataIndex}) => {
-          const v = updatedData[dataIndex][props.bubbleSize.name] || 0;
+          const v = updatedData?.[dataIndex][props.bubbleSize.name] || 0;
           const val = formatValue(v, { type: 'number', dps: props.dps || 0 }) || null;
           return val;
         }
@@ -150,13 +170,14 @@ function chartOptions(props: Props, updatedData, bubbleData) {
           label: function (context) {
             //xAxis label
             const yAxisLabel = context.dataset.label || '';
-            const yAxisValue = formatValue((context.raw.y || ''), {
+            const rawData = context.raw as { y: number };
+            const yAxisValue = formatValue((`${rawData.y || ''}`), {
                 type: 'number',
                 dps: props.dps
               });
             //Bubble size label
             const bubbleSizeLabel = props.bubbleSize.title;
-            const bubbleSizeValue = updatedData[context.dataIndex][props.bubbleSize.name] || 0;
+            const bubbleSizeValue = updatedData?.[context.dataIndex][props.bubbleSize.name] || 0;
             const bubbleSizeValueFormatted = formatValue((bubbleSizeValue), {
                 type: 'number',
                 dps: props.dps
@@ -166,7 +187,7 @@ function chartOptions(props: Props, updatedData, bubbleData) {
         }
       },
       legend: {
-        display: props.showLegend,
+        display: !!props.showLegend,
         position: 'bottom',
         labels: {
           usePointStyle: true,
@@ -177,11 +198,11 @@ function chartOptions(props: Props, updatedData, bubbleData) {
   };
 }
 
-function chartData(props: Props, updatedData) {
+function chartData(props: Props, updatedData: Record[] | undefined): ChartData<'bubble'> {
 
   const bubbleRadiusValue = updatedData?.map(row => {
     const value = row[props.bubbleSize.name];
-    return value ? parseInt(value) : 0
+    return value ? parseFloat(value) : 0
   }) || [];
 
   const maxValue = Math.max(...bubbleRadiusValue); // Replace `data` with your dataset
@@ -190,10 +211,10 @@ function chartData(props: Props, updatedData) {
   const ndata = updatedData?.map((row) => {
     return ({
       x: row[props.xAxis.name],
-      y: parseInt(row[props.yAxis.name]) || 0,
-      r: (parseInt(row[props.bubbleSize.name]) || 0) * scaleFactor
+      y: parseFloat(row[props.yAxis.name]) || 0,
+      r: (parseFloat(row[props.bubbleSize.name]) || 0) * scaleFactor
     })
-  })
+  }) || [];
 
   return ({
     datasets: [{
@@ -203,5 +224,4 @@ function chartData(props: Props, updatedData) {
     }],
   });
 }
-
 
