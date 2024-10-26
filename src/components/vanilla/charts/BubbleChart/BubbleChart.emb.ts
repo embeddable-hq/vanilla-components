@@ -44,21 +44,12 @@ export const meta = {
       },
       category: 'Chart data'
     },
-    // {
-    //   name: 'sortBy',
-    //   type: 'dimensionOrMeasure',
-    //   label: 'Sort by (optional)',
-    //   config: {
-    //       dataset: 'ds'
-    //   },
-    //   category: 'Chart data'
-    // },
-    // {
-    //   name: 'limit',
-    //   type: 'number',
-    //   label: 'Limit results',
-    //   category: 'Chart data'
-    // },
+    {
+      name: 'limit',
+      type: 'number',
+      label: 'Limit results',
+      category: 'Chart data'
+    },
      {
       name: 'granularity',
       type: 'granularity',
@@ -138,7 +129,7 @@ export const meta = {
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
 
-    const orderProp = [];
+    const orderProp: OrderBy[] = [];
 
     orderProp.push({
         property: inputs.xAxis,
@@ -164,8 +155,7 @@ export default defineComponent(Component, meta, {
             measures: [inputs.yAxis, inputs.bubbleSize],
             filters: [{
               property: inputs.xAxis,
-              operator: 'notEquals',
-              value: [null]
+              operator: 'notNull'
             }],
             limit: inputs.limit || 50
           }) 
