@@ -51,8 +51,8 @@ type Props = {
   yAxisTitle?: string;
   title?: string;
   description?: string;
-  showLegend?: string;
-  showLabels?: string;
+  showLegend?: boolean;
+  showLabels?: boolean;
   reverseXAxis?: boolean;
   yAxisMin?: number;
   dps?: number;
