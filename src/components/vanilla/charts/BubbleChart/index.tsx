@@ -98,7 +98,7 @@ function chartOptions(props: Props, updatedData: Record[] | undefined, bubbleDat
 
   //top padding based on size of top vertical item
   const highestItem = data.reduce((max, current) => (current?.y > max?.y ? current : max), data[0]);
-  const highestItemRadius = highestItem?.r;
+  const highestItemRadius = highestItem?.r || 0;
 
   const yAxisContainsFractions = data?.some(row => !Number.isInteger(row.y));
 
@@ -146,7 +146,7 @@ function chartOptions(props: Props, updatedData: Record[] | undefined, bubbleDat
       padding: {
         left: 0,
         right: 0,
-        top: (highestItemRadius || 0) + (props.showLabels ? 30 : 0),
+        top: highestItemRadius + (props.showLabels ? 30 : 0),
         bottom: 0
       }
     },
