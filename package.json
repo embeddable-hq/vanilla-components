@@ -20,7 +20,7 @@
     "license-report": "license-report --output=csv --csvHeaders --fields name --fields link --fields licenseType --fields installedVersion --fields author > license-report.csv"
   },
   "dependencies": {
-    "@cubejs-backend/api-gateway": "^0.35.81",
+    "@cubejs-backend/api-gateway": "^1.1.0",
     "@headlessui/tailwindcss": "^0.2.0",
     "@types/react-simple-maps": "^3.0.4",
     "@typescript-eslint/eslint-plugin": "^8.11.0",
