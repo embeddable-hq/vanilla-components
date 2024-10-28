@@ -116,7 +116,6 @@ function chartOptions(props: Props, updatedData: Record[] | undefined, bubbleDat
           display: false
         },
         ticks: {
-          stepSize: !yAxisContainsFractions ? 1 : undefined,
           padding: firstItemRadius          
         },
         title: {
