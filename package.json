@@ -46,7 +46,7 @@
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.22.4",
-    "@rollup/rollup-win32-x64-msvc": "4.22.4"
+    "@rollup/rollup-win32-x64-msvc": "4.24.2"
   },
   "overrides": {
     "react-simple-maps": {
