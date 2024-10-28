@@ -187,7 +187,7 @@ function chartOptions(props: Props, updatedData: Record[] | undefined, bubbleDat
         }
       },
       legend: {
-        display: !!props.showLegend,
+        display: props.showLegend,
         position: 'bottom',
         labels: {
           usePointStyle: true,
