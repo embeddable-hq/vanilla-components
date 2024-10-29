@@ -4,6 +4,7 @@ import { twMerge } from 'tailwind-merge';
 
 import useFont from '../hooks/useFont';
 import useResize, { Size } from '../hooks/useResize';
+import IconCheckbox from '../icons/Checkbox';
 import Description from './Description';
 import DownloadIcon from './DownloadIcon';
 import Spinner from './Spinner';
@@ -12,15 +13,16 @@ import { WarningIcon } from './icons';
 import './index.css';
 
 type Props = {
-  description?: string;
-  className?: string;
   childContainerClassName?: string;
-  title?: string;
-  results?: DataResponse | DataResponse[];
-  prevResults?: DataResponse;
+  className?: string;
+  description?: string;
   enableDownloadAsCSV?: boolean;
+  enableDownloadAsPNG?: boolean;
   onResize?: (size: Size) => void;
+  prevResults?: DataResponse;
+  results?: DataResponse | DataResponse[];
   setResizeState?: (resizing: boolean) => void;
+  title?: string;
 };
 
 export default ({
@@ -34,6 +36,7 @@ export default ({
   const ref = useRef<HTMLDivElement | null>(null);
   const prevHeightRef = useRef<number | null>(null);
   const resizingTimeoutRef = useRef<number | null>(null);
+  const pngExportRef = useRef<HTMLDivElement | null>(null);
 
   const { height } = useResize(ref, onResize || null);
 
@@ -81,13 +84,31 @@ export default ({
   useFont();
 
   return (
-    <div className="h-full relative font-embeddable text-sm flex flex-col">
+    <div className="h-full relative font-embeddable text-sm flex flex-col" ref={pngExportRef}>
+      {props.enableDownloadAsCSV || props.enableDownloadAsPNG ? (
+        <div className="flex items-center justify-end space-x-2">
+          <IconCheckbox />
+        </div>
+      ) : null}
+
       {props.enableDownloadAsCSV ? (
         <div className={`${!props.title ? 'h-[40px] w-full' : ''}`}>
           <DownloadIcon
             props={props}
             show={data && data.length > 0 && !isLoading && !preppingDownload}
             setPreppingDownload={setPreppingDownload}
+            type="csv"
+          />
+        </div>
+      ) : null}
+      {props.enableDownloadAsPNG ? (
+        <div className={`${!props.title ? 'h-[40px] w-full' : ''}`}>
+          <DownloadIcon
+            element={pngExportRef.current}
+            props={props}
+            show={data && data.length > 0 && !isLoading && !preppingDownload}
+            setPreppingDownload={setPreppingDownload}
+            type="png"
           />
         </div>
       ) : null}

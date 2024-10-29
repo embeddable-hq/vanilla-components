@@ -1,4 +1,4 @@
-import { loadData, OrderBy } from '@embeddable.com/core';
+import { OrderBy, loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
@@ -15,16 +15,16 @@ export const meta = {
       label: 'Dataset',
       description: 'Dataset',
       defaultValue: false,
-      category: 'Chart data'
+      category: 'Chart data',
     },
     {
       name: 'xAxis',
       type: 'dimension',
       label: 'X-Axis',
       config: {
-          dataset: 'ds'
+        dataset: 'ds',
       },
-      category: 'Chart data'
+      category: 'Chart data',
     },
     {
       name: 'metrics',
@@ -32,115 +32,122 @@ export const meta = {
       array: true,
       label: 'Metrics',
       config: {
-          dataset: 'ds'
+        dataset: 'ds',
       },
-      category: 'Chart data'
+      category: 'Chart data',
     },
     {
       name: 'sortBy',
       type: 'dimensionOrMeasure',
       label: 'Sort by (optional)',
       config: {
-          dataset: 'ds'
+        dataset: 'ds',
       },
-      category: 'Chart data'
+      category: 'Chart data',
     },
     {
       name: 'limit',
       type: 'number',
       label: 'Limit results',
-      category: 'Chart data'
+      category: 'Chart data',
     },
     {
       name: 'title',
       type: 'string',
       label: 'Title',
       description: 'The title for the chart',
-      category: 'Chart settings'
+      category: 'Chart settings',
     },
     {
       name: 'description',
       type: 'string',
       label: 'Description',
       description: 'The description for the chart',
-      category: 'Chart settings'
+      category: 'Chart settings',
     },
     {
       name: 'showLegend',
       type: 'boolean',
       label: 'Show Legend',
       category: 'Chart settings',
-      defaultValue: true
+      defaultValue: true,
     },
     {
       name: 'showLabels',
       type: 'boolean',
       label: 'Show Labels',
       category: 'Chart settings',
-      defaultValue: false
+      defaultValue: false,
     },
     {
       name: 'displayHorizontally',
       type: 'boolean',
       label: 'Display Horizontally',
       category: 'Chart settings',
-      defaultValue: false
+      defaultValue: false,
     },
     {
       name: 'stackMetrics',
       type: 'boolean',
       label: 'Stack Metrics',
       category: 'Chart settings',
-      defaultValue: false
+      defaultValue: false,
     },
     {
       name: 'reverseXAxis',
       type: 'boolean',
       label: 'Reverse X Axis',
       category: 'Chart settings',
-      defaultValue: false
+      defaultValue: false,
     },
     {
       name: 'xAxisTitle',
       type: 'string',
       label: 'X-Axis Title',
-      category: 'Chart settings'
+      category: 'Chart settings',
     },
     {
       name: 'yAxisTitle',
       type: 'string',
       label: 'Y-Axis Title',
-      category: 'Chart settings'
+      category: 'Chart settings',
     },
     {
       name: 'dps',
       type: 'number',
       label: 'Decimal Places',
-      category: 'Formatting'
+      category: 'Formatting',
     },
     {
       name: 'enableDownloadAsCSV',
       type: 'boolean',
       label: 'Show download as CSV',
       category: 'Export options',
-      defaultValue: true
-  }
-  ]
+      defaultValue: true,
+    },
+    {
+      name: 'enableDownloadAsPNG',
+      type: 'boolean',
+      label: 'Show download as PNG',
+      category: 'Export options',
+      defaultValue: true,
+    },
+  ],
 } as const satisfies EmbeddedComponentMeta;
 
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
     const orderProp: OrderBy[] = [];
 
-    if(inputs.sortBy) {
+    if (inputs.sortBy) {
       orderProp.push({
         property: inputs.sortBy,
-        direction: inputs.sortBy.nativeType == 'string' ? 'asc' : 'desc'
+        direction: inputs.sortBy.nativeType == 'string' ? 'asc' : 'desc',
       });
     } else if (inputs.limit) {
       orderProp.push({
         property: inputs.metrics[0],
-        direction: 'desc'
+        direction: 'desc',
       });
     }
 
@@ -152,8 +159,8 @@ export default defineComponent(Component, meta, {
         dimensions: [inputs.xAxis],
         measures: inputs.metrics,
         orderBy: orderProp,
-        limit: inputs.limit || 50
-      })
+        limit: inputs.limit || 50,
+      }),
     };
-  }
+  },
 });
