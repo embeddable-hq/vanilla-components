@@ -42,7 +42,7 @@ export default function formatValue(str: string = '', opt: Type | Options = 'str
       : wrap(str);
   }
 
-  if (dateFormat && str) return wrap(formatDate(parseTime(str), dateFormat));
+  if (dateFormat && str) return wrap(formatDate(parseJSON(str), dateFormat));
 
   return str;
 
