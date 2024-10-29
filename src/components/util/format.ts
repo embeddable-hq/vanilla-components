@@ -1,7 +1,5 @@
 import { format as formatDate, parseJSON } from 'date-fns';
 
-import { parseTime, timeRangeToLocal } from '../hooks/useTimezone';
-
 type Type = 'number' | 'date' | 'string';
 
 type Options = {
@@ -16,7 +14,7 @@ function numberFormatter(dps: number | undefined | null) {
   const fallback = dps == null || dps < 0;
   return new Intl.NumberFormat(undefined, {
     minimumFractionDigits: fallback ? 0 : dps, // Minimum number of digits after the decimal
-    maximumFractionDigits: fallback ? 2 : dps, // Maximum number of digits after the decimal
+    maximumFractionDigits: fallback ? 2 : dps // Maximum number of digits after the decimal
   });
 }
 
@@ -42,7 +40,7 @@ export default function formatValue(str: string = '', opt: Type | Options = 'str
       : wrap(str);
   }
 
-  if (dateFormat && str) return wrap(formatDate(parseTime(str), dateFormat));
+  if (dateFormat && str) return wrap(formatDate(parseJSON(str), dateFormat));
 
   return str;
 
