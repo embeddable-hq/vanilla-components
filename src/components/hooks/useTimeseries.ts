@@ -8,6 +8,7 @@ import {
   addSeconds,
   addWeeks,
   addYears,
+  parseJSON,
   subDays,
   subHours,
   subMinutes,
@@ -16,7 +17,6 @@ import {
   subSeconds,
   subWeeks,
   subYears,
-  parseJSON
 } from 'date-fns';
 import { useCallback } from 'react';
 
@@ -30,7 +30,7 @@ const addTime: { [granularity: string]: (date: Date | number, amount: number) =>
   week: addWeeks,
   month: addMonths,
   quarter: addQuarters,
-  year: addYears
+  year: addYears,
 };
 
 const subTime: { [granularity: string]: (date: Date | number, amount: number) => Date } = {
@@ -41,9 +41,8 @@ const subTime: { [granularity: string]: (date: Date | number, amount: number) =>
   week: subWeeks,
   month: subMonths,
   quarter: subQuarters,
-  year: subYears
+  year: subYears,
 };
-
 
 const unitsInSeconds = {
   second: 1,
@@ -51,18 +50,17 @@ const unitsInSeconds = {
   hour: 3600,
   day: 86400,
   week: 604800,
-  month: 2629800,  // Roughly 30.44 days
-  quarter: 7889400,  // Roughly 91.31 days
-  year: 31557600  // Based on a typical Gregorian year
+  month: 2629800, // Roughly 30.44 days
+  quarter: 7889400, // Roughly 91.31 days
+  year: 31557600, // Based on a typical Gregorian year
 };
 
 type Props = {
   xAxis: Dimension;
-  granularity: Granularity;
-}
+  granularity?: Granularity;
+};
 
-export default (props:Props, sortOrder:string = 'asc') => {
-
+export default (props: Props, sortOrder: string = 'asc') => {
   const { xAxis, granularity } = props;
 
   const fillGaps = useCallback(
@@ -80,15 +78,21 @@ export default (props:Props, sortOrder:string = 'asc') => {
         return [...memo, record];
       }
 
-      const seqDate = sortOrder === 'asc'
-        ? addTime[granularity || 'day'](parseJSON(prevDate), 1)
-        : subTime[granularity || 'day'](parseJSON(prevDate), 1)
+      const seqDate =
+        sortOrder === 'asc'
+          ? addTime[granularity || 'day'](parseJSON(prevDate), 1)
+          : subTime[granularity || 'day'](parseJSON(prevDate), 1);
 
       const dateSince1970 = parseJSON(date).getTime();
       const seqDateSince1970 = seqDate.getTime();
 
       // Check if the sequence date and current date are too close, meaning no gap to fill
-      if ((sortOrder === 'asc' ? dateSince1970 <= seqDateSince1970 : dateSince1970 >= seqDateSince1970) || Math.abs(seqDateSince1970 - dateSince1970) < unitsInSeconds[granularity || 'day'] * 1000) {
+      if (
+        (sortOrder === 'asc'
+          ? dateSince1970 <= seqDateSince1970
+          : dateSince1970 >= seqDateSince1970) ||
+        Math.abs(seqDateSince1970 - dateSince1970) < unitsInSeconds[granularity || 'day'] * 1000
+      ) {
         return [...memo, record];
       }
 
@@ -98,7 +102,7 @@ export default (props:Props, sortOrder:string = 'asc') => {
       // Recursive call to continue filling gaps
       return fillGaps(memo, record);
     },
-    [xAxis, granularity, sortOrder]
+    [xAxis, granularity, sortOrder],
   );
 
   return { fillGaps };
