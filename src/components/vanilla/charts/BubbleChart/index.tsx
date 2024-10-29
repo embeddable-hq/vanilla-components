@@ -115,6 +115,13 @@ function chartOptions(props: Props, updatedData: Record[] | undefined, bubbleDat
         grid: {
           display: false
         },
+        afterDataLimits: function(axis) {
+          // Capture the max value for dynamic stepSize calculation
+          const yAxisMax = axis.max;
+          // Prevent chartJS from showing fractions on the y-axis when there aren't any.
+          (axis.options as any).ticks.stepSize =  
+            !yAxisContainsFractions && yAxisMax < 10 ? 1 : undefined
+        },
         ticks: {
           padding: firstItemRadius          
         },
