@@ -1,5 +1,5 @@
 import { DataResponse } from '@embeddable.com/core';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import IconDownloadCSV from '../icons/DownloadCSV';
 import IconDownloadPNG from '../icons/DownloadPNG';
@@ -35,6 +35,7 @@ const DownloadMenu: React.FC<Props> = (props) => {
   } = props;
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [isDownloadStarted, setIsDownloadStarted] = useState<boolean>(false);
+  const refFocus = useRef<HTMLInputElement>(null);
 
   // Need a useEffect here because we want a render cycle to complete so the menu closes pre-html2canvas
   useEffect(() => {
@@ -78,6 +79,12 @@ const DownloadMenu: React.FC<Props> = (props) => {
     }
     downloadAsCSV(csvProps, data, csvProps.prevResults?.data, setPreppingDownload);
   };
+
+  useEffect(() => {
+    if (showMenu) {
+      refFocus.current?.focus();
+    }
+  }, [showMenu]);
 
   // Handle the Click on the PNG icon - triggers the useEffect above
   const handlePNGClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -125,37 +132,51 @@ const DownloadMenu: React.FC<Props> = (props) => {
 
   // Main Component
   return (
-    <div className="absolute top-0 right-0 z-5 flex items-center justify-end space-x-2 ">
-      <div onClick={handleSetShow} className="cursor-pointer relative w-3 flex justify-center">
-        {!preppingDownload && (
-          <IconVerticalEllipsis className="cursor-pointer hover:opacity-100 opacity-50" />
-        )}
-        {showMenu && (
-          <div className="absolute bg-white flex items-center right-0 p-4 rounded shadow-md top-6 w-40 whitespace-nowrap">
-            <ul>
-              <li className="mb-2">
-                <a
-                  href="#"
-                  onClick={handleCSVClick}
-                  className="inline-block flex items-center hover:opacity-100 opacity-60"
-                >
-                  <IconDownloadCSV className="cursor-pointer inline-block mr-2" /> Download CSV
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  onClick={handlePNGClick}
-                  className="inline-block flex items-center hover:opacity-100 opacity-60"
-                >
-                  <IconDownloadPNG className="cursor-pointer inline-block mr-2" /> Download PNG
-                </a>
-              </li>
-            </ul>
-          </div>
-        )}
+    <>
+      <div className="absolute top-0 right-0 z-5 flex items-center justify-end space-x-2 ">
+        <div onClick={handleSetShow} className="cursor-pointer relative w-3 flex justify-center">
+          {!preppingDownload && (
+            <IconVerticalEllipsis className="cursor-pointer hover:opacity-100 opacity-50" />
+          )}
+          {showMenu && (
+            <>
+              <div className="absolute bg-white flex items-center right-0 p-4 rounded shadow-md top-6 w-40 whitespace-nowrap">
+                <ul>
+                  <li className="mb-2">
+                    <a
+                      href="#"
+                      onClick={handleCSVClick}
+                      className="inline-block flex items-center hover:opacity-100 opacity-60"
+                    >
+                      <IconDownloadCSV className="cursor-pointer inline-block mr-2" /> Download CSV
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      onClick={handlePNGClick}
+                      className="inline-block flex items-center hover:opacity-100 opacity-60"
+                    >
+                      <IconDownloadPNG className="cursor-pointer inline-block mr-2" /> Download PNG
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <input
+                type="text"
+                ref={refFocus}
+                onBlur={() =>
+                  setTimeout(() => {
+                    setShowMenu(false);
+                  }, 200)
+                }
+                style={{ width: 1, height: 1, opacity: 0 }}
+              />
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
