@@ -4,9 +4,8 @@ import { twMerge } from 'tailwind-merge';
 
 import useFont from '../hooks/useFont';
 import useResize, { Size } from '../hooks/useResize';
-import IconCheckbox from '../icons/Checkbox';
 import Description from './Description';
-import DownloadIcon from './DownloadIcon';
+import DownloadMenu from './DownloadMenu';
 import Spinner from './Spinner';
 import Title from './Title';
 import { WarningIcon } from './icons';
@@ -33,12 +32,12 @@ export default ({
   setResizeState,
   ...props
 }: PropsWithChildren<Props>) => {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const prevHeightRef = useRef<number | null>(null);
-  const resizingTimeoutRef = useRef<number | null>(null);
-  const pngExportRef = useRef<HTMLDivElement | null>(null);
+  const refPrevHeight = useRef<number | null>(null);
+  const refExportPNGElement = useRef<HTMLDivElement | null>(null);
+  const refResize = useRef<HTMLDivElement | null>(null);
+  const refResizingTimeout = useRef<number | null>(null);
 
-  const { height } = useResize(ref, onResize || null);
+  const { height } = useResize(refResize, onResize || null);
 
   //Detect when the component is being resized by the user
   useEffect(() => {
@@ -47,29 +46,29 @@ export default ({
     }
     const currentHeight = height;
     // If prevHeightRef is null, this is the first render, so initialize it
-    if (prevHeightRef.current === null) {
-      prevHeightRef.current = currentHeight;
+    if (refPrevHeight.current === null) {
+      refPrevHeight.current = currentHeight;
     }
-    if (currentHeight !== prevHeightRef.current) {
+    if (currentHeight !== refPrevHeight.current) {
       setResizeState?.(true);
       // Clear the timeout if it exists, to debounce the resize state reset
-      if (resizingTimeoutRef.current) {
-        window.clearTimeout(resizingTimeoutRef.current);
+      if (refResizingTimeout.current) {
+        window.clearTimeout(refResizingTimeout.current);
       }
       // Set a timer to reset the resize state after 300ms
-      resizingTimeoutRef.current = window.setTimeout(() => {
+      refResizingTimeout.current = window.setTimeout(() => {
         setResizeState?.(false);
       }, 300);
     }
     // Update the previous height with the current height
-    prevHeightRef.current = currentHeight;
+    refPrevHeight.current = currentHeight;
     // Clean up the timeout when the component unmounts
     return () => {
-      if (resizingTimeoutRef.current) {
-        window.clearTimeout(resizingTimeoutRef.current);
+      if (refResizingTimeout.current) {
+        window.clearTimeout(refResizingTimeout.current);
       }
     };
-  }, [height]); // Depend on height, so it runs whenever height changes
+  }, [height, setResizeState]); // Depend on height, so it runs whenever height changes
 
   const [preppingDownload, setPreppingDownload] = useState(false);
   const { isLoading, error, data } = Array.isArray(props.results)
@@ -84,42 +83,17 @@ export default ({
   useFont();
 
   return (
-    <div className="h-full relative font-embeddable text-sm flex flex-col" ref={pngExportRef}>
-      {props.enableDownloadAsCSV || props.enableDownloadAsPNG ? (
-        <div className="flex items-center justify-end space-x-2">
-          <IconCheckbox />
-        </div>
-      ) : null}
-
-      {props.enableDownloadAsCSV ? (
-        <div className={`${!props.title ? 'h-[40px] w-full' : ''}`}>
-          <DownloadIcon
-            props={props}
-            show={data && data.length > 0 && !isLoading && !preppingDownload}
-            setPreppingDownload={setPreppingDownload}
-            type="csv"
-          />
-        </div>
-      ) : null}
-      {props.enableDownloadAsPNG ? (
-        <div className={`${!props.title ? 'h-[40px] w-full' : ''}`}>
-          <DownloadIcon
-            element={pngExportRef.current}
-            props={props}
-            show={data && data.length > 0 && !isLoading && !preppingDownload}
-            setPreppingDownload={setPreppingDownload}
-            type="png"
-          />
-        </div>
-      ) : null}
-
+    <div
+      className="h-full relative font-embeddable text-sm flex flex-col"
+      ref={refExportPNGElement}
+    >
       <Spinner show={isLoading || preppingDownload} />
       <Title title={props.title} />
       <Description description={props.description} />
 
-      <div ref={ref} className={twMerge(`relative grow flex flex-col`, className || '')}>
+      <div ref={refResize} className={twMerge(`relative grow flex flex-col`, className || '')}>
         <div
-          className={twMerge('flex flex-col', childContainerClassName || '')}
+          className={twMerge('-z-0 flex flex-col', childContainerClassName || '')}
           style={{ height: `${height}px` }}
         >
           {
@@ -139,6 +113,18 @@ export default ({
           <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
         )}
       </div>
+      {!isLoading && (props.enableDownloadAsCSV || props.enableDownloadAsPNG) ? (
+        <DownloadMenu
+          csvOpts={{
+            props: { results: props.results, prevResults: props.prevResults },
+          }}
+          enableDownloadAsCSV={props.enableDownloadAsCSV}
+          enableDownloadAsPNG={props.enableDownloadAsPNG}
+          pngOpts={{ element: refExportPNGElement.current }}
+          preppingDownload={preppingDownload}
+          setPreppingDownload={setPreppingDownload}
+        />
+      ) : null}
     </div>
   );
 };

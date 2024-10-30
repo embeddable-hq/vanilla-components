@@ -1,15 +1,15 @@
 type Props = {
-  handleClick: () => void;
+  className?: string;
 };
 
-const DownloadAsCSV: React.FC<Props> = (props) => {
-  const { handleClick } = props;
+const DownloadAsPNG: React.FC<Props> = (props) => {
+  const { className } = props;
+
   return (
     <svg
-      className={`absolute right-9 top-0 z-1 cursor-pointer hover:opacity-100 opacity-50`}
+      className={className}
       fill="none"
       height="24"
-      onClick={handleClick}
       viewBox="0 0 24 24"
       width="24"
       xmlns="http://www.w3.org/2000/svg"
@@ -42,4 +42,4 @@ const DownloadAsCSV: React.FC<Props> = (props) => {
   );
 };
 
-export default DownloadAsCSV;
+export default DownloadAsPNG;
