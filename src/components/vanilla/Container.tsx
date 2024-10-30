@@ -87,6 +87,12 @@ export default ({
       className="h-full relative font-embeddable text-sm flex flex-col"
       ref={refExportPNGElement}
     >
+      {props.enableDownloadAsCSV || props.enableDownloadAsPNG ? (
+        <div className={`${!props.title ? 'h-[40px] w-full' : ''}`}>
+          {/* spacer to keep charts from overlaying download menu */}
+          &nbsp;
+        </div>
+      ) : null}
       <Spinner show={isLoading || preppingDownload} />
       <Title title={props.title} />
       <Description description={props.description} />
@@ -96,10 +102,6 @@ export default ({
           className={twMerge('-z-0 flex flex-col', childContainerClassName || '')}
           style={{ height: `${height}px` }}
         >
-          <div className="h-10 relative font-embeddable text-sm flex flex-col">
-            {/* spacer to keep charts from overlaying download menu */}
-            &nbsp;
-          </div>
           {
             height && props.results && (error || noData) ? (
               <div className="h-full flex items-center justify-center font-embeddable text-sm">
