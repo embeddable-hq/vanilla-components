@@ -102,7 +102,9 @@ const DownloadMenu: React.FC<Props> = (props) => {
     return (
       <div className="absolute top-0 right-0 z-5 flex items-center justify-end space-x-2">
         <div onClick={handleCSVClick} className="cursor-pointer">
-          <IconDownloadCSV className="cursor-pointer hover:opacity-100 opacity-50" />
+          {!preppingDownload && (
+            <IconDownloadCSV className="cursor-pointer hover:opacity-100 opacity-50" />
+          )}
         </div>
       </div>
     );
@@ -113,7 +115,9 @@ const DownloadMenu: React.FC<Props> = (props) => {
     return (
       <div className="absolute top-0 right-0 z-5 flex items-center justify-end space-x-2">
         <div onClick={handlePNGClick} className="cursor-pointer">
-          <IconDownloadPNG className="cursor-pointer hover:opacity-100 opacity-50" />
+          {!preppingDownload && (
+            <IconDownloadPNG className="cursor-pointer hover:opacity-100 opacity-50" />
+          )}
         </div>
       </div>
     );
