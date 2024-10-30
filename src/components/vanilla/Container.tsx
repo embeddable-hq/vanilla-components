@@ -96,6 +96,10 @@ export default ({
           className={twMerge('-z-0 flex flex-col', childContainerClassName || '')}
           style={{ height: `${height}px` }}
         >
+          <div className="h-10 relative font-embeddable text-sm flex flex-col">
+            {/* spacer to keep charts from overlaying download menu */}
+            &nbsp;
+          </div>
           {
             height && props.results && (error || noData) ? (
               <div className="h-full flex items-center justify-center font-embeddable text-sm">
