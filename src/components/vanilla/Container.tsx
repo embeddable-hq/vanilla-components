@@ -45,7 +45,7 @@ export default ({
       return;
     }
     const currentHeight = height;
-    // If prevHeightRef is null, this is the first render, so initialize it
+    // If refPrevHeight is null, this is the first render, so initialize it
     if (refPrevHeight.current === null) {
       refPrevHeight.current = currentHeight;
     }
@@ -120,7 +120,7 @@ export default ({
           }}
           enableDownloadAsCSV={props.enableDownloadAsCSV}
           enableDownloadAsPNG={props.enableDownloadAsPNG}
-          pngOpts={{ element: refExportPNGElement.current }}
+          pngOpts={{ chartName: props.title || 'chart', element: refExportPNGElement.current }}
           preppingDownload={preppingDownload}
           setPreppingDownload={setPreppingDownload}
         />

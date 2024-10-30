@@ -17,6 +17,7 @@ type Props = {
   enableDownloadAsCSV?: boolean;
   enableDownloadAsPNG?: boolean;
   pngOpts?: {
+    chartName: string;
     element: HTMLDivElement | null;
   };
   preppingDownload: boolean;
@@ -42,13 +43,13 @@ const DownloadMenu: React.FC<Props> = (props) => {
         console.error('No PNG options supplied');
         return;
       }
-      const { element } = pngOpts;
+      const { chartName, element } = pngOpts;
       if (element) {
         const timestamp = Math.floor(new Date().getTime() / 1000);
         // Without the timeout, the spinner doesn't show up due to html2canvas stopping everything
         // We can't clear this timeout because the download will be cancelled due to useEffect cleanup
         setTimeout(() => {
-          downloadAsPNG(element, `chart-${timestamp}.png`, setPreppingDownload);
+          downloadAsPNG(element, `embeddable-${chartName}-${timestamp}.png`, setPreppingDownload);
         }, 200);
       }
       setIsDownloadStarted(false);
