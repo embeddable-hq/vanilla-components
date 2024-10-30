@@ -88,9 +88,8 @@ export default ({
       ref={refExportPNGElement}
     >
       {props.enableDownloadAsCSV || props.enableDownloadAsPNG ? (
-        <div className={`${!props.title ? 'h-[40px] w-full' : ''}`}>
-          {/* spacer to keep charts from overlaying download menu */}
-          &nbsp;
+        <div className={`${!props.title ? 'h-[32px] w-full' : ''}`}>
+          {/* spacer to keep charts from overlaying download menu if no title*/}
         </div>
       ) : null}
       <Spinner show={isLoading || preppingDownload} />
