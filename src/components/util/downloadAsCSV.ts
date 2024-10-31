@@ -12,6 +12,7 @@ const downloadAsCSV = (
   props: Props,
   data: DataResponseData[] | undefined,
   prevData: DataResponseData[] | undefined,
+  chartName: string,
   setLoadingState?: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   if (setLoadingState) {
@@ -23,6 +24,9 @@ const downloadAsCSV = (
     if (setLoadingState) setLoadingState(false);
     return;
   }
+
+  // Strip out any characters that aren't alphanumeric or spaces
+  const cleanedChartName = chartName.replace(/([^a-zA-Z0-9 ]+)/gi, '-');
 
   const titlesByName = (() => {
     const titles: { [key: string]: string } = {};
@@ -84,7 +88,9 @@ const downloadAsCSV = (
   };
 
   return setTimeout(() => {
-    downloadBlob(prepCSV(), 'export.csv', 'text/csv;charset=utf-8;');
+    const timestamp = new Date().toISOString();
+
+    downloadBlob(prepCSV(), `${cleanedChartName}-${timestamp}.csv`, 'text/csv;charset=utf-8;');
   }, 200); //timeout set to indicate that the download is in progress (if instant it can appear to the user that it hasn't been successful)
 };
 

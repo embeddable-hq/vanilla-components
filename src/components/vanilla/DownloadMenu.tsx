@@ -9,9 +9,10 @@ import downloadAsPNG from '../util/downloadAsPNG';
 
 type Props = {
   csvOpts?: {
+    chartName: string;
     props: {
-      results?: DataResponse | DataResponse[];
       prevResults?: DataResponse;
+      results?: DataResponse | DataResponse[];
     };
   };
   enableDownloadAsCSV?: boolean;
@@ -46,11 +47,13 @@ const DownloadMenu: React.FC<Props> = (props) => {
       }
       const { chartName, element } = pngOpts;
       if (element) {
-        const timestamp = Math.floor(new Date().getTime() / 1000);
+        // Strip out any characters that aren't alphanumeric or spaces
+        const cleanedChartName = chartName.replace(/([^a-zA-Z0-9 ]+)/gi, '-');
+        const timestamp = new Date().toISOString();
         // Without the timeout, the spinner doesn't show up due to html2canvas stopping everything
         // We can't clear this timeout because the download will be cancelled due to useEffect cleanup
         setTimeout(() => {
-          downloadAsPNG(element, `embeddable-${chartName}-${timestamp}.png`, setPreppingDownload);
+          downloadAsPNG(element, `${cleanedChartName}-${timestamp}.png`, setPreppingDownload);
         }, 200);
       }
       setIsDownloadStarted(false);
@@ -64,7 +67,7 @@ const DownloadMenu: React.FC<Props> = (props) => {
       console.error('No CSV options supplied');
       return;
     }
-    const { props: csvProps } = csvOpts;
+    const { chartName, props: csvProps } = csvOpts;
     // concatenate results data if results is an array (from pivot table)
     let data: DataResponse['data'] = [];
     if (Array.isArray(csvProps.results)) {
@@ -77,7 +80,7 @@ const DownloadMenu: React.FC<Props> = (props) => {
     } else {
       data = csvProps.results?.data;
     }
-    downloadAsCSV(csvProps, data, csvProps.prevResults?.data, setPreppingDownload);
+    downloadAsCSV(csvProps, data, csvProps.prevResults?.data, chartName, setPreppingDownload);
   };
 
   useEffect(() => {
