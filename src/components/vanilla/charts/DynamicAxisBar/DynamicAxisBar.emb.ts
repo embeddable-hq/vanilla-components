@@ -100,6 +100,13 @@ export const meta = {
       category: 'Formatting',
     },
     {
+      name: 'enableDownloadAsPNG',
+      type: 'boolean',
+      label: 'Show download as PNG',
+      category: 'Export options',
+      defaultValue: true,
+    },
+    {
       name: 'enableDownloadAsCSV',
       type: 'boolean',
       label: 'Show download as CSV',
