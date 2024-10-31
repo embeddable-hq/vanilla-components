@@ -1,8 +1,8 @@
 const apiKey = '...';
 const connectionName = 'my-db'; 
 
-const BASE_URL = 'https://api.embeddable.com'; // US
-// const BASE_URL = 'https://app-api.eu.embeddable.com'; // EU
+const BASE_URL = 'https://api.us.embeddable.com'; // US
+// const BASE_URL = 'https://api.eu.embeddable.com'; // EU
 
 async function run() {
     const resp = await fetch(`${BASE_URL}/api/v1/connections/${connectionName}/test`, {
