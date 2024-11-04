@@ -36,8 +36,8 @@ export default ({
   const refExportPNGElement = useRef<HTMLDivElement | null>(null);
   const refResize = useRef<HTMLDivElement | null>(null);
   const refResizingTimeout = useRef<number | null>(null);
-
   const { height } = useResize(refResize, onResize || null);
+  const [preppingDownload, setPreppingDownload] = useState<boolean>(false);
 
   //Detect when the component is being resized by the user
   useEffect(() => {
@@ -70,7 +70,6 @@ export default ({
     };
   }, [height, setResizeState]); // Depend on height, so it runs whenever height changes
 
-  const [preppingDownload, setPreppingDownload] = useState(false);
   const { isLoading, error, data } = Array.isArray(props.results)
     ? {
         isLoading: props.results.some((result) => result.isLoading),
@@ -83,40 +82,39 @@ export default ({
   useFont();
 
   return (
-    <div
-      className="h-full relative font-embeddable text-sm flex flex-col"
-      ref={refExportPNGElement}
-    >
+    <div className="h-full relative font-embeddable text-sm flex flex-col">
       {props.enableDownloadAsCSV || props.enableDownloadAsPNG ? (
         <div className={`${!props.title ? 'h-[32px] w-full' : ''}`}>
           {/* spacer to keep charts from overlaying download menu if no title*/}
         </div>
       ) : null}
       <Spinner show={isLoading || preppingDownload} />
-      <Title title={props.title} />
-      <Description description={props.description} />
+      <div className="h-full relative flex flex-col" ref={refExportPNGElement}>
+        <Title title={props.title} />
+        <Description description={props.description} />
 
-      <div ref={refResize} className={twMerge(`relative grow flex flex-col`, className || '')}>
-        <div
-          className={twMerge('-z-0 flex flex-col', childContainerClassName || '')}
-          style={{ height: `${height}px` }}
-        >
-          {
-            height && props.results && (error || noData) ? (
-              <div className="h-full flex items-center justify-center font-embeddable text-sm">
-                <WarningIcon />
-                <div className="whitespace-pre-wrap p-4 max-w-sm text-sm">
-                  {error || '0 results'}
+        <div ref={refResize} className={twMerge(`relative grow flex flex-col`, className || '')}>
+          <div
+            className={twMerge('-z-0 flex flex-col', childContainerClassName || '')}
+            style={{ height: `${height}px` }}
+          >
+            {
+              height && props.results && (error || noData) ? (
+                <div className="h-full flex items-center justify-center font-embeddable text-sm">
+                  <WarningIcon />
+                  <div className="whitespace-pre-wrap p-4 max-w-sm text-sm">
+                    {error || '0 results'}
+                  </div>
                 </div>
-              </div>
-            ) : height ? (
-              children
-            ) : null // Ensure height is calculated before rendering charts to prevent libraries (e.g., ChartJS) from overflowing the container
-          }
+              ) : height ? (
+                children
+              ) : null // Ensure height is calculated before rendering charts to prevent libraries (e.g., ChartJS) from overflowing the container
+            }
+          </div>
+          {isLoading && !data?.length && (
+            <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
+          )}
         </div>
-        {isLoading && !data?.length && (
-          <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
-        )}
       </div>
       {!isLoading && (props.enableDownloadAsCSV || props.enableDownloadAsPNG) ? (
         <DownloadMenu

@@ -31,7 +31,7 @@
     "clsx": "^2.1.1",
     "d3-scale": "^4.0.2",
     "date-fns": "^3.6.0",
-    "html2canvas": "^1.4.1",
+    "html-to-image": "^1.11.11",
     "license-report": "^6.7.0",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",

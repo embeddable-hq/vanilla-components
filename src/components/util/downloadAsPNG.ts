@@ -1,4 +1,4 @@
-import html2canvas from 'html2canvas';
+import { toPng } from 'html-to-image';
 import { Dispatch, SetStateAction } from 'react';
 
 // Create a canvas from the element, convert to png, and download
@@ -7,9 +7,21 @@ const downloadAsPNG = async (
   filename: string,
   setLoadingState: Dispatch<SetStateAction<boolean>>,
 ) => {
-  const canvas = await html2canvas(element);
-  const imageUrl = canvas.toDataURL('image/png', 1.0);
-  downloadImage(imageUrl, filename);
+  // Prevent transparent PNGs
+  let changedBkg = false;
+  if (!element.style.backgroundColor) {
+    element.style.backgroundColor = 'white';
+    changedBkg = true;
+  }
+
+  // Download the image
+  const imageUrl = await toPng(element);
+  await downloadImage(imageUrl, filename);
+
+  // Reset the background color if it was changed
+  if (changedBkg) {
+    element.style.backgroundColor = '';
+  }
   setLoadingState(false);
 };
 
