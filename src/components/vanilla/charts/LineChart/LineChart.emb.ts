@@ -117,6 +117,13 @@ export const meta = {
       category: 'Export options',
       defaultValue: true,
     },
+    {
+      name: 'enableDownloadAsPNG',
+      type: 'boolean',
+      label: 'Show download as PNG',
+      category: 'Export options',
+      defaultValue: true,
+    },
   ],
 } as const satisfies EmbeddedComponentMeta;
 
