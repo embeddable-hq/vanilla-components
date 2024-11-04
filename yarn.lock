@@ -247,13 +247,13 @@
     "@babel/helper-string-parser" "^7.25.9"
     "@babel/helper-validator-identifier" "^7.25.9"
 
-"@cubejs-backend/api-gateway@^0.35.81":
-  version "0.35.81"
-  resolved "https://registry.npmjs.org/@cubejs-backend/api-gateway/-/api-gateway-0.35.81.tgz"
-  integrity sha512-WNFFZJMsi/4a37HiJSRsbSL4ql5ZqT4QSR9yxXu3cze3hm/4YSyUjIZPCPbQHFD1DYAl7OHufugw6AeSMSEKrQ==
+"@cubejs-backend/api-gateway@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@cubejs-backend/api-gateway/-/api-gateway-1.1.2.tgz#2a8fa9e0c5ab7be8242eccaea5c9f83a2eac43c3"
+  integrity sha512-rGEgotCbOCYFGcWZPtdCnPjazjly+kZ2SXmSRZFIwySUj3QgL9oWnJx4tSIaKOLO+sgkFgCnnJeQIDyvAzwpVA==
   dependencies:
-    "@cubejs-backend/native" "^0.35.81"
-    "@cubejs-backend/shared" "^0.35.67"
+    "@cubejs-backend/native" "1.1.2"
+    "@cubejs-backend/shared" "1.1.2"
     "@ungap/structured-clone" "^0.3.4"
     body-parser "^1.19.0"
     chrono-node "^2.6.2"
@@ -273,18 +273,18 @@
     ramda "^0.27.0"
     uuid "^8.3.2"
 
-"@cubejs-backend/cubesql@^0.35.81":
-  version "0.35.81"
-  resolved "https://registry.npmjs.org/@cubejs-backend/cubesql/-/cubesql-0.35.81.tgz"
-  integrity sha512-beBfFf7RQElu99mMjpF/1Qu/InoVzFyxwJYEiNGiZUzGEu4aHfK/bFDtidkat0p/1DpHhtzxUG/1q5jiq+ki/Q==
+"@cubejs-backend/cubesql@1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@cubejs-backend/cubesql/-/cubesql-1.1.2.tgz#357ed9ddcd38b3afb30de2f6a1de429e755775bc"
+  integrity sha512-INLMN1VOQsSwgnAyaM6vcC9ygibG5aDR9zum0h0Bcl1CbVKKX7GVwzzM4zV9yYke9u2LpwbnkyM0Ittx1zPFew==
 
-"@cubejs-backend/native@^0.35.81":
-  version "0.35.81"
-  resolved "https://registry.npmjs.org/@cubejs-backend/native/-/native-0.35.81.tgz"
-  integrity sha512-aOpmetiBtYqx2sjrbcPk0uRkv13RodEULWyJ+9l3ATDhPw/DVZ8QpYr5u9dWD0OcsbDgFKdueEOmfC3oOwoL0w==
+"@cubejs-backend/native@1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@cubejs-backend/native/-/native-1.1.2.tgz#44fc74c579043bb0e9a4596b64a2b000d13115e6"
+  integrity sha512-hESRb7Kq1Qm+RYU/v9+EiC7F+2jlXCbnVL7HQxGT22kTE01ppKBdD0xDvR41fsvHT88MrpDkQGfPHoVcbM6gMg==
   dependencies:
-    "@cubejs-backend/cubesql" "^0.35.81"
-    "@cubejs-backend/shared" "^0.35.67"
+    "@cubejs-backend/cubesql" "1.1.2"
+    "@cubejs-backend/shared" "1.1.2"
     "@cubejs-infra/post-installer" "^0.0.7"
 
 "@cubejs-backend/shared@0.33.20":
@@ -307,10 +307,10 @@
     throttle-debounce "^3.0.1"
     uuid "^8.3.2"
 
-"@cubejs-backend/shared@^0.35.67":
-  version "0.35.67"
-  resolved "https://registry.npmjs.org/@cubejs-backend/shared/-/shared-0.35.67.tgz"
-  integrity sha512-aNc0vrOA87hI1LrmD/SxiGoEx12xyIZEh3VdchYYxhSANUjNB8rmmz3EWVvA5YRoLQ5Sl1AxJPZJTGKjLNNn7Q==
+"@cubejs-backend/shared@1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@cubejs-backend/shared/-/shared-1.1.2.tgz#1ff5c3708c81ea093d20e63c24cdc9a82ba5313f"
+  integrity sha512-4ksenOMv+4T8OHf75zvonc0RGoTPb7y9xLiPjGX4C6xkypft9/8ftmgl7SfidnqjWDJzK9Ux9Xk0qYlscW6dpA==
   dependencies:
     "@oclif/color" "^0.1.2"
     bytes "^3.1.0"
