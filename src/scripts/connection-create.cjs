@@ -1,8 +1,8 @@
 const apiKey = '...';
 const connectionName = 'my-db'; 
 
-const BASE_URL = 'https://api.embeddable.com'; // US
-// const BASE_URL = 'https://app-api.eu.embeddable.com'; // EU
+const BASE_URL = 'https://api.us.embeddable.com'; // US
+// const BASE_URL = 'https://api.eu.embeddable.com'; // EU
 
 /**
  * see db-specific examples @ https://trevorio.notion.site/Connections-API-ff4af10f7eaf4288b6952fde04e6e933
