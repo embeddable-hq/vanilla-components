@@ -5,8 +5,8 @@
 const API_KEY = '...';
 const EMBEDDABLE_ID = '...';
 
-const BASE_URL = 'https://api.embeddable.com'; // US
-// const BASE_URL = 'https://app-api.eu.embeddable.com'; // EU
+const BASE_URL = 'https://api.us.embeddable.com'; // US
+// const BASE_URL = 'https://api.eu.embeddable.com'; // EU
 
 const http = require("http");
 
