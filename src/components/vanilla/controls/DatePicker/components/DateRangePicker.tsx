@@ -1,7 +1,7 @@
 import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser.js';
 import { endOfDay, getYear } from 'date-fns';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
+import { DayPicker, MonthCaptionProps, useDayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
 import formatValue from '../../../../util/format';
@@ -138,18 +138,15 @@ export default function DateRangePicker(props: Props) {
               focus ? 'block' : 'hidden'
             } absolute top-8 right-0 sm:right-auto sm:left-0 z-50 pt-3 pointer-events-auto opacity-100`}
           >
-            {/*
-              DayPicker v8.x does not support the required prop on ranges. Need to upgrade to 9.x
-              required={true}
-            */}
             <DayPicker
               showOutsideDays
               className="border border-[#d8dad9] bg-white rounded-xl px-4 py-3 text-[#101010] !m-0"
               components={{
-                Caption: CustomCaption,
+                MonthCaption: CustomCaption,
               }}
               weekStartsOn={1}
               mode="range"
+              required={true}
               selected={{ from: range?.from, to: range?.to }}
               onSelect={(range) => {
                 setRange({ ...range, relativeTimeString: 'Custom' });
@@ -172,8 +169,8 @@ export default function DateRangePicker(props: Props) {
   );
 }
 
-const CustomCaption = (props: CaptionProps) => {
-  const { goToMonth, nextMonth, previousMonth } = useNavigation();
+const CustomCaption = (props: MonthCaptionProps) => {
+  const { goToMonth, nextMonth, previousMonth } = useDayPicker();
 
   return (
     <h2 className="flex items-center">
@@ -185,7 +182,7 @@ const CustomCaption = (props: CaptionProps) => {
         <ChevronLeft />
       </button>
       <span className="mx-auto text-sm">
-        {formatValue(props.displayMonth.toJSON(), { dateFormat: 'MMMM yyy' })}
+        {formatValue(props.calendarMonth.date.toJSON(), { dateFormat: 'MMMM yyy' })}
       </span>
       <button
         className="w-7 h-7 bg-white rounded border border-slate-400 justify-center items-center inline-flex"
