@@ -141,9 +141,14 @@ export default function DateRangePicker(props: Props) {
             <DayPicker
               showOutsideDays
               className="border border-[#d8dad9] bg-white rounded-xl px-4 py-3 text-[#101010] !m-0"
+              classNames={{
+                selected: 'bg-[#f3f4f6] text-[#101010]',
+              }}
               components={{
                 MonthCaption: CustomCaption,
-                Nav: (props: NavProps) => <span></span>,
+                Nav: (props: NavProps) => (
+                  <span style={{ position: 'absolute', top: 0, left: 0 }}></span>
+                ),
               }}
               weekStartsOn={1}
               mode="range"
