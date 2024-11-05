@@ -1,7 +1,7 @@
 import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser.js';
 import { endOfDay, getYear } from 'date-fns';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { DayPicker, MonthCaptionProps, useDayPicker } from 'react-day-picker';
+import { DayPicker, MonthCaptionProps, NavProps, useDayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
 import formatValue from '../../../../util/format';
@@ -143,6 +143,7 @@ export default function DateRangePicker(props: Props) {
               className="border border-[#d8dad9] bg-white rounded-xl px-4 py-3 text-[#101010] !m-0"
               components={{
                 MonthCaption: CustomCaption,
+                Nav: (props: NavProps) => <span></span>,
               }}
               weekStartsOn={1}
               mode="range"
