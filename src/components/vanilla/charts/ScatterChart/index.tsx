@@ -1,6 +1,6 @@
 import Container from '../../Container';
 import useTimeseries from '../../../hooks/useTimeseries';
-import { DataResponse, Dataset, Dimension, Granularity, Measure } from '@embeddable.com/core';
+import { DataResponse, Dimension, Granularity, Measure } from '@embeddable.com/core';
 import {
   CategoryScale,
   ChartData,
