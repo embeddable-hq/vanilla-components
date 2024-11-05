@@ -1,3 +1,4 @@
+import html2canvas from 'html2canvas';
 import { toPng } from 'html-to-image';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -15,7 +16,15 @@ const downloadAsPNG = async (
   }
 
   // Download the image
-  const imageUrl = await toPng(element);
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  let imageUrl = '';
+  if (!isSafari) {
+    imageUrl = await toPng(element);
+  } else {
+    // Fall back to html2canvas for Safari
+    const canvas = await html2canvas(element);
+    imageUrl = canvas.toDataURL('image/png');
+  }
   await downloadImage(imageUrl, filename);
 
   // Reset the background color if it was changed
