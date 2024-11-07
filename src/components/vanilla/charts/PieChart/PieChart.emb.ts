@@ -1,4 +1,4 @@
-import { loadData, Value } from '@embeddable.com/core';
+import { Value, loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
@@ -10,81 +10,88 @@ export const meta = {
   category: 'Charts: essentials',
   inputs: [
     {
-        name: 'ds',
-        type: 'dataset',
-        label: 'Dataset to display',
-        category: 'Chart data'
+      name: 'ds',
+      type: 'dataset',
+      label: 'Dataset to display',
+      category: 'Chart data',
     },
     {
-        name: 'slice',
-        type: 'dimension',
-        label: 'Slice',
-        config: {
-            dataset: 'ds'
-        },
-        category: 'Chart data'
+      name: 'slice',
+      type: 'dimension',
+      label: 'Slice',
+      config: {
+        dataset: 'ds',
+      },
+      category: 'Chart data',
     },
     {
-        name: 'metric',
-        type: 'measure',
-        label: 'Metric',
-        config: {
-            dataset: 'ds'
-        },
-        category: 'Chart data'
+      name: 'metric',
+      type: 'measure',
+      label: 'Metric',
+      config: {
+        dataset: 'ds',
+      },
+      category: 'Chart data',
     },
     {
-        name: 'title',
-        type: 'string',
-        label: 'Title',
-        description: 'The title for the chart',
-        category: 'Chart settings'
+      name: 'title',
+      type: 'string',
+      label: 'Title',
+      description: 'The title for the chart',
+      category: 'Chart settings',
     },
     {
-        name: 'description',
-        type: 'string',
-        label: 'Description',
-        description: 'The description for the chart',
-        category: 'Chart settings'
+      name: 'description',
+      type: 'string',
+      label: 'Description',
+      description: 'The description for the chart',
+      category: 'Chart settings',
     },
     {
-        name: 'showLegend',
-        type: 'boolean',
-        label: 'Turn on the legend',
-        defaultValue: true,
-        category: 'Chart settings'
+      name: 'showLegend',
+      type: 'boolean',
+      label: 'Turn on the legend',
+      defaultValue: true,
+      category: 'Chart settings',
     },
     {
-        name: 'maxSegments',
-        type: 'number',
-        label: 'Max Legend items',
-        defaultValue: 8,
-        category: 'Chart settings'
+      name: 'maxSegments',
+      type: 'number',
+      label: 'Max Legend items',
+      defaultValue: 8,
+      category: 'Chart settings',
     },
     {
-        name: 'showLabels',
-        type: 'boolean',
-        label: 'Show Labels',
-        defaultValue: false,
-        category: 'Chart settings'
+      name: 'showLabels',
+      type: 'boolean',
+      label: 'Show Labels',
+      defaultValue: false,
+      category: 'Chart settings',
     },
     {
-        name: 'displayAsPercentage',
-        type: 'boolean',
-        label: 'Display as Percentages',
-        defaultValue: false,
-        category: 'Chart settings'
+      name: 'displayAsPercentage',
+      type: 'boolean',
+      label: 'Display as Percentages',
+      defaultValue: false,
+      category: 'Chart settings',
     },
     {
       name: 'dps',
       type: 'number',
       label: 'Decimal Places',
-      category: 'Formatting'
+      category: 'Formatting',
     },
     {
       name: 'enableDownloadAsCSV',
       type: 'boolean',
       label: 'Show download as CSV',
+      category: 'Export options',
+      defaultValue: true,
+    },
+    {
+      name: 'enableDownloadAsPNG',
+      type: 'boolean',
+      label: 'Show download as PNG',
       category: 'Export options',
       defaultValue: true,
     },
@@ -96,14 +103,14 @@ export const meta = {
       properties: [
         {
           name: 'slice',
-          type: 'string'
+          type: 'string',
         },
         {
           name: 'metric',
-          type: 'number'
+          type: 'number',
         },
-      ]
-    }
+      ],
+    },
   ],
 } as const satisfies EmbeddedComponentMeta;
 
@@ -114,16 +121,16 @@ export default defineComponent(Component, meta, {
       results: loadData({
         from: inputs.ds,
         dimensions: [inputs.slice],
-        measures: [inputs.metric]
-      })
+        measures: [inputs.metric],
+      }),
     };
   },
   events: {
     onClick: (value) => {
-      return { 
+      return {
         slice: value.slice || Value.noFilter(),
-        metric: value.metric || Value.noFilter()
+        metric: value.metric || Value.noFilter(),
       };
-    }
-  }
+    },
+  },
 });

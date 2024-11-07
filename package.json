@@ -8,19 +8,18 @@
     "embeddable:push": "embeddable push",
     "embeddable:login": "embeddable login",
     "embeddable:dev": "cross-env NODE_OPTIONS='--max-old-space-size=4096' embeddable dev",
-    "check-types": "tsc --noEmit",
+    "check-types": "tsc --noemit",
     "ct": "tsc --noEmit",
     "cube:playground": "docker-compose -f ./src/cube-playground.yml up",
     "cube:cubestore": "mysql -h 127.0.0.1 -P 13306 --user=cubestore -pcubestore",
     "dev": "cross-env NODE_OPTIONS='--max-old-space-size=4096' embeddable dev",
     "build": "embeddable build",
     "push": "embeddable push",
-    "check-types": "tsc --noemit",
     "lint": "npx eslint . --ext .ts --ext .tsx",
     "license-report": "license-report --output=csv --csvHeaders --fields name --fields link --fields licenseType --fields installedVersion --fields author > license-report.csv"
   },
   "dependencies": {
-    "@cubejs-backend/api-gateway": "^0.35.81",
+    "@cubejs-backend/api-gateway": "^1.1.2",
     "@headlessui/tailwindcss": "^0.2.0",
     "@types/react-simple-maps": "^3.0.4",
     "@typescript-eslint/eslint-plugin": "^8.11.0",
@@ -32,6 +31,8 @@
     "clsx": "^2.1.1",
     "d3-scale": "^4.0.2",
     "date-fns": "^3.6.0",
+    "html-to-image": "^1.11.11",
+    "html2canvas": "^1.4.1",
     "license-report": "^6.7.0",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
@@ -41,12 +42,12 @@
     "react-dom": "^18.2.0",
     "react-simple-maps": "^3.0.0",
     "tailwind-merge": "^2.2.1",
-    "uuid": "^10.0.0",
+    "uuid": "^11.0.2",
     "vite-plugin-css-injected-by-js": "^3.1.1"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.22.4",
-    "@rollup/rollup-win32-x64-msvc": "4.22.4"
+    "@rollup/rollup-win32-x64-msvc": "4.24.4"
   },
   "overrides": {
     "react-simple-maps": {
@@ -58,7 +59,7 @@
   "devDependencies": {
     "@embeddable.com/core": "2.6.5",
     "@embeddable.com/react": "2.7.3",
-    "@embeddable.com/sdk-core": "3.9.1",
+    "@embeddable.com/sdk-core": "3.9.5",
     "@embeddable.com/sdk-react": "3.8.0",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/d3-scale": "^4.0.8",
@@ -75,7 +76,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.14",
     "postcss": "^8.4.24",
-    "prettier": "3.2.5",
+    "prettier": "3.3.3",
     "tailwindcss": "^3.3.2",
     "tw-colors": "^3.3.2",
     "typescript": "^5.3.3"
