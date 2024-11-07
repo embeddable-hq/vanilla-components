@@ -15,7 +15,7 @@ export const meta = {
       label: 'Dataset',
       description: 'Dataset',
       defaultValue: false,
-      category: 'Chart data'
+      category: 'Chart data',
     },
     {
       name: 'xAxis',
@@ -23,9 +23,9 @@ export const meta = {
       label: 'X-Axis',
       config: {
         dataset: 'ds',
-        supportedTypes: ['time']
+        supportedTypes: ['time'],
       },
-      category: 'Chart data'
+      category: 'Chart data',
     },
     {
       name: 'metrics',
@@ -33,98 +33,105 @@ export const meta = {
       array: true,
       label: 'Metrics',
       config: {
-        dataset: 'ds'
+        dataset: 'ds',
       },
-      category: 'Chart data'
+      category: 'Chart data',
     },
     {
       name: 'granularity',
       type: 'granularity',
       label: 'Granularity',
       defaultValue: 'day',
-      category: 'Variables to configure'
+      category: 'Variables to configure',
     },
     {
       name: 'timeFilter',
       type: 'timeRange',
       label: 'Primary date range',
       description: 'Date range',
-      category: 'Variables to configure'
+      category: 'Variables to configure',
     },
     {
       name: 'prevTimeFilter',
       type: 'timeRange',
       label: 'Comparison date range',
       description: 'Date range',
-      category: 'Variables to configure'
+      category: 'Variables to configure',
     },
     {
       name: 'title',
       type: 'string',
       label: 'Title',
       description: 'The title for the chart',
-      category: 'Chart settings'
+      category: 'Chart settings',
     },
     {
       name: 'description',
       type: 'string',
       label: 'Description',
       description: 'The description for the chart',
-      category: 'Chart settings'
+      category: 'Chart settings',
     },
     {
       name: 'xAxisTitle',
       type: 'string',
       label: 'X-Axis Title',
-      category: 'Chart settings'
+      category: 'Chart settings',
     },
     {
       name: 'yAxisTitle',
       type: 'string',
       label: 'Y-Axis Title',
-      category: 'Chart settings'
+      category: 'Chart settings',
     },
     {
       name: 'showLabels',
       type: 'boolean',
       label: 'Show Labels',
       category: 'Chart settings',
-      defaultValue: false
+      defaultValue: false,
     },
     {
       name: 'applyFill',
       type: 'boolean',
       label: 'Color fill space under line',
       category: 'Chart settings',
-      defaultValue: false
+      defaultValue: false,
     },
     {
       name: 'yAxisMin',
       type: 'number',
       label: 'Y-Axis minimum value',
-      category: 'Chart settings'
+      category: 'Chart settings',
     },
     {
       name: 'showLegend',
       type: 'boolean',
       label: 'Show Legend',
       category: 'Chart settings',
-      defaultValue: true
+      defaultValue: true,
     },
     {
       name: 'enableDownloadAsCSV',
       type: 'boolean',
       label: 'Show download as CSV',
       category: 'Export options',
-      defaultValue: true
+      defaultValue: true,
+    },
+    {
+      name: 'enableDownloadAsPNG',
+      type: 'boolean',
+      label: 'Show download as PNG',
+      category: 'Export options',
+      defaultValue: true,
     },
     {
       name: 'dps',
       type: 'number',
       label: 'Decimal Places',
-      category: 'Formatting'
-    }
-  ]
+      category: 'Formatting',
+    },
+  ],
 } as const satisfies EmbeddedComponentMeta;
 
 export default defineComponent(Component, meta, {
@@ -133,7 +140,7 @@ export default defineComponent(Component, meta, {
 
     orderProp.push({
       property: inputs.xAxis,
-      direction: 'desc'
+      direction: 'desc',
     });
 
     return {
@@ -145,8 +152,8 @@ export default defineComponent(Component, meta, {
         timeDimensions: [
           {
             dimension: inputs.xAxis?.name,
-            granularity: inputs.granularity
-          }
+            granularity: inputs.granularity,
+          },
         ],
         measures: inputs.metrics,
         filters:
@@ -155,18 +162,18 @@ export default defineComponent(Component, meta, {
                 {
                   property: inputs.xAxis,
                   operator: 'inDateRange',
-                  value: inputs.timeFilter
-                }
+                  value: inputs.timeFilter,
+                },
               ]
-            : undefined
+            : undefined,
       }),
       prevResults: loadData({
         from: inputs.ds,
         timeDimensions: [
           {
             dimension: inputs.xAxis?.name,
-            granularity: inputs.granularity
-          }
+            granularity: inputs.granularity,
+          },
         ],
         limit: !inputs.prevTimeFilter ? 1 : 500,
         orderBy: orderProp,
@@ -180,12 +187,12 @@ export default defineComponent(Component, meta, {
                   value: {
                     from: inputs.prevTimeFilter.from,
                     relativeTimeString: '',
-                    to: inputs.prevTimeFilter.to
-                  }
-                }
+                    to: inputs.prevTimeFilter.to,
+                  },
+                },
               ]
-            : undefined
-      })
+            : undefined,
+      }),
     };
-  }
+  },
 });

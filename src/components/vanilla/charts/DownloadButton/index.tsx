@@ -47,7 +47,15 @@ export default (props: Props) => {
         buttonLabel={buttonLabel}
         showSpinner={preppingDownload}
         disabled={results?.isLoading || preppingDownload}
-        onClick={() => downloadAsCSV(props, results?.data, results?.prevData, setPreppingDownload)}
+        onClick={() =>
+          downloadAsCSV(
+            props,
+            results?.data,
+            results?.prevData,
+            'downloaded-chart-data',
+            setPreppingDownload,
+          )
+        }
         icon={downloadSVG}
       />
     </Container>

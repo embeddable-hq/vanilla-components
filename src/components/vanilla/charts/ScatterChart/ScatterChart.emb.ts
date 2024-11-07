@@ -1,18 +1,20 @@
-import { OrderBy, loadData } from '@embeddable.com/core';
+import { OrderBy, isDimension, isMeasure, loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
 
 export const meta = {
-  name: 'MultiDimensionLineChart',
-  label: 'Multi-dimension line (time-series)',
+  name: 'ScatterChart',
+  label: 'Scatter chart',
   classNames: ['inside-card'],
-  category: 'Charts: time-series',
+  category: 'Charts: essentials',
   inputs: [
     {
       name: 'ds',
       type: 'dataset',
-      label: 'Dataset to display',
+      label: 'Dataset',
+      description: 'Dataset',
+      defaultValue: false,
       category: 'Chart data',
     },
     {
@@ -21,26 +23,23 @@ export const meta = {
       label: 'X-Axis',
       config: {
         dataset: 'ds',
-        supportedTypes: ['time'],
       },
       category: 'Chart data',
     },
     {
-      name: 'segment',
-      type: 'dimension',
-      label: 'Segment',
-      config: {
-        dataset: 'ds',
-      },
-      category: 'Chart data',
-    },
-    {
-      name: 'metric',
+      name: 'metrics',
       type: 'measure',
-      label: 'Metric',
+      label: 'Metrics',
+      array: true,
       config: {
         dataset: 'ds',
       },
+      category: 'Chart data',
+    },
+    {
+      name: 'limit',
+      type: 'number',
+      label: 'Limit results',
       category: 'Chart data',
     },
     {
@@ -67,35 +66,40 @@ export const meta = {
     {
       name: 'showLegend',
       type: 'boolean',
-      label: 'Show legend',
+      label: 'Show Legend',
+      category: 'Chart settings',
       defaultValue: true,
-      category: 'Chart settings',
-    },
-    {
-      name: 'maxSegments',
-      type: 'number',
-      label: 'Max Legend Items',
-      defaultValue: 8,
-      category: 'Chart settings',
     },
     {
       name: 'showLabels',
       type: 'boolean',
       label: 'Show Labels',
+      category: 'Chart settings',
       defaultValue: false,
+    },
+    {
+      name: 'reverseXAxis',
+      type: 'boolean',
+      label: 'Reverse X Axis',
+      category: 'Chart settings',
+      defaultValue: false,
+    },
+    {
+      name: 'xAxisTitle',
+      type: 'string',
+      label: 'X-Axis Title',
+      category: 'Chart settings',
+    },
+    {
+      name: 'yAxisTitle',
+      type: 'string',
+      label: 'Y-Axis Title',
       category: 'Chart settings',
     },
     {
       name: 'yAxisMin',
       type: 'number',
       label: 'Y-Axis minimum value',
-      category: 'Chart settings',
-    },
-    {
-      name: 'limit',
-      type: 'number',
-      label: 'Limit results',
-      defaultValue: 100,
       category: 'Chart settings',
     },
     {
@@ -130,28 +134,37 @@ export default defineComponent(Component, meta, {
       direction: 'desc',
     });
 
+    const isTimeDimension = inputs.xAxis.nativeType === 'time';
+
     return {
       ...inputs,
-      isMultiDimensionLine: true,
-      results: loadData({
-        from: inputs.ds,
-        limit: inputs.limit || 500,
-        orderBy: orderProp,
-        timeDimensions: [
-          {
-            dimension: inputs.xAxis?.name,
-            granularity: inputs.granularity,
-          },
-        ],
-        dimensions: [inputs.segment],
-        measures: [inputs.metric],
-        filters: [
-          {
-            property: inputs.xAxis,
-            operator: 'notNull',
-          },
-        ],
-      }),
+      reverseXAxis: inputs.reverseXAxis,
+      isTimeDimension: isTimeDimension,
+      results: isTimeDimension
+        ? loadData({
+            from: inputs.ds,
+            orderBy: orderProp,
+            timeDimensions: [
+              {
+                dimension: inputs.xAxis?.name,
+                granularity: inputs.granularity,
+              },
+            ],
+            measures: inputs.metrics,
+            filters: [
+              {
+                property: inputs.xAxis,
+                operator: 'notNull',
+              },
+            ],
+            limit: inputs.limit || 50,
+          })
+        : loadData({
+            from: inputs.ds,
+            dimensions: [inputs.xAxis],
+            measures: inputs.metrics,
+            limit: inputs.limit || 50,
+          }),
     };
   },
 });

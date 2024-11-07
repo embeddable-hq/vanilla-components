@@ -17,39 +17,39 @@ export const meta = {
       label: 'Dataset',
       description: 'Dataset',
       defaultValue: false,
-      category: 'Chart data'
+      category: 'Chart data',
     },
     {
       name: 'segments',
       type: 'dimension',
       label: 'Segments',
       config: {
-        dataset: 'ds'
+        dataset: 'ds',
       },
-      category: 'Chart data'
+      category: 'Chart data',
     },
     {
       name: 'metric',
       type: 'measure',
       label: 'Metric',
       config: {
-        dataset: 'ds'
+        dataset: 'ds',
       },
-      category: 'Chart data'
+      category: 'Chart data',
     },
     {
       name: 'title',
       type: 'string',
       label: 'Title',
       description: 'The title for the chart',
-      category: 'Chart settings'
+      category: 'Chart settings',
     },
     {
-        name: 'description',
-        type: 'string',
-        label: 'Description',
-        description: 'The description for the chart',
-        category: 'Chart settings'
+      name: 'description',
+      type: 'string',
+      label: 'Description',
+      description: 'The description for the chart',
+      category: 'Chart settings',
     },
     {
       name: 'enableDownloadAsCSV',
@@ -57,8 +57,15 @@ export const meta = {
       label: 'Show download as CSV',
       category: 'Export options',
       defaultValue: true,
-    }
-  ]
+    },
+    {
+      name: 'enableDownloadAsPNG',
+      type: 'boolean',
+      label: 'Show download as PNG',
+      category: 'Export options',
+      defaultValue: true,
+    },
+  ],
 } as const satisfies EmbeddedComponentMeta;
 
 export default defineComponent(Component, meta, {
@@ -68,8 +75,8 @@ export default defineComponent(Component, meta, {
       results: loadData({
         from: inputs.ds,
         dimensions: [inputs.segments],
-        measures: [inputs.metric]
-      })
+        measures: [inputs.metric],
+      }),
     };
-  }
+  },
 });
