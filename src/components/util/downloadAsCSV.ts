@@ -1,12 +1,17 @@
+import { DataResponse } from '@embeddable.com/core';
+
+import { ContainerProps } from '../vanilla/Container';
+
 type DataResponseData = { [key: string]: any };
 
 type Input = {
   [key: string]: any;
 };
 
-type Props = {
-  [key: string]: any;
-};
+interface Props extends ContainerProps {
+  results?: DataResponse | DataResponse[];
+  prevResults?: DataResponse;
+}
 
 const downloadAsCSV = (
   props: Props,
