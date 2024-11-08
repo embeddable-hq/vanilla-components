@@ -96,6 +96,7 @@ export default (props: Props) => {
         y: {
           stacked: !isMultiDimensionLine,
           min: props.yAxisMin,
+          max: props.displayAsPercentage ? 100 : undefined,
           grace: '0%', // Add percent to add numbers on the y-axis above and below the max and min values
           grid: {
             display: false
@@ -147,7 +148,8 @@ export default (props: Props) => {
               if (context.parsed.y !== null) {
                 label += `: ${formatValue(`${context.parsed['y']}`, {
                   type: 'number',
-                  dps: props.dps
+                  dps: props.dps,
+                  meta: props.displayAsPercentage ? undefined : props.metric.meta
                 })}`;
                 if (props.displayAsPercentage) {
                   label += '%';
@@ -162,7 +164,11 @@ export default (props: Props) => {
           align: 'top',
           display: props.showLabels ? 'auto' : false,
           formatter: (v) => {
-            let val = v ? formatValue(v, { type: 'number', dps: props.dps }) : null;
+            let val = v ? formatValue(v, { 
+              type: 'number', 
+              dps: props.dps,
+              meta: props.displayAsPercentage ? undefined : props.metric.meta
+            }) : null;
             if (props.displayAsPercentage) {
               val += '%';
             }

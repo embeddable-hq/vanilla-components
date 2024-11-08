@@ -1,5 +1,5 @@
 import { ChartOptions } from 'chart.js';
-
+import { Measure } from '@embeddable.com/core';
 import formatValue from '../util/format';
 import { Props } from './getStackedChartData';
 
@@ -13,13 +13,17 @@ export default function getBarChartOptions({
   yAxisTitle = '',
   xAxisTitle = '',
   dps = undefined,
-  reverseXAxis = false
+  reverseXAxis = false,
+  metrics,
+  metric
 }: Partial<Props> & {
   stacked?: boolean;
   stackMetrics?: boolean;
   yAxisTitle?: string;
   xAxisTitle?: string;
   reverseXAxis?: boolean;
+  metrics?: Measure[];
+  metric?: Measure;
 }): ChartOptions<'bar' | 'line'> {
   return {
     responsive: true,
@@ -105,9 +109,17 @@ export default function getBarChartOptions({
         callbacks: {
           label: function (context) {
             let label = context.dataset.label || '';
+            //metric needed for formatting
+            const metricIndex = context.datasetIndex;
+            //a single metric is sometimes passed in (e.g. for stacked bar charts)
+            const metricObj = metrics ? metrics[metricIndex] : metric;
             if (context.parsed && typeof context.parsed === 'object') {
               const axis = displayHorizontally ? 'x' : 'y';
-              label += `: ${formatValue(`${context.parsed[axis]}`, { type: 'number', dps: dps })}`;
+              label += `: ${formatValue(`${context.parsed[axis]}`, { 
+                type: 'number', 
+                dps: dps, 
+                meta: metricObj?.meta 
+              })}`;
               if (displayAsPercentage) {
                 label += '%';
               }
@@ -121,9 +133,17 @@ export default function getBarChartOptions({
         anchor: stacked || stackMetrics ? 'center' : 'end',
         align: stacked || stackMetrics ? 'center' : 'end',
         display: showLabels ? 'auto' : false,
-        formatter: (v) => {
+        formatter: (v, context) => {
+          //metric needed for formatting
+          const metricIndex = context.datasetIndex;
+          //a single metric is sometimes passed in (e.g. for stacked bar charts)
+          const metricObj = metrics ? metrics[metricIndex] : metric;
           if (v === null) return null;
-          let val = formatValue(v, { type: 'number', dps: dps });
+          let val = formatValue(v, { 
+            type: 'number', 
+            dps: dps,
+            meta: metricObj?.meta 
+          });
           if (displayAsPercentage) {
             val += '%';
           }
