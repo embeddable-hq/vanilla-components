@@ -11,7 +11,7 @@ import Title from './Title';
 import { WarningIcon } from './icons';
 import './index.css';
 
-type Props = {
+export type ContainerProps = {
   childContainerClassName?: string;
   className?: string;
   description?: string;
@@ -31,7 +31,7 @@ export default ({
   onResize,
   setResizeState,
   ...props
-}: PropsWithChildren<Props>) => {
+}: PropsWithChildren<ContainerProps>) => {
   const refPrevHeight = useRef<number | null>(null);
   const refExportPNGElement = useRef<HTMLDivElement | null>(null);
   const refResize = useRef<HTMLDivElement | null>(null);
@@ -120,7 +120,11 @@ export default ({
         <DownloadMenu
           csvOpts={{
             chartName: props.title || 'chart',
-            props: { results: props.results, prevResults: props.prevResults },
+            props: {
+              ...props,
+              results: props.results,
+              prevResults: props.prevResults,
+            },
           }}
           enableDownloadAsCSV={props.enableDownloadAsCSV}
           enableDownloadAsPNG={props.enableDownloadAsPNG}
