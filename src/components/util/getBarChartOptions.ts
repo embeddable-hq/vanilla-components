@@ -15,6 +15,7 @@ export default function getBarChartOptions({
   dps = undefined,
   reverseXAxis = false,
   metrics,
+  lineMetrics,
   metric,
   showSecondYAxis = false,
   secondAxisTitle = ''
@@ -28,7 +29,7 @@ export default function getBarChartOptions({
   metric?: Measure;
   showSecondYAxis?: boolean;
   secondAxisTitle?: string;
-
+  lineMetrics: Measure[];
 }): ChartOptions<'bar' | 'line'> {
   return {
     responsive: true,
@@ -129,7 +130,8 @@ export default function getBarChartOptions({
             //metric needed for formatting
             const metricIndex = context.datasetIndex;
             //a single metric is sometimes passed in (e.g. for stacked bar charts)
-            const metricObj = metrics ? metrics[metricIndex] : metric;
+            const metricsList = [...(metrics || []), ...(lineMetrics||[])];
+            const metricObj = metrics ? metricsList[metricIndex] : metric;
             if (context.parsed && typeof context.parsed === 'object') {
               const axis = displayHorizontally ? 'x' : 'y';
               label += `: ${formatValue(`${context.parsed[axis]}`, { 
@@ -154,7 +156,8 @@ export default function getBarChartOptions({
           //metric needed for formatting
           const metricIndex = context.datasetIndex;
           //a single metric is sometimes passed in (e.g. for stacked bar charts)
-          const metricObj = metrics ? metrics[metricIndex] : metric;
+          const metricsList = [...(metrics || []), ...(lineMetrics||[])];
+          const metricObj = metrics ? metricsList[metricIndex] : metric;
           if (v === null) return null;
           let val = formatValue(v, { 
             type: 'number', 
