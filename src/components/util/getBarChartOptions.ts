@@ -118,7 +118,7 @@ export default function getBarChartOptions({
               label += `: ${formatValue(`${context.parsed[axis]}`, { 
                 type: 'number', 
                 dps: dps, 
-                meta: metricObj?.meta 
+                meta: displayAsPercentage ? undefined : metricObj?.meta 
               })}`;
               if (displayAsPercentage) {
                 label += '%';
@@ -142,7 +142,7 @@ export default function getBarChartOptions({
           let val = formatValue(v, { 
             type: 'number', 
             dps: dps,
-            meta: metricObj?.meta 
+            meta: displayAsPercentage ? undefined : metricObj?.meta 
           });
           if (displayAsPercentage) {
             val += '%';
