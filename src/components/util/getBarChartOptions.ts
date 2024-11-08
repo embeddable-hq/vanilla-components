@@ -29,7 +29,7 @@ export default function getBarChartOptions({
   metric?: Measure;
   showSecondYAxis?: boolean;
   secondAxisTitle?: string;
-  lineMetrics: Measure[];
+  lineMetrics?: Measure[];
 }): ChartOptions<'bar' | 'line'> {
   return {
     responsive: true,
