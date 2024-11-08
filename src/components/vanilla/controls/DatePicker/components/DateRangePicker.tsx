@@ -4,6 +4,7 @@ import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 're
 import { DayPicker, MonthCaptionProps, NavProps, useDayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
+import { parseTime } from '../../../../hooks/useTimezone';
 import formatValue from '../../../../util/format';
 import Container from '../../../Container';
 import { CalendarIcon, ChevronLeft, ChevronRight } from '../../../icons';
@@ -84,6 +85,27 @@ export default function DateRangePicker(props: Props) {
     [range?.to],
   );
 
+  const formatDateText = () => {
+    if (!range?.from || !range?.to) return 'Select';
+
+    const fromString = formatValue(range.from.toJSON(), { dateFormat: formatFrom });
+    const toString = formatValue(range.to.toJSON(), { dateFormat: formatTo });
+    console.log('raw', range.from, range.to);
+    console.log('string', range.from.toString(), range.to.toString());
+    console.log('json', range.from.toJSON(), range.to.toJSON());
+
+    return `${fromString} - ${toString}`;
+
+    /*
+    return !!range?.from && !!range?.to
+      ? `${formatValue(range.from.toJSON(), { dateFormat: formatFrom })} - ${formatValue(
+          range.to.toJSON(),
+          { dateFormat: formatTo },
+        )}`
+      : 'Select';
+      */
+  };
+
   return (
     <Container title={props.title}>
       <div className="relative inline-flex h-10 w-full text-[#101010] text-sm">
@@ -115,21 +137,15 @@ export default function DateRangePicker(props: Props) {
             ref={ref}
             onChange={() => {}}
             onFocus={() => setFocus(true)}
-            onBlur={() => setTriggerBlur(true)}
+            onBlur={() => {
+              setTriggerBlur(true);
+            }}
             className="absolute left-0 top-0 h-full w-full opacity-0 cursor-pointer"
           />
           <CalendarIcon className="mr-2" />
-          {!props.hideDate && (
-            <span className="overflow-hidden truncate">
-              {!!range?.from && !!range?.to
-                ? `${formatValue(range.from.toJSON(), { dateFormat: formatFrom })} - ${formatValue(
-                    range.to.toJSON(),
-                    { dateFormat: formatTo },
-                  )}`
-                : 'Select'}
-            </span>
-          )}
+          {!props.hideDate && <span className="overflow-hidden truncate">{formatDateText()}</span>}
           <div
+            id="date-range-picker"
             onClick={() => {
               setTriggerBlur(false);
               ref.current?.focus();
@@ -155,15 +171,13 @@ export default function DateRangePicker(props: Props) {
               required={true}
               selected={{ from: range?.from, to: range?.to }}
               onSelect={(range) => {
-                setRange({ ...range, relativeTimeString: 'Custom' });
-
                 if (!range?.from || !range?.to) return;
 
-                setFocus(false);
-
                 setTriggerBlur(false);
+                ref.current?.focus();
 
                 range.to = endOfDay(range.to);
+                setRange({ ...range, relativeTimeString: 'Custom' });
 
                 props.onChange?.(range);
               }}

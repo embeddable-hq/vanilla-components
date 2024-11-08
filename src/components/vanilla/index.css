@@ -38,7 +38,7 @@
 .rdp-root {
   --rdp-accent-background-color: #f3f4f6 !important;
   --rdp-accent-color: #7d899b !important;
-  --rdp-day_button-border-radius: 4px !important;
+  --rdp-day_button-border-radius: 0px 4px 4px 0px !important;
   --rdp-outside-opacity: 0.4 !important;
   --rdp-range_end-background: #f3f4f6 !important;
   --rdp-range_end-color: #fff !important;
@@ -73,6 +73,10 @@
   --rdp-accent-color: #7d899b !important;
   border-radius: 4px !important;
   --rdp-selected-color: white !important;
+}
+
+.rdp-root .rdp-range_start .rdp-day_button {
+  border-radius: 4px 0px 0px 4px !important;
 }
 
 .rdp .rdp-tbody {
