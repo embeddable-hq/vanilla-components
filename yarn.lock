@@ -231,12 +231,12 @@
     to-fast-properties "^2.0.0"
 
 "@cubejs-backend/api-gateway@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.npmjs.org/@cubejs-backend/api-gateway/-/api-gateway-1.1.2.tgz"
-  integrity sha512-rGEgotCbOCYFGcWZPtdCnPjazjly+kZ2SXmSRZFIwySUj3QgL9oWnJx4tSIaKOLO+sgkFgCnnJeQIDyvAzwpVA==
+  version "1.1.3"
+  resolved "https://registry.npmjs.org/@cubejs-backend/api-gateway/-/api-gateway-1.1.3.tgz"
+  integrity sha512-FLGCCy54BlxOtakrHOlmwJCuJ+V4DYAldNkz8INPocyXxNaBAZZMsKWipX8rL2L69LIdGE7lBdj2YAKJKIILfA==
   dependencies:
-    "@cubejs-backend/native" "1.1.2"
-    "@cubejs-backend/shared" "1.1.2"
+    "@cubejs-backend/native" "1.1.3"
+    "@cubejs-backend/shared" "1.1.3"
     "@ungap/structured-clone" "^0.3.4"
     body-parser "^1.19.0"
     chrono-node "^2.6.2"
@@ -256,18 +256,18 @@
     ramda "^0.27.0"
     uuid "^8.3.2"
 
-"@cubejs-backend/cubesql@1.1.2":
-  version "1.1.2"
-  resolved "https://registry.npmjs.org/@cubejs-backend/cubesql/-/cubesql-1.1.2.tgz"
-  integrity sha512-INLMN1VOQsSwgnAyaM6vcC9ygibG5aDR9zum0h0Bcl1CbVKKX7GVwzzM4zV9yYke9u2LpwbnkyM0Ittx1zPFew==
+"@cubejs-backend/cubesql@1.1.3":
+  version "1.1.3"
+  resolved "https://registry.npmjs.org/@cubejs-backend/cubesql/-/cubesql-1.1.3.tgz"
+  integrity sha512-7Ijsq/m+4VKPjF4hFqpAIkTFdTY9aZf2CpeHodpVUBehdtS2pLy/cklNqJb9Kr2BDV/Y80orqprfebSgcR/dLg==
 
-"@cubejs-backend/native@1.1.2":
-  version "1.1.2"
-  resolved "https://registry.npmjs.org/@cubejs-backend/native/-/native-1.1.2.tgz"
-  integrity sha512-hESRb7Kq1Qm+RYU/v9+EiC7F+2jlXCbnVL7HQxGT22kTE01ppKBdD0xDvR41fsvHT88MrpDkQGfPHoVcbM6gMg==
+"@cubejs-backend/native@1.1.3":
+  version "1.1.3"
+  resolved "https://registry.npmjs.org/@cubejs-backend/native/-/native-1.1.3.tgz"
+  integrity sha512-LtkpZipTC0dI+NdQnFm9dfNBC4372nh3/iF7l8DatjBhdctcpUX2hwaneO4Dq9S4xz6fQzSuM2VC+TDiZYhUMw==
   dependencies:
-    "@cubejs-backend/cubesql" "1.1.2"
-    "@cubejs-backend/shared" "1.1.2"
+    "@cubejs-backend/cubesql" "1.1.3"
+    "@cubejs-backend/shared" "1.1.3"
     "@cubejs-infra/post-installer" "^0.0.7"
 
 "@cubejs-backend/shared@0.33.20":
@@ -290,10 +290,10 @@
     throttle-debounce "^3.0.1"
     uuid "^8.3.2"
 
-"@cubejs-backend/shared@1.1.2":
-  version "1.1.2"
-  resolved "https://registry.npmjs.org/@cubejs-backend/shared/-/shared-1.1.2.tgz"
-  integrity sha512-4ksenOMv+4T8OHf75zvonc0RGoTPb7y9xLiPjGX4C6xkypft9/8ftmgl7SfidnqjWDJzK9Ux9Xk0qYlscW6dpA==
+"@cubejs-backend/shared@1.1.3":
+  version "1.1.3"
+  resolved "https://registry.npmjs.org/@cubejs-backend/shared/-/shared-1.1.3.tgz"
+  integrity sha512-SF7mNgOpEsscPV/8Fe6f+UEIyz3OBaln08mWqo5Os/ulYZcuLt41a+kcHuYyrUOZcxJHsX0sKhz1ReiCUMUe4A==
   dependencies:
     "@oclif/color" "^0.1.2"
     bytes "^3.1.0"
@@ -757,29 +757,29 @@
     source-map-support "^0.5.21"
     tslib "^2.6.3"
 
-"@swc/core-darwin-arm64@1.8.0":
-  version "1.8.0"
-  resolved "https://registry.npmjs.org/@swc/core-darwin-arm64/-/core-darwin-arm64-1.8.0.tgz"
-  integrity sha512-TIus1/SE/Ud4g84hCnchcagu+LfyndSDy5r5qf64nflojejDidPU9Fp1InzQhQpEgIpntnZID/KFCP5rQnvsIw==
+"@swc/core-darwin-arm64@1.9.1":
+  version "1.9.1"
+  resolved "https://registry.npmjs.org/@swc/core-darwin-arm64/-/core-darwin-arm64-1.9.1.tgz"
+  integrity sha512-2/ncHSCdAh5OHem1fMITrWEzzl97OdMK1PHc9CkxSJnphLjRubfxB5sbc5tDhcO68a5tVy+DxwaBgDec3PXnOg==
 
 "@swc/core@>= 1.4.13":
-  version "1.8.0"
-  resolved "https://registry.npmjs.org/@swc/core/-/core-1.8.0.tgz"
-  integrity sha512-EF8C5lp1RKMp3426tAKwQyVbg4Zcn/2FDax3cz8EcOXYQJM/ctB687IvBm9Ciej1wMcQ/dMRg+OB4Xl8BGLBoA==
+  version "1.9.1"
+  resolved "https://registry.npmjs.org/@swc/core/-/core-1.9.1.tgz"
+  integrity sha512-OnPc+Kt5oy3xTvr/KCUOqE9ptJcWbyQgAUr1ydh9EmbBcmJTaO1kfQCxm/axzJi6sKeDTxL9rX5zvLOhoYIaQw==
   dependencies:
     "@swc/counter" "^0.1.3"
     "@swc/types" "^0.1.14"
   optionalDependencies:
-    "@swc/core-darwin-arm64" "1.8.0"
-    "@swc/core-darwin-x64" "1.8.0"
-    "@swc/core-linux-arm-gnueabihf" "1.8.0"
-    "@swc/core-linux-arm64-gnu" "1.8.0"
-    "@swc/core-linux-arm64-musl" "1.8.0"
-    "@swc/core-linux-x64-gnu" "1.8.0"
-    "@swc/core-linux-x64-musl" "1.8.0"
-    "@swc/core-win32-arm64-msvc" "1.8.0"
-    "@swc/core-win32-ia32-msvc" "1.8.0"
-    "@swc/core-win32-x64-msvc" "1.8.0"
+    "@swc/core-darwin-arm64" "1.9.1"
+    "@swc/core-darwin-x64" "1.9.1"
+    "@swc/core-linux-arm-gnueabihf" "1.9.1"
+    "@swc/core-linux-arm64-gnu" "1.9.1"
+    "@swc/core-linux-arm64-musl" "1.9.1"
+    "@swc/core-linux-x64-gnu" "1.9.1"
+    "@swc/core-linux-x64-musl" "1.9.1"
+    "@swc/core-win32-arm64-msvc" "1.9.1"
+    "@swc/core-win32-ia32-msvc" "1.9.1"
+    "@swc/core-win32-x64-msvc" "1.9.1"
 
 "@swc/counter@^0.1.3":
   version "0.1.3"
@@ -1586,9 +1586,9 @@ camelcase-css@^2.0.1:
   integrity sha512-QOSvevhslijgYwRx6Rv7zKdMF8lbRmx+uQGx2+vDc+KI/eBnsy9kit5aj23AgGu3pa4t9AgwbnXWqS+iOY+2aA==
 
 caniuse-lite@^1.0.30001646, caniuse-lite@^1.0.30001669:
-  version "1.0.30001677"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001677.tgz"
-  integrity sha512-fmfjsOlJUpMWu+mAAtZZZHz7UEwsUxIIvu1TJfO1HqFQvB/B+ii0xr9B5HpbZY/mC4XZ8SvjHJqtAY6pDPQEog==
+  version "1.0.30001679"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001679.tgz"
+  integrity sha512-j2YqID/YwpLnKzCmBOS4tlZdWprXm3ZmQLBH9ZBXFOhoxLA46fwyBvx6toCBWBmnuwUY/qB3kEU6gFx8qgCroA==
 
 chalk@^3.0.0:
   version "3.0.0"
@@ -1797,9 +1797,9 @@ cross-env@^7.0.3:
     cross-spawn "^7.0.1"
 
 cross-spawn@^7.0.0, cross-spawn@^7.0.1, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
-  version "7.0.3"
-  resolved "https://registry.npmjs.org/cross-spawn/-/cross-spawn-7.0.3.tgz"
-  integrity sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==
+  version "7.0.5"
+  resolved "https://registry.npmjs.org/cross-spawn/-/cross-spawn-7.0.5.tgz"
+  integrity sha512-ZVJrKKYunU38/76t0RMOulHOnUcbU9GbpWKAOZ0mhjr7CX6FVrH+4FrAapSOekrgFQ3f/8gwMEuIft0aKq6Hug==
   dependencies:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
@@ -2202,9 +2202,9 @@ ee-first@1.1.1:
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
 electron-to-chromium@^1.5.41:
-  version "1.5.51"
-  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.51.tgz"
-  integrity sha512-kKeWV57KSS8jH4alKt/jKnvHPmJgBxXzGUSbMd4eQF+iOsVPl7bz2KUmu6eo80eMP8wVioTfTyTzdMgM15WXNg==
+  version "1.5.55"
+  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.55.tgz"
+  integrity sha512-6maZ2ASDOTBtjt9FhqYPRnbvKU5tjG0IN9SztUOWYw2AzNDNpKJYLJmlK0/En4Hs/aiWnB+JZ+gW19PIGszgKg==
 
 elliptic@^6.5.7:
   version "6.6.0"
@@ -4551,9 +4551,11 @@ proxy-from-env@^1.1.0:
   integrity sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==
 
 psl@^1.1.33:
-  version "1.9.0"
-  resolved "https://registry.npmjs.org/psl/-/psl-1.9.0.tgz"
-  integrity sha512-E/ZsdU4HLs/68gYzgGTkMicWTLPdAftJLfJFlLUAAKZGkStNU72sZjT66SnMDVOfOWY/YAoiD7Jxa9iHvngcag==
+  version "1.10.0"
+  resolved "https://registry.npmjs.org/psl/-/psl-1.10.0.tgz"
+  integrity sha512-KSKHEbjAnpUuAUserOq0FxGXCUrzC3WniuSJhvdbs102rL55266ZcHBqLWOsG30spQMlPdpy7icATiAQehg/iA==
+  dependencies:
+    punycode "^2.3.1"
 
 punycode@^2.1.0, punycode@^2.1.1, punycode@^2.3.1:
   version "2.3.1"
