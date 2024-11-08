@@ -15,7 +15,9 @@ export default function getBarChartOptions({
   dps = undefined,
   reverseXAxis = false,
   metrics,
-  metric
+  metric,
+  showSecondYAxis = false,
+  secondAxisTitle = ''
 }: Partial<Props> & {
   stacked?: boolean;
   stackMetrics?: boolean;
@@ -24,6 +26,9 @@ export default function getBarChartOptions({
   reverseXAxis?: boolean;
   metrics?: Measure[];
   metric?: Measure;
+  showSecondYAxis?: boolean;
+  secondAxisTitle?: string;
+
 }): ChartOptions<'bar' | 'line'> {
   return {
     responsive: true,
@@ -63,6 +68,18 @@ export default function getBarChartOptions({
           display: !!yAxisTitle,
           text: yAxisTitle
         }
+      },
+      y1: {//optional second y-axis for optional line metrics
+        display: showSecondYAxis,
+        grace: '0%',
+        grid: {
+          display: false
+        },
+        position: 'right',
+        title: {
+          display: !!secondAxisTitle,
+          text: secondAxisTitle
+        },        
       },
       x: {
         reverse: reverseXAxis && !displayHorizontally,

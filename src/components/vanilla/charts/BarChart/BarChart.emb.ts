@@ -52,6 +52,30 @@ export const meta = {
       category: 'Chart data',
     },
     {
+      name: 'lineMetrics',
+      type: 'measure',
+      array: true,
+      label: 'Add a line(s)',
+      config: {
+        dataset: 'ds',
+      },
+      category: 'Optional chart data',
+    },
+    {
+      name: 'showSecondYAxis',
+      type: 'boolean',
+      label: 'Show 2nd axis',
+      category: 'Optional chart data',
+      defaultValue: false,
+    },  
+    {
+      name: 'secondAxisTitle',
+      type: 'string',
+      label: '2nd axis title',
+      description: 'The title for the chart',
+      category: 'Optional chart data',
+    },  
+    {
       name: 'title',
       type: 'string',
       label: 'Title',
@@ -157,7 +181,7 @@ export default defineComponent(Component, meta, {
       results: loadData({
         from: inputs.ds,
         dimensions: [inputs.xAxis],
-        measures: inputs.metrics,
+        measures: [...inputs.metrics, ...(inputs.lineMetrics || [])],
         orderBy: orderProp,
         limit: inputs.limit || 50,
       }),

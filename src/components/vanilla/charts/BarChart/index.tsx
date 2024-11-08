@@ -13,6 +13,7 @@ type Props = {
   isTSBarChart?: boolean;
   limit?: number;
   metrics: Measure[];
+  lineMetrics?: Measure[];
   results: DataResponse;
   reverseXAxis?: boolean;
   showLabels?: boolean;
@@ -23,6 +24,8 @@ type Props = {
   xAxis: Dimension;
   xAxisTitle?: string;
   yAxisTitle?: string;
+  showSecondYAxis?: boolean;
+  secondAxisTitle?: string;
 };
 
 export default (props: Props) => {

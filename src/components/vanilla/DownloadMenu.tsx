@@ -6,14 +6,17 @@ import IconDownloadPNG from '../icons/DownloadPNG';
 import IconVerticalEllipsis from '../icons/VerticalEllipsis';
 import downloadAsCSV from '../util/downloadAsCSV';
 import downloadAsPNG from '../util/downloadAsPNG';
+import { ContainerProps } from './Container';
+
+interface CSVProps extends ContainerProps {
+  results?: DataResponse | DataResponse[];
+  prevResults?: DataResponse;
+}
 
 type Props = {
   csvOpts?: {
     chartName: string;
-    props: {
-      prevResults?: DataResponse;
-      results?: DataResponse | DataResponse[];
-    };
+    props: CSVProps;
   };
   enableDownloadAsCSV?: boolean;
   enableDownloadAsPNG?: boolean;
