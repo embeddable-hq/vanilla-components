@@ -88,22 +88,12 @@ export default function DateRangePicker(props: Props) {
   const formatDateText = () => {
     if (!range?.from || !range?.to) return 'Select';
 
-    const fromString = formatValue(range.from.toJSON(), { dateFormat: formatFrom });
+    // Perform some gymnastics to make sure we stay at midnight UTC on range.from
+    const fromStripped = range.from.toString().split(' ').slice(0, 5).join(' ');
+    const newFrom = new Date(`${fromStripped} GMT+0000`);
+    const fromString = formatValue(newFrom.toJSON(), { dateFormat: formatFrom });
     const toString = formatValue(range.to.toJSON(), { dateFormat: formatTo });
-    console.log('raw', range.from, range.to);
-    console.log('string', range.from.toString(), range.to.toString());
-    console.log('json', range.from.toJSON(), range.to.toJSON());
-
     return `${fromString} - ${toString}`;
-
-    /*
-    return !!range?.from && !!range?.to
-      ? `${formatValue(range.from.toJSON(), { dateFormat: formatFrom })} - ${formatValue(
-          range.to.toJSON(),
-          { dateFormat: formatTo },
-        )}`
-      : 'Select';
-      */
   };
 
   return (
@@ -192,6 +182,11 @@ export default function DateRangePicker(props: Props) {
 const CustomCaption = (props: MonthCaptionProps) => {
   const { goToMonth, nextMonth, previousMonth } = useDayPicker();
 
+  let dateText = props.calendarMonth.date.toString().split(' ').slice(1, 5).join(' ');
+  console.log(dateText);
+  dateText += ' GMT+0000';
+  const newDateToDisplay = new Date(dateText);
+
   return (
     <h2 className="flex items-center">
       <button
@@ -202,7 +197,7 @@ const CustomCaption = (props: MonthCaptionProps) => {
         <ChevronLeft />
       </button>
       <span className="mx-auto text-sm">
-        {formatValue(props.calendarMonth.date.toJSON(), { dateFormat: 'MMMM yyy' })}
+        {formatValue(newDateToDisplay.toJSON(), { dateFormat: 'MMMM yyy' })}
       </span>
       <button
         className="w-7 h-7 bg-white rounded border border-slate-400 justify-center items-center inline-flex"
