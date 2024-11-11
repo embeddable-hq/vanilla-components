@@ -150,8 +150,14 @@ function chartOptions(props: Props, scatterData: ChartData<'scatter'>): ChartOpt
                 font: {
                 weight: 'normal'
                 },
-                formatter: (v) => {
-                    const val = v ? formatValue(v.y, { type: 'number', dps: props.dps }) : null;
+                formatter: (v, context) => {
+                    const metricIndex = context.datasetIndex;
+                    const metric = props.metrics[metricIndex];
+                    const val = v ? formatValue(v.y, { 
+                        type: 'number', 
+                        dps: props.dps,
+                        meta: metric?.meta
+                    }) : null;
                     return val;
                 },
             },
@@ -160,10 +166,13 @@ function chartOptions(props: Props, scatterData: ChartData<'scatter'>): ChartOpt
                 callbacks: {
                     label: function (context) {
                     let label = context.dataset.label || '';
+                    const metricIndex = context.datasetIndex;
+                    const metric = props.metrics[metricIndex];
                     if (context.parsed.y !== null) {
                         label += `: ${formatValue(`${context.parsed['y']}`, {
-                        type: 'number',
-                        dps: props.dps,
+                            type: 'number',
+                            dps: props.dps,
+                            meta: metric?.meta
                         })}`;
                     }
                     return label;
