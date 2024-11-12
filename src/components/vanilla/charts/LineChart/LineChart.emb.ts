@@ -141,6 +141,12 @@ export default defineComponent(Component, meta, {
       results: loadData({
         from: inputs.ds,
         limit: inputs.limit || 500,
+        filters: [
+          {
+            property: inputs.xAxis,
+            operator: 'notNull',
+          },
+        ],
         orderBy: orderProp,
         timeDimensions: [
           {

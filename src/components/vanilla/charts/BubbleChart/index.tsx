@@ -166,7 +166,11 @@ function chartOptions(props: Props, updatedData: Record[] | undefined, bubbleDat
         },
         formatter: (_, {dataIndex}) => {
           const v = updatedData?.[dataIndex][props.bubbleSize.name] || 0;
-          const val = formatValue(v, { type: 'number', dps: props.dps || 0 }) || null;
+          const val = formatValue(v, { 
+            type: 'number', 
+            dps: props.dps || 0, 
+            meta: props.bubbleSize.meta 
+          }) || null;
           return val;
         }
       },
@@ -179,14 +183,16 @@ function chartOptions(props: Props, updatedData: Record[] | undefined, bubbleDat
             const rawData = context.raw as { y: number };
             const yAxisValue = formatValue((`${rawData.y || ''}`), {
                 type: 'number',
-                dps: props.dps
+                dps: props.dps,
+                meta: props.yAxis.meta
               });
             //Bubble size label
             const bubbleSizeLabel = props.bubbleSize.title;
             const bubbleSizeValue = updatedData?.[context.dataIndex][props.bubbleSize.name] || 0;
             const bubbleSizeValueFormatted = formatValue((bubbleSizeValue), {
                 type: 'number',
-                dps: props.dps
+                dps: props.dps,
+                meta: props.bubbleSize.meta
               });            
             return [`${yAxisLabel}: ${yAxisValue}`, `${bubbleSizeLabel}: ${bubbleSizeValueFormatted}`];
           }

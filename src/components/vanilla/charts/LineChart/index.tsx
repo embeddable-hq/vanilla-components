@@ -1,4 +1,4 @@
-import { DataResponse, Dimension, Granularity } from '@embeddable.com/core';
+import { DataResponse, Dimension, Measure, Granularity } from '@embeddable.com/core';
 import {
   CategoryScale,
   ChartData,
@@ -54,7 +54,7 @@ type Props = {
   title?: string;
   dps?: number;
   xAxis: Dimension;
-  metrics: { name: string; title: string }[];
+  metrics: Measure[];
   applyFill?: boolean;
   showLabels?: boolean;
   showLegend?: boolean;
@@ -75,7 +75,7 @@ export default (props: Props) => {
     const { results, metrics, applyFill } = props;
 
     const data = results?.data?.reduce(fillGaps, []);
-
+    
     return {
       datasets:
         metrics?.map((yAxis, i) => ({
@@ -161,8 +161,15 @@ export default (props: Props) => {
         datalabels: {
           align: 'top',
           display: props.showLabels ? 'auto' : false,
-          formatter: (v) => {
-            const val = v ? formatValue(v.y, { type: 'number', dps: props.dps }) : null;
+          formatter: (v, context) => {
+            //metric needed for formatting
+            const metricIndex = context.datasetIndex;
+            const metricObj = props.metrics[metricIndex]
+            const val = v ? formatValue(v.y, { 
+              type: 'number', 
+              dps: props.dps,
+              meta: metricObj?.meta
+            }) : null;
             return val;
           },
         },
@@ -170,11 +177,15 @@ export default (props: Props) => {
           //https://www.chartjs.org/docs/latest/configuration/tooltip.html
           callbacks: {
             label: function (context) {
+              //metric needed for formatting
+              const metricIndex = context.datasetIndex;
+              const metricObj = props.metrics[metricIndex]
               let label = context.dataset.label || '';
               if (context.parsed.y !== null) {
                 label += `: ${formatValue(`${context.parsed['y']}`, {
                   type: 'number',
                   dps: props.dps,
+                  meta: metricObj?.meta
                 })}`;
               }
               return label;

@@ -57,10 +57,10 @@
     }
   },
   "devDependencies": {
-    "@embeddable.com/core": "2.6.5",
-    "@embeddable.com/react": "2.7.3",
-    "@embeddable.com/sdk-core": "3.9.5",
-    "@embeddable.com/sdk-react": "3.8.0",
+    "@embeddable.com/core": "2.6.8",
+    "@embeddable.com/react": "2.7.5",
+    "@embeddable.com/sdk-core": "3.9.8",
+    "@embeddable.com/sdk-react": "3.8.2",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/d3-scale": "^4.0.8",
     "@types/lodash.debounce": "^4.0.9",
