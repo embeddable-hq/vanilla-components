@@ -8,7 +8,7 @@ type Options = {
   type?: Type;
   truncate?: number;
   dateFormat?: string;
-  meta?: { prefix?: string; suffix?: string };
+  meta?: { pretext?: string; posttext?: string };
   dps?: number;
 };
 
@@ -38,7 +38,7 @@ export default function formatValue(str: string = '', opt: Type | Options = 'str
 
   if (truncate) {
     return str?.length > truncate
-      ? `${meta?.prefix || ''}${str.substring(0, truncate)}...`
+      ? `${meta?.pretext || ''}${str.substring(0, truncate)}...`
       : wrap(str);
   }
 
@@ -47,6 +47,6 @@ export default function formatValue(str: string = '', opt: Type | Options = 'str
   return str;
 
   function wrap(v: string) {
-    return `${meta?.prefix || ''}${v}${meta?.suffix || ''}`;
+    return `${meta?.pretext || ''}${v}${meta?.posttext || ''}`;
   }
 }

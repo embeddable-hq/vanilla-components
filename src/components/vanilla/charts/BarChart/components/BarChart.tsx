@@ -104,7 +104,7 @@ function chartData(props: Props): ChartData<'bar' | 'line'> {
     minBarLength: 0,
     borderRadius: 4,
     label: metric.title,
-    data: results?.data?.map((d) => parseFloat(d[metric.name])) || [],
+    data: results?.data?.map((d) => parseFloat(d[metric.name] || 0)) || [],
     backgroundColor: COLORS[i % COLORS.length],
     order: 1
   })) || [];
