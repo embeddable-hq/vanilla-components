@@ -180,11 +180,7 @@ export default function DateRangePicker(props: Props) {
 
 const CustomCaption = (props: MonthCaptionProps) => {
   const { goToMonth, nextMonth, previousMonth } = useDayPicker();
-
-  let dateText = props.calendarMonth.date.toString().split(' ').slice(1, 5).join(' ');
-  console.log(dateText);
-  dateText += ' GMT+0000';
-  const newDateToDisplay = new Date(dateText);
+  const dateUTC = toUTC(props.calendarMonth.date) || new Date();
 
   return (
     <h2 className="flex items-center">
@@ -196,7 +192,7 @@ const CustomCaption = (props: MonthCaptionProps) => {
         <ChevronLeft />
       </button>
       <span className="mx-auto text-sm">
-        {formatValue(newDateToDisplay.toJSON(), { dateFormat: 'MMMM yyy' })}
+        {formatValue(dateUTC.toJSON(), { dateFormat: 'MMMM yyy' })}
       </span>
       <button
         className="w-7 h-7 bg-white rounded border border-slate-400 justify-center items-center inline-flex"
