@@ -1,6 +1,6 @@
 import { format as formatDate } from 'date-fns';
 
-import { parseTime } from '../hooks/useTimezone';
+import { parseTime } from '../util/timezone';
 
 type Type = 'number' | 'date' | 'string';
 

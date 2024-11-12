@@ -2,7 +2,7 @@ import { Granularity, TimeRange, Value } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 import { endOfDay, startOfDay } from 'date-fns';
 
-import { timeRangeToUTC } from '../../../hooks/useTimezone';
+import { timeRangeToUTC } from '../../../util/timezone';
 import Component from './index';
 
 export const meta = {

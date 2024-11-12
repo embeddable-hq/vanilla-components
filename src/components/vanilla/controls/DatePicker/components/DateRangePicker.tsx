@@ -4,8 +4,8 @@ import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 're
 import { DayPicker, MonthCaptionProps, NavProps, useDayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
-import { toUTC } from '../../../../hooks/useTimezone';
 import formatValue from '../../../../util/format';
+import { toUTC } from '../../../../util/timezone';
 import Container from '../../../Container';
 import { CalendarIcon, ChevronLeft, ChevronRight } from '../../../icons';
 import Dropdown from '../../Dropdown';
