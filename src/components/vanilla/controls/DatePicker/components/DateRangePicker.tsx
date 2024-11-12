@@ -1,10 +1,10 @@
 import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser.js';
-import { endOfDay, getYear } from 'date-fns';
+import { endOfDay, format, getYear } from 'date-fns';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { DayPicker, MonthCaptionProps, NavProps, useDayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
-import { parseTime } from '../../../../hooks/useTimezone';
+import { toUTC } from '../../../../hooks/useTimezone';
 import formatValue from '../../../../util/format';
 import Container from '../../../Container';
 import { CalendarIcon, ChevronLeft, ChevronRight } from '../../../icons';
@@ -87,13 +87,12 @@ export default function DateRangePicker(props: Props) {
 
   const formatDateText = () => {
     if (!range?.from || !range?.to) return 'Select';
-
-    // Perform some gymnastics to make sure we stay at midnight UTC on range.from
-    const fromStripped = range.from.toString().split(' ').slice(0, 5).join(' ');
-    const newFrom = new Date(`${fromStripped} GMT+0000`);
-    const fromString = formatValue(newFrom.toJSON(), { dateFormat: formatFrom });
-    const toString = formatValue(range.to.toJSON(), { dateFormat: formatTo });
-    return `${fromString} - ${toString}`;
+    // Perform some gymnastics to make sure we stay in UTC
+    const newFrom = toUTC(range.from) || new Date();
+    const newTo = toUTC(range.to) || new Date();
+    const fromFormat = formatValue(newFrom.toJSON(), { dateFormat: formatFrom });
+    const toFormat = formatValue(newTo.toJSON(), { dateFormat: formatTo });
+    return `${fromFormat} - ${toFormat}`;
   };
 
   return (
