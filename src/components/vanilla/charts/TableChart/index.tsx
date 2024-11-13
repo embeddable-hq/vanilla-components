@@ -1,4 +1,4 @@
-import { DataResponse, DimensionOrMeasure, OrderBy, OrderDirection } from '@embeddable.com/core';
+import { DataResponse, DimensionOrMeasure, OrderBy, OrderDirection, Dimension } from '@embeddable.com/core';
 import { useEmbeddableState } from '@embeddable.com/react';
 import React, { useCallback, useEffect, useState } from 'react';
 
@@ -17,6 +17,8 @@ export type Props = {
   title: string;
   fontSize?: number;
   minColumnWidth?: number;
+  interactiveColumn?: Dimension;
+  onClick: (v?:string) => void;
 };
 
 type Meta = { page: number; maxRowsFit: number; sort: OrderBy[] };
@@ -76,6 +78,14 @@ export default (props: Props) => {
     [meta, setMeta],
   );
 
+  const handleClick = (value:string, isInteractive:boolean) => {
+    if(value && isInteractive){
+      props.onClick(value);
+    } else {
+      props.onClick();
+    }
+  }
+
   return (
     <Container
       {...props}
@@ -105,20 +115,26 @@ export default (props: Props) => {
             <tbody>
               {results?.data?.slice(0, maxRowsFit).map((row, index) => (
                 <tr key={index} className="hover:bg-gray-400/5">
-                  {columns.map((column, index) => (
+                  {columns.map((column, index) => {
+
+                    const isInteractive = props.interactiveColumn?.name === column.name;
+                    const cellValue = row[column.name];
+
+                    return (
                     <td
                       key={index}
-                      className="text-dark p-3 truncate"
+                      onClick={() => handleClick(cellValue, isInteractive)}
+                      className={`text-dark p-3 truncate ${isInteractive ? 'cursor-pointer underline decoration-dotted' : ''}`}
                       style={{
                         fontSize: props.fontSize ? `${props.fontSize}px` : REGULAR_FONT_SIZE,
                         maxWidth: props.minColumnWidth ? `${props.minColumnWidth * 1.2}px` : 'auto',
                       }}
                     >
-                      <span title={formatColumn(row[column.name], column) ?? ''}>
-                        {formatColumn(row[column.name], column)}
+                      <span title={formatColumn(cellValue, column) ?? ''}>
+                        {formatColumn(cellValue, column)}
                       </span>
                     </td>
-                  ))}
+                  )})}
                 </tr>
               ))}
             </tbody>

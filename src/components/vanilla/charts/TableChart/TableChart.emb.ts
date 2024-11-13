@@ -5,11 +5,13 @@ import {
   isDimension,
   isMeasure,
   loadData,
+  Value
 } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import SortDirectionType from '../../../../types/SortDirection.type.emb';
 import Component, { Props } from './index';
+import { Column } from '../PivotTable/core/Column';
 
 export const meta = {
   name: 'TableChart',
@@ -101,6 +103,28 @@ export const meta = {
       label: 'Font size in pixels',
       category: 'Chart styling',
     },
+    {
+      name: 'interactiveColumn',
+      type: 'dimension',
+      label: 'Select a clickable column',
+      config: {
+        dataset: 'ds',
+        supportedTypes: ['string'],
+      },
+      category: 'Interactivity',
+    },
+  ],
+  events: [
+    {
+      name: 'onClick',
+      label: 'Click Interactive Column',
+      properties: [
+        {
+          name: 'value',
+          type: 'string',
+        },
+      ],
+    },
   ],
 } as const satisfies EmbeddedComponentMeta;
 
@@ -147,5 +171,12 @@ export default defineComponent<
         orderBy: state?.sort || defaultSort,
       }),
     };
+  },
+  events: {
+    onClick: (value) => {
+      return {
+        value: value || Value.noFilter(),
+      };
+    },
   },
 });
