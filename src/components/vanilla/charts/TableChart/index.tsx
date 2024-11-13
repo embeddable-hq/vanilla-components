@@ -17,8 +17,8 @@ export type Props = {
   title: string;
   fontSize?: number;
   minColumnWidth?: number;
-  interactiveColumn?: Dimension;
-  onClick: (v?:string) => void;
+  rowFilterDimension?: Dimension;
+  onClick: (v?:number) => void;
 };
 
 type Meta = { page: number; maxRowsFit: number; sort: OrderBy[] };
@@ -78,11 +78,9 @@ export default (props: Props) => {
     [meta, setMeta],
   );
 
-  const handleClick = (value:string, isInteractive:boolean) => {
-    if(value && isInteractive){
+  const handleClick = (value:number) => {
+    if(value){
       props.onClick(value);
-    } else {
-      props.onClick();
     }
   }
 
@@ -113,18 +111,21 @@ export default (props: Props) => {
             />
 
             <tbody>
-              {results?.data?.slice(0, maxRowsFit).map((row, index) => (
-                <tr key={index} className="hover:bg-gray-400/5">
+              {results?.data?.slice(0, maxRowsFit).map((row, index) => {
+
+                const filterValue = props.rowFilterDimension && row[props.rowFilterDimension.name];
+
+                return (
+                <tr
+                  key={index}
+                  onClick={() => handleClick(filterValue)}
+                  className={`hover:bg-gray-400/5 ${filterValue ? 'cursor-pointer' : ''}`}>
                   {columns.map((column, index) => {
-
-                    const isInteractive = props.interactiveColumn?.name === column.name;
                     const cellValue = row[column.name];
-
                     return (
                     <td
                       key={index}
-                      onClick={() => handleClick(cellValue, isInteractive)}
-                      className={`text-dark p-3 truncate ${isInteractive ? 'cursor-pointer underline decoration-dotted' : ''}`}
+                      className="text-dark p-3 truncate"
                       style={{
                         fontSize: props.fontSize ? `${props.fontSize}px` : REGULAR_FONT_SIZE,
                         maxWidth: props.minColumnWidth ? `${props.minColumnWidth * 1.2}px` : 'auto',
@@ -136,7 +137,7 @@ export default (props: Props) => {
                     </td>
                   )})}
                 </tr>
-              ))}
+              )})}
             </tbody>
           </table>
         )}
@@ -157,7 +158,7 @@ export default (props: Props) => {
 
 function formatColumn(text: string | number, column: DimensionOrMeasure) {
   if (typeof text === 'number' || column.nativeType === 'number') {
-    return formatValue(`${text}`, { type: 'number', meta: column?.meta });
+    return formatValue(`${text || 0}`, { type: 'number', meta: column?.meta });
   }
 
   if (text && column.nativeType === 'time') return formatValue(text, 'date');

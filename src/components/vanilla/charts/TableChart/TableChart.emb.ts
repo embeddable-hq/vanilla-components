@@ -104,12 +104,12 @@ export const meta = {
       category: 'Chart styling',
     },
     {
-      name: 'interactiveColumn',
+      name: 'rowFilterDimension',
       type: 'dimension',
-      label: 'Select a clickable column',
+      label: 'Filter by dimension on row click',
       config: {
         dataset: 'ds',
-        supportedTypes: ['string'],
+        supportedTypes: ['number'],
       },
       category: 'Interactivity',
     },
@@ -117,7 +117,7 @@ export const meta = {
   events: [
     {
       name: 'onClick',
-      label: 'Click Interactive Column',
+      label: 'Click Row',
       properties: [
         {
           name: 'value',
@@ -158,13 +158,20 @@ export default defineComponent<
       });
     }
 
+    const dimensions = [
+      ...(inputs.columns?.filter(isDimension) || []),
+      ...(inputs.rowFilterDimension && !inputs.columns?.some(d => d.name === inputs.rowFilterDimension.name) 
+        ? [inputs.rowFilterDimension] 
+        : []),
+    ];
+
     return {
       ...inputs,
       limit,
       defaultSort,
       results: loadData({
         from: inputs.ds,
-        dimensions: (inputs.columns?.filter((c) => isDimension(c)) as Dimension[]) || [],
+        dimensions: dimensions,
         measures: (inputs.columns?.filter((c) => isMeasure(c)) as Measure[]) || [],
         limit,
         offset: limit * (state?.page || 0),
