@@ -1,4 +1,4 @@
-import { DataResponse } from '@embeddable.com/core';
+import { DataResponse, Measure, Dimension } from '@embeddable.com/core';
 import {
   ArcElement,
   CategoryScale,
@@ -42,8 +42,8 @@ type Props = {
   results: DataResponse;
   title: string;
   dps?: number;
-  slice: { name: string; meta?: object };
-  metric: { name: string; title: string };
+  slice: Dimension
+  metric: Measure;
   showLabels?: boolean;
   showLegend?: boolean;
   maxSegments?: number;
@@ -124,7 +124,11 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
           weight: 'normal',
         },
         formatter: (v) => {
-          const val = v ? formatValue(v, { type: 'number', dps: props.dps }) : null;
+          const val = v ? formatValue(v, { 
+            type: 'number', 
+            dps: props.dps,
+            meta: props.displayAsPercentage ? undefined : props.metric.meta
+           }) : null;
           return props.displayAsPercentage ? `${val}%` : val;
         },
       },
@@ -137,6 +141,7 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
               label += `: ${formatValue(`${context.parsed || ''}`, {
                 type: 'number',
                 dps: props.dps,
+                meta: props.displayAsPercentage ? undefined : props.metric.meta
               })}`;
             }
             label = props.displayAsPercentage ? `${label}%` : label;

@@ -12,17 +12,17 @@ Hello and welcome to our Embeddable components **starter pack** built just for y
 ### Build & Deploy
 This is how you push code changes to your Embeddable workspace
 
- 1. Head to https://app.embeddable.com and grab your **API Key**.
+ 1. Head to https://app.us.embeddable.com (or https://app.eu.embeddable.com) and grab your **API Key**.
 
- 2. **Build** the code bundle:
+ 2. **Set your location**: in [embeddable.config.ts](./embeddable.config.ts), uncomment either the US or EU config section.
 
-    `npm run embeddable:build`
+ 3. **Build** the code bundle: `npm run embeddable:build`
 
  4. **Push** the above code bundle to your workspace:
  
-     `npm run embeddable:push -- --api-key <API Key> --email <Email> --message <Message>`
+   `npm run embeddable:push -- --api-key <API Key> --email <Email> --message <Message>`
 
- 5. Head back to https://app.embeddable.com and "Create new Embeddable" using the **components** and **models** from your code bundle
+ 4. Head back to https://app.embeddable.com (or https://app.eu.embeddable.com) and "Create new Embeddable" using the **components** and **models** from your code bundle
 
 ### Local Development
 This is a "Preview workspace" (local to you) that allows you make changes locally and see them instantly without needing to "Build and Deploy".

@@ -27,6 +27,9 @@ cubes:
         type: sum
         title: Total USD
         sql: price_usd
+        meta: 
+          pretext: '$'
+          posttext: ''
 
     joins:
       - name: orders # the name of the data model to join to (not the table)
