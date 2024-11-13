@@ -332,10 +332,10 @@
   dependencies:
     "@embeddable.com/core" "*"
 
-"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@3.9.8":
-  version "3.9.8"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-3.9.8.tgz"
-  integrity sha512-ReaDBlLNkR7udFJefN737DMUkhLxm0bjVxUSosws6hoYXWfzxTNrQ3LDsAMpsREMToNFKuj2+DlH4X5M4h4N8A==
+"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@3.9.12":
+  version "3.9.12"
+  resolved "https://registry.yarnpkg.com/@embeddable.com/sdk-core/-/sdk-core-3.9.12.tgz#d23b2b6636e763a0c49fd431829328170d903b12"
+  integrity sha512-TN3bJFbOKDl3NsYMns+pkO30U3ZfwKn5x3TC2S++5jAtEcxu2XS0hokQNEswzzSLPzWRV81hd+oTOR+Ql5kM+g==
   dependencies:
     "@embeddable.com/sdk-utils" "*"
     "@inquirer/prompts" "^7.0.0"
