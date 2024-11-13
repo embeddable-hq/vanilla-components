@@ -1,4 +1,4 @@
-import { DataResponse, Dimension, Measure, Granularity } from '@embeddable.com/core';
+import { DataResponse, Dimension, Granularity, Measure } from '@embeddable.com/core';
 import {
   CategoryScale,
   ChartData,
@@ -26,10 +26,10 @@ import {
   SMALL_FONT_SIZE,
 } from '../../../constants';
 import useTimeseries from '../../../hooks/useTimeseries';
-import { parseTime } from '../../../hooks/useTimezone';
 import formatValue from '../../../util/format';
 import formatDateTooltips from '../../../util/formatDateTooltips';
 import hexToRgb from '../../../util/hexToRgb';
+import { parseTime } from '../../../util/timezone';
 import Container from '../../Container';
 
 ChartJS.register(
@@ -75,7 +75,7 @@ export default (props: Props) => {
     const { results, metrics, applyFill } = props;
 
     const data = results?.data?.reduce(fillGaps, []);
-    
+
     return {
       datasets:
         metrics?.map((yAxis, i) => ({
@@ -164,12 +164,14 @@ export default (props: Props) => {
           formatter: (v, context) => {
             //metric needed for formatting
             const metricIndex = context.datasetIndex;
-            const metricObj = props.metrics[metricIndex]
-            const val = v ? formatValue(v.y, { 
-              type: 'number', 
-              dps: props.dps,
-              meta: metricObj?.meta
-            }) : null;
+            const metricObj = props.metrics[metricIndex];
+            const val = v
+              ? formatValue(v.y, {
+                  type: 'number',
+                  dps: props.dps,
+                  meta: metricObj?.meta,
+                })
+              : null;
             return val;
           },
         },
@@ -179,13 +181,13 @@ export default (props: Props) => {
             label: function (context) {
               //metric needed for formatting
               const metricIndex = context.datasetIndex;
-              const metricObj = props.metrics[metricIndex]
+              const metricObj = props.metrics[metricIndex];
               let label = context.dataset.label || '';
               if (context.parsed.y !== null) {
                 label += `: ${formatValue(`${context.parsed['y']}`, {
                   type: 'number',
                   dps: props.dps,
-                  meta: metricObj?.meta
+                  meta: metricObj?.meta,
                 })}`;
               }
               return label;
