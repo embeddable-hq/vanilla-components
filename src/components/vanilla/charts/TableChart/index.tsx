@@ -81,6 +81,7 @@ export default (props: Props) => {
   const handleClick = (value:number) => {
     if(value){
       props.onClick(value);
+      setMeta((meta) => ({ ...meta, page: 0 }));
     }
   }
 
