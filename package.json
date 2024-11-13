@@ -42,11 +42,11 @@
     "react-dom": "^18.2.0",
     "react-simple-maps": "^3.0.0",
     "tailwind-merge": "^2.2.1",
-    "uuid": "^11.0.2",
+    "uuid": "^11.0.3",
     "vite-plugin-css-injected-by-js": "^3.1.1"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.22.4",
+    "@rollup/rollup-linux-x64-gnu": "4.26.0",
     "@rollup/rollup-win32-x64-msvc": "4.24.4"
   },
   "overrides": {
@@ -59,7 +59,7 @@
   "devDependencies": {
     "@embeddable.com/core": "2.6.8",
     "@embeddable.com/react": "2.7.5",
-    "@embeddable.com/sdk-core": "3.9.8",
+    "@embeddable.com/sdk-core": "3.9.12",
     "@embeddable.com/sdk-react": "3.8.2",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/d3-scale": "^4.0.8",
@@ -73,9 +73,9 @@
     "cross-env": "^7.0.3",
     "eslint": "^8.38.0",
     "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
-    "postcss": "^8.4.24",
+    "postcss": "^8.4.48",
     "prettier": "3.3.3",
     "tailwindcss": "^3.3.2",
     "tw-colors": "^3.3.2",
