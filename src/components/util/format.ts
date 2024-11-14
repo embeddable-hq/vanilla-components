@@ -8,8 +8,9 @@ type Options = {
   type?: Type;
   truncate?: number;
   dateFormat?: string;
-  meta?: { pretext?: string; posttext?: string };
+  meta?: { pretext?: string; posttext?: string; showCurrency?: boolean };
   dps?: number;
+  clientContext?: { currency?: string };
 };
 
 function numberFormatter(dps: number | undefined | null) {
@@ -25,7 +26,7 @@ const dateFormatter = new Intl.DateTimeFormat();
 export default function formatValue(str: string = '', opt: Type | Options = 'string') {
   if (str === null) return null;
 
-  const { type, dateFormat, meta, truncate, dps }: Options =
+  const { type, dateFormat, meta, truncate, dps, clientContext }: Options =
     typeof opt === 'string' ? { type: opt } : opt;
 
   if (type === 'number') return wrap(numberFormatter(dps).format(parseFloat(str)));
@@ -47,6 +48,9 @@ export default function formatValue(str: string = '', opt: Type | Options = 'str
   return str;
 
   function wrap(v: string) {
-    return `${meta?.pretext || ''}${v}${meta?.posttext || ''}`;
+
+    
+
+    return `${meta?.pretext || ''}${meta?.showCurrency ? clientContext?.currency : ""}${v}${meta?.posttext || ''}`;
   }
 }

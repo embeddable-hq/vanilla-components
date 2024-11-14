@@ -26,6 +26,7 @@ type Props = {
   yAxisTitle?: string;
   showSecondYAxis?: boolean;
   secondAxisTitle?: string;
+  clientContext?: object;
 };
 
 export default (props: Props) => {

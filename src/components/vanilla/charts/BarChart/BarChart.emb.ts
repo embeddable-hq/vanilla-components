@@ -160,7 +160,7 @@ export const meta = {
 } as const satisfies EmbeddedComponentMeta;
 
 export default defineComponent(Component, meta, {
-  props: (inputs: Inputs<typeof meta>) => {
+  props: (inputs: Inputs<typeof meta>, [], clientContext) => {
     const orderProp: OrderBy[] = [];
 
     if (inputs.sortBy) {
@@ -177,6 +177,7 @@ export default defineComponent(Component, meta, {
 
     return {
       ...inputs,
+      clientContext,
       reverseXAxis: inputs.reverseXAxis,
       results: loadData({
         from: inputs.ds,

@@ -1,0 +1,7 @@
+- name: Euro
+  clientContext:
+    currency: €
+
+- name: Quid
+  clientContext:
+    currency: £

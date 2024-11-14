@@ -18,7 +18,8 @@ export default function getBarChartOptions({
   lineMetrics,
   metric,
   showSecondYAxis = false,
-  secondAxisTitle = ''
+  secondAxisTitle = '',
+  clientContext
 }: Partial<Props> & {
   stacked?: boolean;
   stackMetrics?: boolean;
@@ -30,6 +31,7 @@ export default function getBarChartOptions({
   showSecondYAxis?: boolean;
   secondAxisTitle?: string;
   lineMetrics?: Measure[];
+  clientContext?: object;
 }): ChartOptions<'bar' | 'line'> {
   return {
     responsive: true,
@@ -136,8 +138,9 @@ export default function getBarChartOptions({
               const axis = displayHorizontally ? 'x' : 'y';
               label += `: ${formatValue(`${context.parsed[axis]}`, { 
                 type: 'number', 
-                dps: dps, 
-                meta: displayAsPercentage ? undefined : metricObj?.meta 
+                dps: dps,
+                clientContext,
+                meta: displayAsPercentage ? undefined : metricObj?.meta
               })}`;
               if (displayAsPercentage) {
                 label += '%';

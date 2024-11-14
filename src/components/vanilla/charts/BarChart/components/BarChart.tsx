@@ -64,6 +64,7 @@ type Props = {
   granularity?: Granularity;
   showSecondYAxis?: boolean;
   secondAxisTitle?: string;
+  clientContext?: object;
 };
 
 export default function BarChart({ ...props }: Props) {
