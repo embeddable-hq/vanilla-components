@@ -165,6 +165,7 @@ export default function getBarChartOptions({
           let val = formatValue(v, { 
             type: 'number', 
             dps: dps,
+            clientContext,
             meta: displayAsPercentage ? undefined : metricObj?.meta 
           });
           if (displayAsPercentage) {

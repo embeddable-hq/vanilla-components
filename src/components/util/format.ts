@@ -48,9 +48,6 @@ export default function formatValue(str: string = '', opt: Type | Options = 'str
   return str;
 
   function wrap(v: string) {
-
-    
-
-    return `${meta?.pretext || ''}${meta?.showCurrency ? clientContext?.currency : ""}${v}${meta?.posttext || ''}`;
+    return `${meta?.pretext || ''}${meta?.showCurrency && clientContext?.currency ? clientContext?.currency : ""}${v}${meta?.posttext || ''}`;
   }
 }
