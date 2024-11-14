@@ -2,16 +2,16 @@ import {
   Dimension,
   Measure,
   OrderBy,
+  Value,
   isDimension,
   isMeasure,
   loadData,
-  Value
 } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import SortDirectionType from '../../../../types/SortDirection.type.emb';
-import Component, { Props } from './index';
 import { Column } from '../PivotTable/core/Column';
+import Component, { Props } from './index';
 
 export const meta = {
   name: 'TableChart',
@@ -121,7 +121,7 @@ export const meta = {
       properties: [
         {
           name: 'value',
-          type: 'string',
+          type: 'number',
         },
       ],
     },
@@ -160,8 +160,9 @@ export default defineComponent<
 
     const dimensions = [
       ...(inputs.columns?.filter(isDimension) || []),
-      ...(inputs.rowFilterDimension && !inputs.columns?.some(d => d.name === inputs.rowFilterDimension.name) 
-        ? [inputs.rowFilterDimension] 
+      ...(inputs.rowFilterDimension &&
+      !inputs.columns?.some((d) => d.name === inputs.rowFilterDimension.name)
+        ? [inputs.rowFilterDimension]
         : []),
     ];
 
