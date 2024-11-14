@@ -106,7 +106,7 @@ export const meta = {
     {
       name: 'rowFilterDimension',
       type: 'dimension',
-      label: 'Filter by dimension on row click',
+      label: 'Select filter dimension',
       config: {
         dataset: 'ds',
         supportedTypes: ['number'],
