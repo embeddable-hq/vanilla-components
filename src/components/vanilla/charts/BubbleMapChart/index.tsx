@@ -19,6 +19,7 @@ ChartJS.register(
 export default function Map(props: any) {
   const chartRef = useRef();
   const [data, setData] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const getData = async () => {
@@ -29,48 +30,51 @@ export default function Map(props: any) {
       const value = await response.json();
       console.log(value);
       setData((ChartGeo.topojson.feature(value, value.objects.bra) as any).features);
+      setIsLoading(false);
     };
     getData();
   }, []);
 
+  if (isLoading) {
+    return <Container {...props}>... Loading</Container>;
+  }
+
   return (
     <Container {...props} className="overflow-y-hidden">
-      <div>
-        <Chart
-          ref={chartRef}
-          type="choropleth"
-          data={{
-            labels: data.map((d: any) => d.properties.name),
-            datasets: [
-              {
-                outline: data,
-                label: 'Dataset 1',
-                data: data.map((d: any) => ({
-                  feature: d,
-                  value: Math.random() * 10,
-                })),
-              },
-            ],
-          }}
-          options={{
-            showOutline: true,
-            showGraticule: true,
-            plugins: {
-              legend: {
-                display: true,
-              },
+      <Chart
+        ref={chartRef}
+        type="choropleth"
+        data={{
+          labels: data.map((d: any) => d.properties.name),
+          datasets: [
+            {
+              outline: data,
+              label: 'Dataset 1',
+              data: data.map((d: any) => ({
+                feature: d,
+                value: Math.random() * 10,
+              })),
             },
-            hover: {
-              mode: 'nearest',
+          ],
+        }}
+        options={{
+          showOutline: true,
+          showGraticule: true,
+          plugins: {
+            legend: {
+              display: true,
             },
-            scales: {
-              xy: {
-                projection: 'mercator',
-              },
+          },
+          hover: {
+            mode: 'nearest',
+          },
+          scales: {
+            xy: {
+              projection: 'mercator',
             },
-          }}
-        />
-      </div>
+          },
+        }}
+      />
     </Container>
   );
 }
