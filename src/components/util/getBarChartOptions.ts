@@ -1,5 +1,5 @@
 import { ChartOptions } from 'chart.js';
-
+import { Measure } from '@embeddable.com/core';
 import formatValue from '../util/format';
 import { Props } from './getStackedChartData';
 
@@ -13,13 +13,23 @@ export default function getBarChartOptions({
   yAxisTitle = '',
   xAxisTitle = '',
   dps = undefined,
-  reverseXAxis = false
+  reverseXAxis = false,
+  metrics,
+  lineMetrics,
+  metric,
+  showSecondYAxis = false,
+  secondAxisTitle = ''
 }: Partial<Props> & {
   stacked?: boolean;
   stackMetrics?: boolean;
   yAxisTitle?: string;
   xAxisTitle?: string;
   reverseXAxis?: boolean;
+  metrics?: Measure[];
+  metric?: Measure;
+  showSecondYAxis?: boolean;
+  secondAxisTitle?: string;
+  lineMetrics?: Measure[];
 }): ChartOptions<'bar' | 'line'> {
   return {
     responsive: true,
@@ -59,6 +69,18 @@ export default function getBarChartOptions({
           display: !!yAxisTitle,
           text: yAxisTitle
         }
+      },
+      y1: {//optional second y-axis for optional line metrics
+        display: showSecondYAxis,
+        grace: '0%',
+        grid: {
+          display: false
+        },
+        position: 'right',
+        title: {
+          display: !!secondAxisTitle,
+          text: secondAxisTitle
+        },        
       },
       x: {
         reverse: reverseXAxis && !displayHorizontally,
@@ -105,9 +127,18 @@ export default function getBarChartOptions({
         callbacks: {
           label: function (context) {
             let label = context.dataset.label || '';
+            //metric needed for formatting
+            const metricIndex = context.datasetIndex;
+            //a single metric is sometimes passed in (e.g. for stacked bar charts)
+            const metricsList = [...(metrics || []), ...(lineMetrics||[])];
+            const metricObj = metrics ? metricsList[metricIndex] : metric;
             if (context.parsed && typeof context.parsed === 'object') {
               const axis = displayHorizontally ? 'x' : 'y';
-              label += `: ${formatValue(`${context.parsed[axis]}`, { type: 'number', dps: dps })}`;
+              label += `: ${formatValue(`${context.parsed[axis]}`, { 
+                type: 'number', 
+                dps: dps, 
+                meta: displayAsPercentage ? undefined : metricObj?.meta 
+              })}`;
               if (displayAsPercentage) {
                 label += '%';
               }
@@ -121,9 +152,18 @@ export default function getBarChartOptions({
         anchor: stacked || stackMetrics ? 'center' : 'end',
         align: stacked || stackMetrics ? 'center' : 'end',
         display: showLabels ? 'auto' : false,
-        formatter: (v) => {
+        formatter: (v, context) => {
+          //metric needed for formatting
+          const metricIndex = context.datasetIndex;
+          //a single metric is sometimes passed in (e.g. for stacked bar charts)
+          const metricsList = [...(metrics || []), ...(lineMetrics||[])];
+          const metricObj = metrics ? metricsList[metricIndex] : metric;
           if (v === null) return null;
-          let val = formatValue(v, { type: 'number', dps: dps });
+          let val = formatValue(v, { 
+            type: 'number', 
+            dps: dps,
+            meta: displayAsPercentage ? undefined : metricObj?.meta 
+          });
           if (displayAsPercentage) {
             val += '%';
           }

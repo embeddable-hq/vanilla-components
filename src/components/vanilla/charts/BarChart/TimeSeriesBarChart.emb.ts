@@ -38,6 +38,30 @@ export const meta = {
       category: 'Chart data',
     },
     {
+      name: 'lineMetrics',
+      type: 'measure',
+      array: true,
+      label: 'Add a line(s)',
+      config: {
+        dataset: 'ds',
+      },
+      category: 'Optional chart data',
+    },
+    {
+      name: 'showSecondYAxis',
+      type: 'boolean',
+      label: 'Show 2nd axis',
+      category: 'Optional chart data',
+      defaultValue: false,
+    },  
+    {
+      name: 'secondAxisTitle',
+      type: 'string',
+      label: '2nd axis title',
+      description: 'The title for the chart',
+      category: 'Optional chart data',
+    }, 
+    {
       name: 'granularity',
       type: 'granularity',
       label: 'Granularity',
@@ -144,7 +168,7 @@ export default defineComponent(Component, meta, {
             granularity: inputs.granularity,
           },
         ],
-        measures: inputs.metrics,
+        measures: [...inputs.metrics, ...(inputs.lineMetrics || [])],
         filters: [
           {
             property: inputs.xAxis,

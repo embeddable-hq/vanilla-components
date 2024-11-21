@@ -3,7 +3,7 @@ import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/
 import { endOfDay, startOfDay } from 'date-fns';
 
 import TimeComparisonType from '../../../../types/TimeComparison.type.emb';
-import { timeRangeToUTC } from '../../../hooks/useTimezone';
+import { timeRangeToUTC } from '../../../util/timezone';
 import Component from './index';
 
 export const meta = {

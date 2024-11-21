@@ -6,14 +6,15 @@ import {
   Chart as ChartJS,
   Filler,
   Legend,
-  LinearScale,
   PointElement,
+  LineElement,
+  LinearScale,
   Title,
   Tooltip,
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React from 'react';
-import { Bar } from 'react-chartjs-2';
+import { Chart } from 'react-chartjs-2';
 
 import {
   COLORS,
@@ -30,6 +31,7 @@ ChartJS.register(
   LinearScale,
   PointElement,
   BarElement,
+  LineElement,
   Title,
   Tooltip,
   Legend,
@@ -48,6 +50,7 @@ type Props = {
   dps?: number;
   enableDownloadAsCSV?: boolean;
   metrics: Measure[];
+  lineMetrics?: Measure[];
   results?: DataResponse;
   reverseXAxis?: boolean;
   showLabels?: boolean;
@@ -59,11 +62,14 @@ type Props = {
   xAxisTitle?: string;
   yAxisTitle?: string;
   granularity?: Granularity;
+  showSecondYAxis?: boolean;
+  secondAxisTitle?: string;
 };
 
 export default function BarChart({ ...props }: Props) {
   return (
-    <Bar
+    <Chart
+      type="bar"
       height="100%"
       options={getBarChartOptions({ ...props, stacked: false })}
       data={chartData(props)}
@@ -71,8 +77,8 @@ export default function BarChart({ ...props }: Props) {
   );
 }
 
-function chartData(props: Props): ChartData<'bar'> {
-  const { results, xAxis, metrics, granularity } = props;
+function chartData(props: Props): ChartData<'bar' | 'line'> {
+  const { results, xAxis, metrics, granularity, lineMetrics, showSecondYAxis } = props;
 
   let dateFormat: string | undefined;
   if (xAxis.nativeType === 'time' && granularity) {
@@ -91,18 +97,34 @@ function chartData(props: Props): ChartData<'bar'> {
     ),
   ] as string[];
 
+  const metricsDatasets =  metrics?.map((metric, i) => ({
+    barPercentage: 0.8,
+    barThickness: 'flex',
+    maxBarThickness: 50,
+    minBarLength: 0,
+    borderRadius: 4,
+    label: metric.title,
+    data: results?.data?.map((d) => parseFloat(d[metric.name] || 0)) || [],
+    backgroundColor: COLORS[i % COLORS.length],
+    order: 1
+  })) || [];
+
+  //optional metrics to display as a line on the barchart 
+  const lineMetricsDatasets = lineMetrics?.map((metric, i) => ({
+      label: metric.title,
+      data: results?.data?.map((d) => parseFloat(d[metric.name] || 0)) || [],
+      backgroundColor: COLORS[metrics.length + i % COLORS.length],
+      borderColor: COLORS[metrics.length + i % COLORS.length],
+      cubicInterpolationMode: 'monotone' as const,
+      pointRadius: 2,
+      pointHoverRadius: 3,
+      type: 'line' as const,
+      order: 0,
+      yAxisID: showSecondYAxis ? 'y1' : 'y',
+  })) || [];
+
   return {
     labels,
-    datasets:
-      metrics?.map((metric, i) => ({
-        barPercentage: 0.8,
-        barThickness: 'flex',
-        maxBarThickness: 50,
-        minBarLength: 0,
-        borderRadius: 4,
-        label: metric.title,
-        data: results?.data?.map((d) => parseFloat(d[metric.name])) || [],
-        backgroundColor: COLORS[i % COLORS.length],
-      })) || [],
+    datasets: [...metricsDatasets, ...lineMetricsDatasets]
   };
 }

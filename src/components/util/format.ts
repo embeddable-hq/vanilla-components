@@ -1,6 +1,6 @@
 import { format as formatDate } from 'date-fns';
 
-import { parseTime } from '../hooks/useTimezone';
+import { parseTime } from '../util/timezone';
 
 type Type = 'number' | 'date' | 'string';
 
@@ -8,7 +8,7 @@ type Options = {
   type?: Type;
   truncate?: number;
   dateFormat?: string;
-  meta?: { prefix?: string; suffix?: string };
+  meta?: { pretext?: string; posttext?: string };
   dps?: number;
 };
 function numberFormatter(dps: number | undefined | null) {
@@ -31,7 +31,7 @@ export default function formatValue(str: string = '', opt: Type | Options = 'str
   if (type === 'date') return wrap(new Date(str).toLocaleString());
   if (truncate) {
     return str?.length > truncate
-      ? `${meta?.prefix || ''}${str.substring(0, truncate)}...`
+      ? `${meta?.pretext || ''}${str.substring(0, truncate)}...`
       : wrap(str);
   }
 
@@ -40,6 +40,6 @@ export default function formatValue(str: string = '', opt: Type | Options = 'str
   return str;
 
   function wrap(v: string) {
-    return `${meta?.prefix || ''}${v}${meta?.suffix || ''}`;
+    return `${meta?.pretext || ''}${v}${meta?.posttext || ''}`;
   }
 }
