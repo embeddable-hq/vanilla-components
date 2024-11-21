@@ -10,6 +10,9 @@ export default defineConfig({
   authDomain: 'auth.eu.embeddable.com',
   authClientId: '6OGPwIQsVmtrBKhNrwAaXhz4ePb0kBGV',
 
+  //
+  // For internal use only
+  //
   // previewBaseUrl: 'https://app.dev.embeddable.com',
   // pushBaseUrl: 'https://api.dev.embeddable.com',
   // audienceUrl: 'https://api.dev.embeddable.com/',

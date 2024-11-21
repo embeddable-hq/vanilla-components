@@ -83,7 +83,12 @@ export default (props: Props) => {
                   color: `${LIGHTEST_FONT}`,
                 }}
               >
-                {`${metric.title}: ${formatValue(`${results?.data?.[0]?.[metric.name]}`, { type: 'number', dps: dps })}`}
+                {`${metric.title}: ${formatValue(`${results?.data?.[0]?.[metric.name]}`, { 
+                    type: 'number', 
+                    dps: dps,
+                    meta: metric?.meta 
+                  })}
+                `}
               </p>
             )}
           </>

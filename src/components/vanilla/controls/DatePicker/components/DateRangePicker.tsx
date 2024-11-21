@@ -1,10 +1,11 @@
 import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser.js';
 import { endOfDay, getYear } from 'date-fns';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
+import { DayPicker, MonthCaptionProps, NavProps, useDayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
 import formatValue from '../../../../util/format';
+import { toUTC } from '../../../../util/timezone';
 import Container from '../../../Container';
 import { CalendarIcon, ChevronLeft, ChevronRight } from '../../../icons';
 import Dropdown from '../../Dropdown';
@@ -84,6 +85,16 @@ export default function DateRangePicker(props: Props) {
     [range?.to],
   );
 
+  const formatDateText = () => {
+    if (!range?.from || !range?.to) return 'Select';
+    // Perform some gymnastics to make sure we stay in UTC
+    const newFrom = toUTC(range.from) || new Date();
+    const newTo = toUTC(range.to) || new Date();
+    const fromFormat = formatValue(newFrom.toJSON(), { dateFormat: formatFrom });
+    const toFormat = formatValue(newTo.toJSON(), { dateFormat: formatTo });
+    return `${fromFormat} - ${toFormat}`;
+  };
+
   return (
     <Container title={props.title}>
       <div className="relative inline-flex h-10 w-full text-[#101010] text-sm">
@@ -115,21 +126,15 @@ export default function DateRangePicker(props: Props) {
             ref={ref}
             onChange={() => {}}
             onFocus={() => setFocus(true)}
-            onBlur={() => setTriggerBlur(true)}
+            onBlur={() => {
+              setTriggerBlur(true);
+            }}
             className="absolute left-0 top-0 h-full w-full opacity-0 cursor-pointer"
           />
           <CalendarIcon className="mr-2" />
-          {!props.hideDate && (
-            <span className="overflow-hidden truncate">
-              {!!range?.from && !!range?.to
-                ? `${formatValue(range.from.toJSON(), { dateFormat: formatFrom })} - ${formatValue(
-                    range.to.toJSON(),
-                    { dateFormat: formatTo },
-                  )}`
-                : 'Select'}
-            </span>
-          )}
+          {!props.hideDate && <span className="overflow-hidden truncate">{formatDateText()}</span>}
           <div
+            id="date-range-picker"
             onClick={() => {
               setTriggerBlur(false);
               ref.current?.focus();
@@ -138,29 +143,30 @@ export default function DateRangePicker(props: Props) {
               focus ? 'block' : 'hidden'
             } absolute top-8 right-0 sm:right-auto sm:left-0 z-50 pt-3 pointer-events-auto opacity-100`}
           >
-            {/*
-              DayPicker v8.x does not support the required prop on ranges. Need to upgrade to 9.x
-              required={true}
-            */}
             <DayPicker
               showOutsideDays
               className="border border-[#d8dad9] bg-white rounded-xl px-4 py-3 text-[#101010] !m-0"
+              classNames={{
+                selected: 'bg-[#f3f4f6] text-[#101010]',
+              }}
               components={{
-                Caption: CustomCaption,
+                MonthCaption: CustomCaption,
+                Nav: (props: NavProps) => (
+                  <span style={{ position: 'absolute', top: 0, left: 0 }}></span>
+                ),
               }}
               weekStartsOn={1}
               mode="range"
+              required={true}
               selected={{ from: range?.from, to: range?.to }}
               onSelect={(range) => {
-                setRange({ ...range, relativeTimeString: 'Custom' });
-
                 if (!range?.from || !range?.to) return;
 
-                setFocus(false);
-
                 setTriggerBlur(false);
+                ref.current?.focus();
 
                 range.to = endOfDay(range.to);
+                setRange({ ...range, relativeTimeString: 'Custom' });
 
                 props.onChange?.(range);
               }}
@@ -172,8 +178,9 @@ export default function DateRangePicker(props: Props) {
   );
 }
 
-const CustomCaption = (props: CaptionProps) => {
-  const { goToMonth, nextMonth, previousMonth } = useNavigation();
+const CustomCaption = (props: MonthCaptionProps) => {
+  const { goToMonth, nextMonth, previousMonth } = useDayPicker();
+  const dateUTC = toUTC(props.calendarMonth.date) || new Date();
 
   return (
     <h2 className="flex items-center">
@@ -185,7 +192,7 @@ const CustomCaption = (props: CaptionProps) => {
         <ChevronLeft />
       </button>
       <span className="mx-auto text-sm">
-        {formatValue(props.displayMonth.toJSON(), { dateFormat: 'MMMM yyy' })}
+        {formatValue(dateUTC.toJSON(), { dateFormat: 'MMMM yyy' })}
       </span>
       <button
         className="w-7 h-7 bg-white rounded border border-slate-400 justify-center items-center inline-flex"

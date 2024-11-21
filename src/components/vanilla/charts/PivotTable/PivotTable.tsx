@@ -98,6 +98,11 @@ const PivotTable = <T,>({
     return sortRows(rows, sortCriteriaWithDataAccessor);
   }, [rows, sortCriteriaWithDataAccessor]);
 
+
+  const getMeasureByLabel = useMemo(() => (label: string) => {
+    return measures.find(measure => measure.title === label);
+  }, [measures]);
+
   return (
     <table className="min-w-full border-separate border-spacing-0 table-fixed">
       <thead className="text-[#333942] sticky top-0 z-20 bg-white">
@@ -134,9 +139,12 @@ const PivotTable = <T,>({
                     cellValue === undefined || cellValue === null
                       ? nullValueCharacter
                       : formatValue(cellValue, {
+                        //format date columns
                         ...(granularity && column.dataType === 'time' ? {
                           dateFormat: DATE_DISPLAY_FORMATS[granularity as keyof typeof DATE_DISPLAY_FORMATS]
-                        } : {})
+                        } : {}),
+                        //format measures
+                        ...(getMeasureByLabel(column.label) ? { meta: getMeasureByLabel(column.label)?.meta, type: 'number' } : {})
                       })
                   }
                 </span>
