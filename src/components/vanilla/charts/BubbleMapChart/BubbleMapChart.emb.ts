@@ -17,7 +17,63 @@ export const meta = {
       defaultValue: false,
       category: 'Chart data',
     },
-
+    {
+      name: 'bubblePlacement',
+      type: 'dimension',
+      label: 'Bubble Placement (lat/lng data) - NOT WORKING YET',
+      config: {
+        dataset: 'ds',
+      },
+      category: 'Chart data',
+    },
+    {
+      name: 'metric',
+      type: 'measure',
+      label: 'Metric (bubble Size) - NOT WORKING YET',
+      config: {
+        dataset: 'ds',
+      },
+      category: 'Chart data',
+    },
+    {
+      name: 'clusterRadius',
+      type: 'number',
+      label: 'Cluster Radius',
+      description:
+        'Radius within which markers are clustered. Larger value = fewer clusters with more items - REQUIRES REFRESH',
+      defaultValue: 20,
+      category: 'Chart Settings',
+    },
+    {
+      name: 'markerColor',
+      type: 'string',
+      label: 'Marker Color',
+      description: 'Color of the markers',
+      defaultValue: '#6574C8',
+      category: 'Chart Settings',
+    },
+    {
+      name: 'markerClusterColor',
+      type: 'string',
+      label: 'Marker Cluster Color',
+      description: 'Color of the marker clusters',
+      defaultValue: '#8593e5',
+      category: 'Chart Settings',
+    },
+    {
+      name: 'showTooltips',
+      type: 'boolean',
+      label: 'Show tooltips',
+      defaultValue: true,
+      category: 'Chart Settings',
+    },
+    {
+      name: 'toolTipValue',
+      type: 'dimensionOrMeasure',
+      label: 'Tooltip value - NOT WORKING YET',
+      description: 'Value to show in the tooltip',
+      category: 'Chart Settings',
+    },
     {
       name: 'enableDownloadAsCSV',
       type: 'boolean',
@@ -39,6 +95,8 @@ export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
     return {
       ...inputs,
+      dimensions: [inputs.bubblePlacement],
+      measures: [inputs.metric],
     };
   },
 });
