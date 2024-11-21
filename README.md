@@ -27,7 +27,7 @@ This is how you push code changes to your Embeddable workspace
 ### Local Development
 This is a "Preview workspace" (local to you) that allows you make changes locally and see them instantly without needing to "Build and Deploy".
 
-`npm run embeddable:dev` 
+`npm run embeddable:dev` (note: you may need to run `npm run embeddable:login` first)
 
 It opens a "Preview" workspace, that uses your local components and models.
 
