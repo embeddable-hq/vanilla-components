@@ -1,0 +1,85 @@
+cubes:
+- name: int_qr_codes
+  data_source: default
+  sql: >
+    select
+      partition_date
+      ,user_pseudo_id
+      ,content_category
+      ,component_type
+      ,qrcode_id
+      ,qrcode_label
+      ,organization_id
+      ,venue_id
+      ,zone_id
+      ,tour_id
+      ,art_id
+      ,artist_id
+      ,exhibition_id
+      ,link_url
+    from `smartify-cc94e.smartify_flat_analytics.smartify_ga_flat`
+    where partition_date between "2024-10-10" and "2024-11-05"
+    and event_name = "qrcode_open"
+
+  dimensions:
+    - name: datetime
+      type: time
+      sql: timestamp(partition_date)
+
+    - name: content_category
+      type: string
+      sql: content_category
+
+    - name: component_type
+      type: string
+      sql: component_type
+
+    - name: qrcode_id
+      type: string
+      sql: qrcode_id
+    
+    - name: qrcode_label
+      type: string
+      sql: qrcode_label
+    
+    - name: organization_id
+      type: string
+      sql: organization_id
+    
+    - name: venue_id
+      type: string
+      sql: venue_id
+    
+    - name: zone_id
+      type: string
+      sql: zone_id
+    
+    - name: tour_id
+      type: string
+      sql: tour_id
+    
+    - name: art_id
+      type: string
+      sql: art_id
+    
+    - name: artist_id
+      type: string
+      sql: artist_id
+    
+    - name: exhibition_id
+      type: string
+      sql: exhibition_id
+    
+    - name: link_url
+      type: string
+      sql: link_url
+
+  measures:
+    - name: total_events
+      type: count
+      title: "Total Events"
+    
+    - name: users
+      sql: user_pseudo_id
+      type: count_distinct
+      title: "Total Users"
