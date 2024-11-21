@@ -55,15 +55,13 @@ export default (props: Props) => {
     }
 
     const handleChange = (granularity:string) => {
-        const rts = timeFilters[granularity];
-        const timeFilter: TimeRange = {
-            to: undefined,
-            from: undefined,
-            relativeTimeString: rts
-        }
         const eventObject = {
             value: granularity,
-            dateRange: timeFilter
+            dateRange: {
+                to: undefined,
+                from: undefined,
+                relativeTimeString: timeFilters[granularity]
+            }
         }
         props.onChange(eventObject); 
         setGranularity(granularity as Granularity);       
@@ -71,6 +69,7 @@ export default (props: Props) => {
 
     const granularityOptions = (): GranularityResponse => {
         const data: { value: Granularity }[] = [];
+        //display options selected by user
         options.filter(option => props[option])?.forEach((option) => data.push({value: option}) );
         return {
             isLoading: false,
