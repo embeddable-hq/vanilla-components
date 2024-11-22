@@ -12,10 +12,10 @@ export const meta = {
     {
       name: 'ds',
       type: 'dataset',
-      label: 'Dataset',
+      label: 'Map Dataset',
       description: 'Dataset',
       defaultValue: false,
-      category: 'Chart data',
+      category: 'Chart Data',
     },
     {
       name: 'bubblePlacement',
@@ -24,16 +24,26 @@ export const meta = {
       config: {
         dataset: 'ds',
       },
-      category: 'Chart data',
+      category: 'Chart Data',
     },
     {
       name: 'metric',
       type: 'measure',
-      label: 'Metric (bubble Size) - NOT WORKING YET',
+      label: 'Metric (bubble size) - NOT WORKING YET',
       config: {
         dataset: 'ds',
       },
-      category: 'Chart data',
+      category: 'Chart Data',
+    },
+    {
+      name: 'toolTipValues',
+      type: 'measure',
+      label: 'Tooltip values',
+      description: 'Values to show in the tooltip',
+      config: {
+        dataset: 'ds',
+      },
+      category: 'Chart Data',
     },
     {
       name: 'clusterRadius',
@@ -68,11 +78,12 @@ export const meta = {
       category: 'Chart Settings',
     },
     {
-      name: 'toolTipValue',
-      type: 'dimensionOrMeasure',
-      label: 'Tooltip value - NOT WORKING YET',
-      description: 'Value to show in the tooltip',
+      name: 'customTileSet',
+      type: 'string',
+      label: 'Custom Tile Set',
+      description: 'URL of custom tile set',
       category: 'Chart Settings',
+      defaultValue: '',
     },
     {
       name: 'enableDownloadAsCSV',
@@ -95,8 +106,11 @@ export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
     return {
       ...inputs,
-      dimensions: [inputs.bubblePlacement],
-      measures: [inputs.metric],
+      results: loadData({
+        from: inputs.ds,
+        dimensions: [inputs.bubblePlacement],
+        measures: [inputs.metric, inputs.toolTipValues],
+      }),
     };
   },
 });

@@ -1,6 +1,6 @@
 // React & 3rd Party
 import React, { useEffect, useState } from 'react';
-import { Dataset, DimensionOrMeasure } from '@embeddable.com/core';
+import { DataResponse, Dataset, DimensionOrMeasure, Measure } from '@embeddable.com/core';
 import Leaflet, { LatLngBoundsExpression, MarkerCluster } from 'leaflet';
 import { MapContainerProps, MarkerProps, TileLayerProps, Tooltip, useMap } from 'react-leaflet';
 import cities from './cities.json';
@@ -14,9 +14,9 @@ import Container from '../../Container';
 // Constants
 const mapStyle = { height: '100%', minHeight: '100px' };
 const bounds: LatLngBoundsExpression = [
-  [51.509865, -0.118092],
-  [51.509865, -0.118092],
-];
+  [0, 0],
+  [0, 0],
+]; // this gets overwritten by SetBounds
 
 type BoundsProps = {
   markers: MarkerData[];
@@ -29,16 +29,18 @@ type MarkerData = {
 };
 
 type Props = {
+  bubblePlacement?: DimensionOrMeasure;
+  clusterRadius?: number;
+  customTileSet?: string;
   ds?: Dataset;
   enableDownloadAsCSV?: boolean;
   enableDownloadAsPNG?: boolean;
-  markerColor?: string;
   markerClusterColor?: string;
-  showTooltips?: boolean;
-  toolTipValue?: DimensionOrMeasure;
-  bubblePlacement?: DimensionOrMeasure;
+  markerColor?: string;
   metric?: DimensionOrMeasure;
-  clusterRadius?: number;
+  results: DataResponse;
+  showTooltips?: boolean;
+  toolTipValues?: Measure;
 };
 
 // Child Component - used to auto-zoom the map to fit all markers (rerenders if they change)
@@ -66,12 +68,30 @@ const SetBounds = (props: BoundsProps) => {
 
 // Main Component
 export default (props: Props) => {
-  const { clusterRadius, ds, markerColor, markerClusterColor } = props;
+  const {
+    clusterRadius,
+    customTileSet,
+    ds,
+    markerClusterColor,
+    markerColor,
+    metric,
+    results,
+    toolTipValues,
+  } = props;
+  console.log(results);
+  console.log(toolTipValues);
 
-  // Temp - generate random markers
+  // TEMP - generate random markers
   const markers: MarkerData[] = [];
   cities.forEach((city: any) => {
     markers.push({ lat: city.lat, lng: city.lng, name: city.city });
+  });
+
+  // TEMP - randomly assign a tooltip value to the markers
+  const updatedMarkers = markers.map((marker) => {
+    const randomIndex = Math.floor(Math.random() * (results?.data?.length || 1));
+    marker.name = results?.data?.[randomIndex][toolTipValues?.name || ''] || 'unknown';
+    return marker;
   });
 
   // Handle values for post-facto imported components
@@ -84,7 +104,6 @@ export default (props: Props) => {
 
   // Get around "can't use require" issues by post-facto importing components
   useEffect(() => {
-    // Dynamically import 'react-simple-maps' components
     const loadMapComponents = async () => {
       const { MapContainer, Marker, TileLayer } = await import('react-leaflet');
       const mc = await import('react-leaflet-markercluster');
@@ -132,8 +151,11 @@ export default (props: Props) => {
           style={mapStyle}
           zoom={4}
         >
-          <TileLayer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png" attribution="" />
-          <SetBounds markers={markers} />
+          <TileLayer
+            url={customTileSet ? customTileSet : 'https://{s}.tile.osm.org/{z}/{x}/{y}.png'}
+            attribution=""
+          />
+          <SetBounds markers={updatedMarkers} />
           <MarkerClusterGroup
             iconCreateFunction={createClusterCustomIcon}
             maxClusterRadius={clusterRadius}
@@ -142,7 +164,7 @@ export default (props: Props) => {
             showCoverageOnHover={false}
             spiderfyOnMaxZoom={true}
           >
-            {markers.map((address, index) => {
+            {updatedMarkers.map((address, index) => {
               const lat = address.lat;
               const lng = address.lng;
               return (
