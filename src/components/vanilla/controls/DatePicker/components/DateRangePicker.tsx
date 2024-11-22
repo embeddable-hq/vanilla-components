@@ -10,7 +10,7 @@ import Container from '../../../Container';
 import { CalendarIcon, ChevronLeft, ChevronRight } from '../../../icons';
 import Dropdown from '../../Dropdown';
 
-const ranges = [
+export const ranges = [
   'Today',
   'Yesterday',
   'This week',
@@ -22,6 +22,7 @@ const ranges = [
   'This quarter',
   'Last quarter',
   'Last 6 months',
+  'Last 12 months',
   'This year',
   'Last year',
 ];
