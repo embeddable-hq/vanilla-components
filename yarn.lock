@@ -323,24 +323,24 @@
   resolved "https://registry.npmjs.org/@date-fns/tz/-/tz-1.2.0.tgz"
   integrity sha512-LBrd7MiJZ9McsOgxqWX7AaxrDjcFVjWH/tIKJd7pnR7McaslGYOP1QmmiBXdJH/H/yLCT+rcQ7FaPBUxRGUtrg==
 
-"@embeddable.com/core@*", "@embeddable.com/core@2.6.8":
+"@embeddable.com/core@*", "@embeddable.com/core@^2.6.8":
   version "2.6.8"
   resolved "https://registry.npmjs.org/@embeddable.com/core/-/core-2.6.8.tgz"
   integrity sha512-VP8nWijhIkDKXnFc8r1CnV4Z3sKe7qYWQYEuJtHF5q4NjsjCMUaG36/ZL21IS0wwnoOxJ2sRWcjfEt6/NXmLDg==
   dependencies:
     jsdom "^24.1.1"
 
-"@embeddable.com/react@2.7.5":
-  version "2.7.5"
-  resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.7.5.tgz"
-  integrity sha512-S/u97BHCFavSRvoKa0XBJ1MMTHt935QVQUq0lKifsBgSuUj3Zk+JFv5447x4gCKVOxWt4GnqLUSFEOQwkd40FA==
+"@embeddable.com/react@^2.7.6":
+  version "2.7.6"
+  resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.7.6.tgz"
+  integrity sha512-c1A9dHKhfih7b25/SBiPXoMbSHNQb+VX9Qdlqw12oLKqHzKjw0R84eNfUpA5KFcNkqDJB/BZOEQZtv07vPbbqw==
   dependencies:
     "@embeddable.com/core" "*"
 
-"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@3.9.12":
-  version "3.9.12"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-3.9.12.tgz"
-  integrity sha512-TN3bJFbOKDl3NsYMns+pkO30U3ZfwKn5x3TC2S++5jAtEcxu2XS0hokQNEswzzSLPzWRV81hd+oTOR+Ql5kM+g==
+"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@^3.9.14":
+  version "3.9.14"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-3.9.14.tgz"
+  integrity sha512-echAtWicImQ+m+UIVPExRsaPEU/kZO7Nj2usAhJKBE3xvR7ldpastYIOs/VG2eK86GkYsJLuDtszzlNJKX0c3w==
   dependencies:
     "@embeddable.com/sdk-utils" "*"
     "@inquirer/prompts" "^7.0.0"
@@ -360,7 +360,7 @@
     ws "^8.17.0"
     yaml "^2.3.3"
 
-"@embeddable.com/sdk-react@3.8.2":
+"@embeddable.com/sdk-react@^3.8.2":
   version "3.8.2"
   resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-3.8.2.tgz"
   integrity sha512-V74cH8bgkcZe7rJz+TrsjhFsYPwzXR+UFkP2SrwrKDVF9JWYJbXVe0d6v5BXDSSApYiG5KaDUYuChe4NtzpcWw==
