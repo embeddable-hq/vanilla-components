@@ -61,7 +61,6 @@ export const meta = {
 export default defineComponent<Props, typeof meta, { downloading: boolean }>(Component, meta, {
   props: (inputs: Inputs<typeof meta>, [state]) => {
     const downloading = state?.downloading === false;
-    console.log(state);
     let results = {
       isLoading: false,
     };
