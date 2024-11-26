@@ -1,4 +1,4 @@
-import { loadData } from '@embeddable.com/core';
+import { OrderBy, loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
@@ -37,6 +37,15 @@ export const meta = {
       name: 'metric',
       type: 'measure',
       label: 'Metric',
+      config: {
+        dataset: 'ds',
+      },
+      category: 'Chart data',
+    },
+    {
+      name: 'sortBy',
+      type: 'dimensionOrMeasure',
+      label: 'Sort by (optional)',
       config: {
         dataset: 'ds',
       },
@@ -85,6 +94,13 @@ export const meta = {
       category: 'Chart settings',
     },
     {
+      name: 'reverseXAxis',
+      type: 'boolean',
+      label: 'Reverse X Axis',
+      category: 'Chart settings',
+      defaultValue: false,
+    },
+    {
       name: 'displayAsPercentage',
       type: 'boolean',
       label: 'Display as Percentages',
@@ -116,12 +132,22 @@ export const meta = {
 
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
+    const orderProp: OrderBy[] = [];
+
+    if (inputs.sortBy) {
+      orderProp.push({
+        property: inputs.sortBy,
+        direction: inputs.sortBy.nativeType == 'string' ? 'asc' : 'desc',
+      });
+    }
+
     return {
       ...inputs,
       results: loadData({
         from: inputs.ds,
         dimensions: [inputs.xAxis, inputs.segment],
         measures: [inputs.metric],
+        orderBy: orderProp,
       }),
     };
   },
