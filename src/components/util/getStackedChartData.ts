@@ -18,6 +18,7 @@ export type Props = {
   displayAsPercentage?: boolean;
   showLabels?: boolean;
   showLegend?: boolean;
+  showTotal?: boolean;
   maxSegments?: number;
   dps?: number;
   results: DataResponse;

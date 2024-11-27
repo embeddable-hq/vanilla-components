@@ -60,7 +60,7 @@ export default (props: Props) => {
     <Container {...props} className="overflow-y-hidden">
       <Bar
         height="100%"
-        options={getBarChartOptions({ ...props, stacked: true })}
+        options={getBarChartOptions({ ...updatedProps, stacked: true })}
         data={
           getStackedChartData(updatedProps, datasetsMeta) as ChartData<'bar', number[], unknown>
         }
