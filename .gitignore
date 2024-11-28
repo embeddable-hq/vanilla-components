@@ -35,3 +35,6 @@ embeddable-entry-point.jsx
 
 # license report file
 license-report.csv
+
+# misc
+csvjson.json

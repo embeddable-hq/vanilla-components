@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { DataResponse, Dataset, DimensionOrMeasure, Measure } from '@embeddable.com/core';
 import Leaflet, { LatLngBoundsExpression, MarkerCluster } from 'leaflet';
 import { MapContainerProps, MarkerProps, TileLayerProps, Tooltip, useMap } from 'react-leaflet';
-import cities from './cities.json';
+import unTypedCities from './csvjson.json';
+const cities: any[] = JSON.parse(JSON.stringify(unTypedCities));
 
 // Style
 import 'leaflet/dist/leaflet.css';
@@ -23,6 +24,7 @@ type BoundsProps = {
 };
 
 type MarkerData = {
+  count: number;
   lat: number;
   lng: number;
   name: string;
@@ -78,20 +80,21 @@ export default (props: Props) => {
     results,
     toolTipValues,
   } = props;
-  console.log(results);
-  console.log(toolTipValues);
 
   // TEMP - generate random markers
   const markers: MarkerData[] = [];
   cities.forEach((city: any) => {
-    markers.push({ lat: city.lat, lng: city.lng, name: city.city });
-  });
+    let count = city.CHARGES_COUNT;
+    if (typeof count !== 'number') {
+      count = 0;
+    }
 
-  // TEMP - randomly assign a tooltip value to the markers
-  const updatedMarkers = markers.map((marker) => {
-    const randomIndex = Math.floor(Math.random() * (results?.data?.length || 1));
-    marker.name = results?.data?.[randomIndex][toolTipValues?.name || ''] || 'unknown';
-    return marker;
+    markers.push({
+      count,
+      lat: city.CP_LATITUDE,
+      lng: city.CP_LONGITUDE,
+      name: city.CITY,
+    });
   });
 
   // Handle values for post-facto imported components
@@ -155,7 +158,7 @@ export default (props: Props) => {
             url={customTileSet ? customTileSet : 'https://{s}.tile.osm.org/{z}/{x}/{y}.png'}
             attribution=""
           />
-          <SetBounds markers={updatedMarkers} />
+          <SetBounds markers={markers} />
           <MarkerClusterGroup
             iconCreateFunction={createClusterCustomIcon}
             maxClusterRadius={clusterRadius}
@@ -164,7 +167,7 @@ export default (props: Props) => {
             showCoverageOnHover={false}
             spiderfyOnMaxZoom={true}
           >
-            {updatedMarkers.map((address, index) => {
+            {markers.map((address, index) => {
               const lat = address.lat;
               const lng = address.lng;
               return (
@@ -174,7 +177,9 @@ export default (props: Props) => {
                   position={[lat, lng]}
                   title=""
                 >
-                  <Tooltip>{address.name}</Tooltip>
+                  <Tooltip>
+                    {address.name} - {address.count}
+                  </Tooltip>
                 </Marker>
               );
             })}

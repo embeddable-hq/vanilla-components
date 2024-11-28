@@ -63,12 +63,27 @@ export const meta = {
       category: 'Chart Settings',
     },
     {
+      name: 'marketTextColor',
+      type: 'string',
+      label: 'Marker Text Color',
+      description: 'Color of the marker text',
+      defaultValue: '#ffffff',
+      category: 'Chart Settings',
+    },
+    {
       name: 'markerClusterColor',
       type: 'string',
       label: 'Marker Cluster Color',
       description: 'Color of the marker clusters',
       defaultValue: '#8593e5',
       category: 'Chart Settings',
+    },
+    {
+      name: 'markerClusterTextColor',
+      type: 'string',
+      label: 'Marker Cluster Text Color',
+      description: 'Color of the marker cluster text',
+      defaultValue: '#ffffff',
     },
     {
       name: 'showTooltips',
