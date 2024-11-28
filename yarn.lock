@@ -360,17 +360,17 @@
     ws "^8.17.0"
     yaml "^2.3.3"
 
-"@embeddable.com/sdk-react@3.8.2":
-  version "3.8.2"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-3.8.2.tgz"
-  integrity sha512-V74cH8bgkcZe7rJz+TrsjhFsYPwzXR+UFkP2SrwrKDVF9JWYJbXVe0d6v5BXDSSApYiG5KaDUYuChe4NtzpcWw==
+"@embeddable.com/sdk-react@^3.8.3":
+  version "3.8.3"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-3.8.3.tgz"
+  integrity sha512-Va4Le2WLHZ9w9GiDLgeDjFjcpREhJ+MQwHN8TG39qPuhSgZ24xNdID+x2aScBiLFbfKretpxCNBaLcCqsA9R9A==
   dependencies:
     "@babel/generator" "^7.23.0"
     "@babel/parser" "^7.23.0"
     "@babel/traverse" "^7.24.7"
     "@embeddable.com/sdk-core" "*"
     "@embeddable.com/sdk-utils" "*"
-    "@happy-dom/global-registrator" "^14.12.0"
+    "@happy-dom/global-registrator" "^15.11.0"
     "@vitejs/plugin-react" "^4.3.2"
     astring "^1.8.6"
     ora "^8.0.1"
@@ -434,12 +434,12 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@happy-dom/global-registrator@^14.12.0":
-  version "14.12.3"
-  resolved "https://registry.npmjs.org/@happy-dom/global-registrator/-/global-registrator-14.12.3.tgz"
-  integrity sha512-VL6mjnIhqD1l9zYBmdIx5Q3qNiNY0ZBByrDV2Z7hHDMsjhqwaVI2/uQZ7uyCsgRWvubSG1yZ74sEK2inDBBw/w==
+"@happy-dom/global-registrator@^15.11.0":
+  version "15.11.7"
+  resolved "https://registry.npmjs.org/@happy-dom/global-registrator/-/global-registrator-15.11.7.tgz"
+  integrity sha512-mfOoUlIw8VBiJYPrl5RZfMzkXC/z7gbSpi2ecycrj/gRWLq2CMV+Q+0G+JPjeOmuNFgg0skEIzkVFzVYFP6URw==
   dependencies:
-    happy-dom "^14.12.3"
+    happy-dom "^15.11.7"
 
 "@headlessui/tailwindcss@^0.2.0":
   version "0.2.1"
@@ -1851,7 +1851,7 @@ d3-array@^2.5.0:
   dependencies:
     internmap "1 - 2"
 
-d3-color@^3.1.0, "d3-color@1 - 3":
+"d3-color@1 - 3":
   version "3.1.0"
   resolved "https://registry.npmjs.org/d3-color/-/d3-color-3.1.0.tgz"
   integrity sha512-zg/chbXyeBtMQ1LbD/WSoW2DpC3I0mpmPdW+ynRTj/x2DAWYrIY7qeZIHidozwV24m4iavr15lNwIwLxRmOxhA==
@@ -1886,7 +1886,7 @@ d3-geo@^2.0.2:
   dependencies:
     d3-array "^2.5.0"
 
-d3-interpolate@^3.0.1, "d3-interpolate@1.2.0 - 3":
+"d3-interpolate@1 - 3", "d3-interpolate@1.2.0 - 3":
   version "3.0.1"
   resolved "https://registry.npmjs.org/d3-interpolate/-/d3-interpolate-3.0.1.tgz"
   integrity sha512-3bYs1rOD33uo8aqJfKP3JWPAibgw8Zm2+L9vBKEHJ2Rg+viTR7o5Mmv5mZcieN+FRYaAOWX5SJATX6k1PWz72g==
@@ -2845,6 +2845,11 @@ fs.realpath@^1.0.0:
   resolved "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   integrity sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==
 
+fsevents@~2.3.2, fsevents@~2.3.3:
+  version "2.3.3"
+  resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
+  integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
+
 function-bind@^1.1.2:
   version "1.1.2"
   resolved "https://registry.npmjs.org/function-bind/-/function-bind-1.1.2.tgz"
@@ -3037,10 +3042,10 @@ graphql-tag@^2.12.6:
   resolved "https://registry.npmjs.org/graphql/-/graphql-15.9.0.tgz"
   integrity sha512-GCOQdvm7XxV1S4U4CGrsdlEN37245eC8P9zaYCMr6K1BG0IPGy5lUwmJsEOGyl1GD6HXjOtl2keCP9asRBwNvA==
 
-happy-dom@^14.12.3:
-  version "14.12.3"
-  resolved "https://registry.npmjs.org/happy-dom/-/happy-dom-14.12.3.tgz"
-  integrity sha512-vsYlEs3E9gLwA1Hp+w3qzu+RUDFf4VTT8cyKqVICoZ2k7WM++Qyd2LwzyTi5bqMJFiIC/vNpTDYuxdreENRK/g==
+happy-dom@^15.11.7:
+  version "15.11.7"
+  resolved "https://registry.npmjs.org/happy-dom/-/happy-dom-15.11.7.tgz"
+  integrity sha512-KyrFvnl+J9US63TEzwoiJOQzZBJY7KgBushJA8X61DMbNsH+2ONkDuLDnCnwUiPTF42tLoEmrPyoqbenVA5zrg==
   dependencies:
     entities "^4.5.0"
     webidl-conversions "^7.0.0"
