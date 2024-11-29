@@ -15,6 +15,6 @@ export function setYAxisStepSize(
     const yAxisContainsFractions = containsFractions(results, metrics);  
     if (axis.options && 'ticks' in axis.options) {
       (axis.options.ticks as any).stepSize = 
-        ((!yAxisContainsFractions && yAxisMax <= 10) || dps === 0) ? 1 : undefined;
+        ((!yAxisContainsFractions && yAxisMax <= 10) || (dps === 0 && yAxisMax <= 10)) ? 1 : undefined;
     }
   }
