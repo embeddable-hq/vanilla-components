@@ -37,6 +37,13 @@ ChartJS.defaults.color = LIGHT_FONT;
 ChartJS.defaults.font.family = EMB_FONT;
 ChartJS.defaults.plugins.tooltip.enabled = true;
 
+type Totals = {
+  [xAxis: string]: {
+    total: number;
+    lastSegment: number | null;
+  };
+};
+
 export default (props: Props) => {
   const datasetsMeta = {
     barPercentage: 0.6,
@@ -55,6 +62,28 @@ export default (props: Props) => {
       ? { ...props.results, data: results?.data?.reduce(fillGaps, []) }
       : props.results,
   };
+
+  if (props.showTotal) {
+    const totals: Totals = {};
+    const { data } = props.results;
+    const { metric, xAxis, segment } = props;
+    if (data && data.length > 0) {
+      data?.forEach((d: { [key: string]: any }) => {
+        const x = d[xAxis.name];
+        const y = parseInt(d[metric.name], 10);
+        if (totals[x]) {
+          totals[x].total += y;
+          totals[x].lastSegment = null;
+        } else {
+          totals[x] = {
+            total: y,
+            lastSegment: null, // we'll fill this in later
+          };
+        }
+      });
+      updatedProps.totals = totals;
+    }
+  }
 
   return (
     <Container {...props} className="overflow-y-hidden">

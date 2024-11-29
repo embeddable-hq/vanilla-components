@@ -4,14 +4,6 @@ import { ChartOptions } from 'chart.js';
 import formatValue from '../util/format';
 import { Props } from './getStackedChartData';
 
-type TotalsMap = {
-  [axisName: string]: {
-    total: number;
-    datasetIndex: number;
-    loopTotal?: number;
-  };
-};
-
 export default function getBarChartOptions({
   displayAsPercentage = false,
   displayHorizontally = false,
@@ -33,55 +25,18 @@ export default function getBarChartOptions({
   xAxisTitle = '',
   yAxisTitle = '',
 }: Partial<Props> & {
-  stacked?: boolean;
-  stackMetrics?: boolean;
-  yAxisTitle?: string;
-  xAxisTitle?: string;
-  reverseXAxis?: boolean;
-  metrics?: Measure[];
-  metric?: Measure;
-  showSecondYAxis?: boolean;
-  secondAxisTitle?: string;
   lineMetrics?: Measure[];
+  metric?: Measure;
+  metrics?: Measure[];
+  reverseXAxis?: boolean;
+  secondAxisTitle?: string;
+  showSecondYAxis?: boolean;
+  stackMetrics?: boolean;
+  stacked?: boolean;
+  xAxisTitle?: string;
+  yAxisTitle?: string;
 }): ChartOptions<'bar' | 'line'> {
-  // Generate totals Map
-  const totalsMap: TotalsMap = {};
-  const dataMap: {
-    [dataIndex: number]: number;
-  } = {};
-  let totalLoops = 0;
-  const metricName = metric?.name || '';
-  const axisName = xAxis?.name || '';
-  if (metricName && axisName) {
-    let i = 0;
-    let dataCount = 0;
-    const segmentNames = new Set<string>();
-    results?.data?.forEach((d: { [key: string]: any }) => {
-      console.log(d);
-      const currSegmentName = d[segment?.name || ''];
-      const currAxisName = d[axisName];
-      const currValue = parseInt(d[metricName], 10);
-      if (totalsMap[currAxisName]) {
-        totalsMap[currAxisName].total += currValue;
-        dataMap[dataCount] = i;
-        dataCount++;
-      } else {
-        totalsMap[currAxisName] = { datasetIndex: i, total: currValue };
-        if (!segmentNames.has(currSegmentName)) {
-          segmentNames.add(currSegmentName);
-        }
-        dataMap[dataCount] = i;
-        dataCount = 0;
-        i++;
-      }
-    });
-    totalLoops = segmentNames.size;
-  }
-
-  // NOTE TO SELF
-  /*
-  So here's the deal: you need to create a map between data index and dataset index, so you can tell what the LAST dataset index is that has a value, and then you can use that index number to position the total label correctly. 
-  */
+  let n = 0;
 
   return {
     responsive: true,
@@ -208,25 +163,17 @@ export default function getBarChartOptions({
             display: showTotal ? 'true' : false,
             color: 'red',
             formatter: (v, context) => {
-              // console.log(dataMap);
-              const idx = context.dataIndex;
-              if (context.datasetIndex !== totalLoops - 1) {
-                return;
+              // @ts-expect-error - xAxisName is not a property of context.dataset
+              const xAxisNames = context.dataset.xAxisNames;
+              const currxAxisName = xAxisNames[context.dataIndex];
+              // @ts-expect-error - totals is not a property of context.dataset
+              const totals = context.dataset.totals;
+              const currDatasetIndex = context.datasetIndex;
+              if (currDatasetIndex === totals[currxAxisName].lastSegment && v !== null) {
+                return totals[currxAxisName].total;
+              } else {
+                return ''; // has to be here or chartjs decides we want a number on every bart part
               }
-              const findTotal = (i: number) => {
-                const obj = Object.values(totalsMap).find((t) => t.datasetIndex === i);
-                return obj?.total || 0;
-              };
-              const total = findTotal(idx).toString();
-              let val = formatValue(total, {
-                type: 'number',
-                dps: dps,
-                meta: displayAsPercentage ? undefined : metric?.meta,
-              });
-              if (displayAsPercentage) {
-                val += '%';
-              }
-              return val;
             },
           },
           value: {
