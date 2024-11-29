@@ -30,6 +30,7 @@ import formatValue from '../../../util/format';
 import formatDateTooltips from '../../../util/formatDateTooltips';
 import hexToRgb from '../../../util/hexToRgb';
 import { parseTime } from '../../../util/timezone';
+import { setYAxisStepSize } from '../../../util/chartjs/common';
 import Container from '../../Container';
 
 ChartJS.register(
@@ -121,12 +122,19 @@ export default (props: Props) => {
           grid: {
             display: false,
           },
-          ticks: {
-            precision: 0,
-          },
           title: {
             display: !!props.yAxisTitle,
             text: props.yAxisTitle,
+          },
+          callback: function (value: number) {
+            return formatValue(
+              value.toString(), 
+              { type: 'number' }
+            )
+          },
+          afterDataLimits: function(axis) {
+            //Disable fractions unless they exist in the data.
+            setYAxisStepSize(axis, props.results, [...props.metrics], props.dps);
           },
         },
         x: {

@@ -80,9 +80,9 @@ export default function getStackedChartData(
     const met = d[metric?.name || ''];
 
     if (segments.includes(seg)) {
-      resultMap[axis][seg] = parseInt(met);
+      resultMap[axis][seg] = parseFloat(met);
     } else {
-      resultMap[axis]['Other'] = (resultMap[axis]['Other'] || 0) + parseInt(met);
+      resultMap[axis]['Other'] = (resultMap[axis]['Other'] || 0) + parseFloat(met);
     }
   });
 
