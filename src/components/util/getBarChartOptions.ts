@@ -36,7 +36,26 @@ export default function getBarChartOptions({
   xAxisTitle?: string;
   yAxisTitle?: string;
 }): ChartOptions<'bar' | 'line'> {
-  let n = 0;
+  let top = 0;
+  let right = 0;
+
+  // Not-stacked, display vertically, show labels (pad top 20)
+  // Not-stacked, display horizontally, show labels (pad right 60)
+  // Stacked, display vertically, show total (pad top 20)
+  // Stacked, display horizontally, show total (pad right 60)
+  if (!stacked) {
+    if (displayHorizontally) {
+      right = showLabels ? 60 : 0;
+    } else {
+      top = showLabels ? 20 : 0;
+    }
+  } else {
+    if (displayHorizontally) {
+      right = showTotal ? 60 : 0;
+    } else {
+      top = showTotal ? 20 : 0;
+    }
+  }
 
   return {
     responsive: true,
@@ -45,8 +64,8 @@ export default function getBarChartOptions({
     layout: {
       padding: {
         left: 0,
-        right: showLabels && displayHorizontally && !stacked ? 60 : 0, // Buffer for data labels
-        top: showLabels && !stacked && !displayHorizontally ? 20 : 0, // Buffer for data labels
+        right, // Buffer for data labels
+        top, // Buffer for data labels
         bottom: 0,
       },
     },
@@ -158,10 +177,12 @@ export default function getBarChartOptions({
       datalabels: {
         labels: {
           total: {
-            anchor: 'end',
-            align: 'top',
+            anchor: displayHorizontally ? 'end' : 'end',
+            align: displayHorizontally ? 'right' : 'top',
             display: showTotal ? 'true' : false,
-            color: 'red',
+            font: {
+              weight: 'bold',
+            },
             formatter: (v, context) => {
               // @ts-expect-error - xAxisName is not a property of context.dataset
               const xAxisNames = context.dataset.xAxisNames;
