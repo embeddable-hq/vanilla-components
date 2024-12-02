@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { DataResponse, Dataset, DimensionOrMeasure, Measure } from '@embeddable.com/core';
 import Leaflet, { LatLngBoundsExpression, MarkerCluster } from 'leaflet';
 import { MapContainerProps, MarkerProps, TileLayerProps, Tooltip, useMap } from 'react-leaflet';
-import unTypedCities from './csvjson.json';
-const cities: any[] = JSON.parse(JSON.stringify(unTypedCities));
 
 // Style
 import 'leaflet/dist/leaflet.css';
@@ -31,7 +29,8 @@ type MarkerData = {
 };
 
 type Props = {
-  bubblePlacement?: DimensionOrMeasure;
+  bubblePlacementLat?: DimensionOrMeasure;
+  bubblePlacementLng?: DimensionOrMeasure;
   clusterRadius?: number;
   customTileSet?: string;
   ds?: Dataset;
@@ -49,6 +48,7 @@ type Props = {
 const SetBounds = (props: BoundsProps) => {
   const { markers } = props;
   const map = useMap();
+  if (!markers || markers.length === 0) return null;
 
   const bounds = markers.reduce(
     (acc: any, marker: MarkerData) => {
@@ -71,6 +71,8 @@ const SetBounds = (props: BoundsProps) => {
 // Main Component
 export default (props: Props) => {
   const {
+    bubblePlacementLat,
+    bubblePlacementLng,
     clusterRadius,
     customTileSet,
     ds,
@@ -81,21 +83,23 @@ export default (props: Props) => {
     toolTipValues,
   } = props;
 
-  // TEMP - generate random markers
+  // Generate markers from data
   const markers: MarkerData[] = [];
-  cities.forEach((city: any) => {
-    let count = city.CHARGES_COUNT;
-    if (typeof count !== 'number') {
-      count = 0;
+  const dataLength = results?.data?.length || 0;
+  if (dataLength > 0) {
+    for (let i = 0; i < dataLength || 0; i++) {
+      const latitude = results?.data?.[i][bubblePlacementLat?.name || ''];
+      const longitude = results?.data?.[i][bubblePlacementLng?.name || ''];
+      const count = results?.data?.[i][metric?.name || ''];
+      const name = results?.data?.[i][toolTipValues?.name || ''];
+      markers.push({
+        count,
+        lat: latitude,
+        lng: longitude,
+        name,
+      });
     }
-
-    markers.push({
-      count,
-      lat: city.CP_LATITUDE,
-      lng: city.CP_LONGITUDE,
-      name: city.CITY,
-    });
-  });
+  }
 
   // Handle values for post-facto imported components
   const [mapComponents, setMapComponents] = useState<{
@@ -143,17 +147,12 @@ export default (props: Props) => {
   };
 
   const { MapContainer, Marker, TileLayer, MarkerClusterGroup } = mapComponents;
+  // bounds={bounds}
 
   return (
     <Container {...props} className="overflow-y-hidden">
       <div style={mapStyle}>
-        <MapContainer
-          attributionControl={false}
-          bounds={bounds}
-          maxZoom={16}
-          style={mapStyle}
-          zoom={4}
-        >
+        <MapContainer attributionControl={false} maxZoom={16} style={mapStyle} zoom={14}>
           <TileLayer
             url={customTileSet ? customTileSet : 'https://{s}.tile.osm.org/{z}/{x}/{y}.png'}
             attribution=""

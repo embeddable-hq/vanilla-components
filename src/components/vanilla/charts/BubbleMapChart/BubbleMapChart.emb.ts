@@ -18,9 +18,18 @@ export const meta = {
       category: 'Chart Data',
     },
     {
-      name: 'bubblePlacement',
+      name: 'bubblePlacementLat',
       type: 'dimension',
-      label: 'Bubble Placement (lat/lng data) - NOT WORKING YET',
+      label: 'Bubble Placement - Latitude',
+      config: {
+        dataset: 'ds',
+      },
+      category: 'Chart Data',
+    },
+    {
+      name: 'bubblePlacementLng',
+      type: 'dimension',
+      label: 'Bubble Placement - Longitude',
       config: {
         dataset: 'ds',
       },
@@ -28,8 +37,9 @@ export const meta = {
     },
     {
       name: 'metric',
-      type: 'measure',
-      label: 'Metric (bubble size) - NOT WORKING YET',
+      type: 'dimensionOrMeasure',
+      label: 'Metric',
+      array: true,
       config: {
         dataset: 'ds',
       },
@@ -84,6 +94,7 @@ export const meta = {
       label: 'Marker Cluster Text Color',
       description: 'Color of the marker cluster text',
       defaultValue: '#ffffff',
+      category: 'Chart Settings',
     },
     {
       name: 'showTooltips',
@@ -123,7 +134,8 @@ export default defineComponent(Component, meta, {
       ...inputs,
       results: loadData({
         from: inputs.ds,
-        dimensions: [inputs.bubblePlacement],
+        limit: 5000,
+        dimensions: [inputs.bubblePlacementLat, inputs.bubblePlacementLng],
         measures: [inputs.metric, inputs.toolTipValues],
       }),
     };
