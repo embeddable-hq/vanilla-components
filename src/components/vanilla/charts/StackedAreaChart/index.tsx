@@ -23,6 +23,7 @@ import formatValue from '../../../util/format';
 import formatDateTooltips from '../../../util/formatDateTooltips'
 import getStackedChartData, { Props as GeneralStackedChartDataProps } from '../../../util/getStackedChartData';
 import Container from '../../Container';
+import { setYAxisStepSize } from '../../../util/chartjs/common';
 
 ChartJS.register(
   CategoryScale,
@@ -103,13 +104,21 @@ export default (props: Props) => {
           },
           ticks: {
             callback: function (value) {
-              return props.displayAsPercentage ? `${value}%` : value;
+              return props.displayAsPercentage 
+                ? `${value}%` 
+                : formatValue(
+                    value.toString(), 
+                    { type: 'number' }
+                );
             }
           },
           title: {
             display: !!props.yAxisTitle,
             text: props.yAxisTitle
-          }
+          },
+          afterDataLimits: function(axis) {
+            setYAxisStepSize(axis, props.results, [props.metric], props.dps)
+          },
         },
         x: {
           grid: {

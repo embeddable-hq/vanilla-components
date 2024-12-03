@@ -22,6 +22,7 @@ import { Bubble } from 'react-chartjs-2';
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE, DATE_DISPLAY_FORMATS } from '../../../constants';
 import formatValue from '../../../util/format';
 import hexToRgb from '../../../util/hexToRgb';
+import { setYAxisStepSize } from '../../../util/chartjs/common';
 
 ChartJS.register(
   CategoryScale,
@@ -100,8 +101,6 @@ function chartOptions(props: Props, updatedData: Record[] | undefined, bubbleDat
   const highestItem = data.reduce((max, current) => (current?.y > max?.y ? current : max), data[0]);
   const highestItemRadius = highestItem?.r || 0;
 
-  const yAxisContainsFractions = data?.some(row => !Number.isInteger(row.y));
-
   return {
     responsive: true,
     maintainAspectRatio: false,
@@ -116,11 +115,8 @@ function chartOptions(props: Props, updatedData: Record[] | undefined, bubbleDat
           display: false
         },
         afterDataLimits: function(axis) {
-          // Capture the max value for dynamic stepSize calculation
-          const yAxisMax = axis.max;
-          // Prevent chartJS from showing fractions on the y-axis when there aren't any.
-          (axis.options as any).ticks.stepSize =  
-            !yAxisContainsFractions && yAxisMax < 10 ? 1 : undefined
+          //Disable fractions unless they exist in the data.
+          setYAxisStepSize(axis, props.results, [props.yAxis], props.dps);
         },
         ticks: {
           padding: firstItemRadius          

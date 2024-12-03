@@ -1,4 +1,5 @@
 import { DataResponse, DimensionOrMeasure } from '@embeddable.com/core';
+import { useEmbeddableState } from '@embeddable.com/react';
 import React, { useState } from 'react';
 
 import downloadAsCSV from '../../../util/downloadAsCSV';
@@ -13,13 +14,19 @@ type DataResponseData = { [key: string]: any };
 
 export type Props = {
   columns: DimensionOrMeasure[];
-  results: DataResponseWithPrevData;
+  results?: DataResponseWithPrevData;
   buttonLabel: string;
 };
 
 export default (props: Props) => {
   const { results, buttonLabel } = props;
 
+  const [embeddableState, setEmbeddableState] = useEmbeddableState<{
+    downloading: boolean;
+  }>({ downloading: false }) as unknown as [
+    { downloading: boolean },
+    React.Dispatch<React.SetStateAction<{ downloading: boolean }>>,
+  ];
   const [preppingDownload, setPreppingDownload] = useState(false);
 
   const downloadSVG = (
@@ -47,15 +54,16 @@ export default (props: Props) => {
         buttonLabel={buttonLabel}
         showSpinner={preppingDownload}
         disabled={results?.isLoading || preppingDownload}
-        onClick={() =>
+        onClick={() => {
+          setEmbeddableState({ downloading: true });
           downloadAsCSV(
             props,
             results?.data,
             results?.prevData,
             'downloaded-chart-data',
             setPreppingDownload,
-          )
-        }
+          );
+        }}
         icon={downloadSVG}
       />
     </Container>

@@ -1,7 +1,8 @@
-import { Measure } from '@embeddable.com/core';
+import { DataResponse, Measure } from '@embeddable.com/core';
 import { ChartDataset, ChartOptions } from 'chart.js';
 
 import formatValue from '../util/format';
+import { setYAxisStepSize } from './chartjs/common';
 import { Props } from './getStackedChartData';
 
 // We're adding a few properties to use when showing totals on the chart
@@ -11,7 +12,6 @@ type ExtendedChartDataset = ChartDataset<'bar' | 'line'> & {
 };
 
 export default function getBarChartOptions({
-  displayAsPercentage = false,
   displayHorizontally = false,
   dps = undefined,
   lineMetrics,
@@ -30,10 +30,12 @@ export default function getBarChartOptions({
   xAxis,
   xAxisTitle = '',
   yAxisTitle = '',
+  displayAsPercentage = false,
 }: Partial<Props> & {
   lineMetrics?: Measure[];
   metric?: Measure;
   metrics?: Measure[];
+  results?: DataResponse;
   reverseXAxis?: boolean;
   secondAxisTitle?: string;
   showSecondYAxis?: boolean;
@@ -85,18 +87,27 @@ export default function getBarChartOptions({
           display: false,
         },
         max: displayAsPercentage && !displayHorizontally ? 100 : undefined,
+        afterDataLimits: function (axis) {
+          //Disable fractions unless they exist in the data.
+          const metricsGroup = [
+            ...(metric !== undefined ? [metric] : []),
+            ...(metrics || []),
+            ...(lineMetrics && !showSecondYAxis ? lineMetrics : []),
+          ];
+          setYAxisStepSize(axis, results, metricsGroup, dps);
+        },
         ticks: {
           //https://www.chartjs.org/docs/latest/axes/labelling.html
           callback: function (value) {
-            if (displayAsPercentage && !displayHorizontally) {
-              return `${value}%`;
-            }
-
             if (displayHorizontally) {
               return this.getLabelForValue(parseFloat(`${value}`));
             }
 
-            return value;
+            return displayAsPercentage
+              ? `${value}%`
+              : formatValue(typeof value === 'number' ? value.toString() : value, {
+                  type: 'number',
+                });
           },
         },
         title: {
@@ -116,6 +127,11 @@ export default function getBarChartOptions({
           display: !!secondAxisTitle,
           text: secondAxisTitle,
         },
+        afterDataLimits: function (axis) {
+          //Disable fractions unless they exist in the data.
+          const metricsGroup = [...(lineMetrics && showSecondYAxis ? lineMetrics : [])];
+          setYAxisStepSize(axis, results, metricsGroup, dps);
+        },
       },
       x: {
         reverse: reverseXAxis && !displayHorizontally,
@@ -127,15 +143,15 @@ export default function getBarChartOptions({
         ticks: {
           //https://www.chartjs.org/docs/latest/axes/labelling.html
           callback: function (value) {
-            if (displayAsPercentage && displayHorizontally) {
-              return `${value}%`;
-            }
-
             if (!displayHorizontally) {
               return this.getLabelForValue(parseFloat(`${value}`));
             }
 
-            return value;
+            return displayAsPercentage
+              ? `${value}%`
+              : formatValue(typeof value === 'number' ? value.toString() : value, {
+                  type: 'number',
+                });
           },
         },
         title: {
@@ -225,7 +241,15 @@ export default function getBarChartOptions({
               const currxAxisName = xAxisNames[context.dataIndex];
               const currDatasetIndex = context.datasetIndex;
               if (currDatasetIndex === totals[currxAxisName].lastSegment && v !== null) {
-                return totals[currxAxisName].total;
+                let val = formatValue(totals[currxAxisName].total.toString(), {
+                  type: 'number',
+                  dps: dps,
+                  meta: displayAsPercentage ? undefined : metric?.meta,
+                });
+                if (displayAsPercentage) {
+                  val += '%';
+                }
+                return val;
               } else {
                 return ''; // has to be here or chartjs decides we want a number on every bart part
               }
