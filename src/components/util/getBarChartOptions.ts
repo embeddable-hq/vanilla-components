@@ -1,9 +1,11 @@
 import { ChartOptions } from 'chart.js';
-import { Measure } from '@embeddable.com/core';
+import { DataResponse, Measure } from '@embeddable.com/core';
 import formatValue from '../util/format';
+import { setYAxisStepSize } from './chartjs/common';
 import { Props } from './getStackedChartData';
 
 export default function getBarChartOptions({
+  results,
   showLegend = false,
   showLabels = false,
   displayHorizontally = false,
@@ -20,6 +22,7 @@ export default function getBarChartOptions({
   showSecondYAxis = false,
   secondAxisTitle = ''
 }: Partial<Props> & {
+  results?: DataResponse;
   stacked?: boolean;
   stackMetrics?: boolean;
   yAxisTitle?: string;
@@ -51,18 +54,30 @@ export default function getBarChartOptions({
           display: false
         },
         max: displayAsPercentage && !displayHorizontally ? 100 : undefined,
+        afterDataLimits: function(axis) {
+          //Disable fractions unless they exist in the data.
+          const metricsGroup = [
+            ...(metric !== undefined ? [metric] : []),
+            ...(metrics || []),
+            ...(lineMetrics && !showSecondYAxis ? lineMetrics : [])
+          ]
+          setYAxisStepSize(axis, results, metricsGroup, dps);
+        },
         ticks: {
           //https://www.chartjs.org/docs/latest/axes/labelling.html
           callback: function (value) {
-            if (displayAsPercentage && !displayHorizontally) {
-              return `${value}%`;
-            }
 
             if (displayHorizontally) {
               return this.getLabelForValue(parseFloat(`${value}`));
-            }
+            } 
+        
+            return displayAsPercentage 
+              ? `${value}%`
+              : formatValue(
+                  typeof value === 'number' ? value.toString() : value, 
+                  { type: 'number' }
+                )
 
-            return value;
           }
         },
         title: {
@@ -80,6 +95,13 @@ export default function getBarChartOptions({
         title: {
           display: !!secondAxisTitle,
           text: secondAxisTitle
+        },
+        afterDataLimits: function(axis) {
+          //Disable fractions unless they exist in the data.
+          const metricsGroup = [
+            ...(lineMetrics && showSecondYAxis ? lineMetrics : [])
+          ]
+          setYAxisStepSize(axis, results, metricsGroup, dps);
         },        
       },
       x: {
@@ -92,15 +114,17 @@ export default function getBarChartOptions({
         ticks: {
           //https://www.chartjs.org/docs/latest/axes/labelling.html
           callback: function (value) {
-            if (displayAsPercentage && displayHorizontally) {
-              return `${value}%`;
-            }
-
+            
             if (!displayHorizontally) {
               return this.getLabelForValue(parseFloat(`${value}`));
             }
 
-            return value;
+            return displayAsPercentage 
+              ? `${value}%`
+              : formatValue(
+                  typeof value === 'number' ? value.toString() : value, 
+                  { type: 'number' }
+                ) 
           }
         },
         title: {
