@@ -70,7 +70,7 @@ export default (props: Props) => {
     if (data && data.length > 0) {
       data?.forEach((d: { [key: string]: any }) => {
         const x = d[xAxis.name];
-        const y = parseInt(d[metric.name], 10);
+        const y = parseFloat(d[metric.name]);
         if (totals[x]) {
           totals[x].total += y;
           totals[x].lastSegment = null;
