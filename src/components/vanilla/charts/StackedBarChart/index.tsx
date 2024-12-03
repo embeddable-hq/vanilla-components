@@ -63,7 +63,7 @@ export default (props: Props) => {
       : props.results,
   };
 
-  if (props.showTotal) {
+  if (props.showTotals) {
     const totals: Totals = {};
     const { data } = props.results;
     const { metric, xAxis, segment } = props;

@@ -1,8 +1,14 @@
 import { Measure } from '@embeddable.com/core';
-import { ChartOptions } from 'chart.js';
+import { ChartDataset, ChartOptions } from 'chart.js';
 
 import formatValue from '../util/format';
 import { Props } from './getStackedChartData';
+
+// We're adding a few properties to use when showing totals on the chart
+type ExtendedChartDataset = ChartDataset<'bar' | 'line'> & {
+  totals?: { [key: string]: { total: number; lastSegment: number | null } };
+  xAxisNames?: string[];
+};
 
 export default function getBarChartOptions({
   displayAsPercentage = false,
@@ -18,7 +24,7 @@ export default function getBarChartOptions({
   showLabels = false,
   showLegend = false,
   showSecondYAxis = false,
-  showTotal = false,
+  showTotals = false,
   stackMetrics = false,
   stacked = false,
   xAxis,
@@ -36,24 +42,26 @@ export default function getBarChartOptions({
   xAxisTitle?: string;
   yAxisTitle?: string;
 }): ChartOptions<'bar' | 'line'> {
-  let top = 0;
+  // Padding buffer for labels / totals as applicable
+  let bottom = 0;
+  let left = 0;
   let right = 0;
-
-  // Not-stacked, display vertically, show labels (pad top 20)
-  // Not-stacked, display horizontally, show labels (pad right 60)
-  // Stacked, display vertically, show total (pad top 20)
-  // Stacked, display horizontally, show total (pad right 60)
+  let top = 0;
   if (!stacked) {
     if (displayHorizontally) {
       right = showLabels ? 60 : 0;
+      left = showLabels ? 60 : 0;
     } else {
       top = showLabels ? 20 : 0;
+      bottom = showLabels ? 30 : 0;
     }
   } else {
     if (displayHorizontally) {
-      right = showTotal ? 60 : 0;
+      right = showTotals ? 60 : 0;
+      left = showTotals ? 60 : 0;
     } else {
-      top = showTotal ? 20 : 0;
+      top = showTotals ? 20 : 0;
+      bottom = showTotals ? 30 : 0;
     }
   }
 
@@ -63,10 +71,10 @@ export default function getBarChartOptions({
     indexAxis: displayHorizontally ? ('y' as const) : ('x' as const),
     layout: {
       padding: {
-        left: 0,
-        right, // Buffer for data labels
-        top, // Buffer for data labels
-        bottom: 0,
+        left,
+        right,
+        top,
+        bottom,
       },
     },
     scales: {
@@ -177,18 +185,44 @@ export default function getBarChartOptions({
       datalabels: {
         labels: {
           total: {
-            anchor: displayHorizontally ? 'end' : 'end',
-            align: displayHorizontally ? 'right' : 'top',
-            display: showTotal ? 'true' : false,
+            anchor: (context) => {
+              const dataset = context.dataset as ExtendedChartDataset;
+              const totals = dataset.totals;
+              if (!totals) {
+                return 'end';
+              }
+              const currXAxisName = dataset.xAxisNames?.[context.dataIndex];
+              const currTotal = totals[currXAxisName || '']?.total;
+              if (currTotal && currTotal < 0) {
+                return 'start';
+              }
+              return 'end';
+            },
+            align: (context) => {
+              const dataset = context.dataset as ExtendedChartDataset;
+              const totals = dataset.totals;
+              if (!totals) {
+                return displayHorizontally ? 'right' : 'top';
+              }
+              const currXAxisName = dataset.xAxisNames?.[context.dataIndex];
+              const currTotal = totals[currXAxisName || '']?.total;
+              if (currTotal && currTotal < 0) {
+                return displayHorizontally ? 'left' : 'bottom';
+              }
+              return displayHorizontally ? 'right' : 'top';
+            },
+            display: showTotals ? 'true' : false,
             font: {
               weight: 'bold',
             },
             formatter: (v, context) => {
-              // @ts-expect-error - xAxisName is not a property of context.dataset
-              const xAxisNames = context.dataset.xAxisNames;
+              const dataset = context.dataset as ExtendedChartDataset;
+              const xAxisNames = dataset.xAxisNames;
+              const totals = dataset.totals;
+              if (!totals || !xAxisNames) {
+                return '';
+              }
               const currxAxisName = xAxisNames[context.dataIndex];
-              // @ts-expect-error - totals is not a property of context.dataset
-              const totals = context.dataset.totals;
               const currDatasetIndex = context.datasetIndex;
               if (currDatasetIndex === totals[currxAxisName].lastSegment && v !== null) {
                 return totals[currxAxisName].total;

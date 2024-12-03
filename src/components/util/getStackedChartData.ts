@@ -21,7 +21,7 @@ export type Props = {
   segment: Dimension;
   showLabels?: boolean;
   showLegend?: boolean;
-  showTotal?: boolean;
+  showTotals?: boolean;
   title?: string;
   totals?: { [key: string]: { total: number; lastSegment: number | null } };
   useCustomDateFormat?: boolean;
@@ -51,7 +51,7 @@ export default function getStackedChartData(
     metric,
     results,
     segment,
-    showTotal,
+    showTotals,
     totals,
     useCustomDateFormat,
     xAxis,
@@ -101,10 +101,9 @@ export default function getStackedChartData(
         backgroundColor: COLORS[i % COLORS.length],
         borderColor: COLORS[i % COLORS.length],
         label: s, // this is actually segment name, not label, but chart.js wants "label" here
-        xAxisName: labels[i],
         data: labels.map((label) => {
           const segmentValue = resultMap[label][s];
-          if (showTotal && totals && segmentValue !== null) {
+          if (showTotals && totals && segmentValue !== null) {
             totals[label].lastSegment = i;
           }
           return displayAsPercentage && segmentValue !== null //skip null values

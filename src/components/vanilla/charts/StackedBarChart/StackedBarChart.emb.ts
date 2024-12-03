@@ -87,9 +87,9 @@ export const meta = {
       category: 'Chart settings',
     },
     {
-      name: 'showTotal',
+      name: 'showTotals',
       type: 'boolean',
-      label: 'Show Total',
+      label: 'Show Totals',
       defaultValue: false,
       category: 'Chart settings',
     },
