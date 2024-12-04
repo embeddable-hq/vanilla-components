@@ -25,8 +25,10 @@ type MarkerData = {
   count: number;
   lat: number;
   lng: number;
-  name: string;
+  title: string;
 };
+
+type MetricExtended = Measure & { modelTitle: string };
 
 type Props = {
   bubblePlacementLat?: DimensionOrMeasure;
@@ -38,10 +40,9 @@ type Props = {
   enableDownloadAsPNG?: boolean;
   markerClusterColor?: string;
   markerColor?: string;
-  metric?: DimensionOrMeasure;
+  metric?: Measure;
   results: DataResponse;
   showTooltips?: boolean;
-  toolTipValues?: Measure;
 };
 
 // Child Component - used to auto-zoom the map to fit all markers (rerenders if they change)
@@ -80,7 +81,6 @@ export default (props: Props) => {
     markerColor,
     metric,
     results,
-    toolTipValues,
   } = props;
 
   // Generate markers from data
@@ -91,12 +91,13 @@ export default (props: Props) => {
       const latitude = results?.data?.[i][bubblePlacementLat?.name || ''];
       const longitude = results?.data?.[i][bubblePlacementLng?.name || ''];
       const count = results?.data?.[i][metric?.name || ''];
-      const name = results?.data?.[i][toolTipValues?.name || ''];
+      const metricExtended = metric as MetricExtended;
+      const title = metricExtended?.modelTitle || '';
       markers.push({
+        title,
         count,
         lat: latitude,
         lng: longitude,
-        name,
       });
     }
   }
@@ -159,6 +160,7 @@ export default (props: Props) => {
           />
           <SetBounds markers={markers} />
           <MarkerClusterGroup
+            key={clusterRadius}
             iconCreateFunction={createClusterCustomIcon}
             maxClusterRadius={clusterRadius}
             onClick={(e: any) => console.log('onClick', e)}
@@ -177,7 +179,7 @@ export default (props: Props) => {
                   title=""
                 >
                   <Tooltip>
-                    {address.name} - {address.count}
+                    {address.title}: {address.count}
                   </Tooltip>
                 </Marker>
               );

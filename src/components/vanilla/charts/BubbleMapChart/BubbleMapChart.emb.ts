@@ -37,19 +37,9 @@ export const meta = {
     },
     {
       name: 'metric',
-      type: 'dimensionOrMeasure',
-      label: 'Metric',
-      array: true,
-      config: {
-        dataset: 'ds',
-      },
-      category: 'Chart Data',
-    },
-    {
-      name: 'toolTipValues',
       type: 'measure',
-      label: 'Tooltip values',
-      description: 'Values to show in the tooltip',
+      label: 'Metric',
+      description: 'Metric to be displayed in the tooltip when a marker is hovered over',
       config: {
         dataset: 'ds',
       },
@@ -136,7 +126,7 @@ export default defineComponent(Component, meta, {
         from: inputs.ds,
         limit: 5000,
         dimensions: [inputs.bubblePlacementLat, inputs.bubblePlacementLng],
-        measures: [inputs.metric, inputs.toolTipValues],
+        measures: [inputs.metric],
       }),
     };
   },
