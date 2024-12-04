@@ -323,32 +323,33 @@
   resolved "https://registry.npmjs.org/@date-fns/tz/-/tz-1.2.0.tgz"
   integrity sha512-LBrd7MiJZ9McsOgxqWX7AaxrDjcFVjWH/tIKJd7pnR7McaslGYOP1QmmiBXdJH/H/yLCT+rcQ7FaPBUxRGUtrg==
 
-"@embeddable.com/core@*", "@embeddable.com/core@^2.6.8":
-  version "2.6.8"
-  resolved "https://registry.npmjs.org/@embeddable.com/core/-/core-2.6.8.tgz"
-  integrity sha512-VP8nWijhIkDKXnFc8r1CnV4Z3sKe7qYWQYEuJtHF5q4NjsjCMUaG36/ZL21IS0wwnoOxJ2sRWcjfEt6/NXmLDg==
+"@embeddable.com/core@^2.8.0", "@embeddable.com/core@2.8.0":
+  version "2.8.0"
+  resolved "https://registry.npmjs.org/@embeddable.com/core/-/core-2.8.0.tgz"
+  integrity sha512-PM+Oa3DrnaQjT20DMV5j2sQmgkPTherCx1dcTqlH9yK77UzQp4vuVDNabYTCGh23ttrJkQxjm5n+vsO6UHKwuA==
   dependencies:
     jsdom "^24.1.1"
 
-"@embeddable.com/react@^2.7.6":
-  version "2.7.7"
-  resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.7.7.tgz"
-  integrity sha512-hyaRjXez6fnkbgnHmkfU0y/KsbuI6XSEk0eraggBtRTAaFn5ZjWhnA17PtubbCzCtcIhy2RKKNcFid3B3nNUkw==
+"@embeddable.com/react@^2.9.0":
+  version "2.9.0"
+  resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.9.0.tgz"
+  integrity sha512-2cFi9l2j8SVOjRajcL81fW8hKb9eooGbai3GQOe6+g8xkI77s+CGQZ4ph0lFWwp7EwzX+JXkKaaosPpskYD1HQ==
   dependencies:
-    "@embeddable.com/core" "*"
+    "@embeddable.com/core" "2.8.0"
 
-"@embeddable.com/sdk-core@*", "@embeddable.com/sdk-core@^3.9.14":
-  version "3.10.0"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-3.10.0.tgz"
-  integrity sha512-GTKWwsWOxrqnXbAYSpNnVXqiekMCAQ8Zc+o7kwwEK+vh+b43lKvnXPICAB9IhTDBkcoy2plc4IL/rhWJAnQC4Q==
+"@embeddable.com/sdk-core@^3.12.0", "@embeddable.com/sdk-core@3.12.0":
+  version "3.12.0"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-3.12.0.tgz"
+  integrity sha512-pvd7M537cawIi6Pxw2bXnSg4KPacT5Z5e9mlX0TIyNmGV8PYAyYAR7m5EtlMkhU40p1aYy9urC7ejFXK9PEz/w==
   dependencies:
-    "@embeddable.com/sdk-utils" "*"
+    "@embeddable.com/sdk-utils" "0.6.0"
     "@inquirer/prompts" "^7.1.0"
-    "@stencil/core" "^4.22.2"
+    "@stencil/core" "^4.22.3"
     "@swc-node/register" "^1.10.9"
     archiver "^5.3.2"
-    axios "^1.7.7"
+    axios "^1.7.8"
     chokidar "^4.0.1"
+    fast-glob "^3.3.2"
     finalhandler "^1.3.1"
     formdata-node "^6.0.3"
     minimist "^1.2.8"
@@ -358,18 +359,18 @@
     sorcery "^0.11.1"
     vite "^5.4.11"
     ws "^8.18.0"
-    yaml "^2.6.0"
+    yaml "^2.6.1"
 
-"@embeddable.com/sdk-react@^3.8.3":
-  version "3.8.3"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-3.8.3.tgz"
-  integrity sha512-Va4Le2WLHZ9w9GiDLgeDjFjcpREhJ+MQwHN8TG39qPuhSgZ24xNdID+x2aScBiLFbfKretpxCNBaLcCqsA9R9A==
+"@embeddable.com/sdk-react@^3.10.0":
+  version "3.10.0"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-3.10.0.tgz"
+  integrity sha512-o/VGJPCHprmrjHZ5lB3CG5gPfgih+BirCU62+uOHlcnp/EHkMeB5I2fVEXT9tmDuisTPLq1/dWHXyKgwp9sgHA==
   dependencies:
     "@babel/generator" "^7.23.0"
-    "@babel/parser" "^7.23.0"
+    "@babel/parser" "^7.26.2"
     "@babel/traverse" "^7.24.7"
-    "@embeddable.com/sdk-core" "*"
-    "@embeddable.com/sdk-utils" "*"
+    "@embeddable.com/sdk-core" "3.12.0"
+    "@embeddable.com/sdk-utils" "0.6.0"
     "@happy-dom/global-registrator" "^15.11.0"
     "@vitejs/plugin-react" "^4.3.2"
     astring "^1.8.6"
@@ -377,10 +378,10 @@
     vite "^5.4.8"
     zod "^3.23.8"
 
-"@embeddable.com/sdk-utils@*":
-  version "0.4.0"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-utils/-/sdk-utils-0.4.0.tgz"
-  integrity sha512-K5YOQ1j+ISrxDuzaYcONP8Qs1fRkJNT/twarl2CKca3II0EGJ9Nqy7jGunP4gGvy6kzLWitqPr5bzEVv64/OoA==
+"@embeddable.com/sdk-utils@0.6.0":
+  version "0.6.0"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-utils/-/sdk-utils-0.6.0.tgz"
+  integrity sha512-fS/A5+y6ZBnjj3vTzV6Hcs74fJwsz3CyS0H+XS9gc+2Up+6GqfY2+anEhGaBd43mboB13xCUf3v4qGWx5wIjow==
   dependencies:
     ora "^8.0.1"
     zod "^3.23.8"
@@ -736,7 +737,7 @@
   resolved "https://registry.npmjs.org/@sindresorhus/is/-/is-7.0.1.tgz"
   integrity sha512-QWLl2P+rsCJeofkDNIT3WFmb6NrRud1SUYW8dIhXK/46XFV8Q/g7Bsvib0Askb0reRLe+WYPeeE+l5cH7SlkuQ==
 
-"@stencil/core@^4.22.2":
+"@stencil/core@^4.22.3":
   version "4.22.3"
   resolved "https://registry.npmjs.org/@stencil/core/-/core-4.22.3.tgz"
   integrity sha512-dYaletX938WgEA2oMROLdh8wpUn1MgBx2zg5kYqwuUR8aua4Gy9EqGQ3zBu1AvL5MzLlZC+lMlxe/g5Dg1ldpw==
@@ -1412,7 +1413,7 @@ available-typed-arrays@^1.0.7:
   dependencies:
     possible-typed-array-names "^1.0.0"
 
-axios@^1.7.7:
+axios@^1.7.8:
   version "1.7.8"
   resolved "https://registry.npmjs.org/axios/-/axios-1.7.8.tgz"
   integrity sha512-Uu0wb7KNqK2t5K+YQyVCLM76prD5sRFjKHbJYCP1J7JFGEQ6nN7HWn9+04LAeiJ3ji54lgS/gZCH1oxyrf1SPw==
@@ -6066,7 +6067,7 @@ yallist@^3.0.2:
   resolved "https://registry.npmjs.org/yallist/-/yallist-3.1.1.tgz"
   integrity sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==
 
-yaml@^2.3.4, yaml@^2.4.2, yaml@^2.6.0:
+yaml@^2.3.4, yaml@^2.4.2, yaml@^2.6.1:
   version "2.6.1"
   resolved "https://registry.npmjs.org/yaml/-/yaml-2.6.1.tgz"
   integrity sha512-7r0XPzioN/Q9kXBro/XPnA6kznR73DHq+GXh5ON7ZozRO6aMjbmiBuKste2wslTFkC5d1dw0GooOCepZXJ2SAg==
