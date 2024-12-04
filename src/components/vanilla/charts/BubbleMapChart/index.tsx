@@ -83,6 +83,13 @@ export default (props: Props) => {
     results,
   } = props;
 
+  const [markerClusterGroupKey, setMarkerClusterGroupKey] = useState<number>(0);
+
+  // useEffect that changes they key value when props change, in order to force a cluster group re-render
+  useEffect(() => {
+    setMarkerClusterGroupKey((prev) => prev + 1);
+  }, [props]);
+
   // Generate markers from data
   const markers: MarkerData[] = [];
   const dataLength = results?.data?.length || 0;
@@ -160,7 +167,7 @@ export default (props: Props) => {
           />
           <SetBounds markers={markers} />
           <MarkerClusterGroup
-            key={clusterRadius}
+            key={markerClusterGroupKey}
             iconCreateFunction={createClusterCustomIcon}
             maxClusterRadius={clusterRadius}
             onClick={(e: any) => console.log('onClick', e)}
