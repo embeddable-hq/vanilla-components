@@ -87,6 +87,13 @@ export const meta = {
       category: 'Chart settings',
     },
     {
+      name: 'showTotals',
+      type: 'boolean',
+      label: 'Show Totals',
+      defaultValue: false,
+      category: 'Chart settings',
+    },
+    {
       name: 'displayHorizontally',
       type: 'boolean',
       label: 'Display Horizontally',

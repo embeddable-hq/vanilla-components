@@ -9,24 +9,26 @@ type DatasetsMeta = {
 };
 
 export type Props = {
-  title?: string;
-  ds?: Dataset;
-  xAxis: Dimension;
-  segment: Dimension;
-  metric: Measure;
-  displayHorizontally?: boolean;
   displayAsPercentage?: boolean;
+  displayHorizontally?: boolean;
+  dps?: number;
+  ds?: Dataset;
+  granularity?: Granularity;
+  isTSStackedBarChart?: boolean;
+  maxSegments?: number;
+  metric: Measure;
+  results: DataResponse;
+  segment: Dimension;
   showLabels?: boolean;
   showLegend?: boolean;
-  maxSegments?: number;
-  dps?: number;
-  results: DataResponse;
+  showTotals?: boolean;
+  title?: string;
+  totals?: { [key: string]: { total: number; lastSegment: number | null } };
+  useCustomDateFormat?: boolean;
+  xAxis: Dimension;
+  xAxisTitle?: string;
   yAxisMin?: number;
   yAxisTitle?: string;
-  xAxisTitle?: string;
-  granularity?: Granularity;
-  useCustomDateFormat?: boolean;
-  isTSStackedBarChart?: boolean;
 };
 
 type Options = {
@@ -43,14 +45,16 @@ export default function getStackedChartData(
   options?: Options,
 ): ChartData<'line' | 'bar', (number | null)[], unknown> {
   const {
-    useCustomDateFormat,
-    results,
-    xAxis,
-    metric,
-    segment,
-    maxSegments,
     displayAsPercentage,
     granularity,
+    maxSegments,
+    metric,
+    results,
+    segment,
+    showTotals,
+    totals,
+    useCustomDateFormat,
+    xAxis,
   } = props;
   const labels = [...new Set(results?.data?.map((d: Record) => d[xAxis?.name || '']))] as string[];
   const segments = segmentsToInclude();
@@ -96,9 +100,12 @@ export default function getStackedChartData(
         ...datasetsMeta,
         backgroundColor: COLORS[i % COLORS.length],
         borderColor: COLORS[i % COLORS.length],
-        label: s,
+        label: s, // this is actually segment name, not label, but chart.js wants "label" here
         data: labels.map((label) => {
           const segmentValue = resultMap[label][s];
+          if (showTotals && totals && segmentValue !== null) {
+            totals[label].lastSegment = i;
+          }
           return displayAsPercentage && segmentValue !== null //skip null values
             ? parseFloat(
                 `${
@@ -113,8 +120,9 @@ export default function getStackedChartData(
               )
             : segmentValue;
         }),
+        xAxisNames: labels,
+        totals,
       };
-
       return dataset;
     }),
   };
