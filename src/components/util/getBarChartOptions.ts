@@ -45,7 +45,7 @@ export default function getBarChartOptions({
   yAxisTitle?: string;
 }): ChartOptions<'bar' | 'line'> {
   // Padding buffer for labels / totals as applicable
-  let bottom = 0;
+  const bottom = 0;
   let left = 0;
   let right = 0;
   let top = 0;
@@ -55,7 +55,6 @@ export default function getBarChartOptions({
       left = showLabels ? 60 : 0;
     } else {
       top = showLabels ? 20 : 0;
-      bottom = showLabels ? 30 : 0;
     }
   } else {
     if (displayHorizontally) {
@@ -63,7 +62,6 @@ export default function getBarChartOptions({
       left = showTotals ? 60 : 0;
     } else {
       top = showTotals ? 20 : 0;
-      bottom = showTotals ? 30 : 0;
     }
   }
 
@@ -259,7 +257,7 @@ export default function getBarChartOptions({
             //https://chartjs-plugin-datalabels.netlify.app/guide/
             anchor: stacked || stackMetrics ? 'center' : 'end',
             align: stacked || stackMetrics ? 'center' : 'end',
-            display: showLabels ? 'true' : false,
+            display: showLabels ? 'auto' : false,
             formatter: (v, context) => {
               //metric needed for formatting
               const metricIndex = context.datasetIndex;
