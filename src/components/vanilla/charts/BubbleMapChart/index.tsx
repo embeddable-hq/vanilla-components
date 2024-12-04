@@ -81,6 +81,7 @@ export default (props: Props) => {
     markerColor,
     metric,
     results,
+    showTooltips,
   } = props;
 
   const [markerClusterGroupKey, setMarkerClusterGroupKey] = useState<number>(0);
@@ -185,9 +186,11 @@ export default (props: Props) => {
                   position={[lat, lng]}
                   title=""
                 >
-                  <Tooltip>
-                    {address.title}: {address.count}
-                  </Tooltip>
+                  {showTooltips && (
+                    <Tooltip>
+                      {address.title}: {address.count}
+                    </Tooltip>
+                  )}
                 </Marker>
               );
             })}
