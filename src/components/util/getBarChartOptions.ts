@@ -11,6 +11,34 @@ type ExtendedChartDataset = ChartDataset<'bar' | 'line'> & {
   xAxisNames?: string[];
 };
 
+const getPadding = (
+  showLabels: boolean,
+  showTotals: boolean,
+  stacked: boolean,
+  displayHorizontally: boolean,
+) => {
+  let left = 0;
+  let right = 0;
+  let top = 0;
+  const bottom = 0;
+  if (!stacked) {
+    if (displayHorizontally) {
+      right = showLabels ? 60 : 0;
+      left = showLabels ? 60 : 0;
+    } else {
+      top = showLabels ? 20 : 0;
+    }
+  } else {
+    if (displayHorizontally) {
+      right = showTotals ? 60 : 0;
+      left = showTotals ? 60 : 0;
+    } else {
+      top = showTotals ? 20 : 0;
+    }
+  }
+  return { left, right, top, bottom };
+};
+
 export default function getBarChartOptions({
   displayHorizontally = false,
   dps = undefined,
@@ -44,38 +72,12 @@ export default function getBarChartOptions({
   xAxisTitle?: string;
   yAxisTitle?: string;
 }): ChartOptions<'bar' | 'line'> {
-  // Padding buffer for labels / totals as applicable
-  const bottom = 0;
-  let left = 0;
-  let right = 0;
-  let top = 0;
-  if (!stacked) {
-    if (displayHorizontally) {
-      right = showLabels ? 60 : 0;
-      left = showLabels ? 60 : 0;
-    } else {
-      top = showLabels ? 20 : 0;
-    }
-  } else {
-    if (displayHorizontally) {
-      right = showTotals ? 60 : 0;
-      left = showTotals ? 60 : 0;
-    } else {
-      top = showTotals ? 20 : 0;
-    }
-  }
-
   return {
     responsive: true,
     maintainAspectRatio: false,
     indexAxis: displayHorizontally ? ('y' as const) : ('x' as const),
     layout: {
-      padding: {
-        left,
-        right,
-        top,
-        bottom,
-      },
+      padding: getPadding(showLabels, showTotals, stacked, displayHorizontally),
     },
     scales: {
       y: {
