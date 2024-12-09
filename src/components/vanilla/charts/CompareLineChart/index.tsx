@@ -39,6 +39,7 @@ import formatValue from '../../../util/format';
 import formatDateTooltips from '../../../util/formatDateTooltips';
 import hexToRgb from '../../../util/hexToRgb';
 import { parseTime, timeRangeToLocal } from '../../../util/timezone';
+import { setYAxisStepSize } from '../../../util/chartjs/common';
 import Container from '../../Container';
 
 ChartJS.register(
@@ -178,12 +179,19 @@ export default (propsInitial: Props) => {
           grid: {
             display: false,
           },
-          ticks: {
-            precision: 0,
-          },
           title: {
             display: !!props.yAxisTitle,
             text: props.yAxisTitle,
+          },
+          callback: function (value: number) {
+            return formatValue(
+              value.toString(), 
+              { type: 'number' }
+            )
+          },
+          afterDataLimits: function(axis) {
+            //Disable fractions unless they exist in the data.
+            setYAxisStepSize(axis, props.results, [...props.metrics], props.dps)
           },
         },
         period: {
@@ -239,13 +247,34 @@ export default (propsInitial: Props) => {
         tooltip: {
           callbacks: {
             title: (lines: any[]) => formatDateTooltips(lines, props.granularity),
+            label: function (context) {
+              //metric needed for formatting
+              const metricIndex = context.datasetIndex % props.metrics.length;
+              const metricObj = props.metrics[metricIndex];
+              let label = context.dataset.label || '';
+              if (context.parsed.y !== null) {
+                label += `: ${formatValue(`${context.parsed['y']}`, {
+                  type: 'number',
+                  dps: props.dps,
+                  meta: metricObj?.meta,
+                })}`;
+              }
+              return label;
+            },
           },
         },
         datalabels: {
           align: 'top',
           display: props.showLabels ? 'auto' : false,
-          formatter: (v) => {
-            const val = v ? formatValue(v.y, { type: 'number', dps: props.dps }) : null;
+          formatter: (v, context) => {
+            //get metrics index including for comparison datasets 
+            const metricIndex = context.datasetIndex % props.metrics.length;
+            const metric = props.metrics[metricIndex];
+            const val = v ? formatValue(v.y, { 
+                type: 'number', 
+                dps: props.dps,
+                meta: metric?.meta
+            }) : null;
             return val;
           },
         },

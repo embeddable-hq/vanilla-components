@@ -22,6 +22,7 @@ import { Scatter } from 'react-chartjs-2';
 import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE, DATE_DISPLAY_FORMATS } from '../../../constants';
 import formatValue from '../../../util/format';
 import hexToRgb from '../../../util/hexToRgb';
+import { setYAxisStepSize } from '../../../util/chartjs/common';
 
 ChartJS.register(
   CategoryScale,
@@ -89,8 +90,7 @@ export default (props: Props) => {
 function chartOptions(props: Props, scatterData: ChartData<'scatter'>): ChartOptions<'scatter'> {
 
     const datasets = scatterData.datasets;
-    const yAxisContainsFractions = datasets?.some((dataset) => dataset.data.some(row => row && typeof row === 'object' && 'y' in row && !Number.isInteger(row.y)));
-
+    
     return {
         responsive: true,
         maintainAspectRatio: false,
@@ -105,11 +105,8 @@ function chartOptions(props: Props, scatterData: ChartData<'scatter'>): ChartOpt
                     display: false
                 },
                 afterDataLimits: function(axis) {
-                    // Capture the max value for dynamic stepSize calculation
-                    const yAxisMax = axis.max;
-                    // Prevent chartJS from showing fractions on the y-axis when there aren't any.
-                    (axis.options as any).ticks.stepSize =  
-                    !yAxisContainsFractions && yAxisMax < 10 ? 1 : undefined
+                    //Disable fractions unless they exist in the data.
+                    setYAxisStepSize(axis, props.results, [...props.metrics], props.dps)
                 },
                 title: {
                     display: !!props.yAxisTitle,
