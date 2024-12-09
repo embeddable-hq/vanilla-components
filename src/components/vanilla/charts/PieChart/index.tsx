@@ -1,4 +1,4 @@
-import { DataResponse, Measure, Dimension } from '@embeddable.com/core';
+import { DataResponse, Dimension, Measure } from '@embeddable.com/core';
 import {
   ArcElement,
   CategoryScale,
@@ -42,7 +42,7 @@ type Props = {
   results: DataResponse;
   title: string;
   dps?: number;
-  slice: Dimension
+  slice: Dimension;
   metric: Measure;
   showLabels?: boolean;
   showLegend?: boolean;
@@ -87,8 +87,6 @@ export default (props: Props) => {
       return;
     }
 
-    // this appears to be a deep typing issue with chart.js doughnut animation types.
-    // @ts-expect-error - chart.js animation issue (chart works as expected)
     fireClickEvent(getElementAtEvent(chart, event));
   };
 
@@ -124,11 +122,13 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
           weight: 'normal',
         },
         formatter: (v) => {
-          const val = v ? formatValue(v, { 
-            type: 'number', 
-            dps: props.dps,
-            meta: props.displayAsPercentage ? undefined : props.metric.meta
-           }) : null;
+          const val = v
+            ? formatValue(v, {
+                type: 'number',
+                dps: props.dps,
+                meta: props.displayAsPercentage ? undefined : props.metric.meta,
+              })
+            : null;
           return props.displayAsPercentage ? `${val}%` : val;
         },
       },
@@ -141,7 +141,7 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
               label += `: ${formatValue(`${context.parsed || ''}`, {
                 type: 'number',
                 dps: props.dps,
-                meta: props.displayAsPercentage ? undefined : props.metric.meta
+                meta: props.displayAsPercentage ? undefined : props.metric.meta,
               })}`;
             }
             label = props.displayAsPercentage ? `${label}%` : label;
