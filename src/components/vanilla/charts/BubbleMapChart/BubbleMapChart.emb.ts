@@ -1,4 +1,4 @@
-import { OrderBy, isDimension, isMeasure, loadData } from '@embeddable.com/core';
+import { loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
@@ -18,18 +18,9 @@ export const meta = {
       category: 'Chart Data',
     },
     {
-      name: 'bubblePlacementLat',
+      name: 'bubblePlacement',
       type: 'dimension',
-      label: 'Bubble Placement - Latitude',
-      config: {
-        dataset: 'ds',
-      },
-      category: 'Chart Data',
-    },
-    {
-      name: 'bubblePlacementLng',
-      type: 'dimension',
-      label: 'Bubble Placement - Longitude',
+      label: 'Bubble Placement - Geolocation',
       config: {
         dataset: 'ds',
       },
@@ -125,7 +116,7 @@ export default defineComponent(Component, meta, {
       results: loadData({
         from: inputs.ds,
         limit: 5000,
-        dimensions: [inputs.bubblePlacementLat, inputs.bubblePlacementLng],
+        dimensions: [inputs.bubblePlacement],
         measures: [inputs.metric],
       }),
     };

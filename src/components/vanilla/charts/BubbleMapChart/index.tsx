@@ -1,6 +1,12 @@
 // React & 3rd Party
 import React, { useEffect, useState } from 'react';
-import { DataResponse, Dataset, DimensionOrMeasure, Measure } from '@embeddable.com/core';
+import {
+  DataResponse,
+  Dataset,
+  Dimension,
+  DimensionOrMeasure,
+  Measure,
+} from '@embeddable.com/core';
 import Leaflet, { LatLngBoundsExpression, MarkerCluster } from 'leaflet';
 import { MapContainerProps, MarkerProps, TileLayerProps, Tooltip, useMap } from 'react-leaflet';
 
@@ -31,8 +37,7 @@ type MarkerData = {
 type MetricExtended = Measure & { modelTitle: string };
 
 type Props = {
-  bubblePlacementLat?: DimensionOrMeasure;
-  bubblePlacementLng?: DimensionOrMeasure;
+  bubblePlacement: Dimension;
   clusterRadius?: number;
   customTileSet?: string;
   ds?: Dataset;
@@ -72,8 +77,7 @@ const SetBounds = (props: BoundsProps) => {
 // Main Component
 export default (props: Props) => {
   const {
-    bubblePlacementLat,
-    bubblePlacementLng,
+    bubblePlacement,
     clusterRadius,
     customTileSet,
     ds,
@@ -96,8 +100,8 @@ export default (props: Props) => {
   const dataLength = results?.data?.length || 0;
   if (dataLength > 0) {
     for (let i = 0; i < dataLength || 0; i++) {
-      const latitude = results?.data?.[i][bubblePlacementLat?.name || ''];
-      const longitude = results?.data?.[i][bubblePlacementLng?.name || ''];
+      const latitude = results?.data?.[i][bubblePlacement.name].split(',')[0] || 0;
+      const longitude = results?.data?.[i][bubblePlacement.name].split(',')[1] || 0;
       const count = results?.data?.[i][metric?.name || ''];
       const metricExtended = metric as MetricExtended;
       const title = metricExtended?.modelTitle || '';

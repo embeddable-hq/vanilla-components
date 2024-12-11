@@ -21,17 +21,14 @@ cubes:
         title: 'Country'
         description: 'The name of the country'
 
-      - name: lat
-        sql: lat
-        type: number
-        title: 'Latitude'
-        description: 'The latitude of the city'
-
-      - name: long
-        sql: long
-        type: number
-        title: 'Longitude'
-        description: 'The longitude of the city'
+      - name: location
+        type: geo
+        latitude:
+          sql: lat
+        longitude:
+          sql: long
+        title: 'Geolocation (lat/lng)'
+        description: 'The latitude and longitude of the city'
 
     measures:
       - name: count
