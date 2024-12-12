@@ -1,0 +1,136 @@
+cubes:
+- name: venue_autotranslate
+  data_source: default
+  sql: >
+    select
+      event_date
+      ,event_name
+      ,user_pseudo_id
+      ,platform
+      ,device.category as device_category
+      ,geo.country as geo_country
+      ,event_params_custom.user_connectivity
+      ,event_params_custom.organisation_id
+      ,event_params_custom.venue_id
+      ,event_params_custom.zone_id
+      ,event_params_custom.content_category
+      ,event_params_custom.locale_translation_source
+      ,event_params_custom.locale_translation_destination
+      ,event_params_custom.object_id
+      ,event_params_custom.tour_id
+      ,event_params_custom.artist_id
+      ,event_params_custom.track_id
+      ,event_params_custom.exhibition_id
+      ,event_params_custom.campaign_id
+    from `smartify-cc94e.superform_outputs_151371783.ga4_events`
+    where event_date >= "2024-01-01"
+    and stream_id in ("1047860117","1047860114","1913717213","2817285551")
+    and event_name = 'translate_text'
+    and event_params_custom.organisation_id = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+    
+  dimensions:
+    - name: date
+      type: time
+      sql: timestamp(event_date)
+    
+    - name: event_name
+      type: string
+      sql: event_name
+
+    - name: user_pseudo_id
+      type: string
+      sql: user_pseudo_id
+    
+    - name: user_connectivity
+      type: string
+      sql: case when user_connectivity in ("Internet Highspeed","Internet Corporate") then "Wi-Fi" else user_connectivity end
+
+    - name: platform_device
+      type: string
+      sql: case when platform = "IOS" then "iOS" when platform = "ANDROID" then "Android" when (platform = "WEB" and device_category = "desktop") then "Desktop" else "Webapp" end
+
+    - name: country
+      type: string
+      sql: geo_country
+    
+    - name: organization_id
+      type: string
+      sql: organisation_id
+
+    - name: venue_id
+      type: string
+      sql: venue_id
+
+    - name: zone_id
+      type: string
+      sql: zone_id
+
+    - name: content_category
+      type: string
+      sql: content_category
+
+    - name: original_language
+      type: string
+      sql: locale_translation_source
+
+    - name: translated_language
+      type: string
+      sql: locale_translation_destination
+    
+    - name: translation_from_to
+      type: string
+      sql: concat({original_language}, ' -> ', {translated_language})
+
+    - name: object_id
+      type: string
+      sql: object_id
+
+    - name: tour_id
+      type: string
+      sql: tour_id
+
+    - name: artist_id
+      type: string
+      sql: artist_id
+
+    - name: track_id
+      type: string
+      sql: track_id
+
+    - name: exhibition_id
+      type: string
+      sql: exhibition_id
+
+    - name: campaign_id
+      type: string
+      sql: campaign_id
+
+    - name: concat_id
+      title: Content ID
+      type: string
+      sql: >
+       concat(
+        coalesce({object_id}, ''),
+        coalesce({tour_id}, ''),
+        coalesce({artist_id}, ''),
+        coalesce({track_id}, ''),
+        coalesce({exhibition_id}, ''),
+        coalesce({campaign_id}, ''),
+        coalesce({zone_id}, '')
+       )
+       
+    - name: content_type
+      title: Content Category
+      type: string
+      sql: case when {concat_id} LIKE "%ak%" then "object" when {concat_id} LIKE "%tour%" then "tour" when {concat_id} LIKE "%at%" then "artist" when {concat_id} LIKE "%track%" then "track" when {concat_id} LIKE "%ex%" then "exhibition" else {content_category} end
+
+
+  measures:
+    - name: total_translations
+      type: count
+      title: "Total Translations"
+    
+    - name: translation_users
+      type: count_distinct
+      sql: user_pseudo_id
+      title: "Unique Translators"
