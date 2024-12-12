@@ -1,4 +1,4 @@
-import { DataResponse, Measure, Dimension } from '@embeddable.com/core';
+import { DataResponse, Dimension, Measure } from '@embeddable.com/core';
 import {
   ArcElement,
   CategoryScale,
