@@ -323,26 +323,26 @@
   resolved "https://registry.npmjs.org/@date-fns/tz/-/tz-1.2.0.tgz"
   integrity sha512-LBrd7MiJZ9McsOgxqWX7AaxrDjcFVjWH/tIKJd7pnR7McaslGYOP1QmmiBXdJH/H/yLCT+rcQ7FaPBUxRGUtrg==
 
-"@embeddable.com/core@^2.8.0", "@embeddable.com/core@2.8.0":
-  version "2.8.0"
-  resolved "https://registry.npmjs.org/@embeddable.com/core/-/core-2.8.0.tgz"
-  integrity sha512-PM+Oa3DrnaQjT20DMV5j2sQmgkPTherCx1dcTqlH9yK77UzQp4vuVDNabYTCGh23ttrJkQxjm5n+vsO6UHKwuA==
+"@embeddable.com/core@^2.8.1", "@embeddable.com/core@2.8.1":
+  version "2.8.1"
+  resolved "https://registry.npmjs.org/@embeddable.com/core/-/core-2.8.1.tgz"
+  integrity sha512-px0Z9B1p2Wr6f/5eeOnXcEtv5/WUweznupBIYC7YfkvADApAWxg7XzHjwUhLCCL0DhZJcOT5UtNF9e9cgNPBGQ==
   dependencies:
     jsdom "^24.1.1"
 
-"@embeddable.com/react@^2.9.0":
-  version "2.9.0"
-  resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.9.0.tgz"
-  integrity sha512-2cFi9l2j8SVOjRajcL81fW8hKb9eooGbai3GQOe6+g8xkI77s+CGQZ4ph0lFWwp7EwzX+JXkKaaosPpskYD1HQ==
+"@embeddable.com/react@^2.9.1":
+  version "2.9.1"
+  resolved "https://registry.npmjs.org/@embeddable.com/react/-/react-2.9.1.tgz"
+  integrity sha512-P8IenI4AbRC9j9P//qZjtbruEv0ZfloScDHOX4HJF7eMrry2XobYO5vohhFo1DMxW77ipG8K7nF8k/3VgcfLCA==
   dependencies:
-    "@embeddable.com/core" "2.8.0"
+    "@embeddable.com/core" "2.8.1"
 
-"@embeddable.com/sdk-core@^3.12.0", "@embeddable.com/sdk-core@3.12.0":
-  version "3.12.0"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-3.12.0.tgz"
-  integrity sha512-pvd7M537cawIi6Pxw2bXnSg4KPacT5Z5e9mlX0TIyNmGV8PYAyYAR7m5EtlMkhU40p1aYy9urC7ejFXK9PEz/w==
+"@embeddable.com/sdk-core@^3.12.1", "@embeddable.com/sdk-core@3.12.1":
+  version "3.12.1"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-core/-/sdk-core-3.12.1.tgz"
+  integrity sha512-1nIqXvIYWdu5VB8GLisg9Vc1YyBaGuQo+Ig4w8HE441oWsfpJeJFYMBuiQypHvnz89o0hKEoPqLp+JWwLCIoXg==
   dependencies:
-    "@embeddable.com/sdk-utils" "0.6.0"
+    "@embeddable.com/sdk-utils" "0.6.1"
     "@inquirer/prompts" "^7.1.0"
     "@stencil/core" "^4.22.3"
     "@swc-node/register" "^1.10.9"
@@ -361,16 +361,16 @@
     ws "^8.18.0"
     yaml "^2.6.1"
 
-"@embeddable.com/sdk-react@^3.10.0":
-  version "3.10.0"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-3.10.0.tgz"
-  integrity sha512-o/VGJPCHprmrjHZ5lB3CG5gPfgih+BirCU62+uOHlcnp/EHkMeB5I2fVEXT9tmDuisTPLq1/dWHXyKgwp9sgHA==
+"@embeddable.com/sdk-react@^3.10.1":
+  version "3.10.1"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-react/-/sdk-react-3.10.1.tgz"
+  integrity sha512-ExaF084aMUjmrtAzgFZkelB34xbfcQIgva1u5Jpbnm7k9rHs4uOicowBA9tZIgXJi+6bAtlP1SA8DThvsA8bPA==
   dependencies:
     "@babel/generator" "^7.23.0"
     "@babel/parser" "^7.26.2"
     "@babel/traverse" "^7.24.7"
-    "@embeddable.com/sdk-core" "3.12.0"
-    "@embeddable.com/sdk-utils" "0.6.0"
+    "@embeddable.com/sdk-core" "3.12.1"
+    "@embeddable.com/sdk-utils" "0.6.1"
     "@happy-dom/global-registrator" "^15.11.0"
     "@vitejs/plugin-react" "^4.3.2"
     astring "^1.8.6"
@@ -378,10 +378,10 @@
     vite "^5.4.8"
     zod "^3.23.8"
 
-"@embeddable.com/sdk-utils@0.6.0":
-  version "0.6.0"
-  resolved "https://registry.npmjs.org/@embeddable.com/sdk-utils/-/sdk-utils-0.6.0.tgz"
-  integrity sha512-fS/A5+y6ZBnjj3vTzV6Hcs74fJwsz3CyS0H+XS9gc+2Up+6GqfY2+anEhGaBd43mboB13xCUf3v4qGWx5wIjow==
+"@embeddable.com/sdk-utils@0.6.1":
+  version "0.6.1"
+  resolved "https://registry.npmjs.org/@embeddable.com/sdk-utils/-/sdk-utils-0.6.1.tgz"
+  integrity sha512-bwD171o1Tgq6KxNu47p4LYvgVdeFZV1WZP6v54ATg3T6LLxFXxjj9ee4STr/5nmz/NzxStz5NQvKnPX2ClL0+g==
   dependencies:
     ora "^8.0.1"
     zod "^3.23.8"
@@ -1867,7 +1867,7 @@ d3-array@^2.5.0:
   dependencies:
     internmap "1 - 2"
 
-d3-color@^3.1.0, "d3-color@1 - 3":
+"d3-color@1 - 3":
   version "3.1.0"
   resolved "https://registry.npmjs.org/d3-color/-/d3-color-3.1.0.tgz"
   integrity sha512-zg/chbXyeBtMQ1LbD/WSoW2DpC3I0mpmPdW+ynRTj/x2DAWYrIY7qeZIHidozwV24m4iavr15lNwIwLxRmOxhA==
@@ -1902,7 +1902,7 @@ d3-geo@^2.0.2:
   dependencies:
     d3-array "^2.5.0"
 
-d3-interpolate@^3.0.1, "d3-interpolate@1.2.0 - 3":
+"d3-interpolate@1 - 3", "d3-interpolate@1.2.0 - 3":
   version "3.0.1"
   resolved "https://registry.npmjs.org/d3-interpolate/-/d3-interpolate-3.0.1.tgz"
   integrity sha512-3bYs1rOD33uo8aqJfKP3JWPAibgw8Zm2+L9vBKEHJ2Rg+viTR7o5Mmv5mZcieN+FRYaAOWX5SJATX6k1PWz72g==
@@ -2902,6 +2902,11 @@ fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   integrity sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==
+
+fsevents@~2.3.2, fsevents@~2.3.3:
+  version "2.3.3"
+  resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
+  integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
 function-bind@^1.1.2:
   version "1.1.2"
@@ -6059,6 +6064,6 @@ zip-stream@^4.1.0:
     readable-stream "^3.6.0"
 
 zod@^3.23.8:
-  version "3.23.8"
-  resolved "https://registry.npmjs.org/zod/-/zod-3.23.8.tgz"
-  integrity sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==
+  version "3.24.1"
+  resolved "https://registry.npmjs.org/zod/-/zod-3.24.1.tgz"
+  integrity sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==
