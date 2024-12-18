@@ -1,4 +1,5 @@
 import { DataResponse, Dimension, Granularity, Measure } from '@embeddable.com/core';
+import { useOverrideConfig } from '@embeddable.com/react';
 
 import useTimeseries from '../../../hooks/useTimeseries';
 import Container from '../../Container';
