@@ -169,12 +169,6 @@ export default defineComponent(Component, meta, {
           },
         ],
         measures: [...inputs.metrics, ...(inputs.lineMetrics || [])],
-        filters: [
-          {
-            property: inputs.xAxis,
-            operator: 'notNull',
-          },
-        ],
         orderBy: [
           {
             property: inputs.xAxis,

@@ -159,12 +159,6 @@ export default defineComponent(Component, meta, {
               },
             ],
             measures: [inputs.yAxis, inputs.bubbleSize],
-            filters: [
-              {
-                property: inputs.xAxis,
-                operator: 'notNull',
-              },
-            ],
             limit: inputs.limit || 50,
           })
         : loadData({
