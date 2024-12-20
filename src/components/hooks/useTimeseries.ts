@@ -65,28 +65,36 @@ export default (props: Props, sortOrder: string = 'asc') => {
 
   const fillGaps = useCallback(
     (memo: Record[], record: Record) => {
-      const prevRecord = memo[memo.length - 1];
+      const prevRecord = memo[memo.length - 1]; // Get the last processed record
+      const xAxisValue = record[xAxis?.name || '']; // Current record's x-axis value
 
+      // Exclude records where the x-axis value is null or undefined
+      if (xAxisValue === null || xAxisValue === undefined) {
+        return memo;
+      }
+
+      // If there is no previous record, add the current record and return
       if (!prevRecord) {
         return [...memo, record];
       }
 
-      const prevDate = prevRecord[xAxis?.name || ''];
-      const date = record[xAxis?.name || ''];
+      const prevDate = prevRecord[xAxis?.name || '']; // Previous record's x-axis value
 
-      if (!prevDate || !date) {
+      // If the previous date is missing, add the current record and return
+      if (!prevDate) {
         return [...memo, record];
       }
 
+      // Calculate the next expected date based on granularity and sort order
       const seqDate =
         sortOrder === 'asc'
           ? addTime[granularity || 'day'](parseJSON(prevDate), 1)
           : subTime[granularity || 'day'](parseJSON(prevDate), 1);
 
-      const dateSince1970 = parseJSON(date).getTime();
-      const seqDateSince1970 = seqDate.getTime();
+      const dateSince1970 = parseJSON(xAxisValue).getTime(); // Timestamp of the current date
+      const seqDateSince1970 = seqDate.getTime(); // Timestamp of the expected sequence date
 
-      // Check if the sequence date and current date are too close, meaning no gap to fill
+      // If the current date is within the expected range, add it directly
       if (
         (sortOrder === 'asc'
           ? dateSince1970 <= seqDateSince1970
@@ -96,13 +104,15 @@ export default (props: Props, sortOrder: string = 'asc') => {
         return [...memo, record];
       }
 
-      // Add the sequence date
-      memo.push({ [xAxis?.name || '']: seqDate.toISOString().split('Z')[0] });
+      // Add the expected sequence date to fill the gap
+      memo.push({
+        [xAxis?.name || '']: seqDate.toISOString().split('Z')[0], // Format to ISO string without timezone
+      });
 
-      // Recursive call to continue filling gaps
+      // Recursive call to continue checking gaps
       return fillGaps(memo, record);
     },
-    [xAxis, granularity, sortOrder],
+    [xAxis, granularity, sortOrder], // Dependencies for useCallback
   );
 
   return { fillGaps };

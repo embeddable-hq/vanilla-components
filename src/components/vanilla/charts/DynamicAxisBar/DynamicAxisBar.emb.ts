@@ -147,12 +147,6 @@ export default defineComponent<Props, typeof meta, EmbeddableState>(Component, m
               },
             ],
             measures: inputs.metrics,
-            filters: [
-              {
-                property: selectedDimension,
-                operator: 'notNull',
-              },
-            ],
             orderBy: [
               {
                 property: selectedDimension,
