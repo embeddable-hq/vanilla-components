@@ -5,7 +5,7 @@ import Component from './index';
 
 export const meta = {
   name: 'MultiDimensionLineChart',
-  label: 'Multi-dimension line (time-series)',
+  label: 'Grouped line chart (time-series)',
   classNames: ['inside-card'],
   category: 'Charts: time-series',
   inputs: [
@@ -28,7 +28,7 @@ export const meta = {
     {
       name: 'segment',
       type: 'dimension',
-      label: 'Segment',
+      label: 'Grouping',
       config: {
         dataset: 'ds',
       },

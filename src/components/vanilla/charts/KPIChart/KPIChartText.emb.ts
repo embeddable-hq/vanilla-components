@@ -33,7 +33,7 @@ export const meta = {
     {
       name: 'metric',
       type: 'measure',
-      label: 'Sort values by',
+      label: 'Show top value by',
       config: {
         dataset: 'ds',
       },
