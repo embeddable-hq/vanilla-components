@@ -81,7 +81,6 @@ export default function BarChart({ ...props }: Props) {
 function chartData(props: Props): ChartData<'bar' | 'line'> {
   const { results, xAxis, metrics, granularity, lineMetrics, showSecondYAxis } = props;
   const themeObj = applyTheme();
-  console.log(themeObj);
 
   const chartColors: string[] = themeObj.chartColors;
 
