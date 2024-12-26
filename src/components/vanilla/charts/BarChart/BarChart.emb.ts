@@ -1,6 +1,5 @@
 import { OrderBy, loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
-
 import Component from './index';
 
 export const meta = {

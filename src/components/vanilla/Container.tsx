@@ -41,8 +41,6 @@ export default ({
   const { height } = useResize(refResize, onResize || null);
   const [preppingDownload, setPreppingDownload] = useState<boolean>(false);
 
-  console.log(props);
-
   //Detect when the component is being resized by the user
   useEffect(() => {
     if (!setResizeState) {

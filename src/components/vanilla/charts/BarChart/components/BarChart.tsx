@@ -25,7 +25,6 @@ import {
 } from '../../../../constants';
 import formatValue from '../../../../util/format';
 import getBarChartOptions from '../../../../util/getBarChartOptions';
-import applyTheme from '../../../../util/applytheme';
 
 ChartJS.register(
   CategoryScale,
@@ -65,6 +64,7 @@ type Props = {
   granularity?: Granularity;
   showSecondYAxis?: boolean;
   secondAxisTitle?: string;
+  theme?: any;
 };
 
 export default function BarChart({ ...props }: Props) {
@@ -80,9 +80,8 @@ export default function BarChart({ ...props }: Props) {
 
 function chartData(props: Props): ChartData<'bar' | 'line'> {
   const { results, xAxis, metrics, granularity, lineMetrics, showSecondYAxis } = props;
-  const themeObj = applyTheme();
 
-  const chartColors: string[] = themeObj.chartColors;
+  const chartColors: string[] = props.theme.colors.chart;
 
   let dateFormat: string | undefined;
   if (xAxis.nativeType === 'time' && granularity) {
