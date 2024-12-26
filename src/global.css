@@ -210,7 +210,7 @@
   }
 }
 
-/* Default Theme */
+/*
 :host {
   --brand-100: #ffffff;
   --brand-1000: #303038;
@@ -273,21 +273,7 @@
   --chart-color-6: #ffc145;
 }
 
-/* Celtics Theme */
-[data-theme='celtics'] {
-  --brand-100: #ffffff;
-  --brand-200: #c5fae2;
-  --brand-300: #7ef2be;
-  --brand-400: #2ce391;
-  --brand-500: #00cc70;
-  --brand-600: #009954;
-  --brand-700: #008348;
-  --brand-800: #006638;
-  --brand-900: #004d2a;
-  --brand-1000: #00331c;
-  --brand-1100: #001a0e;
-  --brand-1200: #000000;
-  --error-100: #cc1111;
+:host([data-theme='celtics']) {
   --chart-color-1: #7ef2be;
   --chart-color-2: #2ce391;
   --chart-color-3: #00cc70;
@@ -297,3 +283,4 @@
   --chart-color-7: #004d2a;
   --chart-color-8: #00331c;
 }
+*/

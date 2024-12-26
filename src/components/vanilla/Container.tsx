@@ -14,6 +14,7 @@ import './index.css';
 export type ContainerProps = {
   childContainerClassName?: string;
   className?: string;
+  clientContext?: any;
   description?: string;
   enableDownloadAsCSV?: boolean;
   enableDownloadAsPNG?: boolean;
@@ -32,12 +33,25 @@ export default ({
   setResizeState,
   ...props
 }: PropsWithChildren<ContainerProps>) => {
+  const { clientContext } = props;
   const refPrevHeight = useRef<number | null>(null);
   const refExportPNGElement = useRef<HTMLDivElement | null>(null);
   const refResize = useRef<HTMLDivElement | null>(null);
   const refResizingTimeout = useRef<number | null>(null);
   const { height } = useResize(refResize, onResize || null);
   const [preppingDownload, setPreppingDownload] = useState<boolean>(false);
+
+  // Add the theme to our shadow root if needed
+  useEffect(() => {
+    const containers = document.querySelectorAll('em-beddable');
+    for (const container of containers) {
+      const shadowRoot = container?.shadowRoot;
+      if (shadowRoot && clientContext) {
+        const host = shadowRoot.host;
+        host.setAttribute('data-theme', clientContext.theme ?? 'default');
+      }
+    }
+  }, [clientContext]);
 
   //Detect when the component is being resized by the user
   useEffect(() => {

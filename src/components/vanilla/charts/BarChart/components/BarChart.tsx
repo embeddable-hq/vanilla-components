@@ -25,6 +25,7 @@ import {
 } from '../../../../constants';
 import formatValue from '../../../../util/format';
 import getBarChartOptions from '../../../../util/getBarChartOptions';
+import applyTheme from '../../../../util/applytheme';
 
 ChartJS.register(
   CategoryScale,
@@ -79,32 +80,10 @@ export default function BarChart({ ...props }: Props) {
 
 function chartData(props: Props): ChartData<'bar' | 'line'> {
   const { results, xAxis, metrics, granularity, lineMetrics, showSecondYAxis } = props;
+  const themeObj = applyTheme();
+  console.log(themeObj);
 
-  let chartColors: string[] = COLORS;
-
-  // Pull colors from theme
-  const container = document.querySelector('em-beddable');
-  const shadowRoot = container?.shadowRoot;
-
-  if (shadowRoot) {
-    const styles = window.getComputedStyle(shadowRoot.host);
-    console.log(styles);
-
-    /* Brute force because the style object doesn't reveal variables */
-    const colors: string[] = [];
-    for (let i = 1; i < 1000; i += 1) {
-      const color = styles.getPropertyValue(`--chart-color-${i}`);
-      if (color) {
-        colors.push(color);
-      } else {
-        break;
-      }
-    }
-    console.log(colors);
-    if (colors.length > 0) {
-      chartColors = colors;
-    }
-  }
+  const chartColors: string[] = themeObj.chartColors;
 
   let dateFormat: string | undefined;
   if (xAxis.nativeType === 'time' && granularity) {

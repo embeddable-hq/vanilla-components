@@ -6,6 +6,7 @@ import Container from '../../Container';
 import BarChart from './components/BarChart';
 
 type Props = {
+  clientContext?: any;
   description?: string;
   displayHorizontally?: boolean;
   dps?: number;
