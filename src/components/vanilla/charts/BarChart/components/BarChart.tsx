@@ -13,16 +13,8 @@ import {
   Tooltip,
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import React, { useEffect, useState } from 'react';
 import { Chart } from 'react-chartjs-2';
 
-import {
-  COLORS,
-  DATE_DISPLAY_FORMATS,
-  EMB_FONT,
-  LIGHT_FONT,
-  SMALL_FONT_SIZE,
-} from '../../../../constants';
 import formatValue from '../../../../util/format';
 import getBarChartOptions from '../../../../util/getBarChartOptions';
 
@@ -38,11 +30,6 @@ ChartJS.register(
   Filler,
   ChartDataLabels,
 );
-
-ChartJS.defaults.font.size = parseInt(SMALL_FONT_SIZE);
-ChartJS.defaults.color = LIGHT_FONT;
-ChartJS.defaults.font.family = EMB_FONT;
-ChartJS.defaults.plugins.tooltip.enabled = true;
 
 type Props = {
   description?: string;
@@ -67,7 +54,7 @@ type Props = {
   theme?: any;
 };
 
-export default function BarChart({ ...props }: Props) {
+export default function BarChart({ ...props }: Props): React.JSX.Element {
   return (
     <Chart
       type="bar"
@@ -79,13 +66,18 @@ export default function BarChart({ ...props }: Props) {
 }
 
 function chartData(props: Props): ChartData<'bar' | 'line'> {
-  const { results, xAxis, metrics, granularity, lineMetrics, showSecondYAxis } = props;
+  const { results, xAxis, metrics, granularity, lineMetrics, showSecondYAxis, theme } = props;
 
-  const chartColors: string[] = props.theme.colors.chart;
+  ChartJS.defaults.font.size = parseInt(theme['font-small'] || '14px', 10);
+  ChartJS.defaults.color = theme['font-color-light'] || '#888';
+  ChartJS.defaults.font.family = theme['font-custom'] || theme['font-embeddable'];
+  ChartJS.defaults.plugins.tooltip.enabled = theme['chartjs-tooltip-enabled'] || true;
+
+  const chartColors: string[] = theme['color-charts'];
 
   let dateFormat: string | undefined;
   if (xAxis.nativeType === 'time' && granularity) {
-    dateFormat = DATE_DISPLAY_FORMATS[granularity];
+    dateFormat = theme['date-display-formats'][granularity];
   }
 
   const labels = [
