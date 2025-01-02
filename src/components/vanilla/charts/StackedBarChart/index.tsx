@@ -55,10 +55,10 @@ export default (props: Props) => {
 
   //add missing dates to time-series stacked barcharts
   const { fillGaps } = useTimeseries(props, 'desc');
-  const { results, isTSStackedBarChart } = props;
+  const { results, isTSGroupedBarChart } = props;
   const updatedProps = {
     ...props,
-    results: isTSStackedBarChart
+    results: isTSGroupedBarChart
       ? { ...props.results, data: results?.data?.reduce(fillGaps, []) }
       : props.results,
   };
@@ -89,7 +89,7 @@ export default (props: Props) => {
     <Container {...props} className="overflow-y-hidden">
       <Bar
         height="100%"
-        options={getBarChartOptions({ ...updatedProps, stacked: true })}
+        options={getBarChartOptions({ ...updatedProps, stacked: props.stackBars })}
         data={
           getStackedChartData(updatedProps, datasetsMeta) as ChartData<'bar', number[], unknown>
         }
