@@ -14,7 +14,7 @@ export type Props = {
   dps?: number;
   ds?: Dataset;
   granularity?: Granularity;
-  isTSStackedBarChart?: boolean;
+  isTSGroupedBarChart?: boolean;
   maxSegments?: number;
   metric: Measure;
   results: DataResponse;
@@ -29,6 +29,8 @@ export type Props = {
   xAxisTitle?: string;
   yAxisMin?: number;
   yAxisTitle?: string;
+  isGroupedBar?: boolean;
+  stackBars?: boolean;
 };
 
 type Options = {
@@ -54,7 +56,7 @@ export default function getStackedChartData(
     showTotals,
     totals,
     useCustomDateFormat,
-    xAxis,
+    xAxis
   } = props;
   const labels = [...new Set(results?.data?.map((d: Record) => d[xAxis?.name || '']))] as string[];
   const segments = segmentsToInclude();

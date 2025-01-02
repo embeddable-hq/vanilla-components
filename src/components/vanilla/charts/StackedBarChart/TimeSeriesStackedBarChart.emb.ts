@@ -5,7 +5,7 @@ import Component from './index';
 
 export const meta = {
   name: 'TimeSeriesStackedBarChart',
-  label: 'Stacked bar chart (time-series)',
+  label: 'Grouped bar chart (time-series)',
   category: 'Charts: time-series',
   classNames: ['inside-card'],
   inputs: [
@@ -35,7 +35,7 @@ export const meta = {
     {
       name: 'segment',
       type: 'dimension',
-      label: 'Segment',
+      label: 'Grouping',
       config: {
         dataset: 'ds',
       },
@@ -65,6 +65,13 @@ export const meta = {
       category: 'Chart settings',
     },
     {
+      name: 'stackBars',
+      type: 'boolean',
+      label: 'Stack bars',
+      defaultValue: true,
+      category: 'Chart settings',
+    },
+    {
       name: 'showLegend',
       type: 'boolean',
       label: 'Show legend',
@@ -88,7 +95,7 @@ export const meta = {
     {
       name: 'showTotals',
       type: 'boolean',
-      label: 'Show Totals',
+      label: 'Show Totals Above Stacked Bars',
       defaultValue: false,
       category: 'Chart settings',
     },
@@ -133,7 +140,8 @@ export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
     return {
       ...inputs,
-      isTSStackedBarChart: true,
+      isGroupedBar: true,
+      isTSGroupedBarChart: true,
       reverseXAxis: true,
       useCustomDateFormat: true,
       results: loadData({
@@ -146,12 +154,6 @@ export default defineComponent(Component, meta, {
         ],
         dimensions: [inputs.segment],
         measures: [inputs.metric],
-        filters: [
-          {
-            property: inputs.xAxis,
-            operator: 'notNull',
-          },
-        ],
         orderBy: [
           {
             property: inputs.xAxis,

@@ -5,7 +5,7 @@ import Component from './index';
 
 export const meta = {
   name: 'LineChart',
-  label: 'Multi-metric line (time-series)',
+  label: 'Line chart (time-series)',
   classNames: ['inside-card'],
   category: 'Charts: time-series',
   inputs: [
@@ -141,12 +141,6 @@ export default defineComponent(Component, meta, {
       results: loadData({
         from: inputs.ds,
         limit: inputs.limit || 500,
-        filters: [
-          {
-            property: inputs.xAxis,
-            operator: 'notNull',
-          },
-        ],
         orderBy: orderProp,
         timeDimensions: [
           {
