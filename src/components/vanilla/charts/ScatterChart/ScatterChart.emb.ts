@@ -151,12 +151,6 @@ export default defineComponent(Component, meta, {
               },
             ],
             measures: inputs.metrics,
-            filters: [
-              {
-                property: inputs.xAxis,
-                operator: 'notNull',
-              },
-            ],
             limit: inputs.limit || 50,
           })
         : loadData({

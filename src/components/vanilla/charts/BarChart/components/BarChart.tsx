@@ -17,6 +17,7 @@ import { Chart } from 'react-chartjs-2';
 
 import formatValue from '../../../../util/format';
 import getBarChartOptions from '../../../../util/getBarChartOptions';
+import { setChartJSDefaults } from '../../../../util/chartjs/common';
 
 ChartJS.register(
   CategoryScale,
@@ -68,12 +69,7 @@ export default function BarChart({ ...props }: Props): React.JSX.Element {
 function chartData(props: Props): ChartData<'bar' | 'line'> {
   const { results, xAxis, metrics, granularity, lineMetrics, showSecondYAxis, theme } = props;
 
-  ChartJS.defaults.font.size = parseInt(theme['font-small'] || '14px', 10);
-  ChartJS.defaults.color = theme['font-color-light'] || '#888';
-  ChartJS.defaults.font.family = theme['font-custom'] || theme['font-embeddable'];
-  ChartJS.defaults.plugins.tooltip.enabled = theme['chartjs-tooltip-enabled'] || true;
-
-  const chartColors: string[] = theme['color-charts'];
+  const { chartColors } = setChartJSDefaults(theme);
 
   let dateFormat: string | undefined;
   if (xAxis.nativeType === 'time' && granularity) {
