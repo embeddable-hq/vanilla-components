@@ -4,7 +4,6 @@ import { useOverrideConfig } from '@embeddable.com/react';
 import useTimeseries from '../../../hooks/useTimeseries';
 import Container from '../../Container';
 import BarChart from './components/BarChart';
-import defaultTheme from '../../../../defaulttheme';
 
 type Props = {
   clientContext?: any;
