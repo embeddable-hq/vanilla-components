@@ -4,6 +4,7 @@ import { useOverrideConfig } from '@embeddable.com/react';
 import useTimeseries from '../../../hooks/useTimeseries';
 import Container from '../../Container';
 import BarChart from './components/BarChart';
+import defaultTheme from '../../../../defaulttheme';
 
 type Props = {
   clientContext?: any;
@@ -34,7 +35,12 @@ type Props = {
 export default (props: Props): React.JSX.Element => {
   // Get theme for use in component
   const overrides: any = useOverrideConfig();
-  const { theme } = overrides;
+  const { theme: clientTheme } = overrides;
+  // Merge default and client themes
+  const theme = {
+    ...defaultTheme,
+    ...clientTheme,
+  };
 
   //add missing dates to time-series barcharts
   const { fillGaps } = useTimeseries(props, 'desc');

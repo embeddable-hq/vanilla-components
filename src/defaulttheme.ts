@@ -1,6 +1,6 @@
 export type Theme = {
-  brandColorPrimary: string;
-  brandColorSecondary: string;
+  'brand-color-primary': string;
+  'brand-color-secondary': string;
   chartColors: string[];
   chartFont: {
     color: string;
@@ -12,9 +12,13 @@ export type Theme = {
   };
 };
 
+/*
+ * This will require changes to the typescript build process to be accessible outside of
+ * the package. For now, we will just export the type.
+ */
 const theme: Theme = {
-  brandColorPrimary: '#6778DE',
-  brandColorSecondary: '#FF997C',
+  'brand-color-primary': '#6778DE',
+  'brand-color-secondary': '#FF997C',
   chartColors: [
     '#6778DE',
     '#FF997C',
