@@ -35,12 +35,7 @@ type Props = {
 export default (props: Props): React.JSX.Element => {
   // Get theme for use in component
   const overrides: any = useOverrideConfig();
-  const { theme: clientTheme } = overrides;
-  // Merge default and client themes
-  const theme = {
-    ...defaultTheme,
-    ...clientTheme,
-  };
+  const { theme } = overrides;
 
   //add missing dates to time-series barcharts
   const { fillGaps } = useTimeseries(props, 'desc');
