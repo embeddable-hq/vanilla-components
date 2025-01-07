@@ -66,3 +66,11 @@ While cube playground is running, you can run `npm run cube:cubestore` to get ac
 E.g. list the stored preaggregations using `SELECT * FROM information_schema.tables;`
 
 Official documentation on inspecting local pre-aggregations can be found [here](https://cube.dev/docs/product/caching/using-pre-aggregations#inspecting-pre-aggregations).
+
+## Environment variables
+
+Environment variables can be set in a `.env` file in the root of the project. The following variables are available:
+
+| Variable name       | Type                     | Default Value | Description                  |
+|---------------------|--------------------------|---------------|------------------------------|
+| CUBE_CLOUD_ENDPOINT | Cube Cloud Configuration |               | URL to connect to cube cloud |

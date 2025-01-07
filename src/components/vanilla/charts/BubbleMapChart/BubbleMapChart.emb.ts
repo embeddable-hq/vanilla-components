@@ -5,7 +5,7 @@ import Component from './index';
 
 export const meta = {
   name: 'BubbleMapChart',
-  label: 'Bubble Map Chart',
+  label: 'Bubble map chart',
   classNames: ['inside-card'],
   category: 'Charts: essentials',
   inputs: [

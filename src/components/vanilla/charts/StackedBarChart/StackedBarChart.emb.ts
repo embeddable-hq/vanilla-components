@@ -5,7 +5,7 @@ import Component from './index';
 
 export const meta = {
   name: 'StackedBarChart',
-  label: 'Stacked bar chart',
+  label: 'Grouped bar chart',
   classNames: ['inside-card'],
   category: 'Charts: essentials',
   inputs: [
@@ -27,7 +27,7 @@ export const meta = {
     {
       name: 'segment',
       type: 'dimension',
-      label: 'Segment',
+      label: 'Grouping',
       config: {
         dataset: 'ds',
       },
@@ -66,6 +66,13 @@ export const meta = {
       category: 'Chart settings',
     },
     {
+      name: 'stackBars',
+      type: 'boolean',
+      label: 'Stack bars',
+      defaultValue: true,
+      category: 'Chart settings',
+    },
+    {
       name: 'showLegend',
       type: 'boolean',
       label: 'Show legend',
@@ -89,7 +96,7 @@ export const meta = {
     {
       name: 'showTotals',
       type: 'boolean',
-      label: 'Show Totals',
+      label: 'Show Totals Above Stacked Bars',
       defaultValue: false,
       category: 'Chart settings',
     },
@@ -150,6 +157,7 @@ export default defineComponent(Component, meta, {
 
     return {
       ...inputs,
+      isGroupedBar: true,
       results: loadData({
         from: inputs.ds,
         dimensions: [inputs.xAxis, inputs.segment],
