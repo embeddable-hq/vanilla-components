@@ -1,0 +1,7 @@
+- name: Default
+  clientContext:
+    theme: 'default'
+
+- name: Celtics
+  clientContext:
+    theme: 'celtics'

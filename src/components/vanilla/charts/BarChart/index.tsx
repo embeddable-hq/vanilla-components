@@ -1,10 +1,12 @@
 import { DataResponse, Dimension, Granularity, Measure } from '@embeddable.com/core';
+import { useOverrideConfig } from '@embeddable.com/react';
 
 import useTimeseries from '../../../hooks/useTimeseries';
 import Container from '../../Container';
 import BarChart from './components/BarChart';
 
 type Props = {
+  clientContext?: any;
   description?: string;
   displayHorizontally?: boolean;
   dps?: number;
@@ -26,14 +28,22 @@ type Props = {
   yAxisTitle?: string;
   showSecondYAxis?: boolean;
   secondAxisTitle?: string;
+  theme?: any;
 };
 
-export default (props: Props) => {
+export default (props: Props): React.JSX.Element => {
+  // Get theme for use in component
+  const overrides: any = useOverrideConfig();
+  const { theme } = overrides;
+
   //add missing dates to time-series barcharts
   const { fillGaps } = useTimeseries(props, 'desc');
   const { results, isTSBarChart } = props;
-  const updatedProps = {
+
+  // Update props with theme and filled gaps
+  const updatedProps: Props = {
     ...props,
+    theme,
     results: isTSBarChart
       ? { ...props.results, data: results?.data?.reduce(fillGaps, []) }
       : props.results,

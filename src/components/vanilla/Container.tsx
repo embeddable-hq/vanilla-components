@@ -14,6 +14,7 @@ import './index.css';
 export type ContainerProps = {
   childContainerClassName?: string;
   className?: string;
+  clientContext?: any;
   description?: string;
   enableDownloadAsCSV?: boolean;
   enableDownloadAsPNG?: boolean;
@@ -32,6 +33,7 @@ export default ({
   setResizeState,
   ...props
 }: PropsWithChildren<ContainerProps>) => {
+  const { clientContext } = props;
   const refPrevHeight = useRef<number | null>(null);
   const refExportPNGElement = useRef<HTMLDivElement | null>(null);
   const refResize = useRef<HTMLDivElement | null>(null);

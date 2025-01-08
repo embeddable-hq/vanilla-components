@@ -1,6 +1,5 @@
 import { OrderBy, loadData } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
-
 import Component from './index';
 
 export const meta = {
@@ -67,14 +66,14 @@ export const meta = {
       label: 'Show 2nd axis',
       category: 'Optional chart data',
       defaultValue: false,
-    },  
+    },
     {
       name: 'secondAxisTitle',
       type: 'string',
       label: '2nd axis title',
       description: 'The title for the chart',
       category: 'Optional chart data',
-    },  
+    },
     {
       name: 'title',
       type: 'string',
@@ -160,7 +159,7 @@ export const meta = {
 } as const satisfies EmbeddedComponentMeta;
 
 export default defineComponent(Component, meta, {
-  props: (inputs: Inputs<typeof meta>) => {
+  props: (inputs: Inputs<typeof meta>, _, clientContext) => {
     const orderProp: OrderBy[] = [];
 
     if (inputs.sortBy) {
@@ -177,6 +176,7 @@ export default defineComponent(Component, meta, {
 
     return {
       ...inputs,
+      clientContext,
       reverseXAxis: inputs.reverseXAxis,
       results: loadData({
         from: inputs.ds,
