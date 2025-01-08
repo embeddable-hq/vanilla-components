@@ -25,9 +25,4 @@ export const setChartJSDefaults = (theme: Theme) => {
   ChartJS.defaults.color = theme.chartFont.color;
   ChartJS.defaults.font.family = theme.chartFont.family;
   ChartJS.defaults.plugins.tooltip.enabled = theme.chartOptions.toolTipEnabled;
-
-  // But we do need to return the chart colors for use in the chart components
-  return {
-    chartColors: theme.chartColors,
-  };
 };

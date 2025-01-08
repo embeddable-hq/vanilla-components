@@ -68,12 +68,12 @@ export default function BarChart({ ...props }: Props): React.JSX.Element {
 
 function chartData(props: Props): ChartData<'bar' | 'line'> {
   const { results, xAxis, metrics, granularity, lineMetrics, showSecondYAxis, theme } = props;
-
-  const { chartColors } = setChartJSDefaults(theme);
+  const { chartColors, dateFormats } = theme;
+  setChartJSDefaults(theme);
 
   let dateFormat: string | undefined;
   if (xAxis.nativeType === 'time' && granularity) {
-    dateFormat = theme['date-display-formats'][granularity];
+    dateFormat = dateFormats[granularity];
   }
 
   const labels = [
