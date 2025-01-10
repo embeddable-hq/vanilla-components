@@ -1,6 +1,6 @@
 import { Granularity, TimeRange, Value } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
-import { endOfDay, startOfDay } from 'date-fns';
+import { endOfDay, getUnixTime, startOfDay } from 'date-fns';
 
 import { timeRangeToUTC } from '../../../util/timezone';
 import Component from './index';
@@ -92,11 +92,20 @@ export default defineComponent(Component, meta, {
     onChange: (v) => {
       if (!v) return { value: Value.noFilter() };
 
-      const value = timeRangeToUTC({ ...v, from: startOfDay(v.from), to: endOfDay(v.to) });
+      let value: TimeRange;
+      if (getUnixTime(v.to) - getUnixTime(v.from) < 86400) {
+        value = timeRangeToUTC(v);
+      } else {
+        value = timeRangeToUTC({ ...v, from: startOfDay(v.from), to: endOfDay(v.to) });
+      }
 
-      return { value: value };
+      // const value = timeRangeToUTC({ ...v, from: startOfDay(v.from), to: endOfDay(v.to) });
+      console.log('v', value);
+
+      return { value: value ? value : Value.noFilter() };
     },
     onChangeGranularity: (value) => {
+      console.log('g', value);
       return { value: value || Value.noFilter() };
     },
   },
