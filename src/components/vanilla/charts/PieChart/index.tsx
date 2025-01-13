@@ -55,11 +55,10 @@ export default (props: Props) => {
   const { results, title, enableDownloadAsCSV, maxSegments, metric, slice, onClick } = props;
 
   // Get theme for use in component
-  const overrides: any = useOverrideConfig();
+  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
   const { theme } = overrides;
 
   // Set ChartJS defaults
-  const { chartColors, dateFormats } = theme;
   setChartJSDefaults(theme, 'pie');
 
   // Add the theme to props
