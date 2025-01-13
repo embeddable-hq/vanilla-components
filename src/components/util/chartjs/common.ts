@@ -1,7 +1,7 @@
 import { DataResponse, Measure } from '@embeddable.com/core';
 import { Chart as ChartJS, Scale, CoreScaleOptions } from 'chart.js';
 import { containsFractions } from '../dataUtils';
-import { Theme } from '../../../defaulttheme';
+import { Theme, ChartType } from '../../../defaulttheme';
 
 export function setYAxisStepSize(
   axis: Scale<CoreScaleOptions>,
@@ -19,10 +19,22 @@ export function setYAxisStepSize(
   }
 }
 
-export const setChartJSDefaults = (theme: Theme) => {
+export const setChartJSDefaults = (theme: Theme, chartType?: ChartType) => {
+  if (!theme || !theme.charts) {
+    return;
+  }
+
+  // Some charts vary, so we check for chart type and if it exists, set some values
+  let fontSize = theme.charts.font.size;
+  if (chartType && theme.charts[chartType]) {
+    if (theme.charts[chartType].font?.size) {
+      fontSize = theme.charts[chartType].font.size;
+    }
+  }
   // We don't need to return Chartjs defaults as we are mutating the global object
-  ChartJS.defaults.font.size = theme.chartFont.size;
-  ChartJS.defaults.color = theme.chartFont.color;
-  ChartJS.defaults.font.family = theme.chartFont.family;
-  ChartJS.defaults.plugins.tooltip.enabled = theme.chartOptions.toolTipEnabled;
+  ChartJS.defaults.font.size = fontSize;
+  ChartJS.defaults.color = theme.charts.font.color;
+  ChartJS.defaults.font.family = theme.charts.font.family;
+  ChartJS.defaults.plugins.tooltip.enabled = theme.charts.options.toolTipEnabled;
+  ChartJS.defaults.plugins.tooltip.usePointStyle = true;
 };

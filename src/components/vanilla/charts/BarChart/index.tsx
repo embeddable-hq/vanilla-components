@@ -4,6 +4,7 @@ import { useOverrideConfig } from '@embeddable.com/react';
 import useTimeseries from '../../../hooks/useTimeseries';
 import Container from '../../Container';
 import BarChart from './components/BarChart';
+import defaultTheme, { Theme } from '../../../../defaulttheme';
 
 type Props = {
   clientContext?: any;
@@ -28,8 +29,10 @@ type Props = {
   yAxisTitle?: string;
   showSecondYAxis?: boolean;
   secondAxisTitle?: string;
-  theme?: any;
+  theme?: Theme;
 };
+
+type PropsWithRequiredtheme = Props & { theme: Theme };
 
 export default (props: Props): React.JSX.Element => {
   // Get theme for use in component
@@ -41,9 +44,9 @@ export default (props: Props): React.JSX.Element => {
   const { results, isTSBarChart } = props;
 
   // Update props with theme and filled gaps
-  const updatedProps: Props = {
+  const updatedProps: PropsWithRequiredtheme = {
     ...props,
-    theme,
+    theme: theme || defaultTheme,
     results: isTSBarChart
       ? { ...props.results, data: results?.data?.reduce(fillGaps, []) }
       : props.results,
