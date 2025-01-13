@@ -1,13 +1,13 @@
 import { DataResponse, DimensionOrMeasure, OrderBy, OrderDirection } from '@embeddable.com/core';
-import { useEmbeddableState } from '@embeddable.com/react';
+import { useEmbeddableState, useOverrideConfig } from '@embeddable.com/react';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { SortDirection } from '../../../../enums/SortDirection';
-import { REGULAR_FONT_SIZE } from '../../../constants';
 import formatValue from '../../../util/format';
 import Container from '../../Container';
 import Pagination from './components/Pagination';
 import TableHead from './components/TableHead';
+import defaultTheme, { Theme } from '../../../../defaulttheme';
 
 export type Props = {
   limit?: number;
@@ -25,6 +25,14 @@ export default (props: Props) => {
   const { columns, results } = props;
   const [maxRowsFit, setMaxRowFit] = useState(0);
   const [resizing, setResizing] = useState(false);
+
+  // Get theme for use in component
+  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
+  let { theme } = overrides;
+
+  if (!theme) {
+    theme = defaultTheme;
+  }
 
   const [meta, setMeta] = useEmbeddableState({
     page: 0,
@@ -88,7 +96,7 @@ export default (props: Props) => {
         {!!meta && !(props.results?.isLoading && !props.results?.data?.length) && (
           <table
             className="overflow-visible w-full"
-            style={{ fontSize: props.fontSize ? `${props.fontSize}px` : REGULAR_FONT_SIZE }}
+            style={{ fontSize: props.fontSize ? `${props.fontSize}px` : theme.charts.font.size }}
           >
             <TableHead
               columns={columns}
@@ -110,7 +118,7 @@ export default (props: Props) => {
                       key={index}
                       className="text-dark p-3 truncate"
                       style={{
-                        fontSize: props.fontSize ? `${props.fontSize}px` : REGULAR_FONT_SIZE,
+                        fontSize: props.fontSize ? `${props.fontSize}px` : theme.charts.font.size,
                         maxWidth: props.minColumnWidth ? `${props.minColumnWidth * 1.2}px` : 'auto',
                       }}
                     >

@@ -36,7 +36,7 @@ type PropsWithRequiredtheme = Props & { theme: Theme };
 
 export default (props: Props): React.JSX.Element => {
   // Get theme for use in component
-  const overrides: any = useOverrideConfig();
+  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
   const { theme } = overrides;
 
   //add missing dates to time-series barcharts
