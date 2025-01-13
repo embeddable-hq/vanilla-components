@@ -78,6 +78,11 @@ const defaultTheme: Theme = {
       usePointStyle: true,
     },
     bar: {},
+    bubble: {
+      font: {
+        size: 12,
+      },
+    },
     pie: {
       font: {
         size: 12,

@@ -1,9 +1,10 @@
 import { DataResponse, Dimension, Granularity, Measure } from '@embeddable.com/core';
-import { useEmbeddableState } from '@embeddable.com/react';
+import { useEmbeddableState, useOverrideConfig } from '@embeddable.com/react';
 import React, { useEffect, useState } from 'react';
 
 import Container from '../../Container';
 import BarChart from '../BarChart/components/BarChart';
+import defaultTheme, { Theme } from '../../../../defaulttheme';
 
 export type Props = {
   description?: string;
@@ -19,6 +20,7 @@ export type Props = {
   title?: string;
   xAxis: Dimension;
   xAxisOptions?: Dimension[];
+  theme?: Theme;
 };
 
 export default (props: Props) => {
@@ -29,6 +31,10 @@ export default (props: Props) => {
     { dimension: Dimension | null },
     (d: { dimension: Dimension | null }) => void,
   ];
+
+  // Get theme for use in component
+  const overrides: any = useOverrideConfig();
+  const { theme } = overrides;
 
   useEffect(() => {
     setValue(props.xAxis.name);
@@ -45,7 +51,11 @@ export default (props: Props) => {
   };
 
   const xAxis = xAxisOptions.find((item) => value === item.name);
-  const updatedProps = { ...props, xAxis: xAxis ? xAxis : props.xAxis };
+  const updatedProps = {
+    ...props,
+    theme: theme || defaultTheme,
+    xAxis: xAxis ? xAxis : props.xAxis,
+  };
 
   return (
     <Container {...props} className="overflow-y-hidden">
