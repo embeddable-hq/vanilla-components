@@ -83,6 +83,11 @@ const defaultTheme: Theme = {
         size: 12,
       },
     },
+    line: {
+      font: {
+        size: 12,
+      },
+    },
     pie: {
       font: {
         size: 12,
