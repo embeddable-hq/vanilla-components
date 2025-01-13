@@ -57,7 +57,6 @@ type Props = {
 };
 
 type PropsWithRequiredTheme = Props & { theme: Theme };
-
 type Record = { [p: string]: any };
 
 export default (props: Props) => {
@@ -93,10 +92,13 @@ function chartOptions(
   updatedData: Record[] | undefined,
   bubbleData: ChartData<'bubble'>,
 ): ChartOptions<'bubble'> {
-  const { theme } = props;
+  let { theme } = props;
+  if (!theme) {
+    theme = defaultTheme;
+  }
 
   // Set ChartJS defaults
-  setChartJSDefaults(theme ? theme : defaultTheme, 'bubble');
+  setChartJSDefaults(theme, 'bubble');
 
   const data = bubbleData.datasets[0].data;
 
@@ -144,7 +146,7 @@ function chartOptions(
         time: {
           round: props.granularity,
           isoWeekday: true,
-          displayFormats: theme ? theme.dateFormats : defaultTheme.dateFormats,
+          displayFormats: theme.dateFormats,
           unit: props.granularity,
         },
         grid: {
@@ -250,9 +252,7 @@ function chartData(
       {
         label: props.yAxis.title,
         data: ndata,
-        backgroundColor: theme
-          ? hexToRgb(theme.charts.colors[0], 0.8)
-          : hexToRgb(defaultTheme.charts.colors[0], 0.8),
+        backgroundColor: hexToRgb(theme.charts.colors[0], 0.8),
       },
     ],
   };

@@ -20,7 +20,7 @@ import formatValue from '../../../util/format';
 import Container from '../../Container';
 import { useOverrideConfig } from '@embeddable.com/react';
 import { setChartJSDefaults } from '../../../util/chartjs/common';
-import { Theme } from '../../../../defaulttheme';
+import defaultTheme, { Theme } from '../../../../defaulttheme';
 
 ChartJS.register(
   ChartDataLabels,
@@ -46,9 +46,9 @@ type Props = {
   displayAsPercentage?: boolean;
   enableDownloadAsCSV?: boolean;
   onClick: (args: { slice: string | null; metric: string | null }) => void;
-  theme?: Theme;
 };
 
+type PropsWithRequiredTheme = Props & { theme: Theme };
 type Record = { [p: string]: string };
 
 export default (props: Props) => {
@@ -56,13 +56,16 @@ export default (props: Props) => {
 
   // Get theme for use in component
   const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  const { theme } = overrides;
+  let { theme } = overrides;
+  if (!theme) {
+    theme = defaultTheme;
+  }
 
   // Set ChartJS defaults
   setChartJSDefaults(theme, 'pie');
 
   // Add the theme to props
-  const updatedProps: Props = {
+  const updatedProps: PropsWithRequiredTheme = {
     ...props,
     theme,
   };
@@ -187,8 +190,8 @@ function mergeLongTail({ results, slice, metric, maxSegments }: Props) {
   return newData;
 }
 
-function chartData(props: Props) {
-  const { maxSegments, results, metric, slice, displayAsPercentage } = props;
+function chartData(props: PropsWithRequiredTheme) {
+  const { maxSegments, results, metric, slice, displayAsPercentage, theme } = props;
   const labelsExceedMaxSegments = maxSegments && maxSegments < (results?.data?.length || 0);
   const newData = labelsExceedMaxSegments ? mergeLongTail(props) : results.data;
 
@@ -210,7 +213,7 @@ function chartData(props: Props) {
     datasets: [
       {
         data: counts,
-        backgroundColor: props.theme ? props.theme.charts.colors : [],
+        backgroundColor: theme.charts.colors,
         borderColor: '#fff',
         borderWeight: 5,
       },
