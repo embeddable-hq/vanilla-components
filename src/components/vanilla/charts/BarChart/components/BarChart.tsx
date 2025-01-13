@@ -18,6 +18,7 @@ import { Chart } from 'react-chartjs-2';
 import formatValue from '../../../../util/format';
 import getBarChartOptions from '../../../../util/getBarChartOptions';
 import { setChartJSDefaults } from '../../../../util/chartjs/common';
+import { Theme } from '../../../../../defaulttheme';
 
 ChartJS.register(
   CategoryScale,
@@ -52,7 +53,7 @@ type Props = {
   granularity?: Granularity;
   showSecondYAxis?: boolean;
   secondAxisTitle?: string;
-  theme?: any;
+  theme: Theme;
 };
 
 export default function BarChart({ ...props }: Props): React.JSX.Element {
@@ -68,7 +69,10 @@ export default function BarChart({ ...props }: Props): React.JSX.Element {
 
 function chartData(props: Props): ChartData<'bar' | 'line'> {
   const { results, xAxis, metrics, granularity, lineMetrics, showSecondYAxis, theme } = props;
-  const { chartColors, dateFormats } = theme;
+  const {
+    charts: { colors },
+    dateFormats,
+  } = theme;
   setChartJSDefaults(theme);
 
   let dateFormat: string | undefined;
@@ -97,7 +101,7 @@ function chartData(props: Props): ChartData<'bar' | 'line'> {
       borderRadius: 4,
       label: metric.title,
       data: results?.data?.map((d) => parseFloat(d[metric.name] || 0)) || [],
-      backgroundColor: chartColors[i % chartColors.length],
+      backgroundColor: colors[i % colors.length],
       order: 1,
     })) || [];
 
@@ -106,8 +110,8 @@ function chartData(props: Props): ChartData<'bar' | 'line'> {
     lineMetrics?.map((metric, i) => ({
       label: metric.title,
       data: results?.data?.map((d) => parseFloat(d[metric.name] || 0)) || [],
-      backgroundColor: chartColors[metrics.length + (i % chartColors.length)],
-      borderColor: chartColors[metrics.length + (i % chartColors.length)],
+      backgroundColor: colors[metrics.length + (i % colors.length)],
+      borderColor: colors[metrics.length + (i % colors.length)],
       cubicInterpolationMode: 'monotone' as const,
       pointRadius: 2,
       pointHoverRadius: 3,

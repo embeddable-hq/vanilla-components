@@ -16,9 +16,11 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React, { useRef, useState } from 'react';
 import { Pie, getElementAtEvent } from 'react-chartjs-2';
 
-import { COLORS, EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import formatValue from '../../../util/format';
 import Container from '../../Container';
+import { useOverrideConfig } from '@embeddable.com/react';
+import { setChartJSDefaults } from '../../../util/chartjs/common';
+import { Theme } from '../../../../defaulttheme';
 
 ChartJS.register(
   ChartDataLabels,
@@ -32,12 +34,6 @@ ChartJS.register(
   Legend,
 );
 
-ChartJS.defaults.font.size = parseInt(SMALL_FONT_SIZE);
-ChartJS.defaults.color = LIGHT_FONT;
-ChartJS.defaults.font.family = EMB_FONT;
-ChartJS.defaults.plugins.tooltip.enabled = true;
-ChartJS.defaults.plugins.tooltip.usePointStyle = true;
-
 type Props = {
   results: DataResponse;
   title: string;
@@ -50,12 +46,27 @@ type Props = {
   displayAsPercentage?: boolean;
   enableDownloadAsCSV?: boolean;
   onClick: (args: { slice: string | null; metric: string | null }) => void;
+  theme?: Theme;
 };
 
 type Record = { [p: string]: string };
 
 export default (props: Props) => {
   const { results, title, enableDownloadAsCSV, maxSegments, metric, slice, onClick } = props;
+
+  // Get theme for use in component
+  const overrides: any = useOverrideConfig();
+  const { theme } = overrides;
+
+  // Set ChartJS defaults
+  const { chartColors, dateFormats } = theme;
+  setChartJSDefaults(theme, 'pie');
+
+  // Add the theme to props
+  const updatedProps: Props = {
+    ...props,
+    theme,
+  };
 
   const [clickedIndex, setClickedIndex] = useState<number | null>(null);
 
@@ -94,8 +105,8 @@ export default (props: Props) => {
     <Container {...props} className="overflow-y-hidden">
       <Pie
         height="100%"
-        options={chartOptions(props)}
-        data={chartData(props)}
+        options={chartOptions(updatedProps)}
+        data={chartData(updatedProps)}
         ref={chartRef}
         onClick={handleClick}
       />
@@ -200,7 +211,7 @@ function chartData(props: Props) {
     datasets: [
       {
         data: counts,
-        backgroundColor: COLORS,
+        backgroundColor: props.theme ? props.theme.charts.colors : [],
         borderColor: '#fff',
         borderWeight: 5,
       },
