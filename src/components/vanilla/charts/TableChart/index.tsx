@@ -19,7 +19,12 @@ export type Props = {
   minColumnWidth?: number;
 };
 
-type Meta = { page: number; maxRowsFit: number; sort: OrderBy[] };
+type Meta = {
+  page: number;
+  maxRowsFit: number;
+  sort: OrderBy[];
+  prevVariableValues: Record<string, any>;
+};
 
 export default (props: Props) => {
   const { columns, results } = props;
@@ -30,6 +35,7 @@ export default (props: Props) => {
     page: 0,
     maxRowsFit: 0,
     sort: props.defaultSort,
+    prevVariableValues: {},
   }) as [Meta, (f: (m: Meta) => Meta) => void];
 
   const calculateMaxRowFix = useCallback(
