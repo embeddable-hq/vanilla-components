@@ -1,8 +1,8 @@
 import { DataResponse, Dataset, Dimension, Granularity, Measure } from '@embeddable.com/core';
 import { ChartData } from 'chart.js';
 
-import { COLORS, DATE_DISPLAY_FORMATS } from '../constants';
 import formatValue from '../util/format';
+import { Theme } from '../../defaulttheme';
 
 type DatasetsMeta = {
   [key: string]: boolean | string | number;
@@ -32,6 +32,7 @@ export type Props = {
   isGroupedBar?: boolean;
   stackBars?: boolean;
 };
+type PropsWithRequiredTheme = Props & { theme: Theme };
 
 type Options = {
   chartType?: string;
@@ -42,7 +43,7 @@ type LabelRef = {
 };
 
 export default function getStackedChartData(
-  props: Props,
+  props: PropsWithRequiredTheme,
   datasetsMeta: DatasetsMeta,
   options?: Options,
 ): ChartData<'line' | 'bar', (number | null)[], unknown> {
@@ -54,9 +55,10 @@ export default function getStackedChartData(
     results,
     segment,
     showTotals,
+    theme,
     totals,
     useCustomDateFormat,
-    xAxis
+    xAxis,
   } = props;
   const labels = [...new Set(results?.data?.map((d: Record) => d[xAxis?.name || '']))] as string[];
   const segments = segmentsToInclude();
@@ -93,15 +95,15 @@ export default function getStackedChartData(
   });
 
   const dateFormat =
-    useCustomDateFormat && granularity ? DATE_DISPLAY_FORMATS[granularity] : undefined;
+    useCustomDateFormat && granularity ? theme.dateFormats[granularity] : undefined;
 
   return {
     labels: labels.map((l) => formatValue(l, { meta: xAxis?.meta, dateFormat: dateFormat })),
     datasets: segments.map((s, i) => {
       const dataset = {
         ...datasetsMeta,
-        backgroundColor: COLORS[i % COLORS.length],
-        borderColor: COLORS[i % COLORS.length],
+        backgroundColor: theme.charts.colors[i % theme.charts.colors.length],
+        borderColor: theme.charts.colors[i % theme.charts.colors.length],
         label: s, // this is actually segment name, not label, but chart.js wants "label" here
         data: labels.map((label) => {
           const segmentValue = resultMap[label][s];

@@ -10,20 +10,24 @@ import {
   PointElement,
   TimeScale,
   Title,
-  Tooltip
+  Tooltip,
 } from 'chart.js';
 import 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React, { useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
-import { EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE, DATE_DISPLAY_FORMATS } from '../../../constants';
 import useTimeseries from '../../../hooks/useTimeseries';
 import formatValue from '../../../util/format';
-import formatDateTooltips from '../../../util/formatDateTooltips'
-import getStackedChartData, { Props as GeneralStackedChartDataProps } from '../../../util/getStackedChartData';
+import formatDateTooltips from '../../../util/formatDateTooltips';
+import getStackedChartData, {
+  Props as GeneralStackedChartDataProps,
+} from '../../../util/getStackedChartData';
 import Container from '../../Container';
 import { setYAxisStepSize } from '../../../util/chartjs/common';
+import { useOverrideConfig } from '@embeddable.com/react';
+import { setChartJSDefaults } from '../../../util/chartjs/common';
+import defaultTheme, { Theme } from '../../../../defaulttheme';
 
 ChartJS.register(
   CategoryScale,
@@ -35,26 +39,38 @@ ChartJS.register(
   Legend,
   Filler,
   ChartDataLabels,
-  TimeScale
+  TimeScale,
 );
-
-ChartJS.defaults.font.size = parseInt(SMALL_FONT_SIZE);
-ChartJS.defaults.color = LIGHT_FONT;
-ChartJS.defaults.font.family = EMB_FONT;
-ChartJS.defaults.plugins.tooltip.enabled = true;
 
 type Props = GeneralStackedChartDataProps & {
   isMultiDimensionLine?: boolean;
-}
+};
+
+type PropsWithRequiredTheme = Props & { theme: Theme };
 
 export default (props: Props) => {
-
   const { isMultiDimensionLine = false } = props;
 
-  const { fillGaps } = useTimeseries(props, 'desc');
+  // Get theme for use in component
+  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
+  let { theme } = overrides;
+  if (!theme) {
+    theme = defaultTheme;
+  }
+
+  // Set ChartJS defaults
+  setChartJSDefaults(theme, 'pie');
+
+  // Add the theme to props
+  const updatedProps: PropsWithRequiredTheme = {
+    ...props,
+    theme,
+  };
+
+  const { fillGaps } = useTimeseries(updatedProps, 'desc');
 
   const chartData = useMemo(() => {
-    const data = props?.results?.data?.reduce(fillGaps, []);
+    const data = updatedProps?.results?.data?.reduce(fillGaps, []);
 
     const datasetsMeta = {
       fill: !isMultiDimensionLine,
@@ -66,16 +82,16 @@ export default (props: Props) => {
 
     return getStackedChartData(
       {
-        ...props,
+        ...updatedProps,
         results: {
-          ...props.results,
-          data
-        }
+          ...updatedProps.results,
+          data,
+        },
       },
       datasetsMeta,
-      { chartType: 'stackedAreaChart' }
+      { chartType: 'stackedAreaChart' },
     ) as ChartData<'line', number[], unknown>;
-  }, [props, fillGaps]);
+  }, [updatedProps, fillGaps]);
 
   const chartOptions: ChartOptions<'line'> = useMemo(() => {
     return {
@@ -83,71 +99,68 @@ export default (props: Props) => {
       maintainAspectRatio: false,
       interaction: {
         mode: 'index',
-        intersect: false
+        intersect: false,
       },
       layout: {
         padding: {
           left: 0,
           right: 0,
-          top: props.showLabels ? 20 : 0, // Added so the highest data labels fits
-          bottom: 0
-        }
+          top: updatedProps.showLabels ? 20 : 0, // Added so the highest data labels fits
+          bottom: 0,
+        },
       },
       scales: {
         y: {
           stacked: !isMultiDimensionLine,
-          min: props.yAxisMin,
-          max: props.displayAsPercentage ? 100 : undefined,
+          min: updatedProps.yAxisMin,
+          max: updatedProps.displayAsPercentage ? 100 : undefined,
           grace: '0%', // Add percent to add numbers on the y-axis above and below the max and min values
           grid: {
-            display: false
+            display: false,
           },
           ticks: {
             callback: function (value) {
-              return props.displayAsPercentage 
-                ? `${value}%` 
-                : formatValue(
-                    value.toString(), 
-                    { type: 'number' }
-                );
-            }
+              return updatedProps.displayAsPercentage
+                ? `${value}%`
+                : formatValue(value.toString(), { type: 'number' });
+            },
           },
           title: {
-            display: !!props.yAxisTitle,
-            text: props.yAxisTitle
+            display: !!updatedProps.yAxisTitle,
+            text: updatedProps.yAxisTitle,
           },
-          afterDataLimits: function(axis) {
-            setYAxisStepSize(axis, props.results, [props.metric], props.dps)
+          afterDataLimits: function (axis) {
+            setYAxisStepSize(axis, updatedProps.results, [updatedProps.metric], updatedProps.dps);
           },
         },
         x: {
           grid: {
-            display: false
+            display: false,
           },
           title: {
-            display: !!props.xAxisTitle,
-            text: props.xAxisTitle
+            display: !!updatedProps.xAxisTitle,
+            text: updatedProps.xAxisTitle,
           },
           type: 'time',
           time: {
-            round: props.granularity,
-            displayFormats: DATE_DISPLAY_FORMATS,
-            unit: props.granularity
-          }
-        }
+            round: updatedProps.granularity,
+            displayFormats: theme.dateFormats,
+            unit: updatedProps.granularity,
+          },
+        },
       },
       animation: {
         duration: 400,
-        easing: 'linear'
+        easing: 'linear',
       },
       plugins: {
         legend: {
-          display: props.showLegend,
+          display: updatedProps.showLegend,
           position: 'bottom',
           labels: {
             usePointStyle: true,
-            boxHeight: 8
-          }
+            boxHeight: 8,
+          },
         },
         tooltip: {
           //https://www.chartjs.org/docs/latest/configuration/tooltip.html
@@ -157,41 +170,41 @@ export default (props: Props) => {
               if (context.parsed.y !== null) {
                 label += `: ${formatValue(`${context.parsed['y']}`, {
                   type: 'number',
-                  dps: props.dps,
-                  meta: props.displayAsPercentage ? undefined : props.metric.meta
+                  dps: updatedProps.dps,
+                  meta: updatedProps.displayAsPercentage ? undefined : updatedProps.metric.meta,
                 })}`;
-                if (props.displayAsPercentage) {
+                if (updatedProps.displayAsPercentage) {
                   label += '%';
                 }
               }
               return label;
             },
-            title: (lines: any[]) => formatDateTooltips(lines, props.granularity || 'day')
-          }
+            title: (lines: any[]) => formatDateTooltips(lines, updatedProps.granularity || 'day'),
+          },
         },
         datalabels: {
           align: 'top',
-          display: props.showLabels ? 'auto' : false,
+          display: updatedProps.showLabels ? 'auto' : false,
           formatter: (v) => {
-            let val = v ? formatValue(v, { 
-              type: 'number', 
-              dps: props.dps,
-              meta: props.displayAsPercentage ? undefined : props.metric.meta
-            }) : null;
-            if (props.displayAsPercentage) {
+            let val = v
+              ? formatValue(v, {
+                  type: 'number',
+                  dps: updatedProps.dps,
+                  meta: updatedProps.displayAsPercentage ? undefined : props.metric.meta,
+                })
+              : null;
+            if (updatedProps.displayAsPercentage) {
               val += '%';
             }
             return val;
-          }
-        }
-      }
+          },
+        },
+      },
     };
-  }, [props]);
+  }, [updatedProps, theme]);
 
   return (
-    <Container
-      {...props}
-      className="overflow-y-hidden">
+    <Container {...updatedProps} className="overflow-y-hidden">
       <Line height="100%" options={chartOptions} data={chartData} />
     </Container>
   );
