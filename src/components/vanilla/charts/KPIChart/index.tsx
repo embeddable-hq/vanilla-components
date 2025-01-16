@@ -1,10 +1,11 @@
 import { DataResponse, Dimension, Measure, TimeRange } from '@embeddable.com/core';
 import React, { useMemo } from 'react';
 
-import { LARGE_FONT_SIZE, LIGHTEST_FONT, REGULAR_FONT_SIZE } from '../../../constants';
 import formatValue from '../../../util/format';
 import Container from '../../Container';
 import { WarningIcon } from '../../icons';
+import defaultTheme, { Theme } from '../../../../defaulttheme';
+import { useOverrideConfig } from '@embeddable.com/react';
 
 type Props = {
   results: DataResponse;
@@ -35,6 +36,13 @@ export default (props: Props) => {
     showPrevPeriodLabel,
   } = props;
 
+  // Get theme for use in component
+  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
+  let { theme } = overrides;
+  if (!theme) {
+    theme = defaultTheme;
+  }
+
   const { n, percentage } = useMemo(() => {
     if (dimension || !metric?.name || !results?.data?.length) {
       return { percentage: null, n: null }; // Skip calculations
@@ -53,8 +61,8 @@ export default (props: Props) => {
     };
   }, [results, prevResults, metric, dps, dimension]);
 
-  const fontSize = props.fontSize || parseInt(LARGE_FONT_SIZE);
-  const metaFontSize = Math.max(fontSize / 3, parseInt(REGULAR_FONT_SIZE));
+  const fontSize = props.fontSize || theme.charts.kpi.font.size;
+  const metaFontSize = Math.max(fontSize / 3, theme.charts.font.size);
 
   if (results?.error) {
     return (
@@ -80,14 +88,14 @@ export default (props: Props) => {
                 className={`font-normal`}
                 style={{
                   fontSize: `${metaFontSize}px`,
-                  color: `${LIGHTEST_FONT}`,
+                  color: `${theme.charts.font.color}`,
                 }}
               >
-                {`${metric.title}: ${formatValue(`${results?.data?.[0]?.[metric.name]}`, { 
-                    type: 'number', 
-                    dps: dps,
-                    meta: metric?.meta 
-                  })}
+                {`${metric.title}: ${formatValue(`${results?.data?.[0]?.[metric.name]}`, {
+                  type: 'number',
+                  dps: dps,
+                  meta: metric?.meta,
+                })}
                 `}
               </p>
             )}
@@ -116,7 +124,7 @@ export default (props: Props) => {
                 {showPrevPeriodLabel &&
                   prevTimeFilter?.relativeTimeString &&
                   prevTimeFilter.relativeTimeString.length > 0 && (
-                    <span style={{ color: `${LIGHTEST_FONT}` }}>
+                    <span style={{ color: `${theme.charts.font.color}` }}>
                       &nbsp;
                       {`vs ${prevTimeFilter.relativeTimeString}`}
                     </span>
