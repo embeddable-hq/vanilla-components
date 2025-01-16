@@ -1,0 +1,147 @@
+cubes:
+- name: venue_dataform_ecommerce
+  data_source: default
+  sql: >
+    select
+      event_date
+      ,user_pseudo_id
+      ,event_name
+      ,platform
+      ,device.category as device_category
+      ,device.web_info.hostname as hostname
+      ,geo.country as geo_country
+      ,geo.city as geo_city
+      ,event_params_custom.user_connectivity
+      ,event_params_custom.component_type
+      ,event_params_custom.content_category
+      ,event_params_custom.page_type
+      ,event_params_custom.venue_id
+      ,event_params_custom.organisation_id
+      ,user_properties.user_age
+      ,user_properties.user_gender
+      ,ecommerce.transaction_id
+      ,items
+    from `smartify-cc94e.superform_outputs_151371783.ga4_events`
+    where event_date >= '2024-01-01'
+      and stream_id in ("1047860117","1047860114","1913717213","2817285551")
+      and items is not null
+  
+  dimensions:
+    - name: event_date
+      type: time
+      sql: timestamp(event_date)
+
+    - name: device_platform
+      type: string
+      sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'CWA' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+
+    - name: user_connectivity
+      type: string
+      sql: case when (user_connectivity = '' or user_connectivity is null) then 'Unknown' when user_connectivity = 'Cellular' then 'Cellular' else 'Wi-FI' end
+
+    - name: country
+      type: string
+      sql: if(geo_country = "", "Unknown", geo_country)
+
+    - name: city
+      type: string
+      sql: if(geo_city = "", "Unknown", geo_city)
+
+    - name: user_gender
+      type: string
+      sql: case when user_gender in ('Male', 'MALE', 'Man', 'Mand', 'Masculino', '男性', 'זכר', 'Männlich', 'Mann', 'Homme', 'Hombre') then 'Male' when user_gender in ('Female', 'Woman', 'Femme', 'Mujer', 'Vrouw', 'Weiblich', 'Frau', 'Feminino', '女性', 'Donna', 'Kvinde') then 'Female' when user_gender in ('Unspecified', 'Non spécifié', 'Sin especificar') then 'Unspecified' when user_gender in ('Other', 'Autre') then 'Other' else 'Unknown' end
+
+    - name: user_age_range
+      type: string
+      sql: case when cast(user_age as int) < 18 then "- 18" when cast(user_age as int) >= 18 and cast(user_age as int) < 25 then "18 - 24" when cast(user_age as int) >= 25 and cast(user_age as int) < 35 then "25 - 34" when cast(user_age as int) >= 35 and cast(user_age as int) < 45 then "35 - 44" when cast(user_age as int) >= 45 and cast(user_age as int) < 55 then "45 - 54" when cast(user_age as int) >= 55 and cast(user_age as int) < 65 then "55 - 64" when cast(user_age as int) >= 65 and cast(user_age as int) < 71 then "65 - 70" when cast(user_age as int) >= 71 then "71+" else 'Unknown' end
+
+    - name: organisation_id
+      type: string
+      sql: organisation_id
+      primaryKey: true
+      shown: true
+    
+    - name: venue_id
+      type: string
+      sql: venue_id
+      primaryKey: true
+      shown: true
+
+    - name: ecomm_event
+      type: string
+      sql: case when event_name = "view_item_list" then "Product Impressions" when event_name = "view_item" then "Product Views" when event_name = "add_to_cart" then "Add to Cart" when event_name = "begin_checkout" then "Begin Checkout" when event_name = "purchase" then "Purchases" else "Unknown" end
+    
+    - name: item_brand
+      type: string
+      sql: "`items`[SAFE_OFFSET(0)].item_brand"
+    
+    - name: item_id
+      type: string
+      sql: "`items`[SAFE_OFFSET(0)].item_id"
+    
+    - name: item_category
+      type: string
+      sql: if(`items`[SAFE_OFFSET(0)].item_category = "", "(not set)", `items`[SAFE_OFFSET(0)].item_category)
+    
+    - name: item_name
+      type: string
+      sql: "`items`[SAFE_OFFSET(0)].item_name"
+
+  measures:
+    - name: total_events
+      type: count
+      sql: event_date
+
+    - name: transactions
+      type: count_distinct
+      sql: transaction_id
+    
+    - name: purchase
+      type: sum
+      sql: case when event_name = "purchase" then 1 else 0 end
+
+    - name: begin_checkout
+      type: sum
+      sql: case when event_name = "begin_checkout" then 1 else 0 end
+
+    - name: add_to_cart
+      type: sum
+      sql: case when event_name = "add_to_cart" then 1 else 0 end
+
+    - name: item_view
+      type: sum
+      sql: case when event_name = "view_item" then 1 else 0 end
+
+    - name: item_impression
+      type: sum
+      sql: case when event_name = "view_item_list" then 1 else 0 end
+
+    - name: checkout_to_purchase
+      type: number
+      sql: CASE WHEN {begin_checkout} = 0 THEN 0 ELSE ROUND(({purchase} / NULLIF({begin_checkout}, 0) * 100), 2) END
+      meta:
+        suffix: " %"
+
+    - name: cart_to_purchase
+      type: number
+      sql: CASE WHEN {add_to_cart} = 0 THEN 0 ELSE ROUND(({purchase} / NULLIF({add_to_cart}, 0) * 100), 2) END
+      meta:
+        suffix: " %"
+
+    - name: view_to_purchase
+      type: number
+      sql: CASE WHEN {item_view} = 0 THEN 0 ELSE ROUND(({purchase} / NULLIF({item_view}, 0) * 100), 2) END
+      meta:
+        suffix: " %"
+
+    - name: view_to_cart
+      type: number
+      sql: CASE WHEN {item_view} = 0 THEN 0 ELSE ROUND(({add_to_cart} / NULLIF({item_view}, 0) * 100), 2) END
+      meta:
+        suffix: " %"
+
+    - name: impression_to_view
+      type: number
+      sql: CASE WHEN {item_impression} = 0 THEN 0 ELSE ROUND(({item_view} / NULLIF({item_impression}, 0) * 100), 2) END
+      meta:
+        suffix: " %"

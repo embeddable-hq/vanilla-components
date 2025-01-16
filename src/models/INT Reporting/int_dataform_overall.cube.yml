@@ -1,0 +1,155 @@
+cubes:
+- name: int_dataform_overall
+  data_source: default
+  sql: >
+    select
+      event_date
+      ,user_pseudo_id
+      ,event_name
+      ,is_active_user
+      ,session_id
+      ,event_params.engagement_time_msec
+      ,event_params.session_engaged
+      ,platform
+      ,device.category as device_category
+      ,device.web_info.hostname as hostname
+      ,event_params_custom.user_connectivity
+      ,device.language as device_language
+      ,iso_table.language_name as user_device_language
+      ,geo.country as geo_country
+      ,geo.city as geo_city
+      ,user_properties.user_age
+      ,user_properties.user_gender
+      ,ifnull(user_properties.user_logged, "false") as user_logged
+      ,event_params_custom.component_type
+      ,event_params_custom.content_category
+      ,event_params_custom.page_type
+      ,event_params_custom.venue_id
+      ,event_params_custom.zone_id
+      ,event_params_custom.zone_type
+      ,event_params_custom.organisation_id
+      ,event_params_custom.object_id
+      ,event_params_custom.tour_id
+      ,event_params_custom.track_id
+      ,event_params_custom.exhibition_id
+      ,event_params_custom.track_listen_time
+    from `smartify-cc94e.superform_outputs_151371783.ga4_events`
+    left join `smartify-cc94e.smartify_lookup_tables.device_language_region` as iso_table on device_language = device.language
+    where event_date >= "2024-01-01"
+    and stream_id in ("1047860117","1047860114","1913717213","2817285551")
+
+  dimensions:
+    - name: datetime
+      type: time 
+      sql: timestamp(event_date)
+
+    - name: device_platform
+      type: string
+      sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = "WEB" and contains_substr(hostname, "smartify.org") and hostname not in ("app.smartify.org","shop.smartify.org","ar.smartify.org","3d.smartify.org")) then "CWA" when (platform = "WEB" and device_category in ("tablet","desktop")) then "Desktop" else 'Webapp' end
+
+    - name: user_connectivity
+      type: string
+      sql: case when (user_connectivity = '' or user_connectivity is null) then 'Unknown' when user_connectivity = 'Cellular' then 'Cellular' else 'Wi-FI' end
+    
+    - name: country
+      type: string
+      sql: if(geo_country = "", "Unknown", geo_country)
+
+    - name: city
+      type: string
+      sql: if(geo_city = "", "Unknown", geo_city)
+
+    - name: user_gender
+      type: string
+      sql: case when user_gender in ('Male', 'MALE', 'Man', 'Mand', 'Masculino', '男性', 'זכר', 'Männlich', 'Mann', 'Homme', 'Hombre') then 'Male' when user_gender in ('Female', 'Woman', 'Femme', 'Mujer', 'Vrouw', 'Weiblich', 'Frau', 'Feminino', '女性', 'Donna', 'Kvinde') then 'Female' when user_gender in ('Unspecified', 'Non spécifié', 'Sin especificar') then 'Unspecified' when user_gender in ('Other', 'Autre') then 'Other' else 'Unknown' end
+
+    - name: user_age_range
+      type: string
+      sql: case when cast(user_age as int) < 18 then "- 18" when cast(user_age as int) >= 18 and cast(user_age as int) < 25 then "18 - 24" when cast(user_age as int) >= 25 and cast(user_age as int) < 35 then "25 - 34" when cast(user_age as int) >= 35 and cast(user_age as int) < 45 then "35 - 44" when cast(user_age as int) >= 45 and cast(user_age as int) < 55 then "45 - 54" when cast(user_age as int) >= 55 and cast(user_age as int) < 65 then "55 - 64" when cast(user_age as int) >= 65 and cast(user_age as int) < 71 then "65 - 70" when cast(user_age as int) >= 71 then "71+" else 'Unknown' end
+
+    - name: user_device_language
+      type: string
+      sql: if(user_device_language = "", "Unknown", user_device_language)
+    
+    - name: organisation_id
+      type: string
+      sql: organisation_id
+    
+    - name: venue_id
+      type: string
+      sql: venue_id
+
+    - name: object_id
+      type: string
+      sql: object_id
+    
+    - name: tour_id
+      type: string
+      sql: tour_id
+
+    - name: exhixition_id
+      type: string
+      sql: exhibition_id
+    
+    - name: track_id
+      type: string
+      sql: track_id
+    
+  
+  measures:
+    - name: active_user
+      type: count_distinct
+      sql: case when event_date <= "2023-07-18" and (engagement_time_msec > 0 or session_engaged = "1") then user_pseudo_id when is_active_user = true then user_pseudo_id else null end
+    
+    - name: audience_reach
+      type: count_distinct
+      sql: user_pseudo_id
+    
+    - name: app_downloads
+      type: sum
+      sql: case when event_name = "first_open" then 1 else 0 end
+    
+    - name: object_views
+      type: sum
+      sql: case when event_name in ('page_view', 'screen_view') and contains_substr(page_type, "object_dp") then 1 else 0 end
+    
+    - name: object_scans
+      type: sum
+      sql: case when event_name in ("scan_recognition_hit") then 1 when (event_name = "object_scan" and event_date <= "2023-05-05") then 1 when (event_name = "artwork_recognised" and event_date <= "2022-11-11") then 1 else 0 end
+
+    - name: tour_views
+      type: sum
+      sql: case when event_name in ('page_view', 'screen_view') and contains_substr(page_type, "tour_dp") then 1 else 0 end
+
+    - name: exhibition_views
+      type: sum
+      sql: case when event_name in ('page_view', 'screen_view') and contains_substr(page_type, "exhibition_dp") then 1 else 0 end
+
+    - name: exhibition_clicks
+      type: sum
+      sql: case when event_name in ('click_button') and exhibition_id is not null and content_category = "exhibition" then 1 else 0 end
+
+    - name: exhibition_favorites
+      type: sum
+      sql: case when event_name in ('add_favorite') and exhibition_id is not null then 1 else 0 end
+    
+    - name: track_plays
+      type: sum
+      sql: case when event_name in ('track_start') then 1 else 0 end
+
+    - name: track_complete
+      type: sum
+      sql: case when event_name in ('track_complete') then 1 else 0 end
+    
+    - name: login_users
+      type: count_distinct
+      sql: case when (user_logged = "true" and is_active_user = true) then user_pseudo_id else null end
+
+    - name: crash_sessions
+      type: number
+      sql: count(distinct(case when event_name = 'app_exception' then session_id else null end))/count(dinstinct session_id)
+
+    - name: track_listen_time
+      title: Listen Time
+      type: sum
+      sql: track_listen_time

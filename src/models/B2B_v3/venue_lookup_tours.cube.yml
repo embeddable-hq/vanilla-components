@@ -1,0 +1,44 @@
+cubes:
+- name: venue_lookup_tours
+  data_source: default
+  sql: >
+    select
+      tour_sid
+      ,tour_id_name
+      ,experience_id
+      ,paid_tour
+      ,tour_geo_fanced
+      ,tour_hidden
+      ,tour_status
+    from `smartify-cc94e.smartify_lookup_tables.tour_lookup` 
+
+  dimensions:
+    - name: tour_sid
+      type: string
+      sql: tour_sid
+      primaryKey: true
+      shown: false
+
+    - name: tour_name
+      type: string
+      sql: tour_id_name
+
+    - name: tour_name_24
+      type: string
+      sql: concat(SUBSTR(tour_id_name, 1, 20),'...')
+
+    - name: experience_id
+      type: string
+      sql: experience_id
+    
+    - name: paid_tour
+      type: string
+      sql: if(paid_tour = 1, 'Paid', 'Free')
+    
+    - name: tour_geo_fanced
+      type: string
+      sql: if(tour_geo_fanced = 'true', 'true', 'false')
+    
+    - name: tour_hidden
+      type: string
+      sql: if(tour_hidden = 'true', 'true', 'false')

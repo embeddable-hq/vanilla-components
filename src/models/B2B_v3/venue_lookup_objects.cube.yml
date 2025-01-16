@@ -1,0 +1,41 @@
+cubes:
+- name: venue_lookup_objects
+  data_source: default
+  sql: >
+    SELECT 
+      art_sid
+      ,art_default_name
+      ,artist_sid
+      ,art_category
+      ,venue_sid
+    FROM `smartify-cc94e.smartify_lookup_tables.object_lookup`
+  
+  dimensions:
+    - name: object_sid
+      type: string
+      sql: art_sid
+      primaryKey: true
+      shown: false
+
+    - name: object_name
+      type: string
+      sql: art_default_name
+
+    - name: object_category
+      type: string
+      sql: art_category
+
+    - name: artist_id
+      type: string
+      sql: artist_sid
+      shown: false
+    
+    - name: venue_id
+      type: string
+      sql: venue_sid
+      shown: false
+  
+  #joins:
+  #  - name: venue_lookup_artists
+  #    relationship: many_to_one
+  #    sql: '{CUBE.artist_id} = {venue_lookup_artists.artist_sid}'

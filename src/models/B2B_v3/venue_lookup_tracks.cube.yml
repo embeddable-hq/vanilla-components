@@ -1,0 +1,41 @@
+cubes:
+- name: venue_lookup_tracks
+  data_source: default
+  sql: >
+    select 
+      track_sid_locale
+      ,track_sid
+      ,track_id_name
+      ,duration_sec
+      ,track_object_category
+      ,venue_id
+    from `smartify-cc94e.smartify_lookup_tables.track_lookup` 
+
+  dimensions:
+    - name: track_sid_locale
+      type: string
+      sql: track_sid_locale
+      primaryKey: true
+      shown: false
+
+    - name: track_sid
+      type: string
+      sql: track_sid
+      shown: false
+
+    - name: track_name
+      type: string
+      sql: track_id_name
+
+    - name: track_duration
+      type: string
+      sql: duration_sec
+
+    - name: track_object_category
+      type: string
+      sql: track_object_category
+
+    - name: venue_id
+      type: string
+      sql: venue_id
+      shown: false

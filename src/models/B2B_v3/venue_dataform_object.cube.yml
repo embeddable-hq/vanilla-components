@@ -1,0 +1,130 @@
+cubes:
+- name: venue_dataform_object
+  data_source: default
+  sql: >
+    select
+      event_date
+      ,user_pseudo_id
+      ,event_name
+      ,platform
+      ,device.category as device_category
+      ,device.web_info.hostname as hostname
+      ,geo.country as geo_country
+      ,geo.city as geo_city
+      ,event_params_custom.user_connectivity
+      ,event_params_custom.component_type
+      ,event_params_custom.content_category
+      ,event_params_custom.page_type
+      ,event_params_custom.venue_id
+      ,event_params_custom.organisation_id
+      ,event_params_custom.object_id
+      ,event_params_custom.artist_id
+      ,user_properties.user_age
+      ,user_properties.user_gender
+    from `smartify-cc94e.superform_outputs_151371783.ga4_events`
+    where event_params_custom.organisation_id = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+      and event_date >= '2023-01-01'
+      and stream_id in ("1047860117","1047860114","1913717213","2817285551")
+      and event_params_custom.object_id is not null
+
+  
+  dimensions:
+    - name: datetime
+      type: time 
+      sql: timestamp(event_date)
+    
+    - name: device_platform
+      type: string
+      sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'CWA' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+
+    - name: user_connectivity
+      type: string
+      sql: case when (user_connectivity = '' or user_connectivity is null) then 'Unknown' when user_connectivity = 'Cellular' then 'Cellular' else 'Wi-FI' end
+
+    - name: user_generation
+      type: string
+      sql: case when cast(user_age as int) >= 0 and cast(user_age as int) <= 12 then "Generation Alpha" when cast(user_age as int) >= 13 and cast(user_age as int) <= 28 then "Generation Z" when cast(user_age as int) >= 29 and cast(user_age as int) <= 44 then "Millennials" when cast(user_age as int) >= 45 and cast(user_age as int) <= 60 then "Generation X" when cast(user_age as int) >= 61 and cast(user_age as int) <= 79 then "Baby Boomers" when cast(user_age as int) >= 80 then "Silent Generation" else "Unknown" end
+
+    - name: organisation_id
+      type: string
+      sql: organisation_id
+      primaryKey: true
+      shown: true
+    
+    - name: venue_id
+      type: string
+      sql: venue_id
+      primaryKey: true
+      shown: true
+
+    - name: object_id
+      type: string
+      sql: object_id
+      primaryKey: true
+      shown: true
+
+    - name: artist_id
+      type: string
+      sql: artist_id
+      primaryKey: true
+      shown: true
+  
+  measures:
+    - name: object_views
+      type: sum
+      title: 'Views'
+      sql: case when event_name in ('page_view', 'screen_view') and contains_substr(page_type, "object_dp") then 1 else 0 end
+    
+    - name: object_scans
+      type: sum
+      title: 'Scans'
+      sql: case when event_name in ("scan_recognition_hit") then 1 when (event_name = "object_scan" and event_date <= "2023-05-05") then 1 when (event_name = "artwork_recognised" and event_date <= "2022-11-11") then 1 else 0 end
+    
+    - name: object_favorites
+      type: sum
+      title: 'Favorites'
+      sql: case when event_name in ('add_favorite') and object_id is not null then 1 else 0 end
+
+    - name: object_users
+      type: count_distinct
+      title: 'Object Users'
+      sql: case when event_name in ('screen_view', 'page_view') and contains_substr(page_type, 'object_dp') then user_pseudo_id else null end
+
+    - name: object_view_users
+      type: count_distinct
+      title: 'Users'
+      sql: case when event_name in ('screen_view', 'page_view') and contains_substr(page_type, 'object_dp') then user_pseudo_id else null end
+
+    - name: object_scan_users
+      type: count_distinct
+      title: 'Scan Users'
+      sql: case when event_name in ('scan_recognition_hit') then user_pseudo_id else null end
+    
+    - name: object_favorite_users
+      type: count_distinct
+      title: 'Favorite Users'
+      sql: case when event_name in ('add_favorite') and object_id is not null then user_pseudo_id else null end
+    
+    - name: object_view_per_user
+      type: number
+      title: 'Object View Per User'
+      sql: case when {object_view_users} = 0 then 0 else {object_views} / {object_view_users} end
+
+    - name: object_scan_per_user
+      type: number
+      title: 'Object Scan Per User'
+      sql: case when {object_scan_users} = 0 then 0 else {object_scans} / {object_scan_users} end
+
+    - name: object_favorite_per_user
+      type: number
+      title: 'Object Favorite Per User'
+      sql: case when {object_favorite_users} = 0 then 0 else {object_favorites} / {object_favorite_users} end
+
+  joins:
+    - name: venue_lookup_objects
+      relationship: many_to_one
+      sql: '{CUBE.object_id} = {venue_lookup_objects.object_sid}'
+
+    - name: venue_lookup_artists
+      relationship: many_to_one
+      sql: '{CUBE.artist_id} = {venue_lookup_artists.artist_sid}'
