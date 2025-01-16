@@ -1,0 +1,33 @@
+cubes:
+- name: venue_lookup_exhibitions
+  data_source: default
+  sql: >
+    SELECT 
+      exhibition_sid
+      ,exhibition_name
+      ,CAST(start_date AS TIMESTAMP) as start_date
+      ,CAST(end_date AS TIMESTAMP) as end_date
+    FROM `smartify-cc94e.smartify_lookup_tables.exhibition_lookup`
+  
+  dimensions:
+    - name: exhibition_sid
+      type: string
+      sql: exhibition_sid
+      primaryKey: true
+      shown: false
+
+    - name: exhibition_name
+      type: string
+      sql: exhibition_name
+
+    - name: exhibition_short_name
+      type: string
+      sql: concat(SUBSTR(exhibition_name, 1, 20),'...')
+
+    - name: exhibition_end
+      type: time
+      sql: end_date
+
+    - name: exhibition_start
+      type: time
+      sql: start_date

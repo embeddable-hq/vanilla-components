@@ -6,8 +6,12 @@ import H2Title from "../../vanilla/H2Title";
 export default (props: Inputs) => {
     const {title} = props;
 
-    return <H2Title title={title} />
-}
+    return (
+        <div style={{ marginTop: '18px' }}>
+            <H2Title title={title} />
+        </div>
+    );
+};
 
 
 /*

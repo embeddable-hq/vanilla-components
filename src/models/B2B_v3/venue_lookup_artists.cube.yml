@@ -1,0 +1,19 @@
+cubes:
+- name: venue_lookup_artists
+  data_source: default
+  sql: >
+    SELECT 
+      artist_sid
+      ,artist_name
+    FROM `smartify-cc94e.smartify_lookup_tables.artist_lookup`
+  
+  dimensions:
+    - name: artist_sid
+      type: string
+      sql: artist_sid
+      primaryKey: true
+      shown: false
+
+    - name: artist_name
+      type: string
+      sql: artist_name

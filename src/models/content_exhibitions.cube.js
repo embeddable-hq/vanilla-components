@@ -59,6 +59,18 @@ cube(`content_exhibition`, {
       sql: 'exhibition_image_url'
     }
   },
+  pre_aggregations: {
+    // Pre-aggregations definitions go here
+    exhibition_rollup: {
+      type: 'rollup',
+      dimensions: ['exhibition_sid', 'exhibition_name', 'end_date', 'start_date'],
+      indexes: {
+        category_index: {
+          columns: ['exhibition_sid']
+        }
+      }
+    }
+  },
   joins: {
     content_organisation: {
       relationship: 'many_to_one',
