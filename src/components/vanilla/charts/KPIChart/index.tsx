@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import formatValue from '../../../util/format';
 import Container from '../../Container';
 import { WarningIcon } from '../../icons';
-import { Theme } from '../../../../defaulttheme';
+import defaultTheme, { Theme } from '../../../../defaulttheme';
 import { useOverrideConfig } from '@embeddable.com/react';
 
 type Props = {
@@ -38,7 +38,10 @@ export default (props: Props) => {
 
   // Get theme for use in component
   const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  const { theme } = overrides;
+  let { theme } = overrides;
+  if (!theme) {
+    theme = defaultTheme;
+  }
 
   const { n, percentage } = useMemo(() => {
     if (dimension || !metric?.name || !results?.data?.length) {
