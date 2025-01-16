@@ -8,7 +8,8 @@ export type ChartType =
   | 'radar'
   | 'polarArea'
   | 'bubble'
-  | 'scatter';
+  | 'scatter'
+  | 'kpi';
 
 export type Theme = {
   'brand-color-primary': string;
@@ -81,6 +82,11 @@ const defaultTheme: Theme = {
     bubble: {
       font: {
         size: 12,
+      },
+    },
+    kpi: {
+      font: {
+        size: 32,
       },
     },
     line: {
