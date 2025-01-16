@@ -18,13 +18,6 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React, { useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
 
-import {
-  COLORS,
-  DATE_DISPLAY_FORMATS,
-  EMB_FONT,
-  LIGHT_FONT,
-  SMALL_FONT_SIZE,
-} from '../../../constants';
 import useTimeseries from '../../../hooks/useTimeseries';
 import formatValue from '../../../util/format';
 import formatDateTooltips from '../../../util/formatDateTooltips';
@@ -32,6 +25,9 @@ import hexToRgb from '../../../util/hexToRgb';
 import { parseTime } from '../../../util/timezone';
 import { setYAxisStepSize } from '../../../util/chartjs/common';
 import Container from '../../Container';
+import { useOverrideConfig } from '@embeddable.com/react';
+import { setChartJSDefaults } from '../../../util/chartjs/common';
+import defaultTheme, { Theme } from '../../../../defaulttheme';
 
 ChartJS.register(
   CategoryScale,
@@ -44,11 +40,6 @@ ChartJS.register(
   Filler,
   ChartDataLabels,
 );
-
-ChartJS.defaults.font.size = parseInt(SMALL_FONT_SIZE);
-ChartJS.defaults.color = LIGHT_FONT;
-ChartJS.defaults.font.family = EMB_FONT;
-ChartJS.defaults.plugins.tooltip.enabled = true;
 
 type Props = {
   results: DataResponse;
@@ -66,14 +57,31 @@ type Props = {
   limit?: number;
 };
 
+type PropsWithRequiredTheme = Props & { theme: Theme };
 type Record = { [p: string]: string };
 
 export default (props: Props) => {
   const { results, title } = props;
   const { fillGaps } = useTimeseries(props, 'desc');
 
+  // Get theme for use in component
+  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
+  let { theme } = overrides;
+  if (!theme) {
+    theme = defaultTheme;
+  }
+
+  // Set ChartJS defaults
+  setChartJSDefaults(theme, 'line');
+
+  // Add the theme to props
+  const updatedProps: PropsWithRequiredTheme = {
+    ...props,
+    theme,
+  };
+
   const chartData: ChartData<'line'> = useMemo(() => {
-    const { results, metrics, applyFill } = props;
+    const { results, metrics, applyFill, theme } = updatedProps;
 
     const data = results?.data?.reduce(fillGaps, []);
 
@@ -87,9 +95,9 @@ export default (props: Props) => {
               x: parseTime(d[props.xAxis?.name || '']),
             })) || [],
           backgroundColor: applyFill
-            ? hexToRgb(COLORS[i % COLORS.length], 0.2)
-            : COLORS[i % COLORS.length],
-          borderColor: COLORS[i % COLORS.length],
+            ? hexToRgb(theme.charts.colors[i % theme.charts.colors.length], 0.2)
+            : theme.charts.colors[i % theme.charts.colors.length],
+          borderColor: theme.charts.colors[i % theme.charts.colors.length],
           pointRadius: 0,
           tension: 0.1,
           pointHoverRadius: 3,
@@ -97,7 +105,7 @@ export default (props: Props) => {
           cubicInterpolationMode: 'monotone' as const,
         })) || [],
     };
-  }, [props, fillGaps]);
+  }, [updatedProps, fillGaps]);
 
   const chartOptions: ChartOptions<'line'> = useMemo(
     () => ({
@@ -111,30 +119,32 @@ export default (props: Props) => {
         padding: {
           left: 0,
           right: 0,
-          top: props.showLabels ? 20 : 0, // Added so the highest data labels fits
+          top: updatedProps.showLabels ? 20 : 0, // Added so the highest data labels fits
           bottom: 0,
         },
       },
       scales: {
         y: {
-          min: props.yAxisMin,
+          min: updatedProps.yAxisMin,
           grace: '0%', // Add percent to add numbers on the y-axis above and below the max and min values
           grid: {
             display: false,
           },
           title: {
-            display: !!props.yAxisTitle,
-            text: props.yAxisTitle,
+            display: !!updatedProps.yAxisTitle,
+            text: updatedProps.yAxisTitle,
           },
           callback: function (value: number) {
-            return formatValue(
-              value.toString(), 
-              { type: 'number' }
-            )
+            return formatValue(value.toString(), { type: 'number' });
           },
-          afterDataLimits: function(axis) {
+          afterDataLimits: function (axis) {
             //Disable fractions unless they exist in the data.
-            setYAxisStepSize(axis, props.results, [...props.metrics], props.dps);
+            setYAxisStepSize(
+              axis,
+              updatedProps.results,
+              [...updatedProps.metrics],
+              updatedProps.dps,
+            );
           },
         },
         x: {
@@ -142,14 +152,14 @@ export default (props: Props) => {
             display: false,
           },
           title: {
-            display: !!props.xAxisTitle,
-            text: props.xAxisTitle,
+            display: !!updatedProps.xAxisTitle,
+            text: updatedProps.xAxisTitle,
           },
           type: 'time',
           time: {
-            round: props.granularity,
-            displayFormats: DATE_DISPLAY_FORMATS,
-            unit: props.granularity,
+            round: updatedProps.granularity,
+            displayFormats: theme.dateFormats,
+            unit: updatedProps.granularity,
           },
         },
       },
@@ -159,7 +169,7 @@ export default (props: Props) => {
       },
       plugins: {
         legend: {
-          display: props.showLegend,
+          display: updatedProps.showLegend,
           position: 'bottom',
           labels: {
             usePointStyle: true,
@@ -168,15 +178,15 @@ export default (props: Props) => {
         },
         datalabels: {
           align: 'top',
-          display: props.showLabels ? 'auto' : false,
+          display: updatedProps.showLabels ? 'auto' : false,
           formatter: (v, context) => {
             //metric needed for formatting
             const metricIndex = context.datasetIndex;
-            const metricObj = props.metrics[metricIndex];
+            const metricObj = updatedProps.metrics[metricIndex];
             const val = v
               ? formatValue(v.y, {
                   type: 'number',
-                  dps: props.dps,
+                  dps: updatedProps.dps,
                   meta: metricObj?.meta,
                 })
               : null;
@@ -189,27 +199,27 @@ export default (props: Props) => {
             label: function (context) {
               //metric needed for formatting
               const metricIndex = context.datasetIndex;
-              const metricObj = props.metrics[metricIndex];
+              const metricObj = updatedProps.metrics[metricIndex];
               let label = context.dataset.label || '';
               if (context.parsed.y !== null) {
                 label += `: ${formatValue(`${context.parsed['y']}`, {
                   type: 'number',
-                  dps: props.dps,
+                  dps: updatedProps.dps,
                   meta: metricObj?.meta,
                 })}`;
               }
               return label;
             },
-            title: (lines: any[]) => formatDateTooltips(lines, props.granularity),
+            title: (lines: any[]) => formatDateTooltips(lines, updatedProps.granularity),
           },
         },
       },
     }),
-    [props],
+    [updatedProps, theme.dateFormats],
   );
 
   return (
-    <Container {...props} className="overflow-y-hidden">
+    <Container {...updatedProps} className="overflow-y-hidden">
       <Line height="100%" options={chartOptions} data={chartData} />
     </Container>
   );
