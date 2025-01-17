@@ -1,11 +1,12 @@
 import React, { ReactElement } from 'react';
 import cn from '../../../../util/cn';
 import { ColumnType } from '../enums/ColumnType';
-import { REGULAR_FONT_SIZE } from '../../../../constants';
 import { Column } from '../core/Column';
 import { SortCriteria } from '../../../../util/sortFn';
 import { SortDirection } from '../../../../../enums/SortDirection';
 import { SortDown, SortUp } from '../../../icons';
+import defaultTheme, { Theme } from '../../../../../defaulttheme';
+import { useOverrideConfig } from '@embeddable.com/react';
 
 type Props = {
   columns: Column[];
@@ -15,26 +16,46 @@ type Props = {
   minHeaderColumnWidth?: string;
   enableSorting?: boolean;
   sortCriteria?: SortCriteria<any>[];
-}
+};
 
 export default function TableHead({
   columns,
-  fontSize = REGULAR_FONT_SIZE,
+  fontSize = `${defaultTheme.charts.font.size}px`,
   minColumnWidth,
   minHeaderColumnWidth,
   enableSorting = true,
   sortCriteria,
-  onSortingChange
+  onSortingChange,
 }: Props) {
+  // Get theme for use in component
+  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
+  let { theme } = overrides;
+  if (!theme) {
+    theme = defaultTheme;
+  }
+  fontSize = `${theme.charts.font.size}px`;
 
   const renderColumn = (column: Column, columnIndex: number): ReactElement => {
-    const isRowHeader = column.type === ColumnType.ROW_HEADER || column.type === ColumnType.ROW_HEADER_GROUP;
-    const shouldBeLeftAligned = column.type !== ColumnType.DIMENSION || column.children?.filter(child => child.type === ColumnType.MEASURE).length === 1;
+    const isRowHeader =
+      column.type === ColumnType.ROW_HEADER || column.type === ColumnType.ROW_HEADER_GROUP;
+    const shouldBeLeftAligned =
+      column.type !== ColumnType.DIMENSION ||
+      column.children?.filter((child) => child.type === ColumnType.MEASURE).length === 1;
     const leafColumns = column.getLeafColumns();
-    const isSticky = isRowHeader || leafColumns.some(child => child.type === ColumnType.ROW_HEADER || child.type === ColumnType.ROW_HEADER_GROUP) ;
-    const shouldRenderRightBorder = column.depth === 0 || column.type !== ColumnType.MEASURE || column.parent?.children?.at(-1)?.key === column.key;
-    const isSortable = enableSorting && (column.type !== ColumnType.DIMENSION);
-    const sortedDirection = sortCriteria?.find(criteria => criteria.key === column.key)?.direction;
+    const isSticky =
+      isRowHeader ||
+      leafColumns.some(
+        (child) =>
+          child.type === ColumnType.ROW_HEADER || child.type === ColumnType.ROW_HEADER_GROUP,
+      );
+    const shouldRenderRightBorder =
+      column.depth === 0 ||
+      column.type !== ColumnType.MEASURE ||
+      column.parent?.children?.at(-1)?.key === column.key;
+    const isSortable = enableSorting && column.type !== ColumnType.DIMENSION;
+    const sortedDirection = sortCriteria?.find(
+      (criteria) => criteria.key === column.key,
+    )?.direction;
 
     return (
       <th
@@ -46,44 +67,52 @@ export default function TableHead({
           'lg:sticky lg:left-0 lg:z-10 bg-white': isSticky,
           'cursor-pointer': isSortable,
         })}
-        style={minColumnWidth ? {
-          minWidth: (isRowHeader ? minHeaderColumnWidth : minColumnWidth) ?? 'auto'
-        } : {}}
-        {...(
-          isSortable
+        style={
+          minColumnWidth
             ? {
-              onClick: () => {
-                onSortingChange?.(column.key, sortedDirection === SortDirection.DESCENDING ? SortDirection.ASCENDING : SortDirection.DESCENDING)
+                minWidth: (isRowHeader ? minHeaderColumnWidth : minColumnWidth) ?? 'auto',
               }
+            : {}
+        }
+        {...(isSortable
+          ? {
+              onClick: () => {
+                onSortingChange?.(
+                  column.key,
+                  sortedDirection === SortDirection.DESCENDING
+                    ? SortDirection.ASCENDING
+                    : SortDirection.DESCENDING,
+                );
+              },
             }
-            : null
-        )}
+          : null)}
       >
         <div
           className={cn('text-center', {
             'text-left': shouldBeLeftAligned,
-            'flex justify-between items-center gap-2': isSortable
+            'flex justify-between items-center gap-2': isSortable,
           })}
         >
-          <span
-            className="text-[#333942]"
-            style={{ fontSize }}
-          >
+          <span className="text-[#333942]" style={{ fontSize }}>
             {column.label}
           </span>
-          {
-            isSortable ? (
-              <span className={cn('w-3', {
-                invisible: !sortedDirection
-              })}>
-               { sortedDirection === SortDirection.ASCENDING ? <SortUp fill="currentcolor" /> : <SortDown fill="currentcolor" /> }
-              </span>
-            ) : null
-          }
+          {isSortable ? (
+            <span
+              className={cn('w-3', {
+                invisible: !sortedDirection,
+              })}
+            >
+              {sortedDirection === SortDirection.ASCENDING ? (
+                <SortUp fill="currentcolor" />
+              ) : (
+                <SortDown fill="currentcolor" />
+              )}
+            </span>
+          ) : null}
         </div>
       </th>
-    )
-  }
+    );
+  };
 
   if (!columns.length) {
     return null;
@@ -92,22 +121,18 @@ export default function TableHead({
   // Recursively render table headers with all dimensions
   return (
     <>
-      <tr>
-        { columns.map(renderColumn) }
-      </tr>
-      {
-        columns[0].children ? (
-          <TableHead
-            columns={columns.map(column => column?.children || []).flat()}
-            onSortingChange={onSortingChange}
-            fontSize={fontSize}
-            minColumnWidth={minColumnWidth}
-            minHeaderColumnWidth={minHeaderColumnWidth}
-            enableSorting={enableSorting}
-            sortCriteria={sortCriteria}
-          />
-        ) : null
-      }
+      <tr>{columns.map(renderColumn)}</tr>
+      {columns[0].children ? (
+        <TableHead
+          columns={columns.map((column) => column?.children || []).flat()}
+          onSortingChange={onSortingChange}
+          fontSize={fontSize}
+          minColumnWidth={minColumnWidth}
+          minHeaderColumnWidth={minHeaderColumnWidth}
+          enableSorting={enableSorting}
+          sortCriteria={sortCriteria}
+        />
+      ) : null}
     </>
-  )
+  );
 }
