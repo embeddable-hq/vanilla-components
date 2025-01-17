@@ -245,7 +245,7 @@ export default (propsInitial: Props) => {
         },
         tooltip: {
           callbacks: {
-            title: (lines: any[]) => formatDateTooltips(lines, props.granularity),
+            title: (lines: any[]) => formatDateTooltips(lines, props.granularity, theme),
             label: function (context) {
               //metric needed for formatting
               const metricIndex = context.datasetIndex % props.metrics.length;

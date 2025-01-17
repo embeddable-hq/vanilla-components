@@ -210,7 +210,7 @@ export default (props: Props) => {
               }
               return label;
             },
-            title: (lines: any[]) => formatDateTooltips(lines, updatedProps.granularity),
+            title: (lines: any[]) => formatDateTooltips(lines, updatedProps.granularity, theme),
           },
         },
       },
