@@ -1,5 +1,3 @@
-import { Chart } from 'chart.js';
-
 export type ChartType =
   | 'bar'
   | 'line'
@@ -12,15 +10,12 @@ export type ChartType =
   | 'kpi';
 
 export type Theme = {
-  'brand-color-primary': string;
-  'brand-color-secondary': string;
+  brand: {
+    primary: string;
+    secondary: string;
+  };
   charts: {
     colors: string[];
-    font: {
-      color: string;
-      family: string;
-      size: number;
-    };
     options: {
       toolTipEnabled: boolean;
       usePointStyle: boolean;
@@ -38,6 +33,11 @@ export type Theme = {
     minute: string;
     second: string;
   };
+  font: {
+    color: string;
+    family: string;
+    size: number;
+  };
 };
 
 type ThemeDeepPartial<T> = {
@@ -51,8 +51,10 @@ export type ThemePartial = ThemeDeepPartial<Theme>;
  * the package. For now, we will just export the type.
  */
 const defaultTheme: Theme = {
-  'brand-color-primary': '#6778DE',
-  'brand-color-secondary': '#FF997C',
+  brand: {
+    primary: '#6778DE',
+    secondary: '#FF997C',
+  },
   charts: {
     colors: [
       '#6778DE',
@@ -68,16 +70,11 @@ const defaultTheme: Theme = {
       '#FFA6A6',
       '#FFD98D',
     ],
-    font: {
-      color: '#888',
-      family:
-        '-apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-      size: 14,
-    },
     options: {
       toolTipEnabled: true,
       usePointStyle: true,
     },
+    /* Custom overrides for certain charts */
     bar: {},
     bubble: {
       font: {
@@ -99,6 +96,7 @@ const defaultTheme: Theme = {
         size: 12,
       },
     },
+    /* End custom chart overrides */
   },
   dateFormats: {
     year: 'yyyy',
@@ -109,6 +107,12 @@ const defaultTheme: Theme = {
     hour: 'eee HH:mm',
     minute: 'eee HH:mm',
     second: 'HH:mm:ss',
+  },
+  font: {
+    color: '#888',
+    family:
+      '-apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+    size: 14,
   },
 };
 

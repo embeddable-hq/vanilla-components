@@ -96,7 +96,7 @@ export default (props: Props) => {
         {!!meta && !(props.results?.isLoading && !props.results?.data?.length) && (
           <table
             className="overflow-visible w-full"
-            style={{ fontSize: props.fontSize ? `${props.fontSize}px` : theme.charts.font.size }}
+            style={{ fontSize: props.fontSize ? `${props.fontSize}px` : theme.font.size }}
           >
             <TableHead
               columns={columns}
@@ -118,7 +118,7 @@ export default (props: Props) => {
                       key={index}
                       className="text-dark p-3 truncate"
                       style={{
-                        fontSize: props.fontSize ? `${props.fontSize}px` : theme.charts.font.size,
+                        fontSize: props.fontSize ? `${props.fontSize}px` : theme.font.size,
                         maxWidth: props.minColumnWidth ? `${props.minColumnWidth * 1.2}px` : 'auto',
                       }}
                     >

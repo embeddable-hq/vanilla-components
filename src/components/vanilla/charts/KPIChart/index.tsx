@@ -62,7 +62,7 @@ export default (props: Props) => {
   }, [results, prevResults, metric, dps, dimension]);
 
   const fontSize = props.fontSize || theme.charts.kpi.font.size;
-  const metaFontSize = Math.max(fontSize / 3, theme.charts.font.size);
+  const metaFontSize = Math.max(fontSize / 3, theme.font.size);
 
   if (results?.error) {
     return (
@@ -88,7 +88,7 @@ export default (props: Props) => {
                 className={`font-normal`}
                 style={{
                   fontSize: `${metaFontSize}px`,
-                  color: `${theme.charts.font.color}`,
+                  color: theme.font.color,
                 }}
               >
                 {`${metric.title}: ${formatValue(`${results?.data?.[0]?.[metric.name]}`, {
@@ -124,7 +124,7 @@ export default (props: Props) => {
                 {showPrevPeriodLabel &&
                   prevTimeFilter?.relativeTimeString &&
                   prevTimeFilter.relativeTimeString.length > 0 && (
-                    <span style={{ color: `${theme.charts.font.color}` }}>
+                    <span style={{ color: theme.font.color }}>
                       &nbsp;
                       {`vs ${prevTimeFilter.relativeTimeString}`}
                     </span>

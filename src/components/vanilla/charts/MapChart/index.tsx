@@ -2,6 +2,7 @@ import { DataResponse, Dimension, Measure } from '@embeddable.com/core';
 import { scaleLinear } from 'd3-scale';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ComposableMapProps, GeographiesProps, GeographyProps } from 'react-simple-maps';
+import tinyColor from 'tinycolor2';
 
 import format from '../../../util/format';
 import Container from '../../Container';
@@ -25,22 +26,8 @@ export default (props: Props) => {
   if (!theme) {
     theme = defaultTheme;
   }
-
-  const [defaultColor, setDefaultColor] = useState<string>('#EBEBEB');
-  const [lowColor, setLowColor] = useState<string>(theme.charts.colors[0]);
-  const [highColor, setHighColor] = useState<string>(
-    theme.charts.colors[theme.charts.colors.length - 1],
-  );
-  const [hoverColor, setHoverColor] = useState<string>(
-    theme.charts.colors[Math.floor(theme.charts.colors.length / 2)],
-  );
-
-  // change chartColors when theme changes
-  useEffect(() => {
-    setLowColor(theme.charts.colors[0]);
-    setHighColor(theme.charts.colors[theme.charts.colors.length - 1]);
-    setHoverColor(theme.charts.colors[Math.floor(theme.charts.colors.length / 2)]);
-  }, [theme]);
+  const defaultColor = '#DEDEDE';
+  const hoverColor = tinyColor(theme.brand.secondary);
 
   const [mapComponents, setMapComponents] = useState<{
     ComposableMap: React.ComponentType<ComposableMapProps>;
@@ -81,8 +68,21 @@ export default (props: Props) => {
   }, [props]);
 
   const colorScale = useMemo(() => {
+    // Calculate theme color values
+    const brandColor = tinyColor(theme.brand.primary);
+    let startingColor = tinyColor('#888888');
+    if (brandColor.isLight()) {
+      startingColor = brandColor;
+    } else {
+      startingColor = brandColor.lighten(20);
+    }
+
+    const brandColors = tinyColor(startingColor).monochromatic();
+    const lowColor = brandColors[0].lighten(10).toHexString();
+    const highColor = brandColors[5].toHexString();
+
     return scaleLinear<string>().domain([0, maxMetric]).range([lowColor, highColor]);
-  }, [maxMetric, lowColor, highColor]);
+  }, [maxMetric, theme]);
 
   if (!mapComponents) return <div>Loading map...</div>;
 
@@ -135,7 +135,7 @@ export default (props: Props) => {
                           outline: 'none',
                         },
                         hover: {
-                          fill: hoverColor,
+                          fill: hoverColor.toHexString(),
                           outline: 'none',
                         },
                         pressed: {
