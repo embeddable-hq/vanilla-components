@@ -32,7 +32,7 @@ export type Props = {
   isGroupedBar?: boolean;
   stackBars?: boolean;
 };
-type PropsWithRequiredTheme = Props & { theme: Theme };
+export type PropsWithRequiredTheme = Props & { theme: Theme };
 
 type Options = {
   chartType?: string;

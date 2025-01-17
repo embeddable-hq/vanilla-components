@@ -14,11 +14,16 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import { EMB_FONT, LIGHT_FONT, SMALL_FONT_SIZE } from '../../../constants';
 import useTimeseries from '../../../hooks/useTimeseries';
 import getBarChartOptions from '../../../util/getBarChartOptions';
-import getStackedChartData, { Props } from '../../../util/getStackedChartData';
+import getStackedChartData, {
+  Props,
+  PropsWithRequiredTheme,
+} from '../../../util/getStackedChartData';
 import Container from '../../Container';
+import { Theme } from '../../../../defaulttheme';
+import { useOverrideConfig } from '@embeddable.com/react';
+import { setChartJSDefaults } from '../../../util/chartjs/common';
 
 ChartJS.register(
   CategoryScale,
@@ -32,11 +37,6 @@ ChartJS.register(
   ChartDataLabels,
 );
 
-ChartJS.defaults.font.size = parseInt(SMALL_FONT_SIZE);
-ChartJS.defaults.color = LIGHT_FONT;
-ChartJS.defaults.font.family = EMB_FONT;
-ChartJS.defaults.plugins.tooltip.enabled = true;
-
 type Totals = {
   [xAxis: string]: {
     total: number;
@@ -45,6 +45,12 @@ type Totals = {
 };
 
 export default (props: Props) => {
+  // Get theme for use in component
+  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
+  const { theme } = overrides;
+
+  setChartJSDefaults(theme);
+
   const datasetsMeta = {
     barPercentage: 0.6,
     barThickness: 'flex',
@@ -56,11 +62,12 @@ export default (props: Props) => {
   //add missing dates to time-series stacked barcharts
   const { fillGaps } = useTimeseries(props, 'desc');
   const { results, isTSGroupedBarChart } = props;
-  const updatedProps = {
+  const updatedProps: PropsWithRequiredTheme = {
     ...props,
     results: isTSGroupedBarChart
       ? { ...props.results, data: results?.data?.reduce(fillGaps, []) }
       : props.results,
+    theme,
   };
 
   if (props.showTotals) {
