@@ -6,6 +6,8 @@ import { ComposableMapProps, GeographiesProps, GeographyProps } from 'react-simp
 import format from '../../../util/format';
 import Container from '../../Container';
 import geography from './geography.json';
+import { useOverrideConfig } from '@embeddable.com/react';
+import defaultTheme from '../../../../defaulttheme';
 
 type Props = {
   title?: string;
@@ -16,12 +18,30 @@ type Props = {
 
 type Record = { [p: string]: string };
 
-const defaultColor = '#EBEBEB';
-const lowColor = '#E7F0FE';
-const highColor = '#146EF5';
-const hoverColor = '#0957cb';
-
 export default (props: Props) => {
+  // Get theme for use in component
+  const overrides: any = useOverrideConfig();
+  let { theme } = overrides;
+  if (!theme) {
+    theme = defaultTheme;
+  }
+
+  const [defaultColor, setDefaultColor] = useState<string>('#EBEBEB');
+  const [lowColor, setLowColor] = useState<string>(theme.charts.colors[0]);
+  const [highColor, setHighColor] = useState<string>(
+    theme.charts.colors[theme.charts.colors.length - 1],
+  );
+  const [hoverColor, setHoverColor] = useState<string>(
+    theme.charts.colors[Math.floor(theme.charts.colors.length / 2)],
+  );
+
+  // change chartColors when theme changes
+  useEffect(() => {
+    setLowColor(theme.charts.colors[0]);
+    setHighColor(theme.charts.colors[theme.charts.colors.length - 1]);
+    setHoverColor(theme.charts.colors[Math.floor(theme.charts.colors.length / 2)]);
+  }, [theme]);
+
   const [mapComponents, setMapComponents] = useState<{
     ComposableMap: React.ComponentType<ComposableMapProps>;
     Geographies: React.ComponentType<GeographiesProps>;
@@ -62,16 +82,14 @@ export default (props: Props) => {
 
   const colorScale = useMemo(() => {
     return scaleLinear<string>().domain([0, maxMetric]).range([lowColor, highColor]);
-  }, [maxMetric]);
+  }, [maxMetric, lowColor, highColor]);
 
   if (!mapComponents) return <div>Loading map...</div>;
 
   const { ComposableMap, Geographies, Geography } = mapComponents;
 
   return (
-    <Container
-      {...props}
-      className="overflow-y-hidden">
+    <Container {...props} className="overflow-y-hidden">
       <div className="relative aspect-[1.87] overflow-hidden cursor-pointer">
         <div
           ref={box}
@@ -91,7 +109,7 @@ export default (props: Props) => {
             projection="geoMercator"
             projectionConfig={{
               rotate: [-10, 0, 0],
-              scale: 100
+              scale: 100,
             }}
           >
             <Geographies geography={geography}>
@@ -104,7 +122,7 @@ export default (props: Props) => {
                       onMouseEnter={() => {
                         tooltip.current!.innerHTML = `${geo.properties.name}: ${format(
                           `${value || 0}`,
-                          { type: 'number', meta: props.metric?.meta }
+                          { type: 'number', meta: props.metric?.meta },
                         )}`;
                       }}
                       onMouseLeave={() => {
@@ -114,15 +132,15 @@ export default (props: Props) => {
                       geography={geo}
                       style={{
                         default: {
-                          outline: 'none'
+                          outline: 'none',
                         },
                         hover: {
                           fill: hoverColor,
-                          outline: 'none'
+                          outline: 'none',
                         },
                         pressed: {
-                          outline: 'none'
-                        }
+                          outline: 'none',
+                        },
                       }}
                       fill={`${value ? colorScale(value) : defaultColor}`}
                     />
