@@ -25,7 +25,7 @@ export const setChartJSDefaults = (theme: Theme, chartType?: ChartType) => {
   }
 
   // Some charts vary, so we check for chart type and if it exists, set some values
-  let fontSize = theme.charts.font.size;
+  let fontSize = theme.font.size;
   if (chartType && theme.charts[chartType]) {
     if (theme.charts[chartType].font?.size) {
       fontSize = theme.charts[chartType].font.size;
@@ -33,8 +33,8 @@ export const setChartJSDefaults = (theme: Theme, chartType?: ChartType) => {
   }
   // We don't need to return Chartjs defaults as we are mutating the global object
   ChartJS.defaults.font.size = fontSize;
-  ChartJS.defaults.color = theme.charts.font.color;
-  ChartJS.defaults.font.family = theme.charts.font.family;
+  ChartJS.defaults.color = theme.font.color;
+  ChartJS.defaults.font.family = theme.font.family;
   ChartJS.defaults.plugins.tooltip.enabled = theme.charts.options.toolTipEnabled;
   ChartJS.defaults.plugins.tooltip.usePointStyle = true;
 };

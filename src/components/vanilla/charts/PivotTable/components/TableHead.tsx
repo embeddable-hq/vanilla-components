@@ -20,7 +20,7 @@ type Props = {
 
 export default function TableHead({
   columns,
-  fontSize = `${defaultTheme.charts.font.size}px`,
+  fontSize = `${defaultTheme.font.size}px`,
   minColumnWidth,
   minHeaderColumnWidth,
   enableSorting = true,
@@ -33,7 +33,7 @@ export default function TableHead({
   if (!theme) {
     theme = defaultTheme;
   }
-  fontSize = `${theme.charts.font.size}px`;
+  fontSize = `${theme.font.size}px`;
 
   const renderColumn = (column: Column, columnIndex: number): ReactElement => {
     const isRowHeader =

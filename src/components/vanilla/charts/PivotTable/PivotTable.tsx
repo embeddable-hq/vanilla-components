@@ -34,7 +34,7 @@ const PivotTable = <T,>({
   data,
   defaultColumnDimensionSortDirection,
   defaultRowDimensionSortDirection,
-  fontSize = `${defaultTheme.charts.font.size}px`,
+  fontSize = `${defaultTheme.font.size}px`,
   granularity,
   isRowGroupDefaultExpanded = true,
   measures,
@@ -49,7 +49,7 @@ const PivotTable = <T,>({
   if (!theme) {
     theme = defaultTheme;
   }
-  fontSize = `${theme.charts.font.size}px`;
+  fontSize = `${theme.font.size}px`;
 
   const [sortCriteria, setSortCriteria] = useState<SortCriteria<any>[]>(() => {
     if (!rowDimensions || !defaultRowDimensionSortDirection) {
