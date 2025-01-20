@@ -107,9 +107,12 @@ export const meta = {
 export default defineComponent<
   Props,
   typeof meta,
-  { maxRowsFit: number; sort: OrderBy[]; page: number }
+  { maxRowsFit: number; sort: OrderBy[]; page: number; prevVariableValues: Record<string, any> }
 >(Component, meta, {
   props: (inputs: Inputs<typeof meta>, [state]) => {
+    const currVariableValues = inputs?.ds?.variableValues || {};
+    const prevVariableValues = state?.prevVariableValues || {};
+
     const limit =
       inputs.maxPageRows || state?.maxRowsFit
         ? Math.min(inputs.maxPageRows || 1000, Math.max(state?.maxRowsFit, 1) || 1000)
@@ -132,6 +135,12 @@ export default defineComponent<
         property: inputs.defaultSort,
         direction: defaultSortDirection,
       });
+    }
+
+    // Deep compare the variable values to determine if the dataset has changed
+    if (state && JSON.stringify(currVariableValues) !== JSON.stringify(prevVariableValues)) {
+      state.prevVariableValues = currVariableValues;
+      state.page = 0;
     }
 
     return {

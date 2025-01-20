@@ -240,7 +240,7 @@ export default function getBarChartOptions({
               }
               return displayHorizontally ? 'right' : 'top';
             },
-            display: showTotals ? 'true' : false,
+            display: showTotals && stackBars ? 'true' : false,
             font: {
               weight: 'bold',
             },
@@ -254,7 +254,10 @@ export default function getBarChartOptions({
               const currxAxisName = xAxisNames[context.dataIndex];
               const currDatasetIndex = context.datasetIndex;
               if (currDatasetIndex === totals[currxAxisName].lastSegment && v !== null) {
-                let val = formatValue(totals[currxAxisName].total.toString(), {
+                const barTotal = displayAsPercentage
+                  ? '100'
+                  : totals[currxAxisName].total.toString();
+                let val = formatValue(barTotal, {
                   type: 'number',
                   dps: dps,
                   meta: displayAsPercentage ? undefined : metric?.meta,

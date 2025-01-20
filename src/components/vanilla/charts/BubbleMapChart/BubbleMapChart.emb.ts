@@ -37,6 +37,20 @@ export const meta = {
       category: 'Chart Data',
     },
     {
+      name: 'title',
+      type: 'string',
+      label: 'Title',
+      description: 'The title for the chart',
+      category: 'Chart settings',
+    },
+    {
+      name: 'description',
+      type: 'string',
+      label: 'Description',
+      description: 'The description for the chart',
+      category: 'Chart settings',
+    },
+    {
       name: 'clusterRadius',
       type: 'number',
       label: 'Cluster Radius',
