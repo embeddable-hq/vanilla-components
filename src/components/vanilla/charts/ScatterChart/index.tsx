@@ -24,7 +24,8 @@ import hexToRgb from '../../../util/hexToRgb';
 import { setYAxisStepSize } from '../../../util/chartjs/common';
 import { useOverrideConfig } from '@embeddable.com/react';
 import { setChartJSDefaults } from '../../../util/chartjs/common';
-import defaultTheme, { Theme } from '../../../../defaulttheme';
+import defaultTheme from '../../../../themes/defaulttheme';
+import { Theme } from '../../../../themes/theme';
 
 ChartJS.register(
   CategoryScale,

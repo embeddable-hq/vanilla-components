@@ -1,58 +1,5 @@
-export type ChartType =
-  | 'bar'
-  | 'line'
-  | 'pie'
-  | 'doughnut'
-  | 'radar'
-  | 'polarArea'
-  | 'bubble'
-  | 'scatter'
-  | 'kpi';
+import { Theme } from './theme';
 
-export type Theme = {
-  brand: {
-    primary: string;
-    secondary: string;
-  };
-  charts: {
-    colors: string[];
-    options: {
-      toolTipEnabled: boolean;
-      usePointStyle: boolean;
-    };
-  } & {
-    [key in ChartType]?: any;
-  };
-  dateFormats: {
-    year: string;
-    quarter: string;
-    month: string;
-    day: string;
-    week: string;
-    hour: string;
-    minute: string;
-    second: string;
-  };
-  font: {
-    color: string;
-    family: string;
-    size: number;
-    imports: {
-      [key: string]: string;
-    };
-  };
-};
-
-type ThemeDeepPartial<T> = {
-  [P in keyof T]?: T[P] extends object ? ThemeDeepPartial<T[P]> : T[P];
-};
-
-export type ThemePartial = ThemeDeepPartial<Theme>;
-
-/*
- * This will require changes to the typescript build process to be accessible outside of
- * the package. For now, we will just export the type.
- */
 const defaultTheme: Theme = {
   brand: {
     primary: '#6778DE',

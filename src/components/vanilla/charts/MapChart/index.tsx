@@ -8,7 +8,7 @@ import format from '../../../util/format';
 import Container from '../../Container';
 import geography from './geography.json';
 import { useOverrideConfig } from '@embeddable.com/react';
-import defaultTheme from '../../../../defaulttheme';
+import defaultTheme from '../../../../themes/defaulttheme';
 
 type Props = {
   title?: string;

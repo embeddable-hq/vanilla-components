@@ -1,7 +1,7 @@
 import { DataResponse, Measure } from '@embeddable.com/core';
 import { Chart as ChartJS, Scale, CoreScaleOptions } from 'chart.js';
 import { containsFractions } from '../dataUtils';
-import { Theme, ChartType } from '../../../defaulttheme';
+import { Theme, ChartType } from '../../../themes/theme';
 
 export function setYAxisStepSize(
   axis: Scale<CoreScaleOptions>,

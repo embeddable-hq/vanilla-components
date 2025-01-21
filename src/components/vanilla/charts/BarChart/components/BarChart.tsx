@@ -18,7 +18,7 @@ import { Chart } from 'react-chartjs-2';
 import formatValue from '../../../../util/format';
 import getBarChartOptions from '../../../../util/getBarChartOptions';
 import { setChartJSDefaults } from '../../../../util/chartjs/common';
-import { Theme } from '../../../../../defaulttheme';
+import { Theme } from '../../../../../themes/theme';
 
 ChartJS.register(
   CategoryScale,

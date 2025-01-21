@@ -34,7 +34,8 @@ import hexToRgb from '../../../util/hexToRgb';
 import { parseTime, timeRangeToLocal } from '../../../util/timezone';
 import { setChartJSDefaults, setYAxisStepSize } from '../../../util/chartjs/common';
 import Container from '../../Container';
-import defaultTheme, { Theme } from '../../../../defaulttheme';
+import defaultTheme from '../../../../themes/defaulttheme';
+import { Theme } from '../../../../themes/theme';
 import { useOverrideConfig } from '@embeddable.com/react';
 
 ChartJS.register(

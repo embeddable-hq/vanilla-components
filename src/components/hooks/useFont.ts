@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { useOverrideConfig } from '@embeddable.com/react';
-import { Theme } from '../../defaulttheme';
+import { Theme } from '../../themes/theme';
 
 export default () => {
   // Get theme for use in component

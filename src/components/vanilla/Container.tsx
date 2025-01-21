@@ -11,7 +11,8 @@ import Spinner from './Spinner';
 import Title from './Title';
 import { WarningIcon } from './icons';
 import './index.css';
-import defaultTheme, { Theme } from '../../defaulttheme';
+import defaultTheme from '../../themes/defaulttheme';
+import { Theme } from '../../themes/theme';
 import { useOverrideConfig } from '@embeddable.com/react';
 
 export type ContainerProps = {

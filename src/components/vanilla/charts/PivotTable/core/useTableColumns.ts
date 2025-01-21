@@ -4,7 +4,8 @@ import { Column } from './Column';
 import { ColumnType } from '../enums/ColumnType';
 import { createColumnKey } from '../utils/key';
 import formatValue from '../../../../util/format';
-import defaultTheme, { Theme } from '../../../../../defaulttheme';
+import defaultTheme from '../../../../../themes/defaulttheme';
+import { Theme } from '../../../../../themes/theme';
 import { useOverrideConfig } from '@embeddable.com/react';
 
 type TableColumnHook = {
