@@ -1,12 +1,12 @@
 import { DataResponse } from '@embeddable.com/core';
 import React, { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-import { createGlobalStyle } from 'styled-components';
 
 import useFont from '../hooks/useFont';
 import useResize, { Size } from '../hooks/useResize';
 import Description from './Description';
 import DownloadMenu from './DownloadMenu';
+import GlobalStyleWrapper from './GlobalStyleWrapper';
 import Spinner from './Spinner';
 import Title from './Title';
 import { WarningIcon } from './icons';
@@ -50,11 +50,7 @@ export default ({
   const { height } = useResize(refResize, onResize || null);
   const [preppingDownload, setPreppingDownload] = useState<boolean>(false);
 
-  // Insert global style object into component and add theme values
-  const GlobalStyle = createGlobalStyle`
-  .font-embeddable {
-    font-family: ${theme.font.family};
-  }`;
+  const GlobalStyle = GlobalStyleWrapper(theme);
 
   //Detect when the component is being resized by the user
   useEffect(() => {
