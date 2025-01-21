@@ -37,6 +37,9 @@ export type Theme = {
     color: string;
     family: string;
     size: number;
+    imports: {
+      [key: string]: string;
+    };
   };
 };
 
@@ -113,6 +116,9 @@ const defaultTheme: Theme = {
     family:
       '-apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
     size: 14,
+    imports: {
+      // eg: 'Impact': 'impact',
+    },
   },
 };
 

@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-import { EMB_FONT } from './src/components/constants';
+import defaultTheme from './src/defaulttheme';
 
 module.exports = {
   darkMode: 'class',
@@ -9,7 +9,7 @@ module.exports = {
     current: 'currentColor',
     extend: {
       fontFamily: {
-        embeddable: EMB_FONT
+        embeddable: defaultTheme.font.family,
       }
     }
   },
