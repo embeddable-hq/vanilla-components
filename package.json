@@ -50,6 +50,7 @@
     "react-leaflet": "^4.2.1",
     "react-leaflet-markercluster": "^4.1.1",
     "react-simple-maps": "^3.0.0",
+    "styled-components": "^6.1.14",
     "tailwind-merge": "^2.2.1",
     "tinycolor2": "^1.6.0",
     "uuid": "^11.0.3",

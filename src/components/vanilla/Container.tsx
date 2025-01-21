@@ -1,6 +1,7 @@
 import { DataResponse } from '@embeddable.com/core';
 import React, { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
+import { createGlobalStyle } from 'styled-components';
 
 import useFont from '../hooks/useFont';
 import useResize, { Size } from '../hooks/useResize';
@@ -10,6 +11,8 @@ import Spinner from './Spinner';
 import Title from './Title';
 import { WarningIcon } from './icons';
 import './index.css';
+import defaultTheme, { Theme } from '../../defaulttheme';
+import { useOverrideConfig } from '@embeddable.com/react';
 
 export type ContainerProps = {
   childContainerClassName?: string;
@@ -33,6 +36,11 @@ export default ({
   setResizeState,
   ...props
 }: PropsWithChildren<ContainerProps>) => {
+  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
+  let { theme } = overrides;
+  if (!theme) {
+    theme = defaultTheme;
+  }
   const { clientContext } = props;
   const refPrevHeight = useRef<number | null>(null);
   const refExportPNGElement = useRef<HTMLDivElement | null>(null);
@@ -40,6 +48,12 @@ export default ({
   const refResizingTimeout = useRef<number | null>(null);
   const { height } = useResize(refResize, onResize || null);
   const [preppingDownload, setPreppingDownload] = useState<boolean>(false);
+
+  // Insert global style object into component and add theme values
+  const GlobalStyle = createGlobalStyle`
+  .font-embeddable {
+    font-family: ${theme.font.family};
+  }`;
 
   //Detect when the component is being resized by the user
   useEffect(() => {
@@ -84,57 +98,60 @@ export default ({
   useFont();
 
   return (
-    <div className="h-full relative font-embeddable text-sm flex flex-col">
-      {props.enableDownloadAsCSV || props.enableDownloadAsPNG ? (
-        <div className={`${!props.title ? 'h-[32px] w-full' : ''}`}>
-          {/* spacer to keep charts from overlaying download menu if no title*/}
-        </div>
-      ) : null}
-      <Spinner show={isLoading || preppingDownload} />
-      <div className="h-full relative flex flex-col" ref={refExportPNGElement}>
-        <Title title={props.title} />
-        <Description description={props.description} />
-
-        <div ref={refResize} className={twMerge(`relative grow flex flex-col`, className || '')}>
-          <div
-            className={twMerge('-z-0 flex flex-col', childContainerClassName || '')}
-            style={{ height: `${height}px` }}
-          >
-            {
-              height && props.results && (error || noData) ? (
-                <div className="h-full flex items-center justify-center font-embeddable text-sm">
-                  <WarningIcon />
-                  <div className="whitespace-pre-wrap p-4 max-w-sm text-sm">
-                    {error || '0 results'}
-                  </div>
-                </div>
-              ) : height ? (
-                children
-              ) : null // Ensure height is calculated before rendering charts to prevent libraries (e.g., ChartJS) from overflowing the container
-            }
+    <>
+      <GlobalStyle />
+      <div className="h-full relative font-embeddable text-sm flex flex-col">
+        {props.enableDownloadAsCSV || props.enableDownloadAsPNG ? (
+          <div className={`${!props.title ? 'h-[32px] w-full' : ''}`}>
+            {/* spacer to keep charts from overlaying download menu if no title*/}
           </div>
-          {isLoading && !data?.length && (
-            <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
-          )}
+        ) : null}
+        <Spinner show={isLoading || preppingDownload} />
+        <div className="h-full relative flex flex-col" ref={refExportPNGElement}>
+          <Title title={props.title} />
+          <Description description={props.description} />
+
+          <div ref={refResize} className={twMerge(`relative grow flex flex-col`, className || '')}>
+            <div
+              className={twMerge('-z-0 flex flex-col', childContainerClassName || '')}
+              style={{ height: `${height}px` }}
+            >
+              {
+                height && props.results && (error || noData) ? (
+                  <div className="h-full flex items-center justify-center font-embeddable text-sm">
+                    <WarningIcon />
+                    <div className="whitespace-pre-wrap p-4 max-w-sm text-sm">
+                      {error || '0 results'}
+                    </div>
+                  </div>
+                ) : height ? (
+                  children
+                ) : null // Ensure height is calculated before rendering charts to prevent libraries (e.g., ChartJS) from overflowing the container
+              }
+            </div>
+            {isLoading && !data?.length && (
+              <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
+            )}
+          </div>
         </div>
+        {!isLoading && (props.enableDownloadAsCSV || props.enableDownloadAsPNG) ? (
+          <DownloadMenu
+            csvOpts={{
+              chartName: props.title || 'chart',
+              props: {
+                ...props,
+                results: props.results,
+                prevResults: props.prevResults,
+              },
+            }}
+            enableDownloadAsCSV={props.enableDownloadAsCSV}
+            enableDownloadAsPNG={props.enableDownloadAsPNG}
+            pngOpts={{ chartName: props.title || 'chart', element: refExportPNGElement.current }}
+            preppingDownload={preppingDownload}
+            setPreppingDownload={setPreppingDownload}
+          />
+        ) : null}
       </div>
-      {!isLoading && (props.enableDownloadAsCSV || props.enableDownloadAsPNG) ? (
-        <DownloadMenu
-          csvOpts={{
-            chartName: props.title || 'chart',
-            props: {
-              ...props,
-              results: props.results,
-              prevResults: props.prevResults,
-            },
-          }}
-          enableDownloadAsCSV={props.enableDownloadAsCSV}
-          enableDownloadAsPNG={props.enableDownloadAsPNG}
-          pngOpts={{ chartName: props.title || 'chart', element: refExportPNGElement.current }}
-          preppingDownload={preppingDownload}
-          setPreppingDownload={setPreppingDownload}
-        />
-      ) : null}
-    </div>
+    </>
   );
 };
