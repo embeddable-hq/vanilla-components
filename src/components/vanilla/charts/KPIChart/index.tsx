@@ -4,7 +4,8 @@ import React, { useMemo } from 'react';
 import formatValue from '../../../util/format';
 import Container from '../../Container';
 import { WarningIcon } from '../../icons';
-import defaultTheme, { Theme } from '../../../../defaulttheme';
+import defaultTheme from '../../../../themes/defaulttheme';
+import { Theme } from '../../../../themes/theme';
 import { useOverrideConfig } from '@embeddable.com/react';
 
 type Props = {

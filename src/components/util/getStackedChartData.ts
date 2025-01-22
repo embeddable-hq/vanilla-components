@@ -2,7 +2,7 @@ import { DataResponse, Dataset, Dimension, Granularity, Measure } from '@embedda
 import { ChartData } from 'chart.js';
 
 import formatValue from '../util/format';
-import { Theme } from '../../defaulttheme';
+import { Theme } from '../../themes/theme';
 
 type DatasetsMeta = {
   [key: string]: boolean | string | number;

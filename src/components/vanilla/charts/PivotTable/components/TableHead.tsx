@@ -5,7 +5,8 @@ import { Column } from '../core/Column';
 import { SortCriteria } from '../../../../util/sortFn';
 import { SortDirection } from '../../../../../enums/SortDirection';
 import { SortDown, SortUp } from '../../../icons';
-import defaultTheme, { Theme } from '../../../../../defaulttheme';
+import defaultTheme from '../../../../../themes/defaulttheme';
+import { Theme } from '../../../../../themes/theme';
 import { useOverrideConfig } from '@embeddable.com/react';
 
 type Props = {

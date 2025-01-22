@@ -4,7 +4,8 @@ import React, { useEffect, useState } from 'react';
 
 import Container from '../../Container';
 import BarChart from '../BarChart/components/BarChart';
-import defaultTheme, { Theme } from '../../../../defaulttheme';
+import defaultTheme from '../../../../themes/defaulttheme';
+import { Theme } from '../../../../themes/theme';
 
 export type Props = {
   description?: string;

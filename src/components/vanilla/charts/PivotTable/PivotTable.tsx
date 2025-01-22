@@ -7,7 +7,8 @@ import formatValue from '../../../util/format';
 import { usePivotTable } from './core/usePivotTable';
 import { multisortFn, SortCriteria } from '../../../util/sortFn';
 import { Row } from './core/Row';
-import defaultTheme, { Theme } from '../../../../defaulttheme';
+import defaultTheme from '../../../../themes/defaulttheme';
+import { Theme } from '../../../../themes/theme';
 import { useOverrideConfig } from '@embeddable.com/react';
 
 type Props<T> = {

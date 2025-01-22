@@ -1,6 +1,6 @@
 import { Granularity } from '@embeddable.com/core';
 import { format } from 'date-fns';
-import { Theme } from '../../defaulttheme';
+import { Theme } from '../../themes/theme';
 
 export default function formatDateTooltips(lines: any[], granularity: Granularity, theme: Theme) {
   const linesList = lines.map((line) => line?.parsed?.x?.valueOf());

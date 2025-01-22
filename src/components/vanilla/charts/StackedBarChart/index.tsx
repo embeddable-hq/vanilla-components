@@ -21,7 +21,7 @@ import getStackedChartData, {
   PropsWithRequiredTheme,
 } from '../../../util/getStackedChartData';
 import Container from '../../Container';
-import { Theme } from '../../../../defaulttheme';
+import { Theme } from '../../../../themes/theme';
 import { useOverrideConfig } from '@embeddable.com/react';
 import { setChartJSDefaults } from '../../../util/chartjs/common';
 

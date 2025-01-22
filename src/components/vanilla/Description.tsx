@@ -1,5 +1,6 @@
 import React from 'react';
-import defaultTheme, { Theme } from '../../defaulttheme';
+import defaultTheme from '../../themes/defaulttheme';
+import { Theme } from '../../themes/theme';
 import { useOverrideConfig } from '@embeddable.com/react';
 
 type Props = {

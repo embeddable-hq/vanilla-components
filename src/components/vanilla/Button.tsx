@@ -1,7 +1,8 @@
 import React from 'react';
 import Spinner from './Spinner';
 import { useOverrideConfig } from '@embeddable.com/react';
-import defaultTheme, { Theme } from '../../defaulttheme';
+import defaultTheme from '../../themes/defaulttheme';
+import { Theme } from '../../themes/theme';
 
 type Props = {
   buttonLabel?: string;
