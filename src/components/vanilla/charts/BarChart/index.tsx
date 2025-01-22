@@ -7,7 +7,7 @@ import BarChart from './components/BarChart';
 import defaultTheme from '../../../../themes/defaulttheme';
 import { Theme } from '../../../../themes/theme';
 
-type Props = {
+export type Props = {
   clientContext?: any;
   description?: string;
   displayHorizontally?: boolean;

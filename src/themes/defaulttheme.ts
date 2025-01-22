@@ -1,6 +1,6 @@
 import { Theme } from './theme';
 
-const defaultTheme: Theme = {
+export const defaultTheme: Theme = {
   brand: {
     primary: '#6778DE',
     secondary: '#FF997C',
