@@ -1,0 +1,64 @@
+cubes:
+  - name: hiring_team_member
+    sql_table: "public.\"HiringTeamMember\""
+    data_source: default
+
+    joins:
+      - name: requisition
+        sql: "{CUBE}.\"requisitionId\" = {requisition}.id"
+        relationship: many_to_one
+
+      - name: role
+        sql: "{CUBE}.\"roleId\" = {role}.id"
+        relationship: many_to_one
+
+      - name: company_user
+        sql: "{CUBE}.\"companyUserId\" = {company_user}.id"
+        relationship: many_to_one
+
+      - name: user_invitation
+        sql: "{company_user}.userInvitationId = {user_invitation}.id"
+        relationship: many_to_one
+
+      - name: scalis_user
+        sql: "{user_invitation}.scalisUserId = {scalis_user}.id"
+        relationship: many_to_one
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      # - name: role_name
+      #   sql: "{role}.name"
+      #   type: string
+
+      # - name: scalis_user_firstname
+      #   sql: "{scalis_user}.firstName"
+      #   type: string
+
+      # - name: scalis_user_lastname
+      #   sql: "{scalis_user}.lastName"
+      #   type: string
+
+      # - name: scalis_user_fullname
+      #   sql: "CONCAT({scalis_user}.firstName, ' ', {scalis_user}.lastName)"
+      #   type: string
+
+    measures:
+      - name: count
+        type: count
+
+    # pre_aggregations:
+    #   - name: main
+    #     type: rollup
+    #     measures:
+    #       - count
+    #     dimensions:
+    #       - role_name
+    #       - scalis_user_fullname
+    #     partition_granularity: month
+
+    # default_sorting:
+    #   - requisition_jobname: asc

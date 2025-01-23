@@ -1,0 +1,75 @@
+cubes:
+  - name: candidate_application
+    sql_table: "public.\"CandidateApplication\""
+    data_source: default
+
+    joins:
+      - name: job_listing
+        sql: "{CUBE}.\"jobListingId\" = {job_listing}.id"
+        relationship: many_to_one
+
+      - name: template_stage
+        sql: "{CUBE}.\"templateStageId\" = {template_stage}.id"
+        relationship: many_to_one
+
+      - name: candidate_profile
+        sql: "{CUBE}.\"candidateProfileId\" = {candidate_profile}.id"
+        relationship: many_to_one
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: interviewscheduling
+        sql: "{CUBE}.\"interviewScheduling\""
+        type: string
+
+      - name: applicationcreationtype
+        sql: "{CUBE}.\"applicationCreationType\""
+        type: string
+
+      - name: viewedprofile
+        sql: "{CUBE}.\"viewedProfile\""
+        type: boolean
+
+      - name: applicationtype
+        sql: "{CUBE}.\"applicationType\""
+        type: string
+
+      - name: applicationstatus
+        sql: "{CUBE}.\"applicationStatus\""
+        type: string
+
+      - name: createdat
+        sql: "{CUBE}.\"createdAt\""
+        type: time
+
+      - name: lastupdatedstatusat
+        sql: "{CUBE}.\"lastUpdatedStatusAt\""
+        type: time
+
+      - name: updatedat
+        sql: "{CUBE}.\"updatedAt\""
+        type: time
+
+      - name: deleted
+        sql: deleted
+        type: time
+
+      - name: appliedat
+        sql: "{CUBE}.\"appliedAt\""
+        type: time
+
+      - name: applicationtimestamp
+        sql: "{CUBE}.\"applicationTimestamp\""
+        type: time
+
+      - name: viewedat
+        sql: "{CUBE}.\"viewedAt\""
+        type: time
+
+    measures:
+      - name: count
+        type: count

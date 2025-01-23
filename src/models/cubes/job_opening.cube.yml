@@ -1,0 +1,51 @@
+cubes:
+  - name: job_opening
+    sql_table: "public.\"JobOpening\""
+    data_source: default
+
+    joins:
+      - name: requisition
+        sql: "{CUBE}.\"jobrequisition\" = {Jobrequisition}.id"
+        relationship: Many_to_one
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: closedreason
+        sql: "{CUBE}.\"closedReason\""
+        type: string
+
+      - name: extopeningid
+        sql: "{CUBE}.\"extOpeningId\""
+        type: string
+
+      - name: openingtype
+        sql: "{CUBE}.\"openingType\""
+        type: string
+
+      - name: openingstatus
+        sql: "{CUBE}.\"openingStatus\""
+        type: string
+
+      - name: targethiredate
+        sql: "{CUBE}.\"targetHireDate\""
+        type: time
+
+      - name: closeddate
+        sql: "{CUBE}.\"closedDate\""
+        type: time
+
+      - name: startdate
+        sql: "{CUBE}.\"startDate\""
+        type: time
+
+      - name: filleddate
+        sql: "{CUBE}.\"filledDate\""
+        type: time
+
+    measures:
+      - name: count
+        type: count

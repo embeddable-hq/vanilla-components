@@ -1,0 +1,32 @@
+cubes:
+  - name: company_user
+    sql_table: "public.\"CompanyUser\""
+    data_source: default
+
+    joins: []
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: companyuserstatus
+        sql: "{CUBE}.\"companyUserStatus\""
+        type: string
+
+      - name: profileimage
+        sql: "{CUBE}.\"profileImage\""
+        type: string
+
+      - name: createdat
+        sql: "{CUBE}.\"createdAt\""
+        type: time
+
+      - name: updatedat
+        sql: "{CUBE}.\"updatedAt\""
+        type: time
+
+    measures:
+      - name: count
+        type: count

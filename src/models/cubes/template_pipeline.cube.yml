@@ -1,0 +1,51 @@
+cubes:
+  - name: template_pipeline
+    sql_table: "public.\"TemplatePipeline\""
+    data_source: default
+
+    joins:
+      - name: company_department
+        sql: "{CUBE}.\"companyDepartmentId\" = {company_department}.id"
+        relationship: many_to_one
+
+      - name: company_user
+        sql: "{CUBE}.\"companyUserId\" = {company_user}.id"
+        relationship: many_to_one
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: archived
+        sql: archived
+        type: boolean
+
+      - name: name
+        sql: name
+        type: string
+
+      - name: ghostpipeline
+        sql: "{CUBE}.\"ghostPipeline\""
+        type: boolean
+
+      - name: pipelinedused
+        sql: "{CUBE}.\"pipelinedUsed\""
+        type: boolean
+
+      - name: createdat
+        sql: "{CUBE}.\"createdAt\""
+        type: time
+
+      - name: updatedat
+        sql: "{CUBE}.\"updatedAt\""
+        type: time
+
+      - name: deletedat
+        sql: "{CUBE}.\"deletedAt\""
+        type: time
+
+    measures:
+      - name: count
+        type: count

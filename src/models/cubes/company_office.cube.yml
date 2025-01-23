@@ -1,0 +1,33 @@
+cubes:
+  - name: company_office
+    sql_table: "public.\"CompanyOffice\""
+    # sql_table: "CompanyOffice\""
+    data_source: scalis-dev
+
+    joins: []
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: officename
+        sql: "{CUBE}.\"officeName\""
+        type: string
+
+      - name: externalid
+        sql: "{CUBE}.\"externalId\""
+        type: string
+
+      - name: createdat
+        sql: "{CUBE}.\"createdAt\""
+        type: time
+
+      - name: updatedat
+        sql: "{CUBE}.\"updatedAt\""
+        type: time
+
+    measures:
+      - name: count
+        type: count

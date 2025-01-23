@@ -1,0 +1,23 @@
+cubes:
+  - name: job_pipeline
+    sql_table: "public.\"JobPipeline\""
+    data_source: default
+
+    joins:
+      - name: template_pipeline
+        sql: "{CUBE}.\"templatePipelineId\" = {template_pipeline}.id"
+        relationship: many_to_one
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: title
+        sql: title
+        type: string
+
+    measures:
+      - name: count
+        type: count

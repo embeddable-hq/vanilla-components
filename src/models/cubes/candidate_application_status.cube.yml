@@ -1,0 +1,35 @@
+cubes:
+  - name: candidate_application_status
+    sql_table: "public.\"CandidateApplicationStatus\""
+    data_source: default
+
+    joins:
+      - name: job_listing
+        sql: "{CUBE}.\"jobListingId\" = {job_listing}.id"
+        relationship: many_to_one
+
+      - name: candidate_application
+        sql: "{CUBE}.\"candidateApplicationId\" = {candidate_application}.id"
+        relationship: many_to_one
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: source
+        sql: source
+        type: string
+
+      - name: startedat
+        sql: "{CUBE}.\"startedAt\""
+        type: time
+
+      - name: completedat
+        sql: "{CUBE}.\"completedAt\""
+        type: time
+
+    measures:
+      - name: count
+        type: count

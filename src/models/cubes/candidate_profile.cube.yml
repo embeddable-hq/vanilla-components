@@ -1,0 +1,28 @@
+cubes:
+  - name: candidate_profile
+    sql_table: "public.\"CandidateProfile\""
+    data_source: default
+
+    joins: []
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: profiletype
+        sql: "{CUBE}.\"profileType\""
+        type: string
+
+      - name: createdat
+        sql: "{CUBE}.\"createdAt\""
+        type: time
+
+      - name: updatedat
+        sql: "{CUBE}.\"updatedAt\""
+        type: time
+
+    measures:
+      - name: count
+        type: count

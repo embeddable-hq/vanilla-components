@@ -1,0 +1,51 @@
+cubes:
+  - name: user_invitation
+    sql_table: "public.\"UserInvitation\""
+    data_source: default
+
+    joins:
+      - name: scalis_user
+        sql: "{CUBE}.\"scalisUserId\" = {scalis_user}.id"
+        relationship: many_to_one
+
+      - name: company_user
+        sql: "{CUBE}.\"companyUserId\" = {company_user}.id"
+        relationship: many_to_one
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: invitedas
+        sql: "{CUBE}.\"invitedAs\""
+        type: string
+
+      - name: verificationcode
+        sql: "{CUBE}.\"verificationCode\""
+        type: string
+
+      - name: email
+        sql: email
+        type: string
+
+      - name: invitationstatus
+        sql: "{CUBE}.\"invitationStatus\""
+        type: string
+
+      - name: createdat
+        sql: "{CUBE}.\"createdAt\""
+        type: time
+
+      - name: updatedat
+        sql: "{CUBE}.\"updatedAt\""
+        type: time
+
+      - name: deletedat
+        sql: "{CUBE}.\"deletedAt\""
+        type: time
+
+    measures:
+      - name: count
+        type: count
