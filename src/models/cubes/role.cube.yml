@@ -1,7 +1,7 @@
 cubes:
   - name: role
-    sql_table: "public.\"Role\""
-    data_source: default
+    sql_table: "\"Role\""
+    data_source: "scalis-dev"
 
     joins: []
 

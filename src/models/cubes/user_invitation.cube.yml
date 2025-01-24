@@ -1,7 +1,7 @@
 cubes:
   - name: user_invitation
-    sql_table: "public.\"UserInvitation\""
-    data_source: default
+    sql_table: "\"UserInvitation\""
+    data_source: "scalis-dev"
 
     joins:
       - name: scalis_user

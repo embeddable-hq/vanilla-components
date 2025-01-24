@@ -1,7 +1,7 @@
 cubes:
   - name: template_pipeline
-    sql_table: "public.\"TemplatePipeline\""
-    data_source: default
+    sql_table: "\"TemplatePipeline\""
+    data_source: "scalis-dev"
 
     joins:
       - name: company_department

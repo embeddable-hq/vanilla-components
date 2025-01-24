@@ -1,7 +1,7 @@
 cubes:
   - name: job_listing
-    sql_table: "public.\"JobListing\""
-    data_source: default
+    sql_table: "\"JobListing\""
+    data_source: "scalis-dev"
 
     joins: []
 

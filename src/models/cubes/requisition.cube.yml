@@ -1,7 +1,7 @@
 cubes:
   - name: requisition
-    sql_table: "public.\"Requisition\""
-    data_source: default
+    sql_table: "\"Requisition\""
+    data_source: "scalis-dev"
 
     joins:
       - name: company_department
@@ -92,15 +92,15 @@ cubes:
 
       - name: total_openings
         title: "Total Openings"
-        sql: "(SELECT COUNT(*) FROM public.\"JobOpening\" WHERE \"jobRequisitionId\" = {CUBE}.\"id\")"
+        sql: "(SELECT COUNT(*) FROM \"JobOpening\" WHERE \"jobRequisitionId\" = {CUBE}.\"id\")"
         type: number
 
       - name: filled_openings
         title: "Filled Openings"
-        sql: "(SELECT COUNT(*) FROM public.\"JobOpening\" WHERE \"jobRequisitionId\" = {CUBE}.\"id\" AND \"filledDate\" IS NOT NULL)"
+        sql: "(SELECT COUNT(*) FROM \"JobOpening\" WHERE \"jobRequisitionId\" = {CUBE}.\"id\" AND \"filledDate\" IS NOT NULL)"
         type: number
 
       - name: remaining_openings
         title: "Remaining Openings"
-        sql: "(SELECT COUNT(*) FROM public.\"JobOpening\" WHERE \"jobRequisitionId\" = {CUBE}.\"id\" AND \"filledDate\" IS NULL)"
+        sql: "(SELECT COUNT(*) FROM \"JobOpening\" WHERE \"jobRequisitionId\" = {CUBE}.\"id\" AND \"filledDate\" IS NULL)"
         type: number

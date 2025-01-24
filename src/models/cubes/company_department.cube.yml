@@ -1,7 +1,7 @@
 cubes:
   - name: company_department
-    sql_table: "public.\"CompanyDepartment\""
-    data_source: default
+    sql_table: "\"CompanyDepartment\""
+    data_source: "scalis-dev"
 
     joins: []
 

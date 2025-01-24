@@ -1,7 +1,6 @@
 cubes:
   - name: company_office
-    sql_table: "public.\"CompanyOffice\""
-    # sql_table: "CompanyOffice\""
+    sql_table: "\"CompanyOffice\""
     data_source: scalis-dev
 
     joins: []
