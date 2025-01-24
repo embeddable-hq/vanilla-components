@@ -24,7 +24,8 @@ export type Props = {
   onChange: (v: string) => void;
   searchProperty?: string;
   minDropdownWidth?: number;
-  property?: { name: string; title: string; nativeType: string; __type__: string };
+  property: { name: string; title: string; nativeType: string; __type__: string };
+  id?: { name: string; title: string; nativeType: string; __type__: string };
   title?: string;
   defaultValue?: string;
   placeholder?: string;
@@ -63,12 +64,12 @@ export default (props: Props) => {
   );
 
   const set = useCallback(
-    (value: string) => {
+    (value: string, id: string) => {
       performSearch('');
 
       setValue(value);
 
-      props.onChange(value);
+      props.onChange({ value, id });
 
       clearTimeout(debounce);
     },
@@ -95,7 +96,10 @@ export default (props: Props) => {
             onClick={() => {
               setFocus(false);
               setTriggerBlur(false);
-              set(o[props.property?.name || ''] || '');
+              set(
+                o[props.property?.name || ''] || '', 
+                o[props.id?.name || ''] || ''
+              );
             }}
             className={`flex items-center min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
               value === o[props.property?.name || ''] ? 'bg-black/5' : ''
