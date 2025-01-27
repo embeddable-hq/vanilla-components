@@ -46,10 +46,6 @@ cube(`content_host`, {
     content_organisation: {
       relationship: 'many_to_one',
       sql: `${CUBE}.organisation_sid = ${content_organisation}.organisation_sid`
-    },
-    content_venue_detail: {
-      relationship: 'many_to_one',
-      sql: `${CUBE}.venue_sid = ${content_venue_detail}.venue_sid`
     }
   }
 });

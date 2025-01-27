@@ -1,11 +1,13 @@
 import React from 'react';
-import { Inputs } from './SmartifySeparator.emb';
 
-// If you want to extend this component later to accept dynamic spacing or color, you can define props interface here
-interface SpacingComponentProps {
-}
 
-export default (props: Inputs) => {
+type Props = {
+    spacing?: number,
+    thickness?: number,
+    color?: string;
+};
+
+export default (props: Props) => {
     const {thickness, spacing, color} = props;
     
     return (

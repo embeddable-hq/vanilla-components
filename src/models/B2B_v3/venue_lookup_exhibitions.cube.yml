@@ -5,8 +5,9 @@ cubes:
     SELECT 
       exhibition_sid
       ,exhibition_name
-      ,CAST(start_date AS TIMESTAMP) as start_date
-      ,CAST(end_date AS TIMESTAMP) as end_date
+      ,CAST(start_date AS TIMESTAMP) AS start_date
+      ,CAST(end_date AS TIMESTAMP) AS end_date
+      ,CASE WHEN CAST(start_date AS TIMESTAMP) <= CAST(CURRENT_DATE() AS TIMESTAMP) AND CAST(end_date AS TIMESTAMP) >= CAST(CURRENT_DATE() AS TIMESTAMP) THEN 'Active' ELSE 'Inactive' END AS exhibition_state
     FROM `smartify-cc94e.smartify_lookup_tables.exhibition_lookup`
   
   dimensions:
@@ -31,3 +32,7 @@ cubes:
     - name: exhibition_start
       type: time
       sql: start_date
+
+    - name: exhibition_state
+      type: string
+      sql: exhibition_state

@@ -17,3 +17,4 @@ cubes:
     - name: artist_name
       type: string
       sql: artist_name
+      title: "Artist or Maker"

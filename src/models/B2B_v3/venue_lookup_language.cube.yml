@@ -1,0 +1,37 @@
+cubes:
+- name: venue_lookup_language
+  data_source: default
+  sql: >
+    select
+      device_language
+      ,device_language_code
+      ,device_region_code
+      ,region_name
+      ,language_name
+    from `smartify-cc94e.smartify_lookup_tables.device_language_region`
+
+  dimensions:
+    - name: device_language
+      type: string
+      sql: device_language
+      primaryKey: true
+      shown: false
+
+    - name: device_language_code
+      type: string
+      sql: device_language_code
+      shown: false
+
+    - name: device_region_code
+      type: string
+      sql: device_region_code
+      shown: false
+
+    - name: region_name
+      type: string
+      sql: region_name
+      shown: false
+
+    - name: language_name 
+      type: string
+      sql: language_name

@@ -1,5 +1,5 @@
 import React from "react";
-import H2Title from "../../vanilla/H2Title";
+import H3Title from "../../vanilla/H3Title";
 
 
 type Props = {
@@ -12,7 +12,7 @@ export default (props: Props) => {
 
     return (
         <div style={{ marginTop: `${spacing}px` }}>
-            <H2Title title={title} />
+            <H3Title title={title} />
         </div>
     );
 };

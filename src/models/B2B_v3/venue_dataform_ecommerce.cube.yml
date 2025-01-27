@@ -110,10 +110,12 @@ cubes:
 
     - name: item_view
       type: sum
+      title: Product View
       sql: case when event_name = "view_item" then 1 else 0 end
 
     - name: item_impression
       type: sum
+      title: Impressions
       sql: case when event_name = "view_item_list" then 1 else 0 end
 
     - name: checkout_to_purchase
@@ -125,6 +127,12 @@ cubes:
     - name: cart_to_purchase
       type: number
       sql: CASE WHEN {add_to_cart} = 0 THEN 0 ELSE ROUND(({purchase} / NULLIF({add_to_cart}, 0) * 100), 2) END
+      meta:
+        suffix: " %"
+
+    - name: cart_to_checkout
+      type: number
+      sql: CASE WHEN {add_to_cart} = 0 THEN 0 ELSE ROUND(({begin_checkout} / NULLIF({add_to_cart}, 0) * 100), 2) END
       meta:
         suffix: " %"
 
