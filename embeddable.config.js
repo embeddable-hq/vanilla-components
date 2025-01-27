@@ -3,6 +3,7 @@ import react from '@embeddable.com/sdk-react';
 
 export default defineConfig({
   plugins: [react],
+  lifecycleHooksFile: './lifecycle.config.ts',
 
   // 
   // Uncomment for US deployments
