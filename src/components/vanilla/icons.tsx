@@ -41,7 +41,7 @@ export const SortUp = (props: { fill: string }) => (
 
 export const ChevronLeft = ({
   className,
-  onClick
+  onClick,
 }: {
   className?: string;
   onClick?: MouseEventHandler<SVGSVGElement>;
@@ -66,7 +66,7 @@ export const ChevronLeft = ({
 
 export const ChevronRight = ({
   className,
-  onClick
+  onClick,
 }: {
   className?: string;
   onClick?: MouseEventHandler<SVGSVGElement>;
@@ -91,7 +91,7 @@ export const ChevronRight = ({
 
 export const ChevronDown = ({
   className,
-  onClick
+  onClick,
 }: {
   className?: string;
   onClick?: MouseEventHandler<SVGSVGElement>;
@@ -116,7 +116,7 @@ export const ChevronDown = ({
 
 export const CalendarIcon = ({
   className,
-  onClick
+  onClick,
 }: {
   className?: string;
   onClick?: MouseEventHandler<SVGSVGElement>;

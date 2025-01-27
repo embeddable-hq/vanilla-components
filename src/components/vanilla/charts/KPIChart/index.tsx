@@ -64,6 +64,8 @@ export default (props: Props) => {
 
   const fontSize = props.fontSize || theme.charts.kpi.font.size;
   const metaFontSize = Math.max(fontSize / 3, theme.font.size);
+  const fontColor = theme.font.colorDark;
+  const negativeColor = theme.charts.kpi.font.negativeColor;
 
   if (results?.error) {
     return (
@@ -77,11 +79,11 @@ export default (props: Props) => {
   return (
     <Container {...props} className="overflow-y-hidden">
       <div
-        className={`flex flex-col h-full items-center justify-center font-embeddable text-[#333942] text-center leading-tight font-bold relative`}
+        className={`flex flex-col h-full items-center justify-center font-embeddable text-center leading-tight font-bold relative`}
       >
         {dimension ? (
           <>
-            <div style={{ fontSize: `${fontSize}px` }}>
+            <div className={`text-[${fontColor}]`} style={{ fontSize: `${fontSize}px` }}>
               <p>{results?.data?.[0]?.[dimension.name]}</p>
             </div>
             {displayMetric && metric && (
@@ -89,7 +91,7 @@ export default (props: Props) => {
                 className={`font-normal`}
                 style={{
                   fontSize: `${metaFontSize}px`,
-                  color: theme.font.color,
+                  color: fontColor,
                 }}
               >
                 {`${metric.title}: ${formatValue(`${results?.data?.[0]?.[metric.name]}`, {
@@ -103,14 +105,14 @@ export default (props: Props) => {
           </>
         ) : (
           <>
-            <div style={{ fontSize: `${fontSize}px` }}>
+            <div className={`text-[${fontColor}]`} style={{ fontSize: `${fontSize}px` }}>
               <p>{`${prefix || ''}${n || 0}${suffix || ''}`}</p>
             </div>
             {prevTimeFilter?.to && (
               <div
                 className="font-normal flex flex-wrap justify-center items-center text-center"
                 style={{
-                  color: percentage && percentage < 0 ? '#FF6B6C' : '#3BA99C',
+                  color: percentage && percentage < 0 ? negativeColor : fontColor,
                   fontSize: `${metaFontSize}px`,
                 }}
               >
@@ -125,7 +127,7 @@ export default (props: Props) => {
                 {showPrevPeriodLabel &&
                   prevTimeFilter?.relativeTimeString &&
                   prevTimeFilter.relativeTimeString.length > 0 && (
-                    <span style={{ color: theme.font.color }}>
+                    <span style={{ color: fontColor }}>
                       &nbsp;
                       {`vs ${prevTimeFilter.relativeTimeString}`}
                     </span>

@@ -1,13 +1,15 @@
 export type ChartType =
   | 'bar'
+  | 'bubble'
+  | 'doughnut'
+  | 'kpi'
   | 'line'
   | 'pie'
-  | 'doughnut'
-  | 'radar'
+  | 'pivotTable'
   | 'polarArea'
-  | 'bubble'
+  | 'radar'
   | 'scatter'
-  | 'kpi';
+  | 'table';
 
 export type Theme = {
   brand: {
@@ -35,8 +37,11 @@ export type Theme = {
   };
   font: {
     color: string;
+    colorDark: string;
+    colorLight: string;
     family: string;
     size: number;
+    weight: number;
     imports: {
       [key: string]: string;
     };

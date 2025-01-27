@@ -1,15 +1,19 @@
+/* Tailwind Imports */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Keep MacOs from making web fonts look weirdly bolded */
 * {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Handle some z-indexing issues */
 :host(.on-top) {
   z-index: 1;
 }
 
+/* Every component has an inside-card class */
 :host(.inside-card) {
   /*  box-shadow: 0px 1px 4px rgba(28, 28, 33, 0.2);*/
   border-radius: 12px;
@@ -17,24 +21,7 @@
   border: 1px solid #ddd;
 }
 
-/*
-.rdp-root {
-  --rdp-accent-background-color	The accent background color used for selected days and UI elements.
-  --rdp-accent-color:	The accent color used for selected days and UI elements.
-  --rdp-day_button-border-radius	The border radius of the day cells.
-  --rdp-outside-opacity	The opacity of the days outside the current month.
-  --rdp-range_end-background	Used for the background of the end of the selected range.
-  --rdp-range_end-color	The color of the range text at the end of the range.
-  --rdp-range_end-date-background-color	The background color of the date at the end of the selected range.
-  --rdp-range_middle-background-color	The color of the background for days in the middle of a range.
-  --rdp-range_middle-foreground-color	The color of the text for days in the middle of a range.
-  --rdp-range_start-background	Used for the background of the start of the selected range.
-  --rdp-range_start-color	The color of the range text at the start of the range.
-  --rdp-range_start-date-background-color	The background color of the date at the start of the selected range.
-  --rdp-today-color	The color of today's date.
-  --rdp-week_number-border-radius	The border radius of the week number.
-}
-*/
+/* Day Picker */
 .rdp-root {
   --rdp-accent-background-color: #f3f4f6 !important;
   --rdp-accent-color: #7d899b !important;
@@ -51,11 +38,9 @@
   --rdp-today-color: #111111 !important;
   --rdp-week_number-border-radius: 4px !important;
 }
-
 .rdp-root .rdp-today:not(.rdp-outside) {
   font-weight: 700 !important;
 }
-
 .rdp-day_selected,
 .rdp-day_selected:focus-visible,
 .rdp-day_selected:hover {
@@ -63,52 +48,27 @@
   opacity: 1 !important;
   background-color: var(--rdp-accent-color) !important;
 }
-
 .rdp .rdp-tbody {
   --rdp-accent-color: #f3f4f6 !important;
 }
-
 .rdp .rdp-tbody .rdp-day_range_start,
 .rdp .rdp-tbody .rdp-day_range_end {
   --rdp-accent-color: #7d899b !important;
   border-radius: 4px !important;
   --rdp-selected-color: white !important;
 }
-
 .rdp-root .rdp-range_start .rdp-day_button {
   border-radius: 4px 0px 0px 4px !important;
 }
-
 .rdp .rdp-tbody {
   --rdp-selected-color: #7d899b !important;
 }
 
-::-webkit-scrollbar {
-  height: 6px;
-  width: 6px;
-  background: #eee;
-}
-
-::-webkit-scrollbar-thumb:vertical {
-  background: #444;
-  border-radius: 6px;
-}
-
+/* Spinner */
 .spinner {
   -webkit-animation: spin 500ms ease-in-out infinite;
   -moz-animation: spin 500ms ease-in-out infinite;
   animation: spin 500ms ease-in-out infinite;
-}
-
-@-moz-keyframes spin {
-  100% {
-    -moz-transform: rotate(360deg);
-  }
-}
-@-webkit-keyframes spin {
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
 }
 @keyframes spin {
   100% {
@@ -116,13 +76,6 @@
     transform: rotate(360deg);
   }
 }
-
-::-webkit-scrollbar {
-  height: 6px;
-  width: 6px;
-  background: #eee;
-}
-
 .skeleton-box::after {
   position: absolute;
   top: 0;
@@ -140,18 +93,13 @@
   animation: shimmer 2s infinite;
   content: '';
 }
-
 @keyframes shimmer {
   100% {
     transform: translateX(100%);
   }
 }
 
-::-webkit-scrollbar-thumb:vertical {
-  background: #444;
-  border-radius: 6px;
-}
-
+/* Handle Text Overflow Cases */
 .text-overflow-dynamic-container {
   position: relative;
   max-width: 100%;
@@ -161,7 +109,6 @@
   display: flex;
   vertical-align: text-bottom !important;
 }
-
 .text-overflow-dynamic-ellipsis {
   position: absolute;
   white-space: nowrap;
@@ -176,7 +123,6 @@
   top: 0;
   left: 0;
 }
-
 .text-overflow-dynamic-container:after,
 .text-overflow-dynamic-ellipsis:after {
   content: '-';
@@ -185,11 +131,11 @@
   width: 0;
 }
 
+/* Multi-Selects */
 .multiSelectContainer {
   display: flex;
   flex-wrap: wrap;
 }
-
 .multiselectItem {
   margin-left: 4px;
   background: #f1f1f1;
@@ -202,30 +148,26 @@
   margin: 0px 4px 4px 0px;
   justify-content: center;
 }
-
 .multiSelectInner {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
 
+/* Input Placeholder */
+input::placeholder,
 [placeholder] {
   text-overflow: ellipsis;
   padding-right: 1.5rem;
 }
-::-webkit-input-placeholder {
-  /* Chrome/Opera/Safari */
-  text-overflow: ellipsis;
+
+/* Theme Related CSS Values */
+.font-embeddable {
+  color: var(--embeddable-font-color);
+  font-family: var(--embeddable-font-family);
+  font-size: var(--embeddable-font-size);
+  font-weight: var(--embeddable-font-weight);
 }
-::-moz-placeholder {
-  /* Firefox 19+ */
-  text-overflow: ellipsis;
-}
-:-ms-input-placeholder {
-  /* IE 10+ */
-  text-overflow: ellipsis;
-}
-:-moz-placeholder {
-  /* Firefox 18- */
-  text-overflow: ellipsis;
+.embeddable-table-header {
+  color: var(--embeddable-table-header-color);
 }
