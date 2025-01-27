@@ -1,0 +1,22 @@
+cubes:
+- name: venue_lookup_experiences
+  data_source: default
+  sql: >
+    select
+      experience_id
+      ,experience_name
+      ,experience_status
+      ,organisation_sid
+      ,venue_sid
+    from `smartify-cc94e.smartify_lookup_tables.experiences_lookup`
+
+  dimensions:
+    - name: experience_id
+      type: string
+      sql: experience_id
+      primaryKey: true
+      shown: false
+
+    - name: experience_name
+      type: string
+      sql: experience_name  

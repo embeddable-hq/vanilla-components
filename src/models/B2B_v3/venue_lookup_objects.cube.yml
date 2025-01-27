@@ -19,10 +19,12 @@ cubes:
 
     - name: object_name
       type: string
+      title: "Name"
       sql: art_default_name
 
     - name: object_category
       type: string
+      title: "Category"
       sql: art_category
 
     - name: artist_id

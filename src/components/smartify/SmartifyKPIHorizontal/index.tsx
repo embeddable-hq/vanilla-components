@@ -78,7 +78,10 @@ export default (props: Props) => {
               <p>{`${totalTitle || ''}`}</p>
             </div>
             <div style={{ fontSize: `${fontSize}px` }}>
-              <p>{`${prefix_one || ''}${total.value || 0}${suffix_one || ''}`}</p>
+              <p>
+                {`${prefix_one || ''}${total.value || 0}`}
+                <span style={{fontSize: `${metaFontSize}px`}}>{`${suffix_one || ''}`}</span>
+              </p>
             </div>
             {prevTimeFilter?.to && (
               <div
@@ -111,7 +114,10 @@ export default (props: Props) => {
               <p>{`${usersTitle || ''}`}</p>
             </div>
             <div style={{ fontSize: `${fontSize}px` }}>
-              <p>{`${prefix_two || ''}${users.value || 0}${suffix_two || ''}`}</p>
+              <p>
+                {`${prefix_two || ''}${users.value || 0}`}
+                <span style={{fontSize: `${metaFontSize}px`}}>{`${suffix_two || ''}`}</span>
+              </p>
             </div>
             {prevTimeFilter?.to && (
               <div

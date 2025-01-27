@@ -60,6 +60,7 @@ cubes:
     - name: object_id
       type: string
       sql: object_id
+      title: "SID"
       primaryKey: true
       shown: true
 

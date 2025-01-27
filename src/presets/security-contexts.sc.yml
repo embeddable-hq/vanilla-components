@@ -15,6 +15,11 @@
   securityContext:
     organisation_id: org_towerbridge
     venue_id:
+    
+- name: World Press Photo User
+  securityContext:
+    organisation_id: org_wpp
+    venue_id:
 
 - name: Acropolis Museum User
   securityContext:
@@ -43,6 +48,11 @@
     venue_id: 
       - venue_saam
       - venue_snpg
+
+- name: Qatar
+  securityContext:
+    organisation_id: org_qatarmuseums
+    venue_id: 
 
 - name: Louvre User
   securityContext:

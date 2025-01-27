@@ -95,8 +95,14 @@ export default (props: Props) => {
           </>
         ) : (
           <>
-            <div style={{ fontSize: `${fontSize}px` }}>
+            {/* <div style={{ fontSize: `${fontSize}px` }}>
               <p>{`${prefix || ''}${n || 0}${suffix || ''}`}</p>
+            </div> */}
+            <div style={{ fontSize: `${fontSize}px` }}>
+              <p>
+                {`${prefix || ''}${n || 0}`}
+                <span style={{fontSize: `${metaFontSize}px`}}>{`${suffix || ''}`}</span>
+              </p>
             </div>
             {prevTimeFilter?.to && (
               <div

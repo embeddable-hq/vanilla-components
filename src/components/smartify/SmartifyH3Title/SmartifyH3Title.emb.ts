@@ -2,8 +2,8 @@ import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/
 import Component from './index';
 
 export const meta = {
-    name: 'SmartifyH2Title',
-    label: 'Smartify H2 Title',
+    name: 'SmartifyH3Title',
+    label: 'Smartify H3 Title',
     category: 'Smartify: Report Fortmatting',
     inputs: [
         {

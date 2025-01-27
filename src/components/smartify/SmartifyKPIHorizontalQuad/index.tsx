@@ -15,15 +15,19 @@ type Props = {
   oneTitle?: string;
   twoTitle?: string;
   threeTitle?: string;
+  fourTitle?: string;
   prefix_one?: string;
   suffix_one?: string;
   prefix_two?: string;
   suffix_two?: string;
   prefix_three?: string;
   suffix_three?: string;
+  prefix_four?: string;
+  suffix_four?: string;
   metricOne: Measure;
   metricTwo: Measure;
   metricThree: Measure;
+  metricFour: Measure;
   dps?: number;
   fontSize?: number;
   showPrevPeriodLabel?: boolean;
@@ -37,9 +41,11 @@ export default (props: Props) => {
     metricOne,
     metricTwo,
     metricThree,
+    metricFour,
     oneTitle,
     twoTitle,
     threeTitle,
+    fourTitle,
     dps,
     prefix_one,
     suffix_one,
@@ -47,6 +53,8 @@ export default (props: Props) => {
     suffix_two,
     prefix_three,
     suffix_three,
+    prefix_four,
+    suffix_four,
     showPrevPeriodLabel,
   } = props;
 
@@ -64,6 +72,7 @@ export default (props: Props) => {
   const m_one = useMemo(() => calculateMetric(metricOne), [results, prevResults, metricOne, dps]);
   const m_two = useMemo(() => calculateMetric(metricTwo), [results, prevResults, metricTwo, dps]);
   const m_three = useMemo(() => calculateMetric(metricThree), [results, prevResults, metricThree, dps]);
+  const m_four = useMemo(() => calculateMetric(metricFour), [results, prevResults, metricFour, dps]);
 
   const fontSize = props.fontSize || parseInt(LARGE_FONT_SIZE);
   const metaFontSize = Math.max(fontSize / 3, parseInt(REGULAR_FONT_SIZE));
@@ -82,14 +91,14 @@ export default (props: Props) => {
       <div className="flex flex-col h-full items-center justify-center font-embeddable text-[#333942] text-center leading-tight font-bold relative">
         <div className="flex flex-row justify-between w-full">
           {/* Metric One */}
-          <div className="flex flex-col items-center" style={{ width: '50%' }}>
+          <div className="flex flex-col items-center" style={{ width: '25%' }}>
             <div style={{ fontSize: `${metaFontSize}px`, marginBottom: '8px' }}>
               <p>{`${oneTitle || ''}`}</p>
             </div>
             <div style={{ fontSize: `${fontSize}px` }}>
               <p>
                 {`${prefix_one || ''}${m_one.value || 0}`}
-                <span style={{fontSize: `${metaFontSize}px`}}>{`${suffix_one || ''}`}</span>
+                <span style={{ fontSize: `${metaFontSize}px` }}>{`${suffix_one || ''}`}</span>
               </p>
             </div>
             {prevTimeFilter?.to && (
@@ -118,14 +127,14 @@ export default (props: Props) => {
             )}
           </div>
           {/* Metric Two */}
-          <div className="flex flex-col items-center" style={{ width: '50%' }}>
+          <div className="flex flex-col items-center" style={{ width: '25%' }}>
             <div style={{ fontSize: `${metaFontSize}px`, marginBottom: '8px' }}>
               <p>{`${twoTitle || ''}`}</p>
             </div>
             <div style={{ fontSize: `${fontSize}px` }}>
               <p>
                 {`${prefix_two || ''}${m_two.value || 0}`}
-                <span style={{fontSize: `${metaFontSize}px`}}>{`${suffix_two || ''}`}</span>
+                <span style={{ fontSize: `${metaFontSize}px` }}>{`${suffix_two || ''}`}</span>
               </p>
             </div>
             {prevTimeFilter?.to && (
@@ -154,14 +163,14 @@ export default (props: Props) => {
             )}
           </div>
           {/* Metric Three */}
-          <div className="flex flex-col items-center" style={{ width: '50%' }}>
+          <div className="flex flex-col items-center" style={{ width: '25%' }}>
             <div style={{ fontSize: `${metaFontSize}px`, marginBottom: '8px' }}>
               <p>{`${threeTitle || ''}`}</p>
             </div>
             <div style={{ fontSize: `${fontSize}px` }}>
               <p>
                 {`${prefix_three || ''}${m_three.value || 0}`}
-                <span style={{fontSize: `${metaFontSize}px`}}>{`${suffix_three || ''}`}</span>
+                <span style={{ fontSize: `${metaFontSize}px` }}>{`${suffix_three || ''}`}</span>
               </p>
             </div>
             {prevTimeFilter?.to && (
@@ -182,6 +191,42 @@ export default (props: Props) => {
                   {m_three.percentage === Infinity
                     ? '∞'
                     : `${formatValue(`${Math.abs(m_three.percentage || 0)}`, { type: 'number', dps })}%`}
+                </span>
+                {showPrevPeriodLabel && prevTimeFilter?.relativeTimeString && (
+                  <span style={{ color: `${LIGHTEST_FONT}` }}>&nbsp;vs {prevTimeFilter.relativeTimeString}</span>
+                )}
+              </div>
+            )}
+          </div>
+          {/* Metric Four */}
+          <div className="flex flex-col items-center" style={{ width: '25%' }}>
+            <div style={{ fontSize: `${metaFontSize}px`, marginBottom: '8px' }}>
+              <p>{`${fourTitle || ''}`}</p>
+            </div>
+            <div style={{ fontSize: `${fontSize}px` }}>
+              <p>
+                {`${prefix_four || ''}${m_four.value || 0}`}
+                <span style={{ fontSize: `${metaFontSize}px` }}>{`${suffix_four || ''}`}</span>
+              </p>
+            </div>
+            {prevTimeFilter?.to && (
+              <div
+                className="font-normal text-center"
+                style={{
+                  color: m_four.percentage && m_four.percentage < 0 ? '#FF6B6C' : '#3BA99C',
+                  fontSize: `${metaFontSize}px`,
+                  whiteSpace: 'nowrap',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                }}
+              >
+                <Chevron
+                  className={`${m_four.percentage && m_four.percentage < 0 ? 'rotate-180' : ''} h-[20px] w-[9px] min-w-[9px] mr-1.5`}
+                />
+                <span>
+                  {m_four.percentage === Infinity
+                    ? '∞'
+                    : `${formatValue(`${Math.abs(m_four.percentage || 0)}`, { type: 'number', dps })}%`}
                 </span>
                 {showPrevPeriodLabel && prevTimeFilter?.relativeTimeString && (
                   <span style={{ color: `${LIGHTEST_FONT}` }}>&nbsp;vs {prevTimeFilter.relativeTimeString}</span>

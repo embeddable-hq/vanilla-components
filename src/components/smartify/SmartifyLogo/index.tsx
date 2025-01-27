@@ -1,13 +1,12 @@
 import React from 'react';
 
-import { Inputs } from './SmartifyLogo.emb';
+//import { Inputs } from './SmartifyLogo.emb';
 
-// Define props interface to include a url string
-interface LogoComponentProps {
-  url: string;
-}
+type Props = {
+  logoUrl?: string;
+};
 
-export default (props: Inputs) => {
+export default (props: Props) => {
   const { logoUrl } = props;
 
   return (

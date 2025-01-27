@@ -1,11 +1,10 @@
 import React from 'react';
-import { Inputs } from './SmartifySpacing.emb';
 
-// If you want to extend this component later to accept dynamic spacing or color, you can define props interface here
-interface SpacingComponentProps {
-}
+type Props = {
+    spacing?: number;
+};
 
-export default (props: Inputs) => {
+export default (props: Props) => {
     const {spacing} = props;
     
     return (
