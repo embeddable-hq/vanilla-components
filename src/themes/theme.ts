@@ -66,7 +66,11 @@ export type Theme = {
   };
   svg: {
     fill: string;
+    fillBkg: string;
+    fillDark: string;
+    fillLight: string;
     stroke: string;
+    strokeDark: string;
   };
 };
 
