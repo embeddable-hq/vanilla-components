@@ -64,6 +64,10 @@ export type Theme = {
       selected: string;
     };
   };
+  svg: {
+    fill: string;
+    stroke: string;
+  };
 };
 
 type ThemeDeepPartial<T> = {

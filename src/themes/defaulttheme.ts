@@ -89,6 +89,10 @@ export const defaultTheme: Theme = {
       selected: '#F3F4F6',
     },
   },
+  svg: {
+    fill: '#333942',
+    stroke: '#959CA8',
+  },
 };
 
 export default defaultTheme;
