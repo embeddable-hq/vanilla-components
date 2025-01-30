@@ -166,49 +166,49 @@ export const CalendarIcon = ({
       <g clipPath="url(#clip0_137_1694)">
         <path
           d="M2.70446 3.36737C2.35264 3.36737 2.01523 3.50713 1.76646 3.7559C1.51769 4.00468 1.37793 4.34208 1.37793 4.6939V17.2959C1.37793 17.6477 1.51769 17.9852 1.76646 18.2339C2.01523 18.4827 2.35264 18.6225 2.70446 18.6225H17.2963C17.6481 18.6225 17.9856 18.4827 18.2343 18.2339C18.483 17.9852 18.6228 17.6477 18.6228 17.2959V4.6939C18.6228 4.34208 18.483 4.00468 18.2343 3.7559C17.9856 3.50713 17.6481 3.36737 17.2963 3.36737H14.6432"
-          stroke="#101010"
+          stroke={theme.svg.strokeDark}
           strokeWidth="1.3"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M5.35742 1.37756V5.35716"
-          stroke="#101010"
+          stroke={theme.svg.strokeDark}
           strokeWidth="1.3"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M14.6436 1.37756V5.35716"
-          stroke="#101010"
+          stroke={theme.svg.strokeDark}
           strokeWidth="1.3"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M5.35742 3.36737H11.9901"
-          stroke="#101010"
+          stroke={theme.svg.strokeDark}
           strokeWidth="1.3"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M13.3164 8.67349V14.6426"
-          stroke="#101010"
+          stroke={theme.svg.strokeDark}
           strokeWidth="1.3"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M11.3271 10.1658H11.8246C12.6487 10.1658 13.3168 9.49765 13.3168 8.67349"
-          stroke="#101010"
+          stroke={theme.svg.strokeDark}
           strokeWidth="1.3"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M15.3066 14.6429H11.3271"
-          stroke="#101010"
+          stroke={theme.svg.strokeDark}
           strokeWidth="1.3"
           strokeLinecap="round"
           strokeLinejoin="round"
