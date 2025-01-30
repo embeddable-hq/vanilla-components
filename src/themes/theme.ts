@@ -71,6 +71,7 @@ export type Theme = {
     fillLight: string;
     stroke: string;
     strokeDark: string;
+    strokeLight: string;
   };
 };
 

@@ -90,12 +90,13 @@ export const defaultTheme: Theme = {
     },
   },
   svg: {
-    fillBkg: 'white',
+    fillBkg: '#FFFFFF',
     fill: '#333942',
     fillDark: '#1D1E22',
     fillLight: '#474752',
     stroke: '#959CA8',
     strokeDark: '#101010',
+    strokeLight: '#474752',
   },
 };
 
