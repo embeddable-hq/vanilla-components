@@ -16,6 +16,18 @@ export type Theme = {
     primary: string;
     secondary: string;
   };
+  buttons: {
+    colors: {
+      disabled: string;
+      hoverBorder: string;
+      pressed: string;
+    };
+  };
+  borders: {
+    colors: {
+      primary: string;
+    };
+  };
   charts: {
     colors: string[];
     options: {
@@ -44,6 +56,12 @@ export type Theme = {
     weight: number;
     imports: {
       [key: string]: string;
+    };
+  };
+  inputs: {
+    colors: {
+      hover: string;
+      selected: string;
     };
   };
 };

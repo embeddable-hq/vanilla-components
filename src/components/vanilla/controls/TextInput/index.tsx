@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import Container from '../../Container';
 import { ClearIcon } from '../../icons';
+import { Theme } from '../../../../themes/theme';
+import { useOverrideConfig } from '@embeddable.com/react';
+import defaultTheme from '../../../../themes/defaulttheme';
 
 type Props = {
   onChange: (v: string) => void;
@@ -16,6 +19,13 @@ export default (props: Props) => {
   const ref = useRef<HTMLInputElement | null>(null);
   const [value, setValue] = useState(props.value);
 
+  // Get theme for use in component
+  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
+  let { theme } = overrides;
+  if (!theme) {
+    theme = defaultTheme;
+  }
+
   useEffect(() => {
     setValue(props.value);
   }, [props.value]);
@@ -28,11 +38,13 @@ export default (props: Props) => {
     timeout = window.setTimeout(() => {
       props.onChange(e.target.value);
     }, 1000);
-  }
+  };
 
   return (
     <Container title={props.title}>
-      <div className="w-full relative rounded-xl bg-white border border-[#DADCE1] pr-8 h-10">
+      <div
+        className={`w-full relative rounded-xl bg-white border border-[${theme.borders.colors.primary}] pr-8 h-10`}
+      >
         <input
           ref={ref}
           placeholder={props.placeholder}

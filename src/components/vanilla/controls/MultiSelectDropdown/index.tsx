@@ -1,5 +1,5 @@
 import { DataResponse } from '@embeddable.com/core';
-import { useEmbeddableState } from '@embeddable.com/react';
+import { useEmbeddableState, useOverrideConfig } from '@embeddable.com/react';
 import React, {
   ReactNode,
   useCallback,
@@ -16,6 +16,8 @@ import CheckboxEmpty from '../../../icons/CheckboxEmpty';
 import Container from '../../Container';
 import Spinner from '../../Spinner';
 import { ChevronDown, ClearIcon } from '../../icons';
+import { Theme } from '../../../../themes/theme';
+import defaultTheme from '../../../../themes/defaulttheme';
 
 export type Props = {
   className?: string;
@@ -44,6 +46,13 @@ export default (props: Props) => {
   const [_, setServerSearch] = useEmbeddableState({
     [props.searchProperty || 'search']: '',
   }) as [Record, (f: (m: Record) => Record) => void];
+
+  // Get theme for use in component
+  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
+  let { theme } = overrides;
+  if (!theme) {
+    theme = defaultTheme;
+  }
 
   useEffect(() => {
     setValue(props.defaultValue);
@@ -128,7 +137,7 @@ export default (props: Props) => {
     <Container title={props.title}>
       <div
         className={twMerge(
-          'relative rounded-xl w-full min-w-[50px] h-10 border border-[#DADCE1] flex items-center',
+          `relative rounded-xl w-full min-w-[50px] h-10 border border-[${theme.borders.colors.primary}] flex items-center`,
           props.className,
         )}
       >
@@ -160,7 +169,7 @@ export default (props: Props) => {
             tabIndex={0}
             onBlur={() => setFocus(false)}
             style={{ minWidth: props.minDropdownWidth }}
-            className="flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[#DADCE1] w-full overflow-y-auto overflow-x-hidden max-h-[400px]"
+            className={`flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[${theme.borders.colors.primary}] w-full overflow-y-auto overflow-x-hidden max-h-[400px]`}
           >
             {list}
             {list?.length === 0 && !!search && (

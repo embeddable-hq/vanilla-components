@@ -5,6 +5,18 @@ export const defaultTheme: Theme = {
     primary: '#6778DE',
     secondary: '#FF997C',
   },
+  buttons: {
+    colors: {
+      disabled: '#F3F3F3',
+      hoverBorder: '#A1A5AA',
+      pressed: '#F3F3F3',
+    },
+  },
+  borders: {
+    colors: {
+      primary: '#DADCE1',
+    },
+  },
   charts: {
     colors: [
       '#6778DE',
@@ -69,6 +81,12 @@ export const defaultTheme: Theme = {
     weight: 400,
     imports: {
       // eg: 'Impact': 'impact',
+    },
+  },
+  inputs: {
+    colors: {
+      hover: '#F3F4F6',
+      selected: '#F3F4F6',
     },
   },
 };
