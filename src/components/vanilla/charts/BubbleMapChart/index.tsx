@@ -40,6 +40,7 @@ type Props = {
   bubblePlacement: Dimension;
   clusterRadius?: number;
   customTileSet?: string;
+  description?: string;
   ds?: Dataset;
   enableDownloadAsCSV?: boolean;
   enableDownloadAsPNG?: boolean;
@@ -48,6 +49,7 @@ type Props = {
   metric?: Measure;
   results: DataResponse;
   showTooltips?: boolean;
+  title?: string;
 };
 
 // Child Component - used to auto-zoom the map to fit all markers (rerenders if they change)

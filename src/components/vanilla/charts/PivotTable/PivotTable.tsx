@@ -114,7 +114,7 @@ const PivotTable = <T,>({
 
   return (
     <table className="min-w-full border-separate border-spacing-0 table-fixed">
-      <thead className="text-[#333942] sticky top-0 z-20 bg-white">
+      <thead className="embeddable-table-header sticky top-0 z-20 bg-white">
         <TableHead
           columns={columns}
           minColumnWidth={`${minColumnWidth}px`}

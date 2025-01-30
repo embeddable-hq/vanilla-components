@@ -9,6 +9,9 @@ import { toUTC } from '../../../../util/timezone';
 import Container from '../../../Container';
 import { CalendarIcon, ChevronLeft, ChevronRight } from '../../../icons';
 import Dropdown from '../../Dropdown';
+import { Theme } from '../../../../../themes/theme';
+import { useOverrideConfig } from '@embeddable.com/react';
+import defaultTheme from '../../../../../themes/defaulttheme';
 
 export const ranges = [
   'Today',
@@ -46,6 +49,13 @@ export default function DateRangePicker(props: Props) {
   const ref = useRef<HTMLInputElement | null>(null);
   const [triggerBlur, setTriggerBlur] = useState(false);
   const [range, setRange] = useState<TimeRange | undefined>(props.value);
+
+  // Get theme for use in component
+  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
+  let { theme } = overrides;
+  if (!theme) {
+    theme = defaultTheme;
+  }
 
   useLayoutEffect(() => {
     if (!triggerBlur) return;
@@ -98,12 +108,12 @@ export default function DateRangePicker(props: Props) {
 
   return (
     <Container title={props.title}>
-      <div className="relative inline-flex h-10 w-full text-[#101010] text-sm">
+      <div className={`relative inline-flex h-10 w-full text-[${theme.font.colorDark}] text-sm`}>
         <Dropdown
           minDropdownWidth={120}
           unclearable
           placeholder={props.placeholder}
-          className="max-w-[120px] min-w-[80px] sm:max-w-[140px] relative rounded-r-none w-full h-10 border border-[#DADCE1] flex items-center"
+          className={`max-w-[120px] min-w-[80px] sm:max-w-[140px] relative rounded-r-none w-full h-10 border border-[${theme.borders.colors.primary}] flex items-center`}
           defaultValue={range?.relativeTimeString || ''}
           onChange={(relativeTimeString) => {
             const [from, to] = dateParser(relativeTimeString, 'UTC');
@@ -122,7 +132,9 @@ export default function DateRangePicker(props: Props) {
           }}
           property={{ name: 'value', title: '', nativeType: 'string', __type__: 'dimension' }}
         />
-        <div className="grow flex items-center p-4 hover:bg-[#f3f4f6] cursor-pointer relative text-sm border-y border-r rounded-r-xl border-[#d8dad9] min-w-[60px]">
+        <div
+          className={`grow flex items-center p-4 hover:bg-[${theme.inputs.colors.hover}] cursor-pointer relative text-sm border-y border-r rounded-r-xl border-[${theme.borders.colors.primary}] min-w-[60px]`}
+        >
           <input
             ref={ref}
             onChange={() => {}}
@@ -146,9 +158,9 @@ export default function DateRangePicker(props: Props) {
           >
             <DayPicker
               showOutsideDays
-              className="border border-[#d8dad9] bg-white rounded-xl px-4 py-3 text-[#101010] !m-0"
+              className={`border border-[${theme.borders.colors.primary}] bg-white rounded-xl px-4 py-3 text-[${theme.font.colorDark}] !m-0`}
               classNames={{
-                selected: 'bg-[#f3f4f6] text-[#101010]',
+                selected: `bg-[${theme.inputs.colors.selected}] text-[${theme.font.colorDark}]`,
               }}
               components={{
                 MonthCaption: CustomCaption,

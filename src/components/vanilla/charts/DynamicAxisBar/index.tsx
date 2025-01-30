@@ -35,7 +35,10 @@ export default (props: Props) => {
 
   // Get theme for use in component
   const overrides: any = useOverrideConfig();
-  const { theme } = overrides;
+  let { theme } = overrides;
+  if (!theme) {
+    theme = defaultTheme;
+  }
 
   useEffect(() => {
     setValue(props.xAxis.name);
@@ -54,7 +57,7 @@ export default (props: Props) => {
   const xAxis = xAxisOptions.find((item) => value === item.name);
   const updatedProps = {
     ...props,
-    theme: theme || defaultTheme,
+    theme,
     xAxis: xAxis ? xAxis : props.xAxis,
   };
 
@@ -63,7 +66,7 @@ export default (props: Props) => {
       <div className="flex h-[60px] w-full">
         <div>
           <select
-            className="relative px-3 rounded-xl w-full min-w-[50px] h-10 border border-[#DADCE1] flex items-center"
+            className={`relative px-3 rounded-xl w-full min-w-[50px] h-10 border border-[${theme.borders.colors.primary}] flex items-center`}
             value={value}
             onChange={(e) => handleChange(e.target.value)}
           >

@@ -1,5 +1,5 @@
 import { DataResponse } from '@embeddable.com/core';
-import { useEmbeddableState } from '@embeddable.com/react';
+import { useEmbeddableState, useOverrideConfig } from '@embeddable.com/react';
 import React, {
   ReactNode,
   useCallback,
@@ -7,13 +7,15 @@ import React, {
   useLayoutEffect,
   useMemo,
   useRef,
-  useState
+  useState,
 } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import Container from '../../Container';
 import Spinner from '../../Spinner';
 import { ChevronDown, ClearIcon } from '../../icons';
+import { Theme } from '../../../../themes/theme';
+import defaultTheme from '../../../../themes/defaulttheme';
 
 export type Props = {
   icon?: ReactNode;
@@ -42,8 +44,15 @@ export default (props: Props) => {
   const [value, setValue] = useState(props.defaultValue);
   const [search, setSearch] = useState('');
   const [_, setServerSearch] = useEmbeddableState({
-    [props.searchProperty || 'search']: ''
+    [props.searchProperty || 'search']: '',
   }) as [Record, (f: (m: Record) => Record) => void];
+
+  // Get theme for use in component
+  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
+  let { theme } = overrides;
+  if (!theme) {
+    theme = defaultTheme;
+  }
 
   useEffect(() => {
     setValue(props.defaultValue);
@@ -59,7 +68,7 @@ export default (props: Props) => {
         setServerSearch((s) => ({ ...s, [props.searchProperty || 'search']: newSearch }));
       }, 500);
     },
-    [setSearch, setServerSearch, props.searchProperty]
+    [setSearch, setServerSearch, props.searchProperty],
   );
 
   const set = useCallback(
@@ -72,7 +81,7 @@ export default (props: Props) => {
 
       clearTimeout(debounce);
     },
-    [setValue, props, performSearch]
+    [setValue, props, performSearch],
   );
 
   useLayoutEffect(() => {
@@ -105,20 +114,20 @@ export default (props: Props) => {
             {o.note && (
               <span className="font-normal ml-auto pl-3 text-xs opacity-70">{o.note}</span>
             )}
-          </div>
+          </div>,
         );
 
         return memo;
       }, []),
-    [props, value, set]
+    [props, value, set],
   ) as ReactNode[];
 
   return (
     <Container title={props.title}>
       <div
         className={twMerge(
-          'relative rounded-xl w-full min-w-[50px] h-10 border border-[#DADCE1] flex items-center',
-          props.className
+          `relative rounded-xl w-full min-w-[50px] h-10 border border-[${theme.borders.colors.primary}] flex items-center`,
+          props.className,
         )}
       >
         <input
@@ -147,7 +156,7 @@ export default (props: Props) => {
         {focus && (
           <div
             style={{ minWidth: props.minDropdownWidth }}
-            className="flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[#DADCE1] w-full overflow-y-auto overflow-x-hidden max-h-[400px]"
+            className={`flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[${theme.borders.colors.primary}] w-full overflow-y-auto overflow-x-hidden max-h-[400px]`}
           >
             {list}
             {list?.length === 0 && !!search && (

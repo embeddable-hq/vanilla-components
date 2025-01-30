@@ -10,6 +10,9 @@ import {
   getValidGranularities,
 } from '../utils/dateUtils';
 import DateRangePicker from './DateRangePicker';
+import { Theme } from '../../../../../themes/theme';
+import { useOverrideConfig } from '@embeddable.com/react';
+import defaultTheme from '../../../../../themes/defaulttheme';
 
 const valueProp: Dimension = {
   __type__: 'dimension',
@@ -35,6 +38,13 @@ export default function DateRangeWithGranularity(props: Props) {
   const [period, setPeriod] = useState(defaultPeriod);
   const [granularity, setGranularity] = useState(props.defaultGranularity);
   const [compareOption, setCompareOption] = useState(props.defaultComparison);
+
+  // Get theme for use in component
+  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
+  let { theme } = overrides;
+  if (!theme) {
+    theme = defaultTheme;
+  }
 
   useLayoutEffect(() => {
     const interval = setInterval(() => {
@@ -108,7 +118,9 @@ export default function DateRangeWithGranularity(props: Props) {
       </div>
       {!!onChangeComparison && (
         <>
-          <div className="hidden md:block shrink whitespace-nowrap text-[14px] font-normal text-[#101010] leading-none ml-2">
+          <div
+            className={`hidden md:block shrink whitespace-nowrap text-[14px] font-normal text-[${theme.font.colorDark}] leading-none ml-2`}
+          >
             compare to
           </div>
           <div className="grow basis-0 max-w-[150px] h-full ml-2">

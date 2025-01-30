@@ -35,6 +35,7 @@ export default function TableHead({
     theme = defaultTheme;
   }
   fontSize = `${theme.font.size}px`;
+  const fontColor = theme.font.colorDark;
 
   const renderColumn = (column: Column, columnIndex: number): ReactElement => {
     const isRowHeader =
@@ -94,7 +95,7 @@ export default function TableHead({
             'flex justify-between items-center gap-2': isSortable,
           })}
         >
-          <span className="text-[#333942]" style={{ fontSize }}>
+          <span className={`text-[${fontColor}]`} style={{ fontSize }}>
             {column.label}
           </span>
           {isSortable ? (

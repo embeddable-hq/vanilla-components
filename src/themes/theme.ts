@@ -1,18 +1,32 @@
 export type ChartType =
   | 'bar'
+  | 'bubble'
+  | 'doughnut'
+  | 'kpi'
   | 'line'
   | 'pie'
-  | 'doughnut'
-  | 'radar'
+  | 'pivotTable'
   | 'polarArea'
-  | 'bubble'
+  | 'radar'
   | 'scatter'
-  | 'kpi';
+  | 'table';
 
 export type Theme = {
   brand: {
     primary: string;
     secondary: string;
+  };
+  buttons: {
+    colors: {
+      disabled: string;
+      hoverBorder: string;
+      pressed: string;
+    };
+  };
+  borders: {
+    colors: {
+      primary: string;
+    };
   };
   charts: {
     colors: string[];
@@ -35,10 +49,19 @@ export type Theme = {
   };
   font: {
     color: string;
+    colorDark: string;
+    colorLight: string;
     family: string;
     size: number;
+    weight: number;
     imports: {
       [key: string]: string;
+    };
+  };
+  inputs: {
+    colors: {
+      hover: string;
+      selected: string;
     };
   };
 };

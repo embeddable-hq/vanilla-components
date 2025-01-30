@@ -38,7 +38,10 @@ type PropsWithRequiredtheme = Props & { theme: Theme };
 export default (props: Props): React.JSX.Element => {
   // Get theme for use in component
   const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  const { theme } = overrides;
+  let { theme } = overrides;
+  if (!theme) {
+    theme = defaultTheme;
+  }
 
   //add missing dates to time-series barcharts
   const { fillGaps } = useTimeseries(props, 'desc');
@@ -47,7 +50,7 @@ export default (props: Props): React.JSX.Element => {
   // Update props with theme and filled gaps
   const updatedProps: PropsWithRequiredtheme = {
     ...props,
-    theme: theme || defaultTheme,
+    theme,
     results: isTSBarChart
       ? { ...props.results, data: results?.data?.reduce(fillGaps, []) }
       : props.results,

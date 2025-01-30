@@ -6,7 +6,6 @@ import useFont from '../hooks/useFont';
 import useResize, { Size } from '../hooks/useResize';
 import Description from './Description';
 import DownloadMenu from './DownloadMenu';
-import GlobalStyleWrapper from './GlobalStyleWrapper';
 import Spinner from './Spinner';
 import Title from './Title';
 import { WarningIcon } from './icons';
@@ -49,8 +48,6 @@ export default ({
   const refResizingTimeout = useRef<number | null>(null);
   const { height } = useResize(refResize, onResize || null);
   const [preppingDownload, setPreppingDownload] = useState<boolean>(false);
-
-  const GlobalStyle = GlobalStyleWrapper(theme);
 
   //Detect when the component is being resized by the user
   useEffect(() => {
@@ -96,7 +93,6 @@ export default ({
 
   return (
     <>
-      <GlobalStyle />
       <div className="h-full relative font-embeddable text-sm flex flex-col">
         {props.enableDownloadAsCSV || props.enableDownloadAsPNG ? (
           <div className={`${!props.title ? 'h-[32px] w-full' : ''}`}>
