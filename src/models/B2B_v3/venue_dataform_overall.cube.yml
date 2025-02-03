@@ -37,6 +37,11 @@ cubes:
       END AS track_listen_time
     from `smartify-cc94e.superform_outputs_151371783.ga4_events`
     where event_params_custom.organisation_id = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+      and ('{COMPILE_CONTEXT.securityContext.venue_id}' IS NULL
+          or '{COMPILE_CONTEXT.securityContext.venue_id}' = ''
+          or '{COMPILE_CONTEXT.securityContext.venue_id}' = 'undefined'
+          or event_params_custom.venue_id in unnest(split('{COMPILE_CONTEXT.securityContext.venue_id}', ','))
+      )
       and event_date >= '2023-01-01'
       and stream_id in ("1047860117","1047860114","1913717213","2817285551")
       --and event_params_custom.organisation_id is not null
@@ -48,11 +53,11 @@ cubes:
 
     - name: device_platform
       type: string
-      sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'CWA' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+      sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
 
     - name: user_connectivity
       type: string
-      sql: case when (user_connectivity = '' or user_connectivity is null) then 'Unknown' when user_connectivity = 'Cellular' then 'Cellular' else 'Wi-FI' end
+      sql: case when (user_connectivity = '' or user_connectivity is null) then 'Unknown' when user_connectivity = 'Cellular' then 'Cellular' else 'Wi-Fi' end
 
     - name: device_language
       type: string
