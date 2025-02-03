@@ -1,0 +1,109 @@
+cubes:
+- name: venue_dataform_inapppurchase
+  data_source: default
+  sql: >
+    with raw as (SELECT
+      event_date
+      ,user_pseudo_id
+      ,event_name
+      ,platform
+      ,device.category as device_category
+      ,device.web_info.hostname as hostname
+      ,geo.country as geo_country
+      ,geo.city as geo_city
+      ,event_params_custom.user_connectivity
+      ,event_params_custom.component_type
+      ,event_params_custom.content_category
+      ,event_params_custom.page_type
+      ,case when event_params_custom.venue_id is null then b.venue_sid else event_params_custom.venue_id end as venue_id
+      ,case when event_params_custom.organisation_id is null then b.organization_sid else event_params_custom.organisation_id end as organisation_id
+      ,case when event_params_custom.tour_id is null then b.tour_sid else event_params_custom.tour_id end as tour_id
+      ,event_params.product_id
+    FROM `smartify-cc94e.superform_outputs_151371783.ga4_events` as a
+    left join `smartify-cc94e.smartify_lookup_tables.tour_lookup` as b on a.event_params.product_id = b.paid_tour_id
+    where event_name in ("in_app_purchase", "screen_view", "page_view")
+      and event_date >= '2024-01-01'
+      and stream_id in ("1047860117","1047860114","1913717213","2817285551"))
+    
+    select * from raw 
+    where organisation_id = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+      and ('{COMPILE_CONTEXT.securityContext.venue_id}' IS NULL
+          or '{COMPILE_CONTEXT.securityContext.venue_id}' = ''
+          or '{COMPILE_CONTEXT.securityContext.venue_id}' = 'undefined'
+          or venue_id in unnest(split('{COMPILE_CONTEXT.securityContext.venue_id}', ','))
+      ) 
+
+  dimensions: 
+    - name: event_date
+      type: time
+      sql: timestamp(event_date)
+
+    - name: device_platform
+      type: string
+      sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+
+    - name: user_connectivity
+      type: string
+      sql: case when (user_connectivity = '' or user_connectivity is null) then 'Unknown' when user_connectivity = 'Cellular' then 'Cellular' else 'Wi-Fi' end
+
+    - name: country
+      type: string
+      sql: if(geo_country = "", "Unknown", geo_country)
+
+    - name: city
+      type: string
+      sql: if(geo_city = "", "Unknown", geo_city)
+
+    - name: user_gender
+      type: string
+      sql: case when user_gender in ('Male', 'MALE', 'Man', 'Mand', 'Masculino', '男性', 'זכר', 'Männlich', 'Mann', 'Homme', 'Hombre') then 'Male' when user_gender in ('Female', 'Woman', 'Femme', 'Mujer', 'Vrouw', 'Weiblich', 'Frau', 'Feminino', '女性', 'Donna', 'Kvinde') then 'Female' when user_gender in ('Unspecified', 'Non spécifié', 'Sin especificar') then 'Unspecified' when user_gender in ('Other', 'Autre') then 'Other' else 'Unknown' end
+
+    - name: user_age_range
+      type: string
+      sql: case when cast(user_age as int) < 18 then "- 18" when cast(user_age as int) >= 18 and cast(user_age as int) < 25 then "18 - 24" when cast(user_age as int) >= 25 and cast(user_age as int) < 35 then "25 - 34" when cast(user_age as int) >= 35 and cast(user_age as int) < 45 then "35 - 44" when cast(user_age as int) >= 45 and cast(user_age as int) < 55 then "45 - 54" when cast(user_age as int) >= 55 and cast(user_age as int) < 65 then "55 - 64" when cast(user_age as int) >= 65 and cast(user_age as int) < 71 then "65 - 70" when cast(user_age as int) >= 71 then "71+" else 'Unknown' end
+
+    - name: device_language
+      type: string
+      sql: device_language
+      primaryKey: true
+      shown: false
+
+    - name: organisation_id
+      type: string
+      sql: organisation_id
+      primaryKey: true
+      shown: true
+    
+    - name: venue_id
+      type: string
+      sql: venue_id
+
+    - name: tour_id
+      type: string
+      sql: tour_id
+      primaryKey: true
+      shown: true
+
+  measures:
+    - name: tour_views
+      type: sum
+      sql: case when event_name in ('page_view', 'screen_view') and contains_substr(page_type, "tour_dp") then 1 else 0 end
+    
+    - name: tour_users
+      type: count_distinct
+      sql: case when (event_name in ('page_view', 'screen_view') and contains_substr(page_type, "tour_dp") or event_name in ('track_start', 'track_complete', 'track_pause') and tour_id is not null) then user_pseudo_id else null end
+    
+    - name: in_app_purchases
+      type: sum
+      title: 'Tour Purchases'
+      sql: case when event_name = 'in_app_purchase' then 1 else 0 end
+
+    - name: in_app_conversion_rate
+      type: number
+      title: 'Tour Conv. Rate'
+      sql: CASE WHEN {tour_views} = 0 THEN 0 ELSE ({in_app_purchases} / NULLIF({tour_views}, 0) * 100) END
+
+  joins:    
+    - name: venue_lookup_tours
+      relationship: many_to_one
+      sql: '{CUBE.tour_id} = {venue_lookup_tours.tour_sid}'
