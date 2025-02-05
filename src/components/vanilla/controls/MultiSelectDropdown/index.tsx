@@ -107,16 +107,14 @@ export default (props: Props) => {
               setTriggerBlur(false);
               set(o[props.property?.name || ''] || '');
             }}
-            className={`flex items-left min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
+            className={`flex items-left items-center min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
               value?.includes(o[props.property?.name || '']) ? 'bg-black/5' : ''
             } whitespace-nowrap overflow-hidden text-ellipsis`}
           >
             <div style={{ width: '16px', display: 'inline-block' }}>
               {value?.includes(o[props.property?.name || '']) ? <Checkbox /> : <CheckboxEmpty />}
             </div>
-            <span className="font-normal pl-1 text-xs opacity-70">
-              {o[props.property?.name || '']}
-            </span>
+            <span className="font-normal pl-1">{o[props.property?.name || '']}</span>
             {o.note && <span className="font-normal pl-3 text-xs opacity-70">{o.note}</span>}
           </div>,
         );
