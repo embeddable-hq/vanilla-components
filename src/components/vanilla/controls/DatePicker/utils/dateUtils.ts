@@ -1,14 +1,17 @@
-import { Granularity, TimeRange } from '@embeddable.com/core';
+import { Granularity, TimeRange, TimeRangeDeserializedValue } from '@embeddable.com/core';
 import {
   differenceInCalendarDays,
   differenceInSeconds,
+  endOfQuarter,
   format,
   getYear,
+  startOfQuarter,
   subDays,
-  subMonths,
   subQuarters,
-  subYears,
 } from 'date-fns';
+
+// Use this to not have to keep checking for undefined when we know it's defined
+type MandatoryTimeRange = TimeRangeDeserializedValue & { from: Date; to: Date };
 
 function toSeconds(unit: string, n: number): number {
   const unitsInSeconds: { [key: string]: number } = {
@@ -23,12 +26,44 @@ function toSeconds(unit: string, n: number): number {
   return n * unitsInSeconds[unit];
 }
 
+export const determinePreviousMonth = (period: MandatoryTimeRange) => {
+  const startMonth = period.from.getMonth();
+  const startYear = period.from.getFullYear();
+  const previousMonth = startMonth === 0 ? 11 : startMonth - 1;
+  const previousYear = startMonth === 0 ? startYear - 1 : startYear;
+  const daysInPreviousMonth = new Date(previousYear, previousMonth + 1, 0).getDate();
+  const from = new Date(previousYear, previousMonth, 1);
+  const to = new Date(previousYear, previousMonth, daysInPreviousMonth);
+  return { from, to };
+};
+
+export const determinePreviousQuarter = (period: MandatoryTimeRange) => {
+  const previousQuarter = subQuarters(period.from, 1);
+  const previousQuarterStart = startOfQuarter(previousQuarter);
+  const previousQuarterEnd = endOfQuarter(previousQuarter);
+  return {
+    from: previousQuarterStart,
+    to: previousQuarterEnd,
+  };
+};
+
+export const determinePreviousYear = (period: MandatoryTimeRange) => {
+  const previousYear = getYear(period.from) - 1;
+  const from = new Date(previousYear, 0, 1);
+  const to = new Date(previousYear, 11, 31);
+  return { from, to };
+};
+
 export function getComparisonOptions(period: TimeRange) {
   if (!period?.from || !period?.to) {
     return [{ value: 'No comparison' }];
   }
+  const comparisonPeriod: MandatoryTimeRange = period as MandatoryTimeRange;
 
-  const days = Math.abs(differenceInCalendarDays(period.from, period.to)) + 1;
+  const days = Math.abs(differenceInCalendarDays(comparisonPeriod.from, comparisonPeriod.to)) + 1;
+  const previousMonth = determinePreviousMonth(comparisonPeriod);
+  const previousQuarter = determinePreviousQuarter(comparisonPeriod);
+  const previousYear = determinePreviousYear(comparisonPeriod);
 
   return [
     { value: 'No comparison' },
@@ -38,15 +73,15 @@ export function getComparisonOptions(period: TimeRange) {
     },
     {
       value: 'Previous month',
-      note: getNote(subMonths(period.from, 1), subMonths(period.to, 1)),
+      note: getNote(previousMonth.from, previousMonth.to),
     },
     {
       value: 'Previous quarter',
-      note: getNote(subQuarters(period.from, 1), subQuarters(period.to, 1)),
+      note: getNote(previousQuarter.from, previousQuarter.to),
     },
     {
       value: 'Previous year',
-      note: getNote(subYears(period.from, 1), subYears(period.to, 1)),
+      note: getNote(previousYear.from, previousYear.to),
     },
   ];
 }
@@ -59,23 +94,27 @@ export function getComparisonPeriod(rts: string, period: TimeRange) {
       to: new Date(),
     };
   }
+  const comparisonPeriod: MandatoryTimeRange = period as MandatoryTimeRange;
   if (rts === 'Previous month') {
+    const previousMonth = determinePreviousMonth(comparisonPeriod);
     return {
       relativeTimeString: 'previous month',
-      from: subMonths(period.from, 1),
-      to: subMonths(period.to, 1),
+      from: previousMonth.from,
+      to: previousMonth.to,
     };
   } else if (rts === 'Previous quarter') {
+    const previousQuarter = determinePreviousQuarter(comparisonPeriod);
     return {
       relativeTimeString: 'previous quarter',
-      from: subQuarters(period.from, 1),
-      to: subQuarters(period.to, 1),
+      from: previousQuarter.from,
+      to: previousQuarter.to,
     };
   } else if (rts === 'Previous year') {
+    const previousYear = determinePreviousYear(comparisonPeriod);
     return {
       relativeTimeString: 'previous year',
-      from: subYears(period.from, 1),
-      to: subYears(period.to, 1),
+      from: previousYear.from,
+      to: previousYear.to,
     };
   } else {
     // Previous period
