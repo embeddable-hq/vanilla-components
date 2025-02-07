@@ -11,6 +11,7 @@
     "check-types": "tsc --noemit",
     "ct": "tsc --noEmit",
     "cube:playground": "docker compose -f ./src/cube-playground.yml up",
+    "cube:playground:update": "docker pull cubejs/cube:latest",
     "cube:cubestore": "mysql -h 127.0.0.1 -P 13306 --user=cubestore -pcubestore",
     "dev": "cross-env NODE_OPTIONS='--max-old-space-size=4096' embeddable dev",
     "embedding-preview": "node src/scripts/embedding-preview.cjs",
