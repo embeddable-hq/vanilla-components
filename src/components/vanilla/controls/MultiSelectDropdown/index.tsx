@@ -111,9 +111,7 @@ export default (props: Props) => {
               value?.includes(o[props.property?.name || '']) ? 'bg-black/5' : ''
             } whitespace-nowrap overflow-hidden text-ellipsis`}
           >
-            <div style={{ width: '16px', display: 'inline-block' }}>
-              {value?.includes(o[props.property?.name || '']) ? <Checkbox /> : <CheckboxEmpty />}
-            </div>
+            {value?.includes(o[props.property?.name || '']) ? <Checkbox /> : <CheckboxEmpty />}
             <span className="font-normal pl-1">{o[props.property?.name || '']}</span>
             {o.note && <span className="font-normal pl-3 text-xs opacity-70">{o.note}</span>}
           </div>,
