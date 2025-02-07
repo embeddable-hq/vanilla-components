@@ -20,15 +20,14 @@ cubes:
       - name: department
         sql: "department"
         type: string
-      
+
+    measures:
       - name: avgdaystofill
-        sql: "avgdaystofill"
+        sql: ROUND(AVG({CUBE}."avgdaystofill"::numeric), 1)
         type: number
-        
       - name: totalpositions
-        sql: "totalpositions"
+        sql: SUM({CUBE}."totalpositions")
         type: number
-        
       - name: filledpositions
-        sql: "filledpositions"
+        sql: SUM({CUBE}."filledpositions")
         type: number
