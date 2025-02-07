@@ -5,8 +5,8 @@ cubes:
 
     joins:
       - name: requisition
-        sql: "{CUBE}.\"jobrequisition\" = {Jobrequisition}.id"
-        relationship: Many_to_one
+        sql: "{CUBE}.\"jobRequisitionId\" = {requisition}.id"
+        relationship: many_to_one
 
     dimensions:
       - name: id

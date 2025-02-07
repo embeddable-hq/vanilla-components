@@ -2,8 +2,11 @@ cubes:
   - name: job_listing
     sql_table: "\"JobListing\""
     data_source: "scalis-dev"
-
-    joins: []
+    
+    joins:
+      - name: requisition
+        sql: "{CUBE}.\"jobRequisitionId\" = {requisition}.id"
+        relationship: many_to_one
 
     dimensions:
       - name: id

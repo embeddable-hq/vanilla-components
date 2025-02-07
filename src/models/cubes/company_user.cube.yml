@@ -3,7 +3,18 @@ cubes:
     sql_table: "\"CompanyUser\""
     data_source: "scalis-dev"
 
-    joins: []
+    joins: 
+      - name: requisition
+        sql: "{CUBE}.\"id\" = {requisition}.\"companyUserId\""
+        relationship: one_to_many
+
+      - name: hiring_team_member
+        sql: "{CUBE}.\"id\" = {hiring_team_member}.\"companyUserId\""
+        relationship: one_to_many
+
+      - name: user_invitation
+        sql: "{CUBE}.\"id\" = {user_invitation}.\"companyUserId\""
+        relationship: one_to_many
 
     dimensions:
       - name: id

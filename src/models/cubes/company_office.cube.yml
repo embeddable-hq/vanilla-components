@@ -3,7 +3,10 @@ cubes:
     sql_table: "\"CompanyOffice\""
     data_source: scalis-dev
 
-    joins: []
+    joins: 
+      - name: requisition
+        sql: "{CUBE}.\"id\" = {requisition}.\"companyOfficeId\""
+        relationship: one_to_many
 
     dimensions:
       - name: id

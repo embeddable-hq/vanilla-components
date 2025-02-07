@@ -48,7 +48,7 @@ cubes:
         type: string
 
       - name: createdat
-        sql: "{CUBE}\"createdAt\""
+        sql: "{CUBE}.\"createdAt\""
         type: time
 
       - name: updatedat
@@ -64,7 +64,7 @@ cubes:
         type: time
 
       - name: scalis_user_fullname
-        sql: "CONCAT({scalis_user}.firstName, ' ', {scalis_user}.lastName)"
+        sql: "CONCAT({CUBE}.\"firstName\", ' ', {CUBE}.\"lastName\")"
         type: string
 
     measures:

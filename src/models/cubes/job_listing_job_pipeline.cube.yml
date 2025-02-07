@@ -4,12 +4,12 @@ cubes:
     data_source: "scalis-dev"
 
     joins:
-      - name: job_pipeline
-        sql: "{CUBE}.\"jobPipelineId\" = {job_pipeline}.id"
-        relationship: many_to_one
-
       - name: job_listing
         sql: "{CUBE}.\"jobListingId\" = {job_listing}.id"
+        relationship: many_to_one
+        
+      - name: job_pipeline
+        sql: "{CUBE}.\"jobPipelineId\" = {job_pipeline}.id"
         relationship: many_to_one
 
     dimensions:
