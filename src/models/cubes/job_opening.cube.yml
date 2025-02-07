@@ -49,3 +49,13 @@ cubes:
     measures:
       - name: count
         type: count
+
+      - name: remaining_openings
+        title: "Remaining Openings"
+        sql: "CASE WHEN {CUBE}.\"filledDate\" IS NULL THEN 1 END"
+        type: count
+
+      - name: filled_openings
+        title: "Filled Openings"
+        sql: "CASE WHEN {CUBE}.\"filledDate\" IS NOT NULL THEN 1 END"
+        type: count

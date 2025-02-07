@@ -85,18 +85,3 @@ cubes:
     measures:
       - name: count
         type: count
-
-      - name: total_openings
-        title: "Total Openings"
-        sql: "(SELECT COUNT(*) FROM \"JobOpening\" WHERE \"jobRequisitionId\" = {CUBE}.\"id\")"
-        type: number
-
-      - name: filled_openings
-        title: "Filled Openings"
-        sql: "(SELECT COUNT(*) FROM \"JobOpening\" WHERE \"jobRequisitionId\" = {CUBE}.\"id\" AND \"filledDate\" IS NOT NULL)"
-        type: number
-
-      - name: remaining_openings
-        title: "Remaining Openings"
-        sql: "(SELECT COUNT(*) FROM \"JobOpening\" WHERE \"jobRequisitionId\" = {CUBE}.\"id\" AND \"filledDate\" IS NULL)"
-        type: number
