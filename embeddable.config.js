@@ -7,17 +7,12 @@ export default defineConfig({
   // 
   // Uncomment for US deployments
   //
-  // previewBaseUrl: 'https://app.us.embeddable.com',
-  // pushBaseUrl: 'https://api.us.embeddable.com',
+  // region: 'US'
   
   //
   // Uncomment for EU deployments
   //
-  // previewBaseUrl: 'https://app.eu.embeddable.com',
-  // pushBaseUrl: 'https://api.eu.embeddable.com',
-  // audienceUrl: 'https://auth.eu.embeddable.com',
-  // authDomain: 'auth.eu.embeddable.com',
-  // authClientId: '6OGPwIQsVmtrBKhNrwAaXhz4ePb0kBGV',
+  // region: 'EU'
 
   //
   // For internal use only
