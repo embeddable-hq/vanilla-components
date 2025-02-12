@@ -24,9 +24,9 @@ async function run() {
             'Authorization': `Bearer ${apiKey}` /* keep your API Key secure */
         },
         body: JSON.stringify({
-    		name: `${connectionName}`,
-    		type: dbType, 
-    		credentials: credentials
+            name: `${connectionName}`,
+            type: dbType, 
+            credentials: credentials
         })
     });
 

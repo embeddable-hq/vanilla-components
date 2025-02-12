@@ -107,15 +107,15 @@ export default (props: Props) => {
               setTriggerBlur(false);
               set(o[props.property?.name || ''] || '');
             }}
-            className={`flex items-center min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal gap-1 ${
+            className={`flex items-left items-center min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
               value?.includes(o[props.property?.name || '']) ? 'bg-black/5' : ''
-            } whitespace-nowrap overflow-hidden text-ellipsis`}
+            } truncate`}
           >
             {value?.includes(o[props.property?.name || '']) ? <Checkbox /> : <CheckboxEmpty />}
-            {o[props.property?.name || '']}
-            {o.note && (
-              <span className="font-normal ml-auto pl-3 text-xs opacity-70">{o.note}</span>
-            )}
+            <span className="font-normal pl-1 truncate" title={o[props.property?.name || '']}>
+              {o[props.property?.name || '']}
+            </span>
+            {o.note && <span className="font-normal pl-3 text-xs opacity-70">{o.note}</span>}
           </div>,
         );
 
