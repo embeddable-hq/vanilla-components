@@ -4,9 +4,8 @@ import React, { useMemo } from 'react';
 import formatValue from '../../../util/format';
 import Container from '../../Container';
 import { WarningIcon } from '../../icons';
-import defaultTheme from '../../../../themes/defaulttheme';
 import { Theme } from '../../../../themes/theme';
-import { useOverrideConfig } from '@embeddable.com/react';
+import { useTheme } from '@embeddable.com/react';
 
 type Props = {
   results: DataResponse;
@@ -37,12 +36,7 @@ export default (props: Props) => {
     showPrevPeriodLabel,
   } = props;
 
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   const { n, percentage } = useMemo(() => {
     if (dimension || !metric?.name || !results?.data?.length) {

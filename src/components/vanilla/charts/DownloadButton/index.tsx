@@ -1,5 +1,5 @@
 import { DataResponse, DimensionOrMeasure } from '@embeddable.com/core';
-import { useEmbeddableState, useOverrideConfig } from '@embeddable.com/react';
+import { useEmbeddableState, useTheme } from '@embeddable.com/react';
 import React, { useState } from 'react';
 
 import downloadAsCSV from '../../../util/downloadAsCSV';
@@ -22,12 +22,7 @@ export type Props = {
 
 export default (props: Props) => {
   const { results, buttonLabel } = props;
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   const [embeddableState, setEmbeddableState] = useEmbeddableState<{
     downloading: boolean;

@@ -10,8 +10,7 @@ import Container from '../../../Container';
 import { CalendarIcon, ChevronLeft, ChevronRight } from '../../../icons';
 import Dropdown from '../../Dropdown';
 import { Theme } from '../../../../../themes/theme';
-import { useOverrideConfig } from '@embeddable.com/react';
-import defaultTheme from '../../../../../themes/defaulttheme';
+import { useTheme } from '@embeddable.com/react';
 
 export const ranges = [
   'Today',
@@ -50,12 +49,7 @@ export default function DateRangePicker(props: Props) {
   const [triggerBlur, setTriggerBlur] = useState(false);
   const [range, setRange] = useState<TimeRange | undefined>(props.value);
 
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   useLayoutEffect(() => {
     if (!triggerBlur) return;

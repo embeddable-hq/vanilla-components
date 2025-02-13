@@ -1,7 +1,6 @@
-import { useOverrideConfig } from '@embeddable.com/react';
+import { useTheme } from '@embeddable.com/react';
 import React from 'react';
 import { Theme } from '../../themes/theme';
-import defaultTheme from '../../themes/defaulttheme';
 
 type Props = {
   title?: string;
@@ -9,11 +8,7 @@ type Props = {
 };
 
 export default function Title({ title, style }: Props) {
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   return (
     !!title && (

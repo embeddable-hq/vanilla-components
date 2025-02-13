@@ -12,6 +12,7 @@ export type ChartType =
   | 'table';
 
 export type Theme = {
+  isParent: boolean;
   brand: {
     primary: string;
     secondary: string;

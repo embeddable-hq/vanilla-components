@@ -1,7 +1,6 @@
 import React from 'react';
-import defaultTheme from '../../themes/defaulttheme';
 import { Theme } from '../../themes/theme';
-import { useOverrideConfig } from '@embeddable.com/react';
+import { useTheme } from '@embeddable.com/react';
 
 type Props = {
   description?: string;
@@ -9,11 +8,7 @@ type Props = {
 };
 
 export default function Description({ description, style }: Props) {
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   return (
     !!description && (

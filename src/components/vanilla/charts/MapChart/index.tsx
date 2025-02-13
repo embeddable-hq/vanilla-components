@@ -7,8 +7,8 @@ import tinyColor from 'tinycolor2';
 import format from '../../../util/format';
 import Container from '../../Container';
 import geography from './geography.json';
-import { useOverrideConfig } from '@embeddable.com/react';
-import defaultTheme from '../../../../themes/defaulttheme';
+import { useTheme } from '@embeddable.com/react';
+import { Theme } from '../../../../themes/theme';
 
 type Props = {
   title?: string;
@@ -20,12 +20,7 @@ type Props = {
 type Record = { [p: string]: string };
 
 export default (props: Props) => {
-  // Get theme for use in component
-  const overrides: any = useOverrideConfig();
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
   const defaultColor = '#DEDEDE';
   const hoverColor = tinyColor(theme.brand.secondary);
 

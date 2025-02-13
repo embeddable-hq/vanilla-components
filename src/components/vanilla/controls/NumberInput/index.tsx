@@ -3,8 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Container from '../../Container';
 import { ClearIcon } from '../../icons';
 import { Theme } from '../../../../themes/theme';
-import { useOverrideConfig } from '@embeddable.com/react';
-import defaultTheme from '../../../../themes/defaulttheme';
+import { useTheme } from '@embeddable.com/react';
 
 type Props = {
   onChange: (v: string) => void;
@@ -18,12 +17,7 @@ export default (props: Props) => {
   const [value, setValue] = useState(`${props.value}`);
   let timeout: number | null = null;
 
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   useEffect(() => {
     setValue(`${props.value}`);

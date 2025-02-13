@@ -5,9 +5,8 @@ import { Column } from '../core/Column';
 import { SortCriteria } from '../../../../util/sortFn';
 import { SortDirection } from '../../../../../enums/SortDirection';
 import { SortDown, SortUp } from '../../../icons';
-import defaultTheme from '../../../../../themes/defaulttheme';
 import { Theme } from '../../../../../themes/theme';
-import { useOverrideConfig } from '@embeddable.com/react';
+import { useTheme } from '@embeddable.com/react';
 
 type Props = {
   columns: Column[];
@@ -21,19 +20,14 @@ type Props = {
 
 export default function TableHead({
   columns,
-  fontSize = `${defaultTheme.font.size}px`,
+  fontSize = '16px',
   minColumnWidth,
   minHeaderColumnWidth,
   enableSorting = true,
   sortCriteria,
   onSortingChange,
 }: Props) {
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
   fontSize = `${theme.font.size}px`;
   const fontColor = theme.font.colorDark;
 

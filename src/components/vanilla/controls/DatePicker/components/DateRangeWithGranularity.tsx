@@ -11,8 +11,7 @@ import {
 } from '../utils/dateUtils';
 import DateRangePicker from './DateRangePicker';
 import { Theme } from '../../../../../themes/theme';
-import { useOverrideConfig } from '@embeddable.com/react';
-import defaultTheme from '../../../../../themes/defaulttheme';
+import { useTheme } from '@embeddable.com/react';
 
 const valueProp: Dimension = {
   __type__: 'dimension',
@@ -39,12 +38,7 @@ export default function DateRangeWithGranularity(props: Props) {
   const [granularity, setGranularity] = useState(props.defaultGranularity);
   const [compareOption, setCompareOption] = useState(props.defaultComparison);
 
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   useLayoutEffect(() => {
     const interval = setInterval(() => {

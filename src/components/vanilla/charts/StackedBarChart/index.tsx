@@ -22,7 +22,7 @@ import getStackedChartData, {
 } from '../../../util/getStackedChartData';
 import Container from '../../Container';
 import { Theme } from '../../../../themes/theme';
-import { useOverrideConfig } from '@embeddable.com/react';
+import { useTheme } from '@embeddable.com/react';
 import { setChartJSDefaults } from '../../../util/chartjs/common';
 
 ChartJS.register(
@@ -46,8 +46,7 @@ type Totals = {
 
 export default (props: Props) => {
   // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  const { theme } = overrides;
+  const theme: Theme = useTheme() as Theme;
 
   setChartJSDefaults(theme);
 

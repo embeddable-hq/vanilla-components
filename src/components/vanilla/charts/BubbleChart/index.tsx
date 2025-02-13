@@ -22,7 +22,7 @@ import { Bubble } from 'react-chartjs-2';
 import formatValue from '../../../util/format';
 import hexToRgb from '../../../util/hexToRgb';
 import { setChartJSDefaults, setYAxisStepSize } from '../../../util/chartjs/common';
-import { useOverrideConfig } from '@embeddable.com/react';
+import { useTheme } from '@embeddable.com/react';
 import defaultTheme from '../../../../themes/defaulttheme';
 import { Theme } from '../../../../themes/theme';
 
@@ -61,12 +61,7 @@ type PropsWithRequiredTheme = Props & { theme: Theme };
 type Record = { [p: string]: any };
 
 export default (props: Props) => {
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   //add missing dates to time-series data
   const { fillGaps } = useTimeseries(props, 'desc');

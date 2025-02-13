@@ -2,9 +2,8 @@ import React from 'react';
 
 import cn from '../../../../util/cn';
 import { ChevronLeft, ChevronRight } from '../../../icons';
-import { useOverrideConfig } from '@embeddable.com/react';
+import { useTheme } from '@embeddable.com/react';
 import { Theme } from '../../../../../themes/theme';
-import defaultTheme from '../../../../../themes/defaulttheme';
 
 type Props = {
   currentPage: number;
@@ -13,12 +12,7 @@ type Props = {
 };
 
 const Pagination = ({ currentPage, hasNextPage, onPageChange }: Props) => {
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
   const fontSize = theme.font.size;
   const fontColorDark = theme.font.colorDark;
   return (

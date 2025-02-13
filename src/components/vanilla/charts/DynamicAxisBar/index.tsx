@@ -1,5 +1,5 @@
 import { DataResponse, Dimension, Granularity, Measure } from '@embeddable.com/core';
-import { useEmbeddableState, useOverrideConfig } from '@embeddable.com/react';
+import { useEmbeddableState, useTheme } from '@embeddable.com/react';
 import React, { useEffect, useState } from 'react';
 
 import Container from '../../Container';
@@ -33,12 +33,7 @@ export default (props: Props) => {
     (d: { dimension: Dimension | null }) => void,
   ];
 
-  // Get theme for use in component
-  const overrides: any = useOverrideConfig();
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   useEffect(() => {
     setValue(props.xAxis.name);

@@ -7,9 +7,8 @@ import formatValue from '../../../util/format';
 import { usePivotTable } from './core/usePivotTable';
 import { multisortFn, SortCriteria } from '../../../util/sortFn';
 import { Row } from './core/Row';
-import defaultTheme from '../../../../themes/defaulttheme';
 import { Theme } from '../../../../themes/theme';
-import { useOverrideConfig } from '@embeddable.com/react';
+import { useTheme } from '@embeddable.com/react';
 
 type Props<T> = {
   aggregateRowDimensions?: boolean;
@@ -35,7 +34,7 @@ const PivotTable = <T,>({
   data,
   defaultColumnDimensionSortDirection,
   defaultRowDimensionSortDirection,
-  fontSize = `${defaultTheme.font.size}px`,
+  fontSize = '14px',
   granularity,
   isRowGroupDefaultExpanded = true,
   measures,
@@ -44,12 +43,7 @@ const PivotTable = <T,>({
   nullValueCharacter = '',
   rowDimensions,
 }: Props<T>) => {
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
   fontSize = `${theme.font.size}px`;
 
   const [sortCriteria, setSortCriteria] = useState<SortCriteria<any>[]>(() => {

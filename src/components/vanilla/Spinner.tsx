@@ -1,8 +1,7 @@
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
 import { Theme } from '../../themes/theme';
-import { useOverrideConfig } from '@embeddable.com/react';
-import defaultTheme from '../../themes/defaulttheme';
+import { useTheme } from '@embeddable.com/react';
 
 type Props = {
   show?: boolean;
@@ -11,12 +10,7 @@ type Props = {
 };
 
 export default function Spinner({ show, className, size }: Props) {
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
   return (
     <svg
       className={twMerge(

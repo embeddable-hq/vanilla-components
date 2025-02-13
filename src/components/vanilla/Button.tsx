@@ -1,7 +1,6 @@
 import React from 'react';
 import Spinner from './Spinner';
-import { useOverrideConfig } from '@embeddable.com/react';
-import defaultTheme from '../../themes/defaulttheme';
+import { useTheme } from '@embeddable.com/react';
 import { Theme } from '../../themes/theme';
 
 type Props = {
@@ -13,11 +12,7 @@ type Props = {
 };
 
 export default function Button({ buttonLabel, showSpinner, disabled, onClick, icon }: Props) {
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   return (
     <button

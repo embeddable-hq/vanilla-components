@@ -3,8 +3,7 @@ import { SortDirection } from '../../../../../enums/SortDirection';
 import { SortDown, SortUp } from '../../../icons';
 import { DimensionOrMeasure } from '@embeddable.com/core';
 import { Theme } from '../../../../../themes/theme';
-import { useOverrideConfig } from '@embeddable.com/react';
-import defaultTheme from '../../../../../themes/defaulttheme';
+import { useTheme } from '@embeddable.com/react';
 
 type Props = {
   columns: DimensionOrMeasure[];
@@ -15,12 +14,8 @@ type Props = {
 };
 
 const TableHead = ({ columns, sortBy, sortDirection, onSortingChange, minColumnWidth }: Props) => {
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
+
   return (
     <thead className={`border-y border-[${theme.borders.colors.primary}]`}>
       <tr>

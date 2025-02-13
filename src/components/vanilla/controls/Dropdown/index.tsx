@@ -1,5 +1,5 @@
 import { DataResponse } from '@embeddable.com/core';
-import { useEmbeddableState, useOverrideConfig } from '@embeddable.com/react';
+import { useEmbeddableState, useTheme } from '@embeddable.com/react';
 import React, {
   ReactNode,
   useCallback,
@@ -47,12 +47,7 @@ export default (props: Props) => {
     [props.searchProperty || 'search']: '',
   }) as [Record, (f: (m: Record) => Record) => void];
 
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   useEffect(() => {
     setValue(props.defaultValue);

@@ -1,6 +1,8 @@
 import { Theme } from './theme';
 
 export const defaultTheme: Theme = {
+  // Do not modify this!
+  isParent: true,
   brand: {
     primary: '#6778DE',
     secondary: '#FF997C',
