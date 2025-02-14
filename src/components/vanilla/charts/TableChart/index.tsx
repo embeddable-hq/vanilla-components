@@ -7,7 +7,6 @@ import formatValue from '../../../util/format';
 import Container from '../../Container';
 import Pagination from './components/Pagination';
 import TableHead from './components/TableHead';
-import defaultTheme from '../../../../themes/defaulttheme';
 import { Theme } from '../../../../themes/theme';
 
 export type Props = {

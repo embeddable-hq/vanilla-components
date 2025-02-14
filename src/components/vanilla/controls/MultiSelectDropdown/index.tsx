@@ -17,7 +17,6 @@ import Container from '../../Container';
 import Spinner from '../../Spinner';
 import { ChevronDown, ClearIcon } from '../../icons';
 import { Theme } from '../../../../themes/theme';
-import defaultTheme from '../../../../themes/defaulttheme';
 
 export type Props = {
   className?: string;
@@ -48,6 +47,7 @@ export default (props: Props) => {
   }) as [Record, (f: (m: Record) => Record) => void];
 
   const theme: Theme = useTheme() as Theme;
+  console.log('theme', JSON.stringify(theme));
 
   useEffect(() => {
     setValue(props.defaultValue);

@@ -15,7 +15,6 @@ import Container from '../../Container';
 import Spinner from '../../Spinner';
 import { ChevronDown, ClearIcon } from '../../icons';
 import { Theme } from '../../../../themes/theme';
-import defaultTheme from '../../../../themes/defaulttheme';
 
 export type Props = {
   icon?: ReactNode;

@@ -2,6 +2,7 @@ import { defaultTheme, Theme } from './src';
 
 export default {
   onThemeUpdated: (config: { theme: Theme }) => {
+    console.log('onThemeUpdated', config);
     const theme = config.theme ? config.theme : defaultTheme;
     const style = document.createElement('style');
     style.textContent = `:root {

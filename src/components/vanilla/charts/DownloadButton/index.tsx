@@ -6,7 +6,6 @@ import downloadAsCSV from '../../../util/downloadAsCSV';
 import Button from '../../Button';
 import Container from '../../Container';
 import { Theme } from '../../../../themes/theme';
-import defaultTheme from '../../../../themes/defaulttheme';
 
 // TODO - We should probably adjust DataResponse in the core package
 interface DataResponseWithPrevData extends DataResponse {
