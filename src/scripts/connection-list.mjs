@@ -1,12 +1,14 @@
-const apiKey = '...';
-const connectionName = 'my-db'; 
+import { loadEnvConfig } from './utils/envLoader.mjs';
+import process from 'process';
 
-const BASE_URL = 'https://api.us.embeddable.com'; // US
-// const BASE_URL = 'https://api.eu.embeddable.com'; // EU
+loadEnvConfig();
+
+const apiKey = process.env.API_KEY;
+const BASE_URL = process.env.BASE_URL;
 
 async function run() {
-    const resp = await fetch(`${BASE_URL}/api/v1/connections/${connectionName}/test`, {
-        method: 'POST',
+    const resp = await fetch(`https://${BASE_URL}/api/v1/connections`, {
+        method: 'GET', 
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
