@@ -1,3 +1,7 @@
-- name: company
+- name: company_95
   securityContext:
     companyId: 95
+
+- name: company_96
+  securityContext:
+    companyId: 96
