@@ -1,0 +1,40 @@
+cubes:
+  - name: hiring_team_member
+    sql_table: "\"HiringTeamMember\""
+    data_source: "scalis-dev"
+
+    joins:
+      - name: requisition
+        sql: "{CUBE}.\"requisitionId\" = {requisition}.id"
+        relationship: many_to_one
+
+      - name: company_user
+        sql: "{CUBE}.\"companyUserId\" = {company_user}.id"
+        relationship: many_to_one
+
+      - name: role
+        sql: "{CUBE}.\"roleId\" = {role}.id"
+        relationship: many_to_one
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+    measures:
+      - name: count
+        type: count
+
+    # pre_aggregations:
+    #   - name: main
+    #     type: rollup
+    #     measures:
+    #       - count
+    #     dimensions:
+    #       - role_name
+    #       - scalis_user_fullname
+    #     partition_granularity: month
+
+    # default_sorting:
+    #   - requisition_jobname: asc

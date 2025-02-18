@@ -1,0 +1,72 @@
+cubes:
+  - name: scalis_user
+    sql_table: "\"ScalisUser\""
+    data_source: "scalis-dev"
+
+    joins: []
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: activestatus
+        sql: "{CUBE}.\"activeStatus\""
+        type: boolean
+
+      - name: identityproviderid
+        sql: "{CUBE}.\"identityProviderId\""
+        type: string
+
+      - name: lastname
+        sql: "{CUBE}.\"lastName\""
+        type: string
+
+      - name: currentstage
+        sql: "{CUBE}.\"currentStage\""
+        type: string
+
+      - name: passwordresetcode
+        sql: "{CUBE}.\"passwordResetCode\""
+        type: string
+
+      - name: firstname
+        sql: "{CUBE}.\"firstName\""
+        type: string
+
+      - name: identityproviderusername
+        sql: "{CUBE}.\"identityProviderUsername\""
+        type: string
+
+      - name: stripecustomerid
+        sql: "{CUBE}.\"stripeCustomerId\""
+        type: string
+
+      - name: profileimage
+        sql: "{CUBE}.\"profileImage\""
+        type: string
+
+      - name: createdat
+        sql: "{CUBE}.\"createdAt\""
+        type: time
+
+      - name: updatedat
+        sql: "{CUBE}.\"updatedAt\""
+        type: time
+
+      - name: passwordresetcodeexpiry
+        sql: "{CUBE}.\"passwordResetCodeExpiry\""
+        type: time
+
+      - name: completedat
+        sql: "{CUBE}.\"completedAt\""
+        type: time
+
+      - name: scalis_user_fullname
+        sql: "CONCAT({CUBE}.\"firstName\", ' ', {CUBE}.\"lastName\")"
+        type: string
+
+    measures:
+      - name: count
+        type: count

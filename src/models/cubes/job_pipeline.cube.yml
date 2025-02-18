@@ -1,0 +1,31 @@
+cubes:
+  - name: job_pipeline
+    sql_table: "\"JobPipeline\""
+    data_source: "scalis-dev"
+
+    joins:
+      - name: job_listing_job_pipeline
+        sql: "{CUBE}.\"id\" = {job_listing_job_pipeline}.\"jobPipelineId\""
+        relationship: one_to_many
+
+      - name: requisition
+        sql: "{CUBE}.\"jobRequisitionId\" = {requisition}.id"
+        relationship: many_to_one
+
+      - name: template_pipeline
+        sql: "{CUBE}.\"templatePipelineId\" = {template_pipeline}.id"
+        relationship: many_to_one
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: title
+        sql: title
+        type: string
+
+    measures:
+      - name: count
+        type: count

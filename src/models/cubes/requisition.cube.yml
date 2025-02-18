@@ -1,0 +1,87 @@
+cubes:
+  - name: requisition
+    sql_table: "\"Requisition\""
+    data_source: "scalis-dev"
+
+    joins:
+      - name: company_user
+        sql: "{CUBE}.\"companyUserId\" = {company_user}.id"
+        relationship: many_to_one
+
+      - name: company_department
+        sql: "{CUBE}.\"companyDepartmentId\" = {company_department}.id"
+        relationship: many_to_one
+
+      - name: company_office
+        sql: "{CUBE}.\"companyOfficeId\" = {company_office}.id"
+        relationship: many_to_one
+
+      - name: hiring_team_member
+        sql: "{CUBE}.\"id\" = {hiring_team_member}.\"requisitionId\""
+        relationship: one_to_many
+
+      - name: job_opening
+        sql: "{CUBE}.\"id\" = {job_opening}.\"jobRequisitionId\""
+        relationship: one_to_many
+
+      - name: job_listing
+        sql: "{CUBE}.\"id\" = {job_listing}.\"jobRequisitionId\""
+        relationship: one_to_many
+
+      - name: job_pipeline
+        sql: "{CUBE}.\"id\" = {job_pipeline}.\"jobRequisitionId\""
+        relationship: one_to_many
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: nontraditionalpref
+        sql: "{CUBE}.\"nonTraditionalPref\""
+        type: boolean
+
+      - name: additionalcomp
+        sql: "{CUBE}.\"additionalComp\""
+        type: string
+
+      - name: jobstatus
+        sql: "{CUBE}.\"jobStatus\""
+        type: string
+
+      - name: extrequisitionid
+        sql: "{CUBE}.\"extRequisitionId\""
+        type: string
+
+      - name: jobtype
+        sql: "{CUBE}.\"jobType\""
+        type: string
+
+      - name: jobname
+        sql: "{CUBE}.\"jobName\""
+        type: string
+
+      - name: joblevel
+        sql: "{CUBE}.\"jobLevel\""
+        type: string
+
+      - name: paytype
+        sql: "{CUBE}.\"payType\""
+        type: string
+
+      - name: createdat
+        sql: "{CUBE}.\"createdAt\""
+        type: time
+
+      - name: updatedat
+        sql: "{CUBE}.\"updatedAt\""
+        type: time
+
+      - name: openedat
+        sql: "{CUBE}.\"openedAt\""
+        type: time
+
+    measures:
+      - name: count
+        type: count

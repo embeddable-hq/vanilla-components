@@ -1,0 +1,43 @@
+cubes:
+  - name: company_user
+    sql_table: "\"CompanyUser\""
+    data_source: "scalis-dev"
+
+    joins: 
+      - name: requisition
+        sql: "{CUBE}.\"id\" = {requisition}.\"companyUserId\""
+        relationship: one_to_many
+
+      - name: hiring_team_member
+        sql: "{CUBE}.\"id\" = {hiring_team_member}.\"companyUserId\""
+        relationship: one_to_many
+
+      - name: user_invitation
+        sql: "{CUBE}.\"id\" = {user_invitation}.\"companyUserId\""
+        relationship: one_to_many
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: companyuserstatus
+        sql: "{CUBE}.\"companyUserStatus\""
+        type: string
+
+      - name: profileimage
+        sql: "{CUBE}.\"profileImage\""
+        type: string
+
+      - name: createdat
+        sql: "{CUBE}.\"createdAt\""
+        type: time
+
+      - name: updatedat
+        sql: "{CUBE}.\"updatedAt\""
+        type: time
+
+    measures:
+      - name: count
+        type: count
