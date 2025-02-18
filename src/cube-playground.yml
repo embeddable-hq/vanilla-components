@@ -7,8 +7,6 @@ services:
       - 4000:4000
       - 15432:15432
       - 13306:13306
-    environment:
-      - CUBEJS_DEV_MODE=true
-      - CUBEJS_SCHEMA_PATH=models
+    env_file: ../.env
     volumes:
-      - .:/cube/conf
+      - .:/cube/conf:rw,Z

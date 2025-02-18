@@ -7,8 +7,8 @@ export default defineConfig({
   // 
   // Uncomment for US deployments
   //
-  // previewBaseUrl: 'https://app.us.embeddable.com',
-  // pushBaseUrl: 'https://api.us.embeddable.com',
+  previewBaseUrl: 'https://app.us.embeddable.com',
+  pushBaseUrl: 'https://api.us.embeddable.com',
   
   //
   // Uncomment for EU deployments

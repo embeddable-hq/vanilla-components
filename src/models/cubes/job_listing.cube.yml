@@ -1,0 +1,103 @@
+cubes:
+  - name: job_listing
+    sql_table: "\"JobListing\""
+    data_source: "scalis-dev"
+    
+    joins:
+      - name: requisition
+        sql: "{CUBE}.\"jobRequisitionId\" = {requisition}.id"
+        relationship: many_to_one
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: industry
+        sql: industry
+        type: string
+
+      - name: externaltitle
+        sql: "{CUBE}.\"externalTitle\""
+        type: string
+
+      - name: stage
+        sql: stage
+        type: string
+
+      - name: subindustry
+        sql: "{CUBE}.\"subIndustry\""
+        type: string
+
+      - name: companydefault
+        sql: "{CUBE}.\"companyDefault\""
+        type: boolean
+
+      - name: searchinternalmatchingdescription
+        sql: "{CUBE}.\"searchInternalMatchingDescription\""
+        type: string
+
+      - name: acceptingcandidates
+        sql: "{CUBE}.\"acceptingCandidates\""
+        type: boolean
+
+      - name: stateandorcountry
+        sql: "{CUBE}.\"stateAndOrCountry\""
+        type: string
+
+      - name: publiclistingid
+        sql: "{CUBE}.\"publicListingId\""
+        type: string
+
+      - name: listingtitle
+        sql: "{CUBE}.\"listingTitle\""
+        type: string
+
+      - name: externallistingid
+        sql: "{CUBE}.\"externalListingId\""
+        type: string
+
+      - name: displaypayonlisting
+        sql: "{CUBE}.\"displayPayOnListing\""
+        type: boolean
+
+      - name: publicdescription
+        sql: "{CUBE}.\"publicDescription\""
+        type: string
+
+      - name: searchpublicdescription
+        sql: "{CUBE}.\"searchPublicDescription\""
+        type: string
+
+      - name: internalmatchingdescription
+        sql: "{CUBE}.\"internalMatchingDescription\""
+        type: string
+
+      - name: workplacetype
+        sql: "{CUBE}.\"workplaceType\""
+        type: string
+
+      - name: createdat
+        sql: "{CUBE}.\"createdAt\""
+        type: time
+
+      - name: updatedat
+        sql: "{CUBE}.\"updatedAt\""
+        type: time
+
+      - name: deletedat
+        sql: "{CUBE}.\"deletedAt\""
+        type: time
+
+      - name: postedat
+        sql: "{CUBE}.\"postedAt\""
+        type: time
+
+    measures:
+      - name: count
+        type: count
+
+      - name: viewcount
+        sql: "{CUBE}.\"viewCount\""
+        type: sum

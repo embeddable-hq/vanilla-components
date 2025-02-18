@@ -1,8 +1,9 @@
-const apiKey = '...';
-const connectionName = 'my-db'; 
+require('dotenv').config();
 
-const BASE_URL = 'https://api.us.embeddable.com'; // US
-// const BASE_URL = 'https://api.eu.embeddable.com'; // EU
+const apiKey = process.env.API_KEY;
+const connectionName = process.env.CONNECTION_NAME || 'my-db';
+
+const BASE_URL = process.env.BASE_URL || 'https://api.us.embeddable.com';
 
 async function run() {
     const resp = await fetch(`${BASE_URL}/api/v1/connections/${connectionName}/test`, {

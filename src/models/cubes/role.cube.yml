@@ -1,0 +1,20 @@
+cubes:
+  - name: role
+    sql_table: "\"Role\""
+    data_source: "scalis-dev"
+
+    joins: []
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: name
+        sql: name
+        type: string
+
+    measures:
+      - name: count
+        type: count

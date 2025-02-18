@@ -1,19 +1,16 @@
-const apiKey = '...';
-const connectionName = 'my-db'; 
+require('dotenv').config();
 
-const BASE_URL = 'https://api.us.embeddable.com'; // US
-// const BASE_URL = 'https://api.eu.embeddable.com'; // EU
+const apiKey = process.env.API_KEY;
+const connectionName = process.env.CONNECTION_NAME || 'my-db';
 
-/**
- * see db-specific examples @ https://trevorio.notion.site/Connections-API-ff4af10f7eaf4288b6952fde04e6e933
- */
-const dbType = 'postgres'; // or bigquery, etc.
+const BASE_URL = process.env.BASE_URL || 'https://api.us.embeddable.com';
+
+const dbType = process.env.DB_TYPE || 'postgres';
 const credentials = {
-    
-    database: '...',
-    host: '...',
-    user: '...',
-    password: '...'
+    database: process.env.DB_DATABASE,
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD
 }
 
 async function run() {

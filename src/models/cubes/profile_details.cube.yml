@@ -1,0 +1,43 @@
+cubes:
+  - name: profile_details
+    sql_table: "\"ProfileDetails\""
+    data_source: "scalis-dev"
+
+    joins:
+      - name: candidate_profile
+        sql: "{CUBE}.\"candidateProfileId\" = {candidate_profile}.id"
+        relationship: many_to_one
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: timezone
+        sql: timezone
+        type: string
+
+      - name: secondaryemail
+        sql: "{CUBE}.\"secondaryEmail\""
+        type: string
+
+      - name: phonenumber
+        sql: "{CUBE}.\"phoneNumber\""
+        type: string
+
+      - name: profilelink
+        sql: "{CUBE}.\"profileLink\""
+        type: string
+
+      - name: createdat
+        sql: "{CUBE}.\"createdAt\""
+        type: time
+
+      - name: updatedat
+        sql: "{CUBE}.\"updatedAt\""
+        type: time
+
+    measures:
+      - name: count
+        type: count
