@@ -16,11 +16,19 @@ cubes:
         sql: "{CUBE}.\"id\" = {user_invitation}.\"companyUserId\""
         relationship: one_to_many
 
+    segments:
+      - name: company_filter
+        sql: "{CUBE}.\"companyId\" = '{COMPILE_CONTEXT.securityContext.companyId}'"
+
     dimensions:
       - name: id
         sql: id
         type: number
         primary_key: true
+
+      - name: companyid
+        sql: "{CUBE}.\"companyId\""
+        type: number
 
       - name: companyuserstatus
         sql: "{CUBE}.\"companyUserStatus\""

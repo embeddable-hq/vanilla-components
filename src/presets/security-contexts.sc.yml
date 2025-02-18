@@ -1,9 +1,3 @@
-- name: Example customer 1
+- name: company
   securityContext:
-    country: United States
-  environment: default
-
-- name: Example customer 2
-  securityContext:
-    country: Germany
-  environment: default
+    companyId: 95
