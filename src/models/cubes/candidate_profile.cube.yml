@@ -2,13 +2,20 @@ cubes:
   - name: candidate_profile
     sql_table: "\"CandidateProfile\""
 
-    joins: []
+    joins: 
+      - name: company
+        sql: "{CUBE}.\"companyId\" = {company}.id"
+        relationship: many_to_one
 
     dimensions:
       - name: id
         sql: id
         type: number
         primary_key: true
+
+      - name: companyid
+        sql: "{CUBE}.\"companyId\""
+        type: number
 
       - name: profiletype
         sql: "{CUBE}.\"profileType\""

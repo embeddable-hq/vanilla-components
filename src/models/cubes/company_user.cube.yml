@@ -15,11 +15,6 @@ cubes:
         sql: "{CUBE}.\"id\" = {user_invitation}.\"companyUserId\""
         relationship: one_to_many
 
-    # segments don't seem to work - use queryRewrite instead
-    # segments:
-    #   - name: company_filter
-    #     sql: "{CUBE}.\"companyId\" = 95"
-
     dimensions:
       - name: id
         sql: id

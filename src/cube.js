@@ -23,8 +23,11 @@ module.exports = {
     },
   ],
 
-  queryRewrite: (query, props) => {
-    const securityContext = props.securityContext || { companyId: 95 }
+  /**
+   * A queryRewrite that is used to add "global" filter  (where x.a=b) to query based on the security context.
+   * It is used to filter the data based on the companyId.
+   */
+  queryRewrite: (query, { securityContext }) => {
     console.log('queryRewrite', securityContext)
     if (securityContext && securityContext.companyId) {
       query.filters.push({

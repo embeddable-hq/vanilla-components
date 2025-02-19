@@ -2,16 +2,13 @@
   environment: stg
   securityContext:
     test: "test"
-    # companyId: 95
 
 - name: development
   environment: dev
   securityContext:
     test: "test"
-    # companyId: 95
 
 - name: production
   environment: prod
   securityContext:
     test: "test"
-    # companyId: 95

@@ -15,6 +15,10 @@ cubes:
         sql: "{CUBE}.\"templateStageId\" = {template_stage}.id"
         relationship: many_to_one
 
+      - name: company
+        sql: "{CUBE}.\"companyId\" = {company}.id"
+        relationship: many_to_one
+
     dimensions:
       - name: id
         sql: id

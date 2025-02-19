@@ -1,0 +1,55 @@
+cubes:
+  - name: company
+    sql_table: "\"Company\""
+
+    joins: 
+      - name: company_user
+        sql: "{CUBE}.\"id\" = {company_user}.\"companyId\""
+        relationship: one_to_many
+
+      - name: company_office
+        sql: "{CUBE}.\"id\" = {company_office}.\"companyId\""
+        relationship: one_to_many
+
+      - name: company_department
+        sql: "{CUBE}.\"id\" = {company_department}.\"companyId\""
+        relationship: one_to_many
+
+      - name: requisition
+        sql: "{CUBE}.\"id\" = {requisition}.\"companyId\""
+        relationship: one_to_many
+
+      - name: candidate_application
+        sql: "{CUBE}.\"id\" = {candidate_application}.\"companyId\""
+        relationship: one_to_many
+
+      - name: template_pipeline
+        sql: "{CUBE}.\"id\" = {template_pipeline}.\"companyId\""
+        relationship: one_to_many
+
+      - name: candidate_profile
+        sql: "{CUBE}.\"id\" = {candidate_profile}.\"companyId\""
+        relationship: one_to_many
+
+      - name: job_opening
+        sql: "{CUBE}.\"id\" = {job_opening}.\"companyId\""
+        relationship: one_to_many
+
+      - name: user_invitation
+        sql: "{CUBE}.\"id\" = {user_invitation}.\"companyId\""
+        relationship: one_to_many
+
+    # segments don't seem to work - use queryRewrite instead
+    # segments:
+    #   - name: company_filter
+    #     sql: "{CUBE}.\"id\" = 95"
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+    measures:
+      - name: count
+        type: count

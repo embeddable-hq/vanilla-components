@@ -11,6 +11,10 @@ cubes:
         sql: "{CUBE}.\"companyUserId\" = {company_user}.id"
         relationship: many_to_one
 
+      - name: company
+        sql: "{CUBE}.\"id\" = {company}.id"
+        relationship: many_to_one
+
     dimensions:
       - name: id
         sql: id
