@@ -60,7 +60,7 @@ export default (props: Props) => {
       <div className="flex h-[60px] w-full">
         <div>
           <select
-            className={`relative px-3 rounded-xl w-full min-w-[50px] h-10 border border-[${theme.borders.colors.primary}] flex items-center`}
+            className={`relative px-3 rounded-[${theme.controls.borders.radius}] w-full min-w-[50px] h-10 border border-[${theme.controls.borders.colors.primary}] flex items-center`}
             value={value}
             onChange={(e) => handleChange(e.target.value)}
           >

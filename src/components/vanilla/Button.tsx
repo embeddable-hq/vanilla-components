@@ -17,7 +17,7 @@ export default function Button({ buttonLabel, showSpinner, disabled, onClick, ic
   return (
     <button
       disabled={disabled}
-      className={`text-[${theme.font.size}] border border-gray-300 h-[50px] rounded-full py-[16px] px-[32px] flex gap-[8px] items-center justify-center disabled:opacity-[0.6] disabled:background-[${theme.buttons.colors.disabled}] disabled:cursor-not-allowed hover:border-[${theme.buttons.colors.hoverBorder}]] pressed:background-[${theme.buttons.colors.pressed}]`}
+      className={`text-[${theme.font.size}] border border-gray-300 h-[50px] rounded-${theme.controls.buttons.radius} py-[16px] px-[32px] flex gap-[8px] items-center justify-center disabled:opacity-[0.6] disabled:bg-[${theme.controls.buttons.colors.disabled}] disabled:cursor-not-allowed hover:border-[${theme.controls.buttons.colors.hoverBorder}] pressed:bg-[${theme.controls.buttons.colors.pressed}] bg-[--embeddable-button-test]`}
       onClick={onClick}
       type="button"
     >

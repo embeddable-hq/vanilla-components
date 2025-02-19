@@ -11,6 +11,8 @@ export default {
         --embeddable-font-color: ${theme.font.color};
         --embeddable-font-weight: ${theme.font.weight};
         --embeddable-table-header-color: ${theme.font.colorDark};
+        --embeddable-button-radius: ${theme.controls.buttons.radius};
+        --embeddable-button-color: 'A00';
       }`;
     style.id = 'theme-config';
 

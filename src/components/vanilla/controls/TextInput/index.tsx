@@ -37,12 +37,12 @@ export default (props: Props) => {
   return (
     <Container title={props.title}>
       <div
-        className={`w-full relative rounded-xl bg-white border border-[${theme.borders.colors.primary}] pr-8 h-10`}
+        className={`w-full relative rounded-[${theme.controls.borders.radius}] bg-white border border-[${theme.controls.borders.colors.primary}] pr-8 h-10`}
       >
         <input
           ref={ref}
           placeholder={props.placeholder}
-          className="rounded-xl w-full outline-none leading-10 h-full border-0 px-3"
+          className={`rounded-[${theme.controls.borders.radius}] w-full outline-none leading-10 h-full border-0 px-3`}
           onChange={handleChange}
           defaultValue={value}
         />

@@ -47,7 +47,6 @@ export default (props: Props) => {
   }) as [Record, (f: (m: Record) => Record) => void];
 
   const theme: Theme = useTheme() as Theme;
-  console.log('theme', JSON.stringify(theme));
 
   useEffect(() => {
     setValue(props.defaultValue);
@@ -132,7 +131,7 @@ export default (props: Props) => {
     <Container title={props.title}>
       <div
         className={twMerge(
-          `relative rounded-xl w-full min-w-[50px] h-10 border border-[${theme.borders.colors.primary}] flex items-center`,
+          `relative rounded-[${theme.controls.borders.radius}] w-full min-w-[50px] h-10 border border-[${theme.controls.borders.colors.primary}] flex items-center`,
           props.className,
         )}
       >
@@ -151,7 +150,7 @@ export default (props: Props) => {
 
         {!!value && (
           <span
-            className={`absolute w-[calc(100%-2rem)] whitespace-nowrap overflow-hidden truncate rounded-xl left-3 top-1 h-8 leading-8 block pointer-events-none text-sm ${
+            className={`absolute w-[calc(100%-2rem)] whitespace-nowrap overflow-hidden truncate rounded-[${theme.controls.borders.radius}] left-3 top-1 h-8 leading-8 block pointer-events-none text-sm ${
               focus ? 'hidden' : ''
             }`}
           >
@@ -164,7 +163,7 @@ export default (props: Props) => {
             tabIndex={0}
             onBlur={() => setFocus(false)}
             style={{ minWidth: props.minDropdownWidth }}
-            className={`flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[${theme.borders.colors.primary}] w-full overflow-y-auto overflow-x-hidden max-h-[400px]`}
+            className={`flex flex-col bg-white rounded-[${theme.controls.borders.radius}] absolute top-11 z-50 border border-[${theme.controls.borders.colors.primary}] w-full overflow-y-auto overflow-x-hidden max-h-[400px]`}
           >
             {list}
             {list?.length === 0 && !!search && (

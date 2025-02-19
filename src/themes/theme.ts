@@ -11,23 +11,14 @@ export type ChartType =
   | 'scatter'
   | 'table';
 
+type RadiusSuffix = '%' | 'px' | 'em' | 'vh';
+type RadiusCalc = `calc(${number | string}${RadiusSuffix})`;
+
 export type Theme = {
   isParent: boolean;
   brand: {
     primary: string;
     secondary: string;
-  };
-  buttons: {
-    colors: {
-      disabled: string;
-      hoverBorder: string;
-      pressed: string;
-    };
-  };
-  borders: {
-    colors: {
-      primary: string;
-    };
   };
   charts: {
     colors: string[];
@@ -37,6 +28,26 @@ export type Theme = {
     };
   } & {
     [key in ChartType]?: any;
+  };
+  controls: {
+    buttons: {
+      colors: {
+        disabled: string;
+        hoverBorder: string;
+        pressed: string;
+      };
+      radius: RadiusCalc | `${number | string}${RadiusSuffix}`;
+    };
+    borders: {
+      colors: {
+        primary: string;
+      };
+      padding: number;
+      radius: RadiusCalc | `${number | string}${RadiusSuffix}`;
+    };
+    tooltips: {
+      radius: RadiusCalc | `${number | string}${RadiusSuffix}`;
+    };
   };
   dateFormats: {
     year: string;

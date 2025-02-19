@@ -6,18 +6,6 @@ export const defaultTheme: Theme = {
     primary: '#6778DE',
     secondary: '#FF997C',
   },
-  buttons: {
-    colors: {
-      disabled: '#F3F3F3',
-      hoverBorder: '#A1A5AA',
-      pressed: '#F3F3F3',
-    },
-  },
-  borders: {
-    colors: {
-      primary: '#DADCE1',
-    },
-  },
   charts: {
     colors: [
       '#6778DE',
@@ -61,6 +49,26 @@ export const defaultTheme: Theme = {
       },
     },
     /* End custom chart overrides */
+  },
+  controls: {
+    buttons: {
+      colors: {
+        disabled: '#F3F3F3',
+        hoverBorder: '#A1A5AA',
+        pressed: '#F3F3F3',
+      },
+      radius: 'calc(infinity*1px)',
+    },
+    borders: {
+      colors: {
+        primary: '#DADCE1',
+      },
+      padding: 8,
+      radius: '12px',
+    },
+    tooltips: {
+      radius: '4px',
+    },
   },
   dateFormats: {
     year: 'yyyy',

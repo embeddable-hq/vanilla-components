@@ -98,7 +98,7 @@ export default (props: Props) => {
         >
           <div
             ref={tooltip}
-            className="absolute text-black bg-slate-200/80 rounded-sm whitespace-nowrap pointer-events-none empty:opacity-0 opacity-100 px-2 py-1 text-xs"
+            className={`absolute text-black bg-slate-200/80 rounded-[${theme.controls.tooltips.radius}] whitespace-nowrap pointer-events-none empty:opacity-0 opacity-100 px-2 py-1 text-xs`}
           />
           <ComposableMap
             projection="geoMercator"

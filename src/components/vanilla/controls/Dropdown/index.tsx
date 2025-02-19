@@ -120,7 +120,7 @@ export default (props: Props) => {
     <Container title={props.title}>
       <div
         className={twMerge(
-          `relative rounded-xl w-full min-w-[50px] h-10 border border-[${theme.borders.colors.primary}] flex items-center`,
+          `relative rounded-[${theme.controls.borders.radius}] w-full min-w-[50px] h-10 border border-[${theme.controls.borders.colors.primary}] flex items-center`,
           props.className,
         )}
       >
@@ -139,7 +139,7 @@ export default (props: Props) => {
 
         {!!value && (
           <span
-            className={`absolute w-[calc(100%-2.5rem)] whitespace-nowrap overflow-hidden truncate rounded-xl left-3 top-1 h-8 leading-8 block pointer-events-none text-sm ${
+            className={`absolute w-[calc(100%-2.5rem)] whitespace-nowrap overflow-hidden truncate rounded-[${theme.controls.borders.radius}] left-3 top-1 h-8 leading-8 block pointer-events-none text-sm ${
               focus ? 'hidden' : ''
             }`}
           >
@@ -150,7 +150,7 @@ export default (props: Props) => {
         {focus && (
           <div
             style={{ minWidth: props.minDropdownWidth }}
-            className={`flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[${theme.borders.colors.primary}] w-full overflow-y-auto overflow-x-hidden max-h-[400px]`}
+            className={`flex flex-col bg-white rounded-[${theme.controls.borders.radius}] absolute top-11 z-50 border border-[${theme.controls.borders.colors.primary}] w-full overflow-y-auto overflow-x-hidden max-h-[400px]`}
           >
             {list}
             {list?.length === 0 && !!search && (

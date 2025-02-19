@@ -21,7 +21,7 @@ const Pagination = ({ currentPage, hasNextPage, onPageChange }: Props) => {
     >
       <ChevronLeft
         className={cn(
-          `cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[${theme.borders.colors.primary}] flex items-center justify-center`,
+          `cursor-pointer hover:bg-black/10 rounded-[${theme.controls.buttons.radius}] w-8 h-8 p-1 border border-[${theme.controls.borders.colors.primary}] flex items-center justify-center`,
           {
             'opacity-50 pointer-events-none': currentPage === 0,
           },
@@ -34,7 +34,7 @@ const Pagination = ({ currentPage, hasNextPage, onPageChange }: Props) => {
       <span className="mx-4">Page {currentPage + 1}</span>
 
       <ChevronRight
-        className={`cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[${theme.borders.colors.primary}] flex items-center justify-center ${
+        className={`cursor-pointer hover:bg-black/10 rounded-[${theme.controls.buttons.radius}] w-8 h-8 p-1 border border-[${theme.controls.borders.colors.primary}] flex items-center justify-center ${
           hasNextPage ? 'opacity-50 pointer-events-none' : ''
         }`}
         onClick={() => {

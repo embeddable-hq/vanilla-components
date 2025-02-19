@@ -107,7 +107,7 @@ export default function DateRangePicker(props: Props) {
           minDropdownWidth={120}
           unclearable
           placeholder={props.placeholder}
-          className={`max-w-[120px] min-w-[80px] sm:max-w-[140px] relative rounded-r-none w-full h-10 border border-[${theme.borders.colors.primary}] flex items-center`}
+          className={`max-w-[120px] min-w-[80px] sm:max-w-[140px] relative rounded-r-none w-full h-10 border border-[${theme.controls.borders.colors.primary}] flex items-center`}
           defaultValue={range?.relativeTimeString || ''}
           onChange={(relativeTimeString) => {
             const [from, to] = dateParser(relativeTimeString, 'UTC');
@@ -127,7 +127,7 @@ export default function DateRangePicker(props: Props) {
           property={{ name: 'value', title: '', nativeType: 'string', __type__: 'dimension' }}
         />
         <div
-          className={`grow flex items-center p-4 hover:bg-[${theme.inputs.colors.hover}] cursor-pointer relative text-sm border-y border-r rounded-r-xl border-[${theme.borders.colors.primary}] min-w-[60px]`}
+          className={`grow flex items-center p-4 hover:bg-[${theme.inputs.colors.hover}] cursor-pointer relative text-sm border-y border-r rounded-r-[${theme.controls.borders.radius}] border-[${theme.controls.borders.colors.primary}] min-w-[60px]`}
         >
           <input
             ref={ref}
@@ -152,7 +152,7 @@ export default function DateRangePicker(props: Props) {
           >
             <DayPicker
               showOutsideDays
-              className={`border border-[${theme.borders.colors.primary}] bg-white rounded-xl px-4 py-3 text-[${theme.font.colorDark}] !m-0`}
+              className={`border border-[${theme.controls.borders.colors.primary}] bg-white rounded-[${theme.controls.borders.radius}] px-4 py-3 text-[${theme.font.colorDark}] !m-0`}
               classNames={{
                 selected: `bg-[${theme.inputs.colors.selected}] text-[${theme.font.colorDark}]`,
               }}
