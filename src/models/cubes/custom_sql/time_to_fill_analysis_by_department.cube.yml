@@ -1,7 +1,7 @@
 cubes:
   - name: time_to_fill_analysis_by_department
     description: "Time to fill analysis by department An example how to run sql query in a cube"
-    data_source: scalis-dev
+    
     sql: |
       SELECT 
         "CompanyDepartment"."departmentName" AS "department",

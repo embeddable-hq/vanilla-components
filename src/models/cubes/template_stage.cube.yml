@@ -1,7 +1,6 @@
 cubes:
   - name: template_stage
     sql_table: "\"TemplateStage\""
-    data_source: "scalis-dev"
 
     joins: []
 

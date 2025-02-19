@@ -1,7 +1,6 @@
 cubes:
   - name: company_department
     sql_table: "\"CompanyDepartment\""
-    data_source: "scalis-dev"
 
     joins: 
       - name: requisition

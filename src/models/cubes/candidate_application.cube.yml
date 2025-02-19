@@ -1,7 +1,6 @@
 cubes:
   - name: candidate_application
     sql_table: "\"CandidateApplication\""
-    data_source: "scalis-dev"
 
     joins:
       - name: candidate_profile

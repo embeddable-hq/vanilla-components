@@ -1,7 +1,17 @@
-- name: company_95
+- name: staging
+  environment: stg
   securityContext:
-    companyId: 95
+    test: "test"
+    # companyId: 95
 
-- name: company_96
+- name: development
+  environment: dev
   securityContext:
-    companyId: 96
+    test: "test"
+    # companyId: 95
+
+- name: production
+  environment: prod
+  securityContext:
+    test: "test"
+    # companyId: 95
