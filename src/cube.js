@@ -28,10 +28,10 @@ module.exports = {
    * It is used to filter the data based on the companyId.
    */
   queryRewrite: (query, { securityContext }) => {
-    console.log('queryRewrite', securityContext)
+    // const securityContext = props.securityContext || { companyId: 95 }
     if (securityContext && securityContext.companyId) {
       query.filters.push({
-        member: 'company_user.companyid',
+        member: 'company.id',
         operator: 'equals',
         values: [securityContext.companyId],
       })
