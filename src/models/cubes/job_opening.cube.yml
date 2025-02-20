@@ -7,11 +7,27 @@ cubes:
         sql: "{CUBE}.\"jobRequisitionId\" = {requisition}.id"
         relationship: many_to_one
 
+      - name: candidate_application
+        sql: "{CUBE}.\"filledByApplication\" = {candidate_application}.id"
+        relationship: many_to_one
+
+      - name: candidate_profile
+        sql: "{CUBE}.\"filledByCandidate\" = {candidate_profile}.id"
+        relationship: many_to_one
+
     dimensions:
       - name: id
         sql: id
         type: number
         primary_key: true
+
+      - name: filledbyapplication
+        sql: "{CUBE}.\"filledByApplication\""
+        type: number
+
+      - name: filledbycandidate
+        sql: "{CUBE}.\"filledByCandidate\""
+        type: number
 
       - name: closedreason
         sql: "{CUBE}.\"closedReason\""

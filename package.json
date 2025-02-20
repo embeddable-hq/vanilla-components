@@ -10,6 +10,7 @@
     "embeddable:dev": "cross-env NODE_OPTIONS='--max-old-space-size=4096' embeddable dev",
     "check-types": "tsc --noemit",
     "ct": "tsc --noEmit",
+    "test": "jest",
     "cube:playground": "docker compose -f ./src/cube-playground.yml up",
     "cube:playground:update": "docker pull cubejs/cube:latest",
     "cube:cubestore": "mysql -h 127.0.0.1 -P 13306 --user=cubestore -pcubestore",
@@ -22,7 +23,9 @@
   },
   "dependencies": {
     "@cubejs-backend/api-gateway": "^1.1.2",
+    "@cubejs-client/core": "^1.2.7",
     "@headlessui/tailwindcss": "^0.2.0",
+    "@types/jest": "^29.5.14",
     "@types/react-simple-maps": "^3.0.4",
     "@typescript-eslint/eslint-plugin": "^8.11.0",
     "@typescript-eslint/parser": "^8.6.0",
@@ -36,6 +39,7 @@
     "dotenv": "^16.4.7",
     "html-to-image": "^1.11.11",
     "html2canvas": "^1.4.1",
+    "jest": "^29.7.0",
     "leaflet": "^1.9.4",
     "license-report": "^6.7.0",
     "lodash.debounce": "^4.0.8",
@@ -48,6 +52,7 @@
     "react-leaflet-markercluster": "^4.1.1",
     "react-simple-maps": "^3.0.0",
     "tailwind-merge": "^2.2.1",
+    "ts-jest": "^29.2.5",
     "uuid": "^11.0.3",
     "vite-plugin-css-injected-by-js": "^3.1.1"
   },

@@ -7,6 +7,14 @@ cubes:
         sql: "{CUBE}.\"companyId\" = {company}.id"
         relationship: many_to_one
 
+      - name: job_opening
+        sql: "{CUBE}.\"id\" = {job_opening}.\"filledByCandidate\""
+        relationship: one_to_many
+
+      - name: profile_details
+        sql: "{CUBE}.\"id\" = {profile_details}.\"candidateProfileId\""
+        relationship: one_to_one
+
     dimensions:
       - name: id
         sql: id

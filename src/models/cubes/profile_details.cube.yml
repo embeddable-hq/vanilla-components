@@ -13,6 +13,10 @@ cubes:
         type: number
         primary_key: true
 
+      - name: candidateprofileid
+        sql: "{CUBE}.\"candidateProfileId\""
+        type: number
+
       - name: timezone
         sql: timezone
         type: string
