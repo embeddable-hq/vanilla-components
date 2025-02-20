@@ -1,16 +1,24 @@
 - name: staging (no security context)
   environment: stg
+  securityContext:
+    empty: true
 
-- name: development (securityContext.companyId: 95)
+- name: development (no security context)
+  environment: dev
+  securityContext:
+    empty: true
+
+- name: production (no security context)
+  environment: prod
+  securityContext:
+    empty: true
+
+- name: development (companyId=95)
   environment: dev
   securityContext:
     companyId: 95
 
-- name: production (no security context)
-  environment: prod
-
-
-- name: production (securityContext.companyId: 5)
+- name: production (companyId=5)
   environment: prod
   securityContext:
     companyId: 5
