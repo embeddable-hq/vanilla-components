@@ -1,76 +1,33 @@
-# Embeddable.com Starter Pack
+# vanilla-components fork of Embeddable.com tailored for Scalis requirements
 
-Hello and welcome to our Embeddable components **starter pack** built just for you by the Embeddable team ❤️ We wish to thank you for using our platform and welcome any feedback.
+### Prerequisites
 
-![example-dash](https://github.com/embeddable-hq/vanilla-components/assets/6795003/3f38f938-7848-4e25-8cc0-90160398f0a1)
+1. Head to https://github.com/embeddable-hq/vanilla-components to understand how to setup project
+2. Read `/src/scripts/README.md` to understand how to setup environment variables and tests connections
+3. Explore [Embeddable Handbook](https://trevorio.notion.site/Embeddable-Handbook-2e609adec9fd486b9b58377519540194) and [Embeddable Documentation](https://docs.embeddable.com/)
+4. Explore [Cube.js Documentation](https://cube.dev/docs) to understand how to work with CUBE
 
+### Working with the project
 
-### Installation
+1. Database tables and relations are defined in `/src/models/cubes`
+2. Every and all queries must join with `companyId` to ensure data isolation between companies. As of 20/02/2025, Embeddable is yet to support features such as `fragments` or `queryRewrite`. To achieve data isolation, following steps are required:
 
-`npm i` # requires node 20 or later
+3. employ dynamic SQL generation in `company.cube.yml`:
 
-### Build & Deploy
-This is how you push code changes to your Embeddable workspace
+```sql
+SELECT * FROM "Company"
+      {% if COMPILE_CONTEXT.securityContext.companyId %}
+        WHERE "Company"."id" = '{ COMPILE_CONTEXT.securityContext.companyId }'
+      {% else %}
+        WHERE 1 = 1
+      {% endif %}
+```
 
- 1. Head to https://app.us.embeddable.com (or https://app.eu.embeddable.com) and grab your **API Key**.
+4. Ensure that every query execution joins with `Company` table by adding a filter below to every dataset to be used in https://app.us.embeddable.com/en/workspace/${workspaceId}
+   ![plot](./public/DatasetBuilder.png)
 
- 2. **Set your location**: in [embeddable.config.ts](./embeddable.config.ts), uncomment either the US or EU config section.
+5. A `securityContext` is being properly sent on the client/consumer similar to [Scalis frontend integration](https://github.com/scalis-io/scalis-io/blob/main/src/app/company/analytics/%5Bid%5D/page.tsx)
 
- 3. **Build** the code bundle: `npm run embeddable:build`
-
- 4. **Push** the above code bundle to your workspace:
- 
-   `npm run embeddable:push -- --api-key <API Key> --email <Email> --message <Message>`
-
- 4. Head back to https://app.embeddable.com (or https://app.eu.embeddable.com) and "Create new Embeddable" using the **components** and **models** from your code bundle
-
-### Local Development
-This is a "Preview workspace" (local to you) that allows you make changes locally and see them instantly without needing to "Build and Deploy".
-
-`npm run embeddable:dev` (note: you may need to run `npm run embeddable:login` first)
-
-It opens a "Preview" workspace, that uses your local components and models.
-
-### Syncing this starter pack with your private repo
-
-We recommend cloning this repo and storing it privately where you keep your git repositories.
-
-You can then set up this repo as a [git remote](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes) so that you can merge in the latest changes (new components, functionality, etc.) whenever you need.
-
-Alternatively, if you'd prefer to integrate Embeddable's sdk directly into your existing codebase, take a look at [this repo](https://github.com/embeddable-hq/onboarding) for an example of a minimal setup.
-
-### Debugging Data Models
-To test and debug your data models locally using Cube's data playground:
-
-Create a `.env` file in the same folder as `cube-playground.yml` and follow the instructions [here](https://cube.dev/docs/product/configuration/data-sources) to add your database's credentials.
-
-`npm run cube:playground`
-
-open `localhost:4000`
-
-In the playground you can:
-
-- query for measures and dimensions
-- see results
-- see generated SQL
-- set the Security Context to test row level security
-- test pre-aggregations
-
-Official documentation on using Cube's playground can be found [here](https://cube.dev/docs/product/workspace/playground#running-playground).
-
-
-### Debugging Pre-aggregations
-
-While cube playground is running, you can run `npm run cube:cubestore` to get access to a mysql interface on top of your locally stored preaggregations.
-
-E.g. list the stored preaggregations using `SELECT * FROM information_schema.tables;`
-
-Official documentation on inspecting local pre-aggregations can be found [here](https://cube.dev/docs/product/caching/using-pre-aggregations#inspecting-pre-aggregations).
-
-## Environment variables
-
-Environment variables can be set in a `.env` file in the root of the project. The following variables are available:
-
-| Variable name       | Type                     | Default Value | Description                  |
-|---------------------|--------------------------|---------------|------------------------------|
-| CUBE_CLOUD_ENDPOINT | Cube Cloud Configuration |               | URL to connect to cube cloud |
+```ts
+const securityContext = { companyId: session?.user.workspace?.currentCompany.id }
+```

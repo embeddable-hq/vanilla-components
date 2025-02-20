@@ -3,6 +3,10 @@ cubes:
     sql_table: "\"CandidateApplication\""
 
     joins:
+      - name: job_opening
+        sql: "{CUBE}.id = {job_opening}.\"filledByApplication\""
+        relationship: one_to_many
+
       - name: candidate_profile
         sql: "{CUBE}.\"candidateProfileId\" = {candidate_profile}.id"
         relationship: many_to_one
