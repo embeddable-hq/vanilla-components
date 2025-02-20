@@ -15,7 +15,11 @@ cubes:
         ON "Requisition"."id" = "JobOpening"."jobRequisitionId"
       JOIN "Company"
         ON "CompanyDepartment"."companyId" = "Company"."id"
-      WHERE "Company"."id" = '{ COMPILE_CONTEXT.securityContext.companyId }'
+      {% if COMPILE_CONTEXT.securityContext.companyId %}
+        WHERE "Company"."id" = '{ COMPILE_CONTEXT.securityContext.companyId }'
+      {% else %}
+        WHERE 1 = 1
+      {% endif %}
       GROUP BY "CompanyDepartment"."departmentName"
       ORDER BY "avgdaystofill" desc
 
