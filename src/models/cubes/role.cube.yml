@@ -1,7 +1,6 @@
 cubes:
   - name: role
     sql_table: "\"Role\""
-    data_source: "scalis-dev"
 
     joins: []
 

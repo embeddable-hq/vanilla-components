@@ -1,8 +1,8 @@
 cubes:
   - name: time_to_fill_analysis_by_department
     description: "Time to fill analysis by department An example how to run sql query in a cube"
-    data_source: scalis-dev
-    sql: |
+    
+    sql: >
       SELECT 
         "CompanyDepartment"."departmentName" AS "department",
         AVG(EXTRACT(EPOCH FROM ("JobOpening"."filledDate" - "Requisition"."openedAt"))/86400) AS "avgdaystofill",
@@ -13,6 +13,13 @@ cubes:
         ON "Requisition"."companyDepartmentId" = "CompanyDepartment"."id"
       JOIN "JobOpening" 
         ON "Requisition"."id" = "JobOpening"."jobRequisitionId"
+      JOIN "Company"
+        ON "CompanyDepartment"."companyId" = "Company"."id"
+      {% if COMPILE_CONTEXT.securityContext.companyId %}
+        WHERE "Company"."id" = '{ COMPILE_CONTEXT.securityContext.companyId }'
+      {% else %}
+        WHERE 1 = 1
+      {% endif %}
       GROUP BY "CompanyDepartment"."departmentName"
       ORDER BY "avgdaystofill" desc
 

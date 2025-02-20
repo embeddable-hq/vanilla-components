@@ -1,7 +1,6 @@
 cubes:
   - name: template_pipeline
     sql_table: "\"TemplatePipeline\""
-    data_source: "scalis-dev"
 
     joins:
       - name: company_department
@@ -10,6 +9,10 @@ cubes:
 
       - name: company_user
         sql: "{CUBE}.\"companyUserId\" = {company_user}.id"
+        relationship: many_to_one
+
+      - name: company
+        sql: "{CUBE}.\"id\" = {company}.id"
         relationship: many_to_one
 
     dimensions:

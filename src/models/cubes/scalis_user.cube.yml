@@ -1,7 +1,6 @@
 cubes:
   - name: scalis_user
     sql_table: "\"ScalisUser\""
-    data_source: "scalis-dev"
 
     joins: []
 

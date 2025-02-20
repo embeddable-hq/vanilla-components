@@ -1,7 +1,6 @@
 cubes:
   - name: company_user
     sql_table: "\"CompanyUser\""
-    data_source: "scalis-dev"
 
     joins: 
       - name: requisition
@@ -21,6 +20,10 @@ cubes:
         sql: id
         type: number
         primary_key: true
+
+      - name: companyid
+        sql: "{CUBE}.\"companyId\""
+        type: number
 
       - name: companyuserstatus
         sql: "{CUBE}.\"companyUserStatus\""

@@ -1,7 +1,6 @@
 cubes:
   - name: candidate_application_status
     sql_table: "\"CandidateApplicationStatus\""
-    data_source: "scalis-dev"
 
     joins:
       - name: job_listing

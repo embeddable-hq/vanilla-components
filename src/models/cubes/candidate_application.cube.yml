@@ -1,7 +1,6 @@
 cubes:
   - name: candidate_application
     sql_table: "\"CandidateApplication\""
-    data_source: "scalis-dev"
 
     joins:
       - name: candidate_profile
@@ -14,6 +13,10 @@ cubes:
 
       - name: template_stage
         sql: "{CUBE}.\"templateStageId\" = {template_stage}.id"
+        relationship: many_to_one
+
+      - name: company
+        sql: "{CUBE}.\"companyId\" = {company}.id"
         relationship: many_to_one
 
     dimensions:

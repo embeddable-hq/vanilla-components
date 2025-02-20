@@ -1,7 +1,6 @@
 cubes:
   - name: job_listing_job_pipeline
     sql_table: "\"JobListingJobPipeline\""
-    data_source: "scalis-dev"
 
     joins:
       - name: job_listing

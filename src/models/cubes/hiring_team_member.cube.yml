@@ -1,7 +1,6 @@
 cubes:
   - name: hiring_team_member
     sql_table: "\"HiringTeamMember\""
-    data_source: "scalis-dev"
 
     joins:
       - name: requisition
