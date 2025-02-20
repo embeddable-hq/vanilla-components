@@ -1,6 +1,13 @@
 cubes:
   - name: company
-    sql_table: "\"Company\""
+    # sql_table: "\"Company\""
+    sql: >
+      SELECT * FROM "Company"
+      {% if COMPILE_CONTEXT.securityContext.companyId %}
+        WHERE "Company"."id" = '{ COMPILE_CONTEXT.securityContext.companyId }'
+      {% else %}
+        WHERE 1 = 1
+      {% endif %}
 
     joins: 
       - name: company_user
@@ -39,16 +46,18 @@ cubes:
         sql: "{CUBE}.\"id\" = {user_invitation}.\"companyId\""
         relationship: one_to_many
 
-    # segments don't seem to work - use queryRewrite instead
+    #segments are NOT SUPPORTED BY EMBEDDABLE as of 2025-02-20
     # segments:
     #   - name: company_filter
-    #     sql: "{CUBE}.\"id\" = 95"
+    #     sql: "{CUBE}.\"id\" = '{ COMPILE_CONTEXT.securityContext.companyId }'"
+        # sql: "{CUBE}.\"id\" = '95'"
 
     dimensions:
       - name: id
         sql: id
         type: number
         primary_key: true
+        public: true
 
     measures:
       - name: count

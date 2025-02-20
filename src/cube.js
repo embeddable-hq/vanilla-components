@@ -26,18 +26,19 @@ module.exports = {
   /**
    * A queryRewrite that is used to add "global" filter  (where x.a=b) to query based on the security context.
    * It is used to filter the data based on the companyId.
+   * NOT SUPPORTED BY EMBEDDABLE as of 2025-02-20
    */
-  queryRewrite: (query, { securityContext }) => {
-    // const securityContext = props.securityContext || { companyId: 95 }
-    if (securityContext && securityContext.companyId) {
-      query.filters.push({
-        member: 'company.id',
-        operator: 'equals',
-        values: [securityContext.companyId],
-      })
-    } else {
-      console.error('Security Context is missing companyId!')
-    }
-    return query
-  },
+  // queryRewrite: (query, { securityContext }) => {
+  //   // const securityContext = props.securityContext || { companyId: 95 }
+  //   if (securityContext && securityContext.companyId) {
+  //     query.filters.push({
+  //       member: 'company.id',
+  //       operator: 'equals',
+  //       values: [securityContext.companyId],
+  //     })
+  //   } else {
+  //     console.error('Security Context is missing companyId!')
+  //   }
+  //   return query
+  // },
 }

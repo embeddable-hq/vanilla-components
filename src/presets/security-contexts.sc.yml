@@ -1,14 +1,16 @@
-- name: staging
+- name: staging (no security context)
   environment: stg
-  securityContext:
-    test: "test"
 
-- name: development
+- name: development (securityContext.companyId: 95)
   environment: dev
   securityContext:
-    test: "test"
+    companyId: 95
 
-- name: production
+- name: production (no security context)
+  environment: prod
+
+
+- name: production (securityContext.companyId: 5)
   environment: prod
   securityContext:
-    test: "test"
+    companyId: 5
