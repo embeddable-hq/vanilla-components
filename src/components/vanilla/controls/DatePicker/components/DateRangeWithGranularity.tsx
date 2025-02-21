@@ -113,7 +113,16 @@ export default function DateRangeWithGranularity(props: Props) {
       {!!onChangeComparison && (
         <>
           <div
-            className={`hidden md:block shrink whitespace-nowrap text-[14px] font-normal text-[${theme.font.colorDark}] leading-none ml-2`}
+            className={`
+              font-normal
+              hidden
+              leading-none ml-2
+              md:block
+              shrink
+              text-[14px]
+              whitespace-nowrap
+              text-[--embeddable-font-colorDark]
+            `}
           >
             compare to
           </div>

@@ -66,9 +66,9 @@ export default (props: Props) => {
     // Calculate theme color values
     const brandColor = tinyColor(theme.brand.primary);
     let startingColor = tinyColor('#888888');
-    if (brandColor.isLight()) {
+    if (brandColor?.isLight()) {
       startingColor = brandColor;
-    } else {
+    } else if (brandColor?.isDark()) {
       startingColor = brandColor.lighten(20);
     }
 
@@ -98,7 +98,19 @@ export default (props: Props) => {
         >
           <div
             ref={tooltip}
-            className={`absolute text-black bg-slate-200/80 rounded-[${theme.controls.tooltips.radius}] whitespace-nowrap pointer-events-none empty:opacity-0 opacity-100 px-2 py-1 text-xs`}
+            className={`
+              absolute
+              text-black
+              bg-slate-200/80
+              rounded-[--embeddable-controls.tooltips.radius]
+              whitespace-nowrap
+              pointer-events-none
+              empty:opacity-0
+              opacity-100
+              px-2
+              py-1
+              text-xs
+            `}
           />
           <ComposableMap
             projection="geoMercator"

@@ -13,7 +13,17 @@ export default function Title({ title, style }: Props) {
   return (
     !!title && (
       <h2
-        className={`w-full text-[${theme.font.color}] text-base font-bold font-embeddable justify-start flex leading-6 mb-2`}
+        className={`
+          flex
+          font-bold
+          font-embeddable
+          justify-start
+          leading-6
+          mb-2
+          text-base
+          w-full
+          text-[color:--embeddable.font.color]
+        `}
         style={style || {}}
       >
         {title}

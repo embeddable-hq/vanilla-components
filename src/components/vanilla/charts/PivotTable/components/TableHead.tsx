@@ -89,7 +89,7 @@ export default function TableHead({
             'flex justify-between items-center gap-2': isSortable,
           })}
         >
-          <span className={`text-[${fontColor}]`} style={{ fontSize }}>
+          <span className={`text-[color:--embeddable-font-colorDark}]`} style={{ fontSize }}>
             {column.label}
           </span>
           {isSortable ? (

@@ -77,7 +77,10 @@ export default (props: Props) => {
       >
         {dimension ? (
           <>
-            <div className={`text-[${fontColor}]`} style={{ fontSize: `${fontSize}px` }}>
+            <div
+              className={`text-[color:--embeddable-font-colorDark]`}
+              style={{ fontSize: `${fontSize}px` }}
+            >
               <p>{results?.data?.[0]?.[dimension.name]}</p>
             </div>
             {displayMetric && metric && (
@@ -99,7 +102,10 @@ export default (props: Props) => {
           </>
         ) : (
           <>
-            <div className={`text-[${fontColor}]`} style={{ fontSize: `${fontSize}px` }}>
+            <div
+              className={`text-[color:--embeddable-font-colorDark]`}
+              style={{ fontSize: `${fontSize}px` }}
+            >
               <p>{`${prefix || ''}${n || 0}${suffix || ''}`}</p>
             </div>
             {prevTimeFilter?.to && (

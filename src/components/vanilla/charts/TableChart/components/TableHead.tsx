@@ -17,7 +17,7 @@ const TableHead = ({ columns, sortBy, sortDirection, onSortingChange, minColumnW
   const theme: Theme = useTheme() as Theme;
 
   return (
-    <thead className={`border-y border-[${theme.controls.borders.colors.primary}]`}>
+    <thead className={`border-y border-[color:--embeddable-controls-boders-colors-primary]`}>
       <tr>
         {columns.map((column) => {
           const isSorted = sortBy?.name === column.name;

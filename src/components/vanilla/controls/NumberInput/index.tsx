@@ -26,13 +26,30 @@ export default (props: Props) => {
   return (
     <Container title={props.title}>
       <div
-        className={`w-full relative rounded-[${theme.controls.borders.radius}] bg-white border border-[${theme.controls.borders.colors.primary}] pr-8 h-10`}
+        className={`
+          bg-white
+          border
+          h-10
+          pr-8
+          relative
+          w-full
+          border-[color:--embeddable-controls-borders-colors-primary]
+          rounded-[--embeddable-controls-borders-radius]
+        `}
       >
         <input
           ref={ref}
           type="number"
           placeholder={props.placeholder}
-          className={`rounded-[${theme.controls.borders.radius}] w-full h-full outline-none leading-10 border-0 px-3`}
+          className={`
+            border-0
+            h-full
+            leading-10
+            outline-none
+            px-3
+            w-full
+            rounded-[--embeddable-controls-borders-radius]
+          `}
           onChange={(e) => {
             setValue(e.target.value);
             if (timeout) {

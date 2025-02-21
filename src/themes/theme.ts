@@ -11,8 +11,11 @@ export type ChartType =
   | 'scatter'
   | 'table';
 
-type RadiusSuffix = '%' | 'px' | 'em' | 'vh';
-type RadiusCalc = `calc(${number | string}${RadiusSuffix})`;
+type ButtonSettings = {
+  background: string;
+  fontColor: string;
+  border: string;
+};
 
 export type Theme = {
   isParent: boolean;
@@ -31,22 +34,30 @@ export type Theme = {
   };
   controls: {
     buttons: {
-      colors: {
-        disabled: string;
-        hoverBorder: string;
-        pressed: string;
-      };
-      radius: RadiusCalc | `${number | string}${RadiusSuffix}`;
+      active: ButtonSettings;
+      hovered: ButtonSettings;
+      pressed: ButtonSettings;
+      fontSize: string;
+      height: string;
+      paddingY: string;
+      paddingX: string;
+      radius: string;
     };
     borders: {
       colors: {
         primary: string;
       };
       padding: number;
-      radius: RadiusCalc | `${number | string}${RadiusSuffix}`;
+      radius: string;
+    };
+    inputs: {
+      colors: {
+        hover: string;
+        selected: string;
+      };
     };
     tooltips: {
-      radius: RadiusCalc | `${number | string}${RadiusSuffix}`;
+      radius: string;
     };
   };
   dateFormats: {
@@ -68,12 +79,6 @@ export type Theme = {
     weight: number;
     imports: {
       [key: string]: string;
-    };
-  };
-  inputs: {
-    colors: {
-      hover: string;
-      selected: string;
     };
   };
   svg: {

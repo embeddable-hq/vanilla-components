@@ -120,7 +120,17 @@ export default (props: Props) => {
     <Container title={props.title}>
       <div
         className={twMerge(
-          `relative rounded-[${theme.controls.borders.radius}] w-full min-w-[50px] h-10 border border-[${theme.controls.borders.colors.primary}] flex items-center`,
+          `
+            border
+            flex
+            h-10
+            items-center
+            min-w-[50px]
+            relative
+            w-full
+            border-[color:--embeddable-controls-borders-colors-primary]
+            rounded-[--embeddable-controls-borders-radius]
+          `,
           props.className,
         )}
       >
@@ -139,9 +149,21 @@ export default (props: Props) => {
 
         {!!value && (
           <span
-            className={`absolute w-[calc(100%-2.5rem)] whitespace-nowrap overflow-hidden truncate rounded-[${theme.controls.borders.radius}] left-3 top-1 h-8 leading-8 block pointer-events-none text-sm ${
-              focus ? 'hidden' : ''
-            }`}
+            className={`
+              absolute
+              block
+              h-8
+              leading-8
+              left-3
+              overflow-hidden
+              pointer-events-none
+              top-1
+              truncate
+              w-[calc(100%-2.5rem)]
+              whitespace-nowrap
+              rounded-[--embeddable-controls-borders-radius]
+              text-sm ${focus ? 'hidden' : ''}
+            `}
           >
             {value}
           </span>
@@ -150,7 +172,21 @@ export default (props: Props) => {
         {focus && (
           <div
             style={{ minWidth: props.minDropdownWidth }}
-            className={`flex flex-col bg-white rounded-[${theme.controls.borders.radius}] absolute top-11 z-50 border border-[${theme.controls.borders.colors.primary}] w-full overflow-y-auto overflow-x-hidden max-h-[400px]`}
+            className={`
+              absolute
+              bg-white
+              border
+              flex
+              flex-col
+              max-h-[400px]
+              overflow-x-hidden
+              overflow-y-auto
+              top-11
+              w-full
+              z-50
+              border-[color:--embeddable-controls-borders-colors-primary]
+              rounded-[--embeddable-controls-borders-radius]
+            `}
           >
             {list}
             {list?.length === 0 && !!search && (
