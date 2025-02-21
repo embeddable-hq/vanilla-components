@@ -16,7 +16,7 @@ cubes:
         relationship: many_to_one
 
       - name: company
-        sql: "{CUBE}.\"id\" = {company}.id"
+        sql: "{CUBE}.\"companyId\" = {company}.id"
         relationship: many_to_one
         
       - name: hiring_team_member
