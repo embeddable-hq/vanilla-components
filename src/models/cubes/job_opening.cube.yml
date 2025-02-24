@@ -7,10 +7,6 @@ cubes:
         sql: "{CUBE}.\"jobRequisitionId\" = {requisition}.id"
         relationship: many_to_one
 
-      - name: candidate_application
-        sql: "{CUBE}.\"filledByApplication\" = {candidate_application}.id"
-        relationship: many_to_one
-
       - name: candidate_profile
         sql: "{CUBE}.\"filledByCandidate\" = {candidate_profile}.id"
         relationship: many_to_one
