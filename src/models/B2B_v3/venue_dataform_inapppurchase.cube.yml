@@ -20,18 +20,20 @@ cubes:
       ,case when event_params_custom.tour_id is null then b.tour_sid else event_params_custom.tour_id end as tour_id
       ,event_params.product_id
     FROM `smartify-cc94e.superform_outputs_151371783.ga4_events` as a
-    left join `smartify-cc94e.smartify_lookup_tables.tour_lookup` as b on a.event_params.product_id = b.paid_tour_id
+    left join `smartify-cc94e.smartify_lookup_tables.tour_lookup` as b on (a.event_params.product_id = b.paid_tour_id or a.event_params_custom.tour_id = b.tour_sid)
     where event_name in ("in_app_purchase", "screen_view", "page_view")
       and event_date >= '2024-01-01'
       and stream_id in ("1047860117","1047860114","1913717213","2817285551"))
     
-    select * from raw 
+    select * from raw
     where organisation_id = '{COMPILE_CONTEXT.securityContext.organisation_id}'
-      and ('{COMPILE_CONTEXT.securityContext.venue_id}' IS NULL
-          or '{COMPILE_CONTEXT.securityContext.venue_id}' = ''
-          or '{COMPILE_CONTEXT.securityContext.venue_id}' = 'undefined'
-          or venue_id in unnest(split('{COMPILE_CONTEXT.securityContext.venue_id}', ','))
-      ) 
+    and ('{COMPILE_CONTEXT.securityContext.venue_id}' IS NULL
+      or '{COMPILE_CONTEXT.securityContext.venue_id}' = ''
+      or '{COMPILE_CONTEXT.securityContext.venue_id}' = 'undefined'
+      or venue_id in unnest(split('{COMPILE_CONTEXT.securityContext.venue_id}', ','))
+    ) 
+    and tour_id is not null
+    
 
   dimensions: 
     - name: event_date
@@ -107,3 +109,19 @@ cubes:
     - name: venue_lookup_tours
       relationship: many_to_one
       sql: '{CUBE.tour_id} = {venue_lookup_tours.tour_sid}'
+
+  pre_aggregations:
+    - name: inapp_aggregation
+      measures:
+        - venue_dataform_inapppurchase.tour_views
+        - venue_dataform_inapppurchase.in_app_purchases
+        - venue_dataform_inapppurchase.tour_users
+      dimensions:
+        - venue_dataform_inapppurchase.device_platform
+        - venue_dataform_inapppurchase.user_connectivity
+        - venue_dataform_inapppurchase.country
+        - venue_dataform_inapppurchase.venue_id
+        - venue_dataform_inapppurchase.tour_id
+        - venue_lookup_tours.tour_name
+      timeDimension: venue_dataform_inapppurchase.event_date
+      granularity: day

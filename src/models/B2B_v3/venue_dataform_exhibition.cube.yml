@@ -63,7 +63,7 @@ cubes:
 
   measures:
     - name: exhibition_users
-      type: count_distinct
+      type: count_distinct_approx
       title: 'Users'
       sql:  case when event_name in ('screen_view', 'page_view') and contains_substr(page_type, 'exhibition_dp') then user_pseudo_id else null end
 
@@ -93,3 +93,21 @@ cubes:
     - name: venue_lookup_exhibitions
       relationship: many_to_one
       sql: '{CUBE.exhibition_id} = {venue_lookup_exhibitions.exhibition_sid}'
+
+  pre_aggregations:
+    - name: exhibition_aggregation
+      measures:
+        - venue_dataform_exhibition.exhibition_users
+        - venue_dataform_exhibition.exhibition_views
+        - venue_dataform_exhibition.exhibition_clicks
+        - venue_dataform_exhibition.exhibition_favorites
+      dimensions:
+        - venue_dataform_exhibition.device_platform
+        - venue_dataform_exhibition.user_connectivity
+        - venue_dataform_exhibition.venue_id
+        - venue_dataform_exhibition.exhibition_id
+        - venue_lookup_exhibitions.exhibition_name
+        - venue_lookup_exhibitions.exhibition_start
+        - venue_lookup_exhibitions.exhibition_end
+      timeDimension: datetime
+      granularity: day

@@ -124,7 +124,7 @@ cubes:
       sql: case when event_name in ('page_view', 'screen_view') and contains_substr(page_type, "tour_dp") then 1 else 0 end
     
     - name: tour_users
-      type: count_distinct
+      type: count_distinct_approx
       sql: case when (event_name in ('page_view', 'screen_view') and contains_substr(page_type, "tour_dp") or event_name in ('track_start', 'track_complete', 'track_pause') and tour_id is not null) then user_pseudo_id else null end
 
     - name: track_plays
@@ -138,11 +138,11 @@ cubes:
       sql: case when event_name in ('track_complete') then 1 else 0 end
 
     - name: track_play_users
-      type: count_distinct
+      type: count_distinct_approx
       sql: case when event_name in ('track_start') then user_pseudo_id else null end
 
     - name: track_complete_users
-      type: count_distinct
+      type: count_distinct_approx
       sql: case when event_name in ('track_complete') then user_pseudo_id else null end
 
     - name: track_play_per_user
@@ -186,12 +186,12 @@ cubes:
     #Bespoek Tour Measures
     - name: ptour_created
       title: Bespoke Tour Created
-      type: count_distinct
+      type: count_distinct_approx
       sql: case when STARTS_WITH(tour_id,"ptour_") then tour_id else null end
 
     - name: ptour_users
       title: Bespoke Tour Users
-      type: count_distinct
+      type: count_distinct_approx
       sql: case when STARTS_WITH(tour_id,"ptour_") then user_pseudo_id else null end
 
     - name: ptour_views
@@ -246,3 +246,31 @@ cubes:
     - name: venue_lookup_language
       relationship: many_to_one
       sql: '{CUBE.device_language} = {venue_lookup_language.device_language}'
+
+  
+  pre_aggregations:
+    - name: media_player_aggregation
+      measures:
+        - venue_dataform_tracks.track_plays
+        - venue_dataform_tracks.track_play_users
+        - venue_dataform_tracks.track_complete
+        - venue_dataform_tracks.track_complete_users
+        - venue_dataform_tracks.track_listen_time
+        - venue_dataform_tracks.listen_time_minutes
+        - venue_dataform_tracks.tour_views
+        - venue_dataform_tracks.tour_users
+      dimensions:
+        - venue_dataform_tracks.device_platform
+        - venue_dataform_tracks.user_connectivity
+        - venue_dataform_tracks.venue_id
+        - venue_dataform_tracks.track_id
+        - venue_dataform_tracks.tour_id
+        - venue_dataform_tracks.track_language
+        - venue_dataform_tracks.country
+        - venue_dataform_tracks.user_age_range
+        - venue_dataform_tracks.user_gender
+        - venue_lookup_tracks.track_name
+        - venue_lookup_tours.tour_name
+        - venue_lookup_language.language_name
+      timeDimension: venue_dataform_tracks.event_date
+      granularity: day
