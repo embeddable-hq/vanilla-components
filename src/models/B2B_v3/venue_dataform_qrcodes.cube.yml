@@ -95,7 +95,7 @@ cubes:
 
   measures:
     - name: qrcode_users
-      type: count_distinct
+      type: count_distinct_approx
       sql: user_pseudo_id
 
     - name: qrcode_opens

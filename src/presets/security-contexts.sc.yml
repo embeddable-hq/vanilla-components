@@ -31,6 +31,11 @@
     organisation_id: org_scotng
     venue_id:
 
+- name: Salford Museum and Art Gallery
+  securityContext:
+    organisation_id: org_smag
+    venue_id:
+
 - name: HRP
   securityContext:
     organisation_id: org_hrp

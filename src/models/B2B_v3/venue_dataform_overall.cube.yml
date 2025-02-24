@@ -118,16 +118,16 @@ cubes:
     
   measures:
     - name: active_user
-      type: count_distinct
+      type: count_distinct_approx
       title: Total Users
       sql: case when event_date <= "2023-07-18" and (engagement_time_msec > 0 or session_engaged = "1") then user_pseudo_id when is_active_user = true then user_pseudo_id else null end
     
     - name: audience_reach
-      type: count_distinct
+      type: count_distinct_approx
       sql: user_pseudo_id
 
     - name: login_users
-      type: count_distinct
+      type: count_distinct_approx
       sql: case when (user_logged = "true" and is_active_user = true) then user_pseudo_id else null end
     
     - name: total_actions
@@ -146,33 +146,33 @@ cubes:
       sql: case when event_name in ('page_view', 'screen_view') and contains_substr(page_type, "object_dp") and object_id is not null then 1 else 0 end
 
     - name: object_views_users
-      type: count_distinct
+      type: count_distinct_approx
       title: Object View Users
       sql: case when event_name in ('page_view', 'screen_view') and contains_substr(page_type, "object_dp") and object_id is not null then user_pseudo_id else null end
 
     - name: object_views_per_user
       title: Objectect View / User
       type: number
-      sql: case when {object_views_users} = 0 then 0 else round({object_views} / {object_views_users}, 2) end
+      sql: case when {object_views_users} = 0 then 0 else {object_views} / {object_views_users} end
     
     - name: object_scans
       type: sum
       sql: case when event_name in ("scan_recognition_hit") and object_id is not null then 1 when (event_name = "object_scan" and event_date <= "2023-05-05") and object_id is not null then 1 when (event_name = "artwork_recognised" and event_date <= "2022-11-11") and object_id is not null then 1 else 0 end
 
     - name: object_scans_users
-      type: count_distinct
+      type: count_distinct_approx
       title: Object Scan Users
       sql: case when event_name in ("scan_recognition_hit") and object_id is not null then user_pseudo_id when (event_name = "object_scan" and event_date <= "2023-05-05") and object_id is not null then user_pseudo_id when (event_name = "artwork_recognised" and event_date <= "2022-11-11") and object_id is not null then user_pseudo_id else null end
 
     - name: object_scans_per_user
       title: Objectect Scan / User
       type: number
-      sql: case when {object_scans_users} = 0 then 0 else round({object_scans} / {object_scans_users}, 2) end
+      sql: case when {object_scans_users} = 0 then 0 else {object_scans} / {object_scans_users} end
 
-    - name: object_views_users_share
-      title: Object View Users %
-      type: number
-      sql: "round(({object_views_users} / {active_user} * 100), 2)"
+    # - name: object_views_users_share
+    #   title: Object View Users %
+    #   type: number
+    #   sql: "round(({object_views_users} / {active_user} * 100), 2)"
     
     #Exhibition
     - name: exhibition_views
@@ -180,14 +180,14 @@ cubes:
       sql: case when event_name in ('screen_view', 'page_view') and contains_substr(page_type, 'exhibition_dp') then 1 else 0 end
     
     - name: exhibition_views_users
-      type: count_distinct
+      type: count_distinct_approx
       title: Exh View Users
       sql: case when event_name in ('screen_view', 'page_view') and contains_substr(page_type, 'exhibition_dp') then user_pseudo_id else null end
 
     - name: exhibition_views_per_user
       title: Exhibition View / User
       type: number
-      sql: case when {exhibition_views_users} = 0 then 0 else round({exhibition_views} / {exhibition_views_users}, 2) end
+      sql: case when {exhibition_views_users} = 0 then 0 else {exhibition_views} / {exhibition_views_users} end
     
     #Tours and Tracks
     - name: tour_views
@@ -195,29 +195,29 @@ cubes:
       sql: case when event_name in ('page_view', 'screen_view') and contains_substr(page_type, "tour_dp") then 1 else 0 end
     
     - name: tour_view_users
-      type: count_distinct
+      type: count_distinct_approx
       title: Tour View Users
       sql: case when (event_name in ('page_view', 'screen_view') and contains_substr(page_type, "tour_dp") or event_name in ('track_start', 'track_complete', 'track_pause') and tour_id is not null) then user_pseudo_id else null end
 
     - name: tour_views_per_user
       title: Tour View / User
       type: number
-      sql: case when {tour_view_users} = 0 then 0 else round({tour_views} / {tour_view_users}, 2) end
+      sql: case when {tour_view_users} = 0 then 0 else {tour_views} / {tour_view_users} end
 
     - name: track_plays
       type: sum
       sql: case when event_name in ('track_start') then 1 else 0 end
 
     - name: track_play_users
-      type: count_distinct
+      type: count_distinct_approx
       title: Track Play Users
       sql: case when event_name in ('track_start') then user_pseudo_id else null end
 
     - name: track_plays_per_user
       title: Track Play / User
       type: number
-      sql: case when {track_play_users} = 0 then 0 else round({track_plays} / {track_play_users}, 2) end
-
+      sql: case when {track_play_users} = 0 then 0 else {track_plays} / {track_play_users} end
+    
     - name: track_listen_time
       title: Listen Time
       type: sum
@@ -232,7 +232,7 @@ cubes:
     - name: listen_time_minutes
       title: Listen Time (Min)
       type: number
-      sql: "round({track_listen_time}/60000,0)"
+      sql: "{track_listen_time}/60000"
 
     - name: listen_time_per_user
       type: number
@@ -262,12 +262,14 @@ cubes:
     
     - name: nps_score_100
       type: number
-      sql: "case when {nps_votes} = 0 then 0 else round((({promoters} - {detractors}) / {nps_votes}), 2) * 100 end"
+      sql: "case when {nps_votes} = 0 then 0 else ((({promoters} - {detractors}) / {nps_votes}) * 100) end"
+
     
     - name: nps_score
       type: number
       title: NPS Score
       sql: "case when {nps_score_100} = 0 then 0 else ({nps_score_100} + 100) / 20 end"
+
 
     - name: satisfaction_votes
       type: sum
@@ -298,3 +300,39 @@ cubes:
     - name: venue_lookup_region_language
       relationship: many_to_one
       sql: '{CUBE.device_language} = {venue_lookup_region_language.device_language}'
+  
+  pre_aggregations:
+    - name: overall_aggregation
+      measures:
+        - venue_dataform_overall.total_actions
+        - venue_dataform_overall.login_users
+        - venue_dataform_overall.active_user
+        - venue_dataform_overall.nps_score
+        - venue_dataform_overall.satisfaction_votes
+        - venue_dataform_overall.satisfaction_rate
+        - venue_dataform_overall.negative_feedback_votes
+        - venue_dataform_overall.nps_votes
+        - venue_dataform_overall.object_views
+        - venue_dataform_overall.object_views_users
+        - venue_dataform_overall.object_scans
+        - venue_dataform_overall.object_scans_users
+        - venue_dataform_overall.exhibition_views
+        - venue_dataform_overall.exhibition_views_users
+        - venue_dataform_overall.tour_views
+        - venue_dataform_overall.tour_view_users
+        - venue_dataform_overall.track_plays
+        - venue_dataform_overall.track_play_users
+        - venue_dataform_overall.track_listen_time
+        - venue_dataform_overall.listen_time_minutes
+      dimensions:
+        - venue_dataform_overall.device_platform
+        - venue_dataform_overall.user_connectivity
+        - venue_dataform_overall.country
+        - venue_dataform_overall.user_gender
+        - venue_dataform_overall.user_age_range
+        - venue_dataform_overall.venue_id
+        - venue_dataform_overall.negative_feedback_label
+        - venue_lookup_region_language.device_language
+        - venue_lookup_region_language.language_name
+      timeDimension: venue_dataform_overall.event_date
+      granularity: day
