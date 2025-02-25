@@ -2,7 +2,10 @@ cubes:
   - name: scalis_user
     sql_table: "\"ScalisUser\""
 
-    joins: []
+    joins: 
+      - name: demographic_info
+        sql: "{CUBE}.\"id\" = {demographic_info}.\"scalisUserId\""
+        relationship: one_to_many
 
     dimensions:
       - name: id
