@@ -3,6 +3,7 @@ import { Theme } from './src/themes/theme';
 
 export default {
   onThemeUpdated: (updatedTheme: Theme) => {
+    console.log('Theme updated:', updatedTheme);
     // If for some reason the theme is not provided, use the default theme
     const theme = updatedTheme ? updatedTheme : defaultTheme;
 
