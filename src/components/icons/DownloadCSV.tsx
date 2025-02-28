@@ -1,6 +1,5 @@
-import { useOverrideConfig } from '@embeddable.com/react';
+import { useTheme } from '@embeddable.com/react';
 import { Theme } from '../../themes/theme';
-import defaultTheme from '../../themes/defaulttheme';
 
 type Props = {
   className?: string;
@@ -8,12 +7,7 @@ type Props = {
 
 const DownloadAsCSV: React.FC<Props> = (props) => {
   const { className } = props;
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
   return (
     <svg
       className={className}

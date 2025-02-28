@@ -2,9 +2,8 @@ import React from 'react';
 
 import cn from '../../../../util/cn';
 import { ChevronLeft, ChevronRight } from '../../../icons';
-import { useOverrideConfig } from '@embeddable.com/react';
+import { useTheme } from '@embeddable.com/react';
 import { Theme } from '../../../../../themes/theme';
-import defaultTheme from '../../../../../themes/defaulttheme';
 
 type Props = {
   currentPage: number;
@@ -13,21 +12,38 @@ type Props = {
 };
 
 const Pagination = ({ currentPage, hasNextPage, onPageChange }: Props) => {
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
   const fontSize = theme.font.size;
   const fontColorDark = theme.font.colorDark;
   return (
     <div
-      className={`flex items-center justify-center text-[${fontSize}] font-bold text-[${fontColorDark}] select-none sticky left-0`}
+      className={`
+        flex
+        font-bold
+        items-center
+        justify-center
+        left-0
+        select-none
+        sticky
+        text-[color:--embeddable-font-colorDark]
+        text-[size:--embeddable-font-size]
+      `}
     >
       <ChevronLeft
         className={cn(
-          `cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[${theme.borders.colors.primary}] flex items-center justify-center`,
+          `
+            border
+            cursor-pointer
+            flex
+            h-8
+            hover:bg-black/10
+            items-center
+            justify-center
+            p-1
+            w-8
+            border-[color:--embeddable-controls-borders-colors-primary]
+            rounded-[--embeddable-controls-buttons-radius]
+          `,
           {
             'opacity-50 pointer-events-none': currentPage === 0,
           },
@@ -40,9 +56,20 @@ const Pagination = ({ currentPage, hasNextPage, onPageChange }: Props) => {
       <span className="mx-4">Page {currentPage + 1}</span>
 
       <ChevronRight
-        className={`cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[${theme.borders.colors.primary}] flex items-center justify-center ${
-          hasNextPage ? 'opacity-50 pointer-events-none' : ''
-        }`}
+        className={`
+          border
+          cursor-pointer
+          flex
+          h-8
+          hover:bg-black/10
+          items-center
+          justify-center
+          p-1
+          w-8
+          border-[color:--embeddable-controls-borders-colors-primary]
+          rounded-[--embeddable-controls-buttons-radius]
+          ${hasNextPage ? 'opacity-50 pointer-events-none' : ''}
+        `}
         onClick={() => {
           onPageChange?.(currentPage + 1);
         }}

@@ -1,17 +1,12 @@
 import { useEffect } from 'react';
 
-import { useOverrideConfig } from '@embeddable.com/react';
+import { useTheme } from '@embeddable.com/react';
 import { Theme } from '../../themes/theme';
 
 export default () => {
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  const { theme } = overrides;
+  const theme: Theme = useTheme() as Theme;
 
   useEffect(() => {
-    if (!theme) {
-      return;
-    }
     const imports: { [key: string]: string } = theme.font.imports;
     Object.entries(imports).forEach(async ([family, fontFile]) => {
       const font = new FontFace(

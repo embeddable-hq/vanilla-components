@@ -10,9 +10,6 @@ import Spinner from './Spinner';
 import Title from './Title';
 import { WarningIcon } from './icons';
 import './index.css';
-import defaultTheme from '../../themes/defaulttheme';
-import { Theme } from '../../themes/theme';
-import { useOverrideConfig } from '@embeddable.com/react';
 
 export type ContainerProps = {
   childContainerClassName?: string;
@@ -36,12 +33,6 @@ export default ({
   setResizeState,
   ...props
 }: PropsWithChildren<ContainerProps>) => {
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
-  const { clientContext } = props;
   const refPrevHeight = useRef<number | null>(null);
   const refExportPNGElement = useRef<HTMLDivElement | null>(null);
   const refResize = useRef<HTMLDivElement | null>(null);

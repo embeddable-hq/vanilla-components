@@ -1,20 +1,9 @@
 import React, { MouseEventHandler } from 'react';
 import { Theme } from '../../themes/theme';
-import { useOverrideConfig } from '@embeddable.com/react';
-import defaultTheme from '../../themes/defaulttheme';
-
-const useEstablishTheme = () => {
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
-  return theme;
-};
+import { useTheme } from '@embeddable.com/react';
 
 export const ClearIcon = () => {
-  const theme = useEstablishTheme();
+  const theme: Theme = useTheme() as Theme;
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
       <path
@@ -34,7 +23,7 @@ export const ClearIcon = () => {
 };
 
 export const SortDown = (props: { fill: string }) => {
-  const theme = useEstablishTheme();
+  const theme: Theme = useTheme() as Theme;
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
       <path
@@ -48,7 +37,7 @@ export const SortDown = (props: { fill: string }) => {
 };
 
 export const SortUp = (props: { fill: string }) => {
-  const theme = useEstablishTheme();
+  const theme: Theme = useTheme() as Theme;
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
       <path
@@ -68,7 +57,7 @@ export const ChevronLeft = ({
   className?: string;
   onClick?: MouseEventHandler<SVGSVGElement>;
 }) => {
-  const theme = useEstablishTheme();
+  const theme: Theme = useTheme() as Theme;
   return (
     <svg
       onClick={onClick}
@@ -96,7 +85,7 @@ export const ChevronRight = ({
   className?: string;
   onClick?: MouseEventHandler<SVGSVGElement>;
 }) => {
-  const theme = useEstablishTheme();
+  const theme: Theme = useTheme() as Theme;
   return (
     <svg
       onClick={onClick}
@@ -124,7 +113,7 @@ export const ChevronDown = ({
   className?: string;
   onClick?: MouseEventHandler<SVGSVGElement>;
 }) => {
-  const theme = useEstablishTheme();
+  const theme: Theme = useTheme() as Theme;
   return (
     <svg
       onClick={onClick}
@@ -152,7 +141,7 @@ export const CalendarIcon = ({
   className?: string;
   onClick?: MouseEventHandler<SVGSVGElement>;
 }) => {
-  const theme = useEstablishTheme();
+  const theme: Theme = useTheme() as Theme;
   return (
     <svg
       onClick={onClick}
@@ -231,7 +220,7 @@ export const CalendarIcon = ({
 };
 
 export const WarningIcon = () => {
-  const theme = useEstablishTheme();
+  const theme: Theme = useTheme() as Theme;
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g clipPath="url(#clip0_670_650)">

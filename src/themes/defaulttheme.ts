@@ -1,21 +1,10 @@
 import { Theme } from './theme';
 
 export const defaultTheme: Theme = {
+  isParent: true, // Do not modify this!
   brand: {
     primary: '#6778DE',
     secondary: '#FF997C',
-  },
-  buttons: {
-    colors: {
-      disabled: '#F3F3F3',
-      hoverBorder: '#A1A5AA',
-      pressed: '#F3F3F3',
-    },
-  },
-  borders: {
-    colors: {
-      primary: '#DADCE1',
-    },
   },
   charts: {
     colors: [
@@ -61,6 +50,46 @@ export const defaultTheme: Theme = {
     },
     /* End custom chart overrides */
   },
+  controls: {
+    buttons: {
+      active: {
+        background: '#FFFFFF',
+        border: '#D1D5DB',
+        fontColor: '#000',
+      },
+      hovered: {
+        background: '#FFFFFF',
+        border: '#A1A5AA',
+        fontColor: '#000',
+      },
+      pressed: {
+        background: '#F3F3F4',
+        border: '#D1D5DB',
+        fontColor: '#000',
+      },
+      fontSize: '14px',
+      height: '50px',
+      paddingY: '16px',
+      paddingX: '32px',
+      radius: 'calc(infinity+1px)',
+    },
+    borders: {
+      colors: {
+        primary: '#DADCE1',
+      },
+      padding: 8,
+      radius: '12px',
+    },
+    inputs: {
+      colors: {
+        hover: '#F3F4F6',
+        selected: '#F3F4F6',
+      },
+    },
+    tooltips: {
+      radius: '4px',
+    },
+  },
   dateFormats: {
     year: 'yyyy',
     quarter: 'MMM yy',
@@ -81,12 +110,6 @@ export const defaultTheme: Theme = {
     weight: 400,
     imports: {
       // eg: 'Impact': 'impact',
-    },
-  },
-  inputs: {
-    colors: {
-      hover: '#F3F4F6',
-      selected: '#F3F4F6',
     },
   },
   svg: {

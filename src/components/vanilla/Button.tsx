@@ -1,7 +1,6 @@
 import React from 'react';
 import Spinner from './Spinner';
-import { useOverrideConfig } from '@embeddable.com/react';
-import defaultTheme from '../../themes/defaulttheme';
+import { useTheme } from '@embeddable.com/react';
 import { Theme } from '../../themes/theme';
 
 type Props = {
@@ -13,16 +12,34 @@ type Props = {
 };
 
 export default function Button({ buttonLabel, showSpinner, disabled, onClick, icon }: Props) {
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   return (
     <button
       disabled={disabled}
-      className={`text-[${theme.font.size}] border border-gray-300 h-[50px] rounded-full py-[16px] px-[32px] flex gap-[8px] items-center justify-center disabled:opacity-[0.6] disabled:background-[${theme.buttons.colors.disabled}] disabled:cursor-not-allowed hover:border-[${theme.buttons.colors.hoverBorder}]] pressed:background-[${theme.buttons.colors.pressed}]`}
+      className={`
+        border
+        disabled:cursor-not-allowed
+        disabled:opacity-[0.6]
+        flex
+        gap-[8px]
+        items-center
+        justify-center
+        bg-[color:--embeddable-controls-buttons-active-background]
+        border-[color:--embeddable-controls-buttons-active-border]
+        h-[--embeddable-controls-buttons-height]
+        hover:bg-[color:--embeddable-controls-buttons-hovered-background]
+        hover:border-[color:--embeddable-controls-buttons-hovered-border]
+        hover:text-[color:--embeddable-controls-buttons-hovered-fontColor]
+        pressed:bg-[color:--embeddable-controls-buttons-colors-pressed]
+        pressed:border-[color:--embeddable-controls-buttons-pressed-border]
+        pressed:text-[color:--embeddable-controls-buttons-pressed-fontColor]
+        px-[--embeddable-controls-buttons-paddingX]
+        py-[--embeddable-controls-buttons-paddingY]
+        rounded-[--embeddable-controls-buttons-radius] 
+        text-[color:--embeddable-controls-buttons-active-fontColor]
+        text-[font-size:--embeddable-font-size]
+      `}
       onClick={onClick}
       type="button"
     >

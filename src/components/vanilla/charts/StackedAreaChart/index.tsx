@@ -25,9 +25,8 @@ import getStackedChartData, {
 } from '../../../util/getStackedChartData';
 import Container from '../../Container';
 import { setYAxisStepSize } from '../../../util/chartjs/common';
-import { useOverrideConfig } from '@embeddable.com/react';
+import { useTheme } from '@embeddable.com/react';
 import { setChartJSDefaults } from '../../../util/chartjs/common';
-import defaultTheme from '../../../../themes/defaulttheme';
 import { Theme } from '../../../../themes/theme';
 
 ChartJS.register(
@@ -51,13 +50,7 @@ type PropsWithRequiredTheme = Props & { theme: Theme };
 
 export default (props: Props) => {
   const { isMultiDimensionLine = false } = props;
-
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   // Set ChartJS defaults
   setChartJSDefaults(theme, 'pie');

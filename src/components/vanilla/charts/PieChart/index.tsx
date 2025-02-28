@@ -18,9 +18,8 @@ import { Pie, getElementAtEvent } from 'react-chartjs-2';
 
 import formatValue from '../../../util/format';
 import Container from '../../Container';
-import { useOverrideConfig } from '@embeddable.com/react';
+import { useTheme } from '@embeddable.com/react';
 import { setChartJSDefaults } from '../../../util/chartjs/common';
-import defaultTheme from '../../../../themes/defaulttheme';
 import { Theme } from '../../../../themes/theme';
 
 ChartJS.register(
@@ -55,12 +54,7 @@ type Record = { [p: string]: string };
 export default (props: Props) => {
   const { results, title, enableDownloadAsCSV, maxSegments, metric, slice, onClick } = props;
 
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   // Set ChartJS defaults
   setChartJSDefaults(theme, 'pie');

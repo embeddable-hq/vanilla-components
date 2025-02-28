@@ -4,9 +4,8 @@ import { Column } from './Column';
 import { ColumnType } from '../enums/ColumnType';
 import { createColumnKey } from '../utils/key';
 import formatValue from '../../../../util/format';
-import defaultTheme from '../../../../../themes/defaulttheme';
 import { Theme } from '../../../../../themes/theme';
-import { useOverrideConfig } from '@embeddable.com/react';
+import { useTheme } from '@embeddable.com/react';
 
 type TableColumnHook = {
   columns: Column[];
@@ -23,12 +22,8 @@ export const useTableColumns = (
     granularity?: string;
   } = {},
 ): TableColumnHook => {
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
+
   function getRowDimensionColumns(
     aggregateRowDimensions: boolean = false,
     parent: Column | null = null,

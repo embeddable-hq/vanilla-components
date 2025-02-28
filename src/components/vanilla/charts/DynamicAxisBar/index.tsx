@@ -1,10 +1,9 @@
 import { DataResponse, Dimension, Granularity, Measure } from '@embeddable.com/core';
-import { useEmbeddableState, useOverrideConfig } from '@embeddable.com/react';
+import { useEmbeddableState, useTheme } from '@embeddable.com/react';
 import React, { useEffect, useState } from 'react';
 
 import Container from '../../Container';
 import BarChart from '../BarChart/components/BarChart';
-import defaultTheme from '../../../../themes/defaulttheme';
 import { Theme } from '../../../../themes/theme';
 
 export type Props = {
@@ -33,12 +32,7 @@ export default (props: Props) => {
     (d: { dimension: Dimension | null }) => void,
   ];
 
-  // Get theme for use in component
-  const overrides: any = useOverrideConfig();
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   useEffect(() => {
     setValue(props.xAxis.name);
@@ -66,7 +60,18 @@ export default (props: Props) => {
       <div className="flex h-[60px] w-full">
         <div>
           <select
-            className={`relative px-3 rounded-xl w-full min-w-[50px] h-10 border border-[${theme.borders.colors.primary}] flex items-center`}
+            className={`
+              border
+              flex
+              h-10
+              items-center
+              min-w-[50px]
+              px-3
+              relative
+              w-full
+              border-[color:--embeddable-controls-borders-colors-primary]
+              rounded-[--embeddable-controls-borders-radius]
+            `}
             value={value}
             onChange={(e) => handleChange(e.target.value)}
           >

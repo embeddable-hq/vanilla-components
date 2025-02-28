@@ -3,8 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Container from '../../Container';
 import { ClearIcon } from '../../icons';
 import { Theme } from '../../../../themes/theme';
-import { useOverrideConfig } from '@embeddable.com/react';
-import defaultTheme from '../../../../themes/defaulttheme';
+import { useTheme } from '@embeddable.com/react';
 
 type Props = {
   onChange: (v: string) => void;
@@ -19,12 +18,7 @@ export default (props: Props) => {
   const ref = useRef<HTMLInputElement | null>(null);
   const [value, setValue] = useState(props.value);
 
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   useEffect(() => {
     setValue(props.value);
@@ -43,12 +37,29 @@ export default (props: Props) => {
   return (
     <Container title={props.title}>
       <div
-        className={`w-full relative rounded-xl bg-white border border-[${theme.borders.colors.primary}] pr-8 h-10`}
+        className={`
+          bg-white
+          border
+          h-10
+          pr-8
+          relative
+          w-full
+          border-[color:--embeddable-controls-borders-colors-primary]
+          rounded-[--embeddable-controls-borders-radius]
+        `}
       >
         <input
           ref={ref}
           placeholder={props.placeholder}
-          className="rounded-xl w-full outline-none leading-10 h-full border-0 px-3"
+          className={`
+            border-0
+            h-full
+            leading-10
+            outline-none
+            px-3
+            w-full
+            rounded-[--embeddable-controls-borders-radius]
+          `}
           onChange={handleChange}
           defaultValue={value}
         />

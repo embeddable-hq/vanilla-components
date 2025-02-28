@@ -1,5 +1,5 @@
 import { DataResponse } from '@embeddable.com/core';
-import { useEmbeddableState, useOverrideConfig } from '@embeddable.com/react';
+import { useEmbeddableState, useTheme } from '@embeddable.com/react';
 import React, {
   ReactNode,
   useCallback,
@@ -17,7 +17,6 @@ import Container from '../../Container';
 import Spinner from '../../Spinner';
 import { ChevronDown, ClearIcon } from '../../icons';
 import { Theme } from '../../../../themes/theme';
-import defaultTheme from '../../../../themes/defaulttheme';
 
 export type Props = {
   className?: string;
@@ -47,12 +46,7 @@ export default (props: Props) => {
     [props.searchProperty || 'search']: '',
   }) as [Record, (f: (m: Record) => Record) => void];
 
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   useEffect(() => {
     setValue(props.defaultValue);
@@ -137,7 +131,17 @@ export default (props: Props) => {
     <Container title={props.title}>
       <div
         className={twMerge(
-          `relative rounded-xl w-full min-w-[50px] h-10 border border-[${theme.borders.colors.primary}] flex items-center`,
+          `
+            border
+            flex
+            h-10
+            items-center
+            min-w-[50px]
+            relative
+            w-full
+            border-[color:--embeddable-controls-borders-colors-primary]
+            rounded-[--embeddable-controls-borders-radius]
+          `,
           props.className,
         )}
       >
@@ -156,9 +160,22 @@ export default (props: Props) => {
 
         {!!value && (
           <span
-            className={`absolute w-[calc(100%-2rem)] whitespace-nowrap overflow-hidden truncate rounded-xl left-3 top-1 h-8 leading-8 block pointer-events-none text-sm ${
-              focus ? 'hidden' : ''
-            }`}
+            className={`
+              absolute
+              block
+              h-8
+              leading-8
+              left-3
+              overflow-hidden
+              pointer-events-none
+              text-sm
+              top-1
+              truncate
+              w-[calc(100%-2rem)]
+              whitespace-nowrap
+              rounded-[--embeddable-controls-borders-radius]
+              ${focus ? 'hidden' : ''}
+            `}
           >
             Selected {value.length} {value.length === 1 ? 'option' : 'options'}
           </span>
@@ -169,7 +186,21 @@ export default (props: Props) => {
             tabIndex={0}
             onBlur={() => setFocus(false)}
             style={{ minWidth: props.minDropdownWidth }}
-            className={`flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[${theme.borders.colors.primary}] w-full overflow-y-auto overflow-x-hidden max-h-[400px]`}
+            className={`
+              absolute
+              bg-white
+              border
+              flex
+              flex-col
+              max-h-[400px]
+              overflow-x-hidden
+              overflow-y-auto
+              top-11
+              w-full
+              z-50
+              border-[color:--embeddable-controls-borders-colors-primary]
+              rounded-[--embeddable-controls-borders-radius]
+            `}
           >
             {list}
             {list?.length === 0 && !!search && (

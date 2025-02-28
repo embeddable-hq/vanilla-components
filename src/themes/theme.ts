@@ -11,22 +11,17 @@ export type ChartType =
   | 'scatter'
   | 'table';
 
+type ButtonSettings = {
+  background: string;
+  fontColor: string;
+  border: string;
+};
+
 export type Theme = {
+  isParent: boolean;
   brand: {
     primary: string;
     secondary: string;
-  };
-  buttons: {
-    colors: {
-      disabled: string;
-      hoverBorder: string;
-      pressed: string;
-    };
-  };
-  borders: {
-    colors: {
-      primary: string;
-    };
   };
   charts: {
     colors: string[];
@@ -36,6 +31,34 @@ export type Theme = {
     };
   } & {
     [key in ChartType]?: any;
+  };
+  controls: {
+    buttons: {
+      active: ButtonSettings;
+      hovered: ButtonSettings;
+      pressed: ButtonSettings;
+      fontSize: string;
+      height: string;
+      paddingY: string;
+      paddingX: string;
+      radius: string;
+    };
+    borders: {
+      colors: {
+        primary: string;
+      };
+      padding: number;
+      radius: string;
+    };
+    inputs: {
+      colors: {
+        hover: string;
+        selected: string;
+      };
+    };
+    tooltips: {
+      radius: string;
+    };
   };
   dateFormats: {
     year: string;
@@ -56,12 +79,6 @@ export type Theme = {
     weight: number;
     imports: {
       [key: string]: string;
-    };
-  };
-  inputs: {
-    colors: {
-      hover: string;
-      selected: string;
     };
   };
   svg: {

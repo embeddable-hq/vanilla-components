@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 
 import Container from '../../Container';
 import { Theme } from '../../../../themes/theme';
-import { useOverrideConfig } from '@embeddable.com/react';
-import defaultTheme from '../../../../themes/defaulttheme';
+import { useTheme } from '@embeddable.com/react';
 
 type Props = {
   title: string;
@@ -16,12 +15,7 @@ export default (props: Props) => {
   const { title, values, onChange, defaultValue } = props;
   const [selected, setSelected] = useState(defaultValue || []);
 
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   const handleClick = (value: string) => {
     const updated = selected.includes(value)
@@ -40,7 +34,7 @@ export default (props: Props) => {
           return (
             <div
               key={i}
-              className={`multiselectItem text-[${theme.font.colorDark}]`}
+              className={`multiselectItem text-[color:--embeddable-font-colorDark]`}
               style={{ background: background }}
               onClick={() => handleClick(value)}
             >

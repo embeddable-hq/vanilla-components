@@ -1,5 +1,5 @@
 import { DataResponse, DimensionOrMeasure, OrderBy, OrderDirection } from '@embeddable.com/core';
-import { useEmbeddableState, useOverrideConfig } from '@embeddable.com/react';
+import { useEmbeddableState, useTheme } from '@embeddable.com/react';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { SortDirection } from '../../../../enums/SortDirection';
@@ -7,7 +7,6 @@ import formatValue from '../../../util/format';
 import Container from '../../Container';
 import Pagination from './components/Pagination';
 import TableHead from './components/TableHead';
-import defaultTheme from '../../../../themes/defaulttheme';
 import { Theme } from '../../../../themes/theme';
 
 export type Props = {
@@ -32,13 +31,7 @@ export default (props: Props) => {
   const [maxRowsFit, setMaxRowFit] = useState(0);
   const [resizing, setResizing] = useState(false);
 
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   const [meta, setMeta] = useEmbeddableState({
     page: 0,

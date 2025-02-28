@@ -1,5 +1,5 @@
 import { DataResponse, Dimension, Granularity, Measure } from '@embeddable.com/core';
-import { useOverrideConfig } from '@embeddable.com/react';
+import { useTheme } from '@embeddable.com/react';
 
 import useTimeseries from '../../../hooks/useTimeseries';
 import Container from '../../Container';
@@ -36,12 +36,7 @@ export type Props = {
 type PropsWithRequiredtheme = Props & { theme: Theme };
 
 export default (props: Props): React.JSX.Element => {
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   //add missing dates to time-series barcharts
   const { fillGaps } = useTimeseries(props, 'desc');

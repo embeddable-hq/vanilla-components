@@ -34,9 +34,8 @@ import hexToRgb from '../../../util/hexToRgb';
 import { parseTime, timeRangeToLocal } from '../../../util/timezone';
 import { setChartJSDefaults, setYAxisStepSize } from '../../../util/chartjs/common';
 import Container from '../../Container';
-import defaultTheme from '../../../../themes/defaulttheme';
 import { Theme } from '../../../../themes/theme';
-import { useOverrideConfig } from '@embeddable.com/react';
+import { useTheme } from '@embeddable.com/react';
 
 ChartJS.register(
   CategoryScale,
@@ -73,16 +72,11 @@ type PropsWithRequiredTheme = Props & { theme: Theme };
 type Record = { [p: string]: string };
 
 export default (propsInitial: Props) => {
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   const props: PropsWithRequiredTheme = useMemo(
     () => ({ ...propsInitial, theme, granularity: propsInitial.granularity || 'day' }),
-    [propsInitial],
+    [propsInitial, theme],
   );
 
   setChartJSDefaults(theme, 'line');
@@ -152,7 +146,7 @@ export default (propsInitial: Props) => {
     return {
       datasets,
     };
-  }, [props, fillGaps]);
+  }, [props, fillGaps, theme]);
 
   const chartOptions: ChartOptions<'line'> = useMemo(() => {
     const bounds = {

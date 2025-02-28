@@ -10,8 +10,7 @@ import Container from '../../../Container';
 import { CalendarIcon, ChevronLeft, ChevronRight } from '../../../icons';
 import Dropdown from '../../Dropdown';
 import { Theme } from '../../../../../themes/theme';
-import { useOverrideConfig } from '@embeddable.com/react';
-import defaultTheme from '../../../../../themes/defaulttheme';
+import { useTheme } from '@embeddable.com/react';
 
 export const ranges = [
   'Today',
@@ -50,12 +49,7 @@ export default function DateRangePicker(props: Props) {
   const [triggerBlur, setTriggerBlur] = useState(false);
   const [range, setRange] = useState<TimeRange | undefined>(props.value);
 
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   useLayoutEffect(() => {
     if (!triggerBlur) return;
@@ -108,12 +102,33 @@ export default function DateRangePicker(props: Props) {
 
   return (
     <Container title={props.title}>
-      <div className={`relative inline-flex h-10 w-full text-[${theme.font.colorDark}] text-sm`}>
+      <div
+        className={`
+          h-10
+          inline-flex
+          relative
+          text-sm
+          w-full
+          text-[color:--embeddable-font-colorDark]
+        `}
+      >
         <Dropdown
           minDropdownWidth={120}
           unclearable
           placeholder={props.placeholder}
-          className={`max-w-[120px] min-w-[80px] sm:max-w-[140px] relative rounded-r-none w-full h-10 border border-[${theme.borders.colors.primary}] flex items-center`}
+          className={`
+            border
+            flex
+            h-10
+            items-center
+            max-w-[120px]
+            min-w-[80px]
+            relative
+            rounded-r-none
+            sm:max-w-[140px]
+            w-full
+            border-[color:--embeddable-controls-borders-colors-primary]
+          `}
           defaultValue={range?.relativeTimeString || ''}
           onChange={(relativeTimeString) => {
             const [from, to] = dateParser(relativeTimeString, 'UTC');
@@ -133,7 +148,21 @@ export default function DateRangePicker(props: Props) {
           property={{ name: 'value', title: '', nativeType: 'string', __type__: 'dimension' }}
         />
         <div
-          className={`grow flex items-center p-4 hover:bg-[${theme.inputs.colors.hover}] cursor-pointer relative text-sm border-y border-r rounded-r-xl border-[${theme.borders.colors.primary}] min-w-[60px]`}
+          className={`
+            border-r
+            border-y
+            cursor-pointer
+            flex
+            grow
+            items-center
+            min-w-[60px]
+            p-4
+            relative
+            text-sm
+            border-[color:--embeddable-controls-borders-colors-primary]
+            hover:bg-[color:--embeddable-controls-inputs-colors-hover]
+            rounded-r-[--embedabble-controls-borders-radius]
+          `}
         >
           <input
             ref={ref}
@@ -158,9 +187,20 @@ export default function DateRangePicker(props: Props) {
           >
             <DayPicker
               showOutsideDays
-              className={`border border-[${theme.borders.colors.primary}] bg-white rounded-xl px-4 py-3 text-[${theme.font.colorDark}] !m-0`}
+              className={`
+                bg-white
+                border
+                px-4
+                py-3
+                !m-0
+                border-[color:--embeddable-controls-borders-colors-primary]
+                rounded-[--embeddable-controls-borders-radius]
+                text-[color:--embeddable-font-colorDark]
+              `}
               classNames={{
-                selected: `bg-[${theme.inputs.colors.selected}] text-[${theme.font.colorDark}]`,
+                selected: `
+                  bg-[color:--embeddable-controls-inputs-colors-selected]
+                  text-[color:--embeddable-font-colorDark]`,
               }}
               components={{
                 MonthCaption: CustomCaption,

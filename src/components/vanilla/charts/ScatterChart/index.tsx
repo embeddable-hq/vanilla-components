@@ -22,9 +22,8 @@ import { Scatter } from 'react-chartjs-2';
 import formatValue from '../../../util/format';
 import hexToRgb from '../../../util/hexToRgb';
 import { setYAxisStepSize } from '../../../util/chartjs/common';
-import { useOverrideConfig } from '@embeddable.com/react';
+import { useTheme } from '@embeddable.com/react';
 import { setChartJSDefaults } from '../../../util/chartjs/common';
-import defaultTheme from '../../../../themes/defaulttheme';
 import { Theme } from '../../../../themes/theme';
 
 ChartJS.register(
@@ -61,12 +60,7 @@ type PropsWithRequiredTheme = Props & { theme: Theme };
 type Record = { [p: string]: any };
 
 export default (props: Props) => {
-  // Get theme for use in component
-  const overrides: { theme: Theme } = useOverrideConfig() as { theme: Theme };
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
 
   // Set ChartJS defaults
   setChartJSDefaults(theme, 'scatter');

@@ -7,8 +7,8 @@ import tinyColor from 'tinycolor2';
 import format from '../../../util/format';
 import Container from '../../Container';
 import geography from './geography.json';
-import { useOverrideConfig } from '@embeddable.com/react';
-import defaultTheme from '../../../../themes/defaulttheme';
+import { useTheme } from '@embeddable.com/react';
+import { Theme } from '../../../../themes/theme';
 
 type Props = {
   title?: string;
@@ -20,12 +20,7 @@ type Props = {
 type Record = { [p: string]: string };
 
 export default (props: Props) => {
-  // Get theme for use in component
-  const overrides: any = useOverrideConfig();
-  let { theme } = overrides;
-  if (!theme) {
-    theme = defaultTheme;
-  }
+  const theme: Theme = useTheme() as Theme;
   const defaultColor = '#DEDEDE';
   const hoverColor = tinyColor(theme.brand.secondary);
 
@@ -71,9 +66,9 @@ export default (props: Props) => {
     // Calculate theme color values
     const brandColor = tinyColor(theme.brand.primary);
     let startingColor = tinyColor('#888888');
-    if (brandColor.isLight()) {
+    if (brandColor?.isLight()) {
       startingColor = brandColor;
-    } else {
+    } else if (brandColor?.isDark()) {
       startingColor = brandColor.lighten(20);
     }
 
@@ -103,7 +98,19 @@ export default (props: Props) => {
         >
           <div
             ref={tooltip}
-            className="absolute text-black bg-slate-200/80 rounded-sm whitespace-nowrap pointer-events-none empty:opacity-0 opacity-100 px-2 py-1 text-xs"
+            className={`
+              absolute
+              text-black
+              bg-slate-200/80
+              rounded-[--embeddable-controls.tooltips.radius]
+              whitespace-nowrap
+              pointer-events-none
+              empty:opacity-0
+              opacity-100
+              px-2
+              py-1
+              text-xs
+            `}
           />
           <ComposableMap
             projection="geoMercator"
