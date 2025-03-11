@@ -22,7 +22,7 @@ cubes:
       ,ecommerce.transaction_id
       ,items
     from `smartify-cc94e.superform_outputs_151371783.ga4_events`
-    where event_date >= '2024-01-01'
+    where event_date >= '2022-01-01'
       and stream_id in ("1047860117","1047860114","1913717213","2817285551")
       and items is not null
   

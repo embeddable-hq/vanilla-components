@@ -22,7 +22,7 @@ cubes:
     FROM `smartify-cc94e.superform_outputs_151371783.ga4_events` as a
     left join `smartify-cc94e.smartify_lookup_tables.tour_lookup` as b on (a.event_params.product_id = b.paid_tour_id or a.event_params_custom.tour_id = b.tour_sid)
     where event_name in ("in_app_purchase", "screen_view", "page_view")
-      and event_date >= '2024-01-01'
+      and event_date >= '2022-01-01'
       and stream_id in ("1047860117","1047860114","1913717213","2817285551"))
     
     select * from raw

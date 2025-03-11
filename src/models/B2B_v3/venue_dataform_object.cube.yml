@@ -13,6 +13,8 @@ cubes:
       ,geo.city as geo_city
       ,event_params_custom.user_connectivity
       ,event_params_custom.component_type
+      ,event_params_custom.locale_translation_source
+      ,event_params_custom.locale_translation_destination
       ,event_params_custom.content_category
       ,event_params_custom.page_type
       ,event_params_custom.venue_id
@@ -28,7 +30,7 @@ cubes:
           or '{COMPILE_CONTEXT.securityContext.venue_id}' = 'undefined'
           or event_params_custom.venue_id in unnest(split('{COMPILE_CONTEXT.securityContext.venue_id}', ','))
       )
-      and event_date >= '2023-01-01'
+      and event_date >= '2022-01-01'
       and stream_id in ("1047860117","1047860114","1913717213","2817285551")
       and event_params_custom.object_id is not null
 
@@ -50,6 +52,18 @@ cubes:
       type: string
       sql: case when cast(user_age as int) >= 0 and cast(user_age as int) <= 12 then "Generation Alpha" when cast(user_age as int) >= 13 and cast(user_age as int) <= 28 then "Generation Z" when cast(user_age as int) >= 29 and cast(user_age as int) <= 44 then "Millennials" when cast(user_age as int) >= 45 and cast(user_age as int) <= 60 then "Generation X" when cast(user_age as int) >= 61 and cast(user_age as int) <= 79 then "Baby Boomers" when cast(user_age as int) >= 80 then "Silent Generation" else "Unknown" end
 
+    - name: original_language
+      type: string
+      sql: locale_translation_source
+
+    - name: translated_language
+      type: string
+      sql: locale_translation_destination
+    
+    - name: translation_from_to
+      type: string
+      sql: concat({original_language}, ' → ', {translated_language})
+
     - name: organisation_id
       type: string
       sql: organisation_id
@@ -65,7 +79,7 @@ cubes:
     - name: object_id
       type: string
       sql: object_id
-      title: "Object SID"
+      title: "SID"
       primaryKey: true
       shown: true
 
@@ -91,6 +105,11 @@ cubes:
       title: 'Favorites'
       sql: case when event_name in ('add_favorite') and object_id is not null then 1 else 0 end
 
+    - name: total_translations
+      type: sum
+      title: "Total Translations"
+      sql: case when event_name in ('translate_text') then 1 else 0 end
+
     - name: object_users
       type: count_distinct_approx
       title: 'Object Users'
@@ -110,6 +129,11 @@ cubes:
       type: count_distinct_approx
       title: 'Favorite Users'
       sql: case when event_name in ('add_favorite') and object_id is not null then user_pseudo_id else null end
+
+    - name: translation_users
+      type: count_distinct_approx
+      sql: case when event_name in ('translate_text') then user_pseudo_id else null end
+      title: "Translation Users"
     
     - name: object_view_per_user
       type: number
@@ -140,13 +164,18 @@ cubes:
         - venue_dataform_object.object_views
         - venue_dataform_object.object_scans
         - venue_dataform_object.object_favorites
+        - venue_dataform_object.total_translations
         - venue_dataform_object.object_users
         - venue_dataform_object.object_view_users
         - venue_dataform_object.object_scan_users
         - venue_dataform_object.object_favorite_users
+        - venue_dataform_object.translation_users
       dimensions:
         - venue_dataform_object.device_platform
         - venue_dataform_object.user_connectivity
+        - venue_dataform_object.original_language
+        - venue_dataform_object.translated_language
+        - venue_dataform_object.translation_from_to
         - venue_dataform_object.venue_id
         - venue_dataform_object.object_id
         - venue_dataform_object.artist_id
