@@ -42,7 +42,7 @@ cubes:
           or '{COMPILE_CONTEXT.securityContext.venue_id}' = 'undefined'
           or event_params_custom.venue_id in unnest(split('{COMPILE_CONTEXT.securityContext.venue_id}', ','))
       )
-      and event_date >= '2023-01-01'
+      and event_date >= '2022-01-01'
       and stream_id in ("1047860117","1047860114","1913717213","2817285551")
       --and event_params_custom.organisation_id is not null
 

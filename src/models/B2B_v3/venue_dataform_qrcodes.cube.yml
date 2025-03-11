@@ -23,11 +23,6 @@ cubes:
       ,event_params_custom.qrcode_url
     FROM `smartify-cc94e.superform_outputs_151371783.ga4_events` as a
     where event_params_custom.organisation_id = '{COMPILE_CONTEXT.securityContext.organisation_id}'
-      and ('{COMPILE_CONTEXT.securityContext.venue_id}' IS NULL
-          or '{COMPILE_CONTEXT.securityContext.venue_id}' = ''
-          or '{COMPILE_CONTEXT.securityContext.venue_id}' = 'undefined'
-          or event_params_custom.venue_id in unnest(split('{COMPILE_CONTEXT.securityContext.venue_id}', ','))
-      )
       and event_name in ("qrcode_open")
       and event_date >= '2024-07-01'
       and stream_id in ("1047860117","1047860114","1913717213","2817285551")

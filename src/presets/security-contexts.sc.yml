@@ -21,6 +21,11 @@
     organisation_id: org_wpp
     venue_id:
 
+- name: Royal Museum of Greenwich
+  securityContext:
+    organisation_id: org_rmg
+    venue_id:
+
 - name: Acropolis Museum User
   securityContext:
     organisation_id: org_acropolismuseum
@@ -40,9 +45,6 @@
   securityContext:
     organisation_id: org_hrp
     venue_id:
-      - venue_hamptoncourt
-      #- venue_kensington
-      - venue_toweroflondon
 
 - name: Smithsonian User
   securityContext:
