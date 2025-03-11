@@ -33,6 +33,14 @@ export type Theme = {
     [key in ChartType]?: any;
   };
   controls: {
+    backgrounds: {
+      colors: {
+        lightGray: string;
+        mediumGray: string;
+        transparent: string;
+        white: string;
+      };
+    };
     buttons: {
       active: ButtonSettings;
       hovered: ButtonSettings;
@@ -45,7 +53,8 @@ export type Theme = {
     };
     borders: {
       colors: {
-        primary: string;
+        lightGray: string;
+        mediumGray: string;
       };
       padding: number;
       radius: string;
@@ -75,7 +84,7 @@ export type Theme = {
     colorDark: string;
     colorLight: string;
     family: string;
-    size: number;
+    size: string;
     weight: number;
     imports: {
       [key: string]: string;

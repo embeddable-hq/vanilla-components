@@ -38,13 +38,13 @@ export default (props: Props) => {
     <Container title={props.title}>
       <div
         className={`
-          bg-white
           border
           h-10
           pr-8
           relative
           w-full
-          border-[color:--embeddable-controls-borders-colors-primary]
+          bg-[color:--embeddable-controls-backgrounds-white]
+          border-[color:--embeddable-controls-borders-colors-lightGray]
           rounded-[--embeddable-controls-borders-radius]
         `}
       >

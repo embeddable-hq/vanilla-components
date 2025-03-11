@@ -28,7 +28,7 @@ export default function TableHead({
   onSortingChange,
 }: Props) {
   const theme: Theme = useTheme() as Theme;
-  fontSize = `${theme.font.size}px`;
+  fontSize = theme.font.size;
   const fontColor = theme.font.colorDark;
 
   const renderColumn = (column: Column, columnIndex: number): ReactElement => {

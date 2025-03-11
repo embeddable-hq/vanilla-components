@@ -44,7 +44,7 @@ const PivotTable = <T,>({
   rowDimensions,
 }: Props<T>) => {
   const theme: Theme = useTheme() as Theme;
-  fontSize = `${theme.font.size}px`;
+  fontSize = theme.font.size;
 
   const [sortCriteria, setSortCriteria] = useState<SortCriteria<any>[]>(() => {
     if (!rowDimensions || !defaultRowDimensionSortDirection) {

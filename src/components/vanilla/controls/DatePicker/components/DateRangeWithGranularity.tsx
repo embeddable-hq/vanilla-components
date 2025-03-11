@@ -119,9 +119,9 @@ export default function DateRangeWithGranularity(props: Props) {
               leading-none ml-2
               md:block
               shrink
-              text-[14px]
               whitespace-nowrap
-              text-[--embeddable-font-colorDark]
+              text-[font-size:--embeddable-font-size]
+              text-[color:--embeddable-font-colorDark]
             `}
           >
             compare to

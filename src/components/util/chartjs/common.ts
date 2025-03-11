@@ -25,7 +25,9 @@ export const setChartJSDefaults = (theme: Theme, chartType?: ChartType) => {
   }
 
   // Some charts vary, so we check for chart type and if it exists, set some values
-  let fontSize = theme.font.size;
+
+  // remove 'px' from the font size and convert to a number
+  let fontSize = parseInt(theme.font.size.replace('px', ''), 10);
   if (chartType && theme.charts[chartType]) {
     if (theme.charts[chartType].font?.size) {
       fontSize = theme.charts[chartType].font.size;

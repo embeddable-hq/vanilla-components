@@ -2,8 +2,6 @@ import React from 'react';
 
 import cn from '../../../../util/cn';
 import { ChevronLeft, ChevronRight } from '../../../icons';
-import { useTheme } from '@embeddable.com/react';
-import { Theme } from '../../../../../themes/theme';
 
 type Props = {
   currentPage: number;
@@ -12,9 +10,6 @@ type Props = {
 };
 
 const Pagination = ({ currentPage, hasNextPage, onPageChange }: Props) => {
-  const theme: Theme = useTheme() as Theme;
-  const fontSize = theme.font.size;
-  const fontColorDark = theme.font.colorDark;
   return (
     <div
       className={`
@@ -41,7 +36,7 @@ const Pagination = ({ currentPage, hasNextPage, onPageChange }: Props) => {
             justify-center
             p-1
             w-8
-            border-[color:--embeddable-controls-borders-colors-primary]
+            border-[color:--embeddable-controls-borders-colors-lightGray]
             rounded-[--embeddable-controls-buttons-radius]
           `,
           {
@@ -66,7 +61,7 @@ const Pagination = ({ currentPage, hasNextPage, onPageChange }: Props) => {
           justify-center
           p-1
           w-8
-          border-[color:--embeddable-controls-borders-colors-primary]
+          border-[color:--embeddable-controls-borders-colors-lightGray]
           rounded-[--embeddable-controls-buttons-radius]
           ${hasNextPage ? 'opacity-50 pointer-events-none' : ''}
         `}

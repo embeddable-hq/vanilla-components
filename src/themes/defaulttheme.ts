@@ -51,6 +51,14 @@ export const defaultTheme: Theme = {
     /* End custom chart overrides */
   },
   controls: {
+    backgrounds: {
+      colors: {
+        lightGray: '#F3F4F6',
+        mediumGray: '#D1D5DB',
+        transparent: 'transparent',
+        white: '#FFFFFF',
+      },
+    },
     buttons: {
       active: {
         background: '#FFFFFF',
@@ -75,7 +83,8 @@ export const defaultTheme: Theme = {
     },
     borders: {
       colors: {
-        primary: '#DADCE1',
+        lightGray: '#DADCE1',
+        mediumGray: 'D1D5DB',
       },
       padding: 8,
       radius: '12px',
@@ -106,7 +115,7 @@ export const defaultTheme: Theme = {
     colorLight: '#e3e3e3',
     family:
       '-apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-    size: 14,
+    size: `14px`,
     weight: 400,
     imports: {
       // eg: 'Impact': 'impact',

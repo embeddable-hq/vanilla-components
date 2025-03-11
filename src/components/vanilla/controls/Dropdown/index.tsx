@@ -46,8 +46,6 @@ export default (props: Props) => {
     [props.searchProperty || 'search']: '',
   }) as [Record, (f: (m: Record) => Record) => void];
 
-  const theme: Theme = useTheme() as Theme;
-
   useEffect(() => {
     setValue(props.defaultValue);
   }, [props.defaultValue]);
@@ -128,7 +126,7 @@ export default (props: Props) => {
             min-w-[50px]
             relative
             w-full
-            border-[color:--embeddable-controls-borders-colors-primary]
+            border-[color:--embeddable-controls-borders-colors-lightGray]
             rounded-[--embeddable-controls-borders-radius]
           `,
           props.className,
@@ -142,9 +140,17 @@ export default (props: Props) => {
           onFocus={() => setFocus(true)}
           onBlur={() => setTriggerBlur(true)}
           onChange={(e) => performSearch(e.target.value)}
-          className={`outline-none bg-transparent leading-9 h-9 border-0 px-3 w-full cursor-pointer text-sm ${
-            focus || !value ? '' : 'opacity-0'
-          }`}
+          className={`
+            border-0
+            cursor-pointer
+            h-9
+            leading-9
+            outline-none
+            px-3
+            text-sm ${focus || !value ? '' : 'opacity-0'}
+            w-full
+            bg-[color:--embeddable-controls-backgrounds-colors-transparent]
+          `}
         />
 
         {!!value && (
@@ -157,12 +163,12 @@ export default (props: Props) => {
               left-3
               overflow-hidden
               pointer-events-none
+              text-sm ${focus ? 'hidden' : ''}
               top-1
               truncate
               w-[calc(100%-2.5rem)]
               whitespace-nowrap
               rounded-[--embeddable-controls-borders-radius]
-              text-sm ${focus ? 'hidden' : ''}
             `}
           >
             {value}
@@ -174,7 +180,6 @@ export default (props: Props) => {
             style={{ minWidth: props.minDropdownWidth }}
             className={`
               absolute
-              bg-white
               border
               flex
               flex-col
@@ -184,7 +189,8 @@ export default (props: Props) => {
               top-11
               w-full
               z-50
-              border-[color:--embeddable-controls-borders-colors-primary]
+              bg-[color:--embeddable-controls-backgrounds-colors-white]
+              border-[color:--embeddable-controls-borders-colors-lightGray]
               rounded-[--embeddable-controls-borders-radius]
             `}
           >
