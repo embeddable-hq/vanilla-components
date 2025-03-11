@@ -8,6 +8,7 @@
     "embeddable:push": "embeddable push",
     "embeddable:login": "embeddable login",
     "embeddable:dev": "cross-env NODE_OPTIONS='--max-old-space-size=4096' embeddable dev",
+    "embeddable:update": "npx npm-check-updates -u \"/embeddable/\"",
     "check-types": "tsc --noemit",
     "ct": "tsc --noEmit",
     "cube:playground": "docker-compose -f ./src/cube-playground.yml up",
