@@ -57,7 +57,7 @@ export default (props: Props) => {
   }, [results, prevResults, metric, dps, dimension]);
 
   const fontSize = props.fontSize || theme.charts.kpi.font.size;
-  const metaFontSize = Math.max(fontSize / 3, theme.font.size);
+  const metaFontSize = Math.max(fontSize / 3, parseInt(theme.font.size.replace('px', ''), 10));
   const fontColor = theme.font.colorDark;
   const negativeColor = theme.charts.kpi.font.negativeColor;
 
@@ -73,7 +73,18 @@ export default (props: Props) => {
   return (
     <Container {...props} className="overflow-y-hidden">
       <div
-        className={`flex flex-col h-full items-center justify-center font-embeddable text-center leading-tight font-bold relative`}
+        className={`
+          flex
+          flex-col
+          font-bold
+          font-embeddable
+          h-full
+          items-${theme.charts.kpi?.alignment || 'center'}
+          justify-center
+          leading-tight
+          relative
+          text-${theme.charts.kpi?.alignment || 'center'}
+        `}
       >
         {dimension ? (
           <>
@@ -110,7 +121,14 @@ export default (props: Props) => {
             </div>
             {prevTimeFilter?.to && (
               <div
-                className="font-normal flex flex-wrap justify-center items-center text-center"
+                className={`
+                  flex
+                  flex-wrap
+                  font-normal
+                  items-${theme.charts.kpi?.alignment || 'center'}
+                  justify-center
+                  text-${theme.charts.kpi?.alignment || 'center'}
+                `}
                 style={{
                   color: percentage && percentage < 0 ? negativeColor : fontColor,
                   fontSize: `${metaFontSize}px`,

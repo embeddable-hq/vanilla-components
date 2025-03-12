@@ -127,7 +127,7 @@ export default function DateRangePicker(props: Props) {
             rounded-r-none
             sm:max-w-[140px]
             w-full
-            border-[color:--embeddable-controls-borders-colors-primary]
+            border-[color:--embeddable-controls-borders-colors-lightGray]
           `}
           defaultValue={range?.relativeTimeString || ''}
           onChange={(relativeTimeString) => {
@@ -159,7 +159,7 @@ export default function DateRangePicker(props: Props) {
             p-4
             relative
             text-sm
-            border-[color:--embeddable-controls-borders-colors-primary]
+            border-[color:--embeddable-controls-borders-colors-lightGray]
             hover:bg-[color:--embeddable-controls-inputs-colors-hover]
             rounded-r-[--embedabble-controls-borders-radius]
           `}
@@ -188,12 +188,12 @@ export default function DateRangePicker(props: Props) {
             <DayPicker
               showOutsideDays
               className={`
-                bg-white
                 border
                 px-4
                 py-3
                 !m-0
-                border-[color:--embeddable-controls-borders-colors-primary]
+                bg-[color:--embeddable-controls-backgrounds-white]
+                border-[color:--embeddable-controls-borders-colors-lightGray]
                 rounded-[--embeddable-controls-borders-radius]
                 text-[color:--embeddable-font-colorDark]
               `}

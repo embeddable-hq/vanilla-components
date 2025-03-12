@@ -114,7 +114,20 @@ export default ({
               }
             </div>
             {isLoading && !data?.length && (
-              <div className="absolute left-0 top-0 w-full h-full z-10 skeleton-box bg-gray-300 overflow-hidden rounded" />
+              <div
+                className={`
+                absolute
+                h-full
+                left-0
+                overflow-hidden
+                rounded
+                skeleton-box
+                top-0
+                w-full
+                z-10
+                bg-[color:--embeddable-controls-backgrounds-colors-mediumGray]
+              `}
+              />
             )}
           </div>
         </div>

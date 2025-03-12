@@ -26,22 +26,27 @@ export const defaultTheme: Theme = {
       usePointStyle: true,
     },
     /* Custom overrides for certain charts */
-    bar: {},
+    bar: {
+      borderRadius: 4,
+      borderWidth: 0,
+    },
     bubble: {
       font: {
         size: 12,
       },
     },
     kpi: {
+      alignment: 'center',
       font: {
-        size: 32,
         negativeColor: '#FF6B6C',
+        size: 32,
       },
     },
     line: {
       font: {
         size: 12,
       },
+      lineTension: 0.1,
     },
     pie: {
       font: {
@@ -51,6 +56,14 @@ export const defaultTheme: Theme = {
     /* End custom chart overrides */
   },
   controls: {
+    backgrounds: {
+      colors: {
+        lightGray: '#F3F4F6',
+        mediumGray: '#D1D5DB',
+        transparent: 'transparent',
+        white: '#FFFFFF',
+      },
+    },
     buttons: {
       active: {
         background: '#FFFFFF',
@@ -75,7 +88,8 @@ export const defaultTheme: Theme = {
     },
     borders: {
       colors: {
-        primary: '#DADCE1',
+        lightGray: '#DADCE1',
+        mediumGray: 'D1D5DB',
       },
       padding: 8,
       radius: '12px',
@@ -106,11 +120,14 @@ export const defaultTheme: Theme = {
     colorLight: '#e3e3e3',
     family:
       '-apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-    size: 14,
+    size: `14px`,
     weight: 400,
     imports: {
       // eg: 'Impact': 'impact',
     },
+  },
+  png: {
+    backgroundColor: '#FFFFFF',
   },
   svg: {
     fillBkg: '#FFFFFF',

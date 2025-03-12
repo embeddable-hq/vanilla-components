@@ -29,10 +29,43 @@ export type Theme = {
       toolTipEnabled: boolean;
       usePointStyle: boolean;
     };
-  } & {
-    [key in ChartType]?: any;
+    bar: {
+      borderRadius: number;
+      borderWidth: number;
+    };
+    bubble: {
+      font: {
+        size: number;
+      };
+    };
+    kpi: {
+      alignment: string;
+      font: {
+        negativeColor: string;
+        size: number;
+      };
+    };
+    line: {
+      font: {
+        size: number;
+      };
+      lineTension: number;
+    };
+    pie: {
+      font: {
+        size: number;
+      };
+    };
   };
   controls: {
+    backgrounds: {
+      colors: {
+        lightGray: string;
+        mediumGray: string;
+        transparent: string;
+        white: string;
+      };
+    };
     buttons: {
       active: ButtonSettings;
       hovered: ButtonSettings;
@@ -45,7 +78,8 @@ export type Theme = {
     };
     borders: {
       colors: {
-        primary: string;
+        lightGray: string;
+        mediumGray: string;
       };
       padding: number;
       radius: string;
@@ -75,11 +109,14 @@ export type Theme = {
     colorDark: string;
     colorLight: string;
     family: string;
-    size: number;
+    size: string;
     weight: number;
     imports: {
       [key: string]: string;
     };
+  };
+  png: {
+    backgroundColor: string;
   };
   svg: {
     fill: string;

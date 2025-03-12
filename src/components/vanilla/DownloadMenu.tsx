@@ -1,5 +1,6 @@
 import { DataResponse } from '@embeddable.com/core';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { useTheme } from '@embeddable.com/react';
 
 import IconDownloadCSV from '../icons/DownloadCSV';
 import IconDownloadPNG from '../icons/DownloadPNG';
@@ -7,6 +8,7 @@ import IconVerticalEllipsis from '../icons/VerticalEllipsis';
 import downloadAsCSV from '../util/downloadAsCSV';
 import downloadAsPNG from '../util/downloadAsPNG';
 import { ContainerProps } from './Container';
+import { Theme } from '../../themes/theme';
 
 interface CSVProps extends ContainerProps {
   results?: DataResponse | DataResponse[];
@@ -37,6 +39,8 @@ const DownloadMenu: React.FC<Props> = (props) => {
     preppingDownload,
     setPreppingDownload,
   } = props;
+  const theme: Theme = useTheme() as Theme;
+
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [isDownloadStarted, setIsDownloadStarted] = useState<boolean>(false);
   const refFocus = useRef<HTMLInputElement>(null);
@@ -56,7 +60,12 @@ const DownloadMenu: React.FC<Props> = (props) => {
         // Without the timeout, the spinner doesn't show up due to html2canvas stopping everything
         // We can't clear this timeout because the download will be cancelled due to useEffect cleanup
         setTimeout(() => {
-          downloadAsPNG(element, `${cleanedChartName}-${timestamp}.png`, setPreppingDownload);
+          downloadAsPNG(
+            element,
+            `${cleanedChartName}-${timestamp}.png`,
+            setPreppingDownload,
+            theme,
+          );
         }, 200);
       }
       setIsDownloadStarted(false);

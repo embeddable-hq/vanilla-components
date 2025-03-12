@@ -1,7 +1,5 @@
 import React from 'react';
 import Spinner from './Spinner';
-import { useTheme } from '@embeddable.com/react';
-import { Theme } from '../../themes/theme';
 
 type Props = {
   buttonLabel?: string;
@@ -12,8 +10,6 @@ type Props = {
 };
 
 export default function Button({ buttonLabel, showSpinner, disabled, onClick, icon }: Props) {
-  const theme: Theme = useTheme() as Theme;
-
   return (
     <button
       disabled={disabled}
