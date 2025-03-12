@@ -23,7 +23,6 @@ type Meta = {
   page: number;
   maxRowsFit: number;
   sort: OrderBy[];
-  link: boolean;
   prevVariableValues: Record<string, any>;
 };
 
@@ -153,7 +152,9 @@ function formatColumn(text: string | number, column: DimensionOrMeasure) {
 
   if(column?.meta?.link) {
     const link = /\[(.*)\]\((.*)\)/.exec(text)
-    return (<a href={link[2]} style={{ 'text-decoration': 'underline'}}>{link[1]}</a>)
+    if(link) {
+      return (<a href={link[2]} style={{ 'text-decoration': 'underline'}}>{link[1]}</a>)
+    }
   }
 
   if (text && column.nativeType === 'time') return formatValue(text, 'date');
