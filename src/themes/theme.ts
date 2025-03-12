@@ -29,8 +29,31 @@ export type Theme = {
       toolTipEnabled: boolean;
       usePointStyle: boolean;
     };
-  } & {
-    [key in ChartType]?: any;
+    bar: {
+      radius: number;
+    };
+    bubble: {
+      font: {
+        size: number;
+      };
+    };
+    kpi: {
+      alignment: string;
+      font: {
+        negativeColor: string;
+        size: number;
+      };
+    };
+    line: {
+      font: {
+        size: number;
+      };
+    };
+    pie: {
+      font: {
+        size: number;
+      };
+    };
   };
   controls: {
     backgrounds: {
