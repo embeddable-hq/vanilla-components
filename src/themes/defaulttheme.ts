@@ -26,22 +26,27 @@ export const defaultTheme: Theme = {
       usePointStyle: true,
     },
     /* Custom overrides for certain charts */
-    bar: {},
+    bar: {
+      borderRadius: 4,
+      borderWidth: 0,
+    },
     bubble: {
       font: {
         size: 12,
       },
     },
     kpi: {
+      alignment: 'center',
       font: {
-        size: 32,
         negativeColor: '#FF6B6C',
+        size: 32,
       },
     },
     line: {
       font: {
         size: 12,
       },
+      lineTension: 0.1,
     },
     pie: {
       font: {
@@ -120,6 +125,9 @@ export const defaultTheme: Theme = {
     imports: {
       // eg: 'Impact': 'impact',
     },
+  },
+  png: {
+    backgroundColor: '#FFFFFF',
   },
   svg: {
     fillBkg: '#FFFFFF',

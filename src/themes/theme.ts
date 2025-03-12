@@ -115,6 +115,9 @@ export type Theme = {
       [key: string]: string;
     };
   };
+  png: {
+    backgroundColor: string;
+  };
   svg: {
     fill: string;
     fillBkg: string;

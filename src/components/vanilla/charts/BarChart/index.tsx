@@ -4,7 +4,6 @@ import { useTheme } from '@embeddable.com/react';
 import useTimeseries from '../../../hooks/useTimeseries';
 import Container from '../../Container';
 import BarChart from './components/BarChart';
-import defaultTheme from '../../../../themes/defaulttheme';
 import { Theme } from '../../../../themes/theme';
 
 export type Props = {
