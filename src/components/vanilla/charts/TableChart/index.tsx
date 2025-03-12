@@ -150,6 +150,11 @@ function formatColumn(text: string | number, column: DimensionOrMeasure) {
     return formatValue(`${text}`, { type: 'number', meta: column?.meta });
   }
 
+  if(column?.meta?.link) {
+    const link = /\[(.*)\]\((.*)\)/.exec(text)
+    return (<a href={link[2]} style={{ 'text-decoration': 'underline'}}>{link[1]}</a>)
+  }
+
   if (text && column.nativeType === 'time') return formatValue(text, 'date');
 
   return formatValue(text);

@@ -14,6 +14,12 @@ cubes:
         sql: name
         type: string
 
+      - name: link_to_product
+        sql: FORMAT('[%s](%s)', name, 'https://www.google.com/search?q='||name)
+        type: string
+        meta: 
+          link: true
+
       - name: size
         sql: size
         type: string
