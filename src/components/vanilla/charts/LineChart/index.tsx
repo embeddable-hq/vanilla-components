@@ -94,7 +94,7 @@ export default (props: Props) => {
             : theme.charts.colors[i % theme.charts.colors.length],
           borderColor: theme.charts.colors[i % theme.charts.colors.length],
           pointRadius: 0,
-          tension: 0.1,
+          tension: theme.charts.line.lineTension,
           pointHoverRadius: 3,
           fill: applyFill,
           cubicInterpolationMode: 'monotone' as const,

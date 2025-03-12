@@ -30,7 +30,8 @@ export type Theme = {
       usePointStyle: boolean;
     };
     bar: {
-      radius: number;
+      borderRadius: number;
+      borderWidth: number;
     };
     bubble: {
       font: {
@@ -48,6 +49,7 @@ export type Theme = {
       font: {
         size: number;
       };
+      lineTension: number;
     };
     pie: {
       font: {

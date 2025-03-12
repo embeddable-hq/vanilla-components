@@ -60,7 +60,7 @@ export default function getBarChartOptions({
   yAxisTitle = '',
   displayAsPercentage = false,
   isGroupedBar,
-  stackBars,  
+  stackBars,
 }: Partial<Props> & {
   lineMetrics?: Measure[];
   metric?: Measure;
@@ -76,7 +76,6 @@ export default function getBarChartOptions({
   isGroupedBar?: boolean;
   stackBars?: boolean;
 }): ChartOptions<'bar' | 'line'> {
-
   return {
     responsive: true,
     maintainAspectRatio: false,
@@ -91,11 +90,14 @@ export default function getBarChartOptions({
         grid: {
           display: false,
         },
-        max: (displayAsPercentage && !displayHorizontally) 
-          ? (isGroupedBar 
-              ? (stackBars ? 100 : undefined) 
-              : 100)
-          : undefined,
+        max:
+          displayAsPercentage && !displayHorizontally
+            ? isGroupedBar
+              ? stackBars
+                ? 100
+                : undefined
+              : 100
+            : undefined,
         afterDataLimits: function (axis) {
           //Disable fractions unless they exist in the data.
           const metricsGroup = [
@@ -148,11 +150,14 @@ export default function getBarChartOptions({
         grid: {
           display: false,
         },
-        max: displayAsPercentage && displayHorizontally 
-          ? (isGroupedBar 
-              ? stackBars ? 100 : undefined
-              : 100)
-          : undefined,
+        max:
+          displayAsPercentage && displayHorizontally
+            ? isGroupedBar
+              ? stackBars
+                ? 100
+                : undefined
+              : 100
+            : undefined,
         ticks: {
           //https://www.chartjs.org/docs/latest/axes/labelling.html
           callback: function (value) {

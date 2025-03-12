@@ -94,29 +94,31 @@ function chartData(props: Props): ChartData<'bar' | 'line'> {
 
   const metricsDatasets =
     metrics?.map((metric, i) => ({
+      backgroundColor: colors[i % colors.length],
       barPercentage: 0.8,
       barThickness: 'flex',
+      borderRadius: theme.charts.bar.borderRadius,
+      borderWidth: theme.charts.bar.borderWidth,
+      data: results?.data?.map((d) => parseFloat(d[metric.name] || 0)) || [],
+      label: metric.title,
       maxBarThickness: 50,
       minBarLength: 0,
-      borderRadius: 4,
-      label: metric.title,
-      data: results?.data?.map((d) => parseFloat(d[metric.name] || 0)) || [],
-      backgroundColor: colors[i % colors.length],
       order: 1,
     })) || [];
 
   //optional metrics to display as a line on the barchart
   const lineMetricsDatasets =
     lineMetrics?.map((metric, i) => ({
-      label: metric.title,
-      data: results?.data?.map((d) => parseFloat(d[metric.name] || 0)) || [],
       backgroundColor: colors[metrics.length + (i % colors.length)],
       borderColor: colors[metrics.length + (i % colors.length)],
       cubicInterpolationMode: 'monotone' as const,
-      pointRadius: 2,
-      pointHoverRadius: 3,
-      type: 'line' as const,
+      data: results?.data?.map((d) => parseFloat(d[metric.name] || 0)) || [],
+      label: metric.title,
       order: 0,
+      pointHoverRadius: 3,
+      pointRadius: 2,
+      tension: theme.charts.line.lineTension,
+      type: 'line' as const,
       yAxisID: showSecondYAxis ? 'y1' : 'y',
     })) || [];
 
