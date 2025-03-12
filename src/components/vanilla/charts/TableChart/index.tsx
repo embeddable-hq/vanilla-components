@@ -23,6 +23,7 @@ type Meta = {
   page: number;
   maxRowsFit: number;
   sort: OrderBy[];
+  link: boolean;
   prevVariableValues: Record<string, any>;
 };
 
