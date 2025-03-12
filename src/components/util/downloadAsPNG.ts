@@ -1,17 +1,19 @@
 import html2canvas from 'html2canvas';
 import { toPng } from 'html-to-image';
 import { Dispatch, SetStateAction } from 'react';
+import { Theme } from '../../themes/theme';
 
 // Create a canvas from the element, convert to png, and download
 const downloadAsPNG = async (
   element: HTMLDivElement,
   filename: string,
   setLoadingState: Dispatch<SetStateAction<boolean>>,
+  theme: Theme,
 ) => {
-  // Prevent transparent PNGs
+  // Use theme for background color
   let changedBkg = false;
   if (!element.style.backgroundColor) {
-    element.style.backgroundColor = 'white';
+    element.style.backgroundColor = theme.png.backgroundColor;
     changedBkg = true;
   }
 
