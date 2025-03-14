@@ -40,24 +40,6 @@ cubes:
         type: count
         title: '# of customers'
 
-        # Measure for testing negative values
-      - name: negative_values
-        sql: (-1 * (RANDOM() * 100)) + 50
-        type: number
-        title: 'Negative Value'
-
-      # Measure for testing decimal values
-      - name: decimal_values
-        sql: (RANDOM() * 5)
-        type: number
-        title: 'Decimal Value'
-      
-      # Measure for testing whole numbers less than 5
-      - name: small_numbers
-        sql: FLOOR(RANDOM() * 5)
-        type: number
-        title: 'Whole Numbers < 5'
-
     joins:
       - name: orders # the name of the data model to join to (not the table)
         sql: '{CUBE}.id = {orders}.customer_id'
