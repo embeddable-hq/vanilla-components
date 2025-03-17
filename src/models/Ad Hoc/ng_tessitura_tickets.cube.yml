@@ -72,29 +72,33 @@ cubes:
     - name: ticket_pseudo_users
       type: count_distinct
       sql: user_pseudo_id
-      title: 'Ticket Users'
+      title: 'Unique Users'
     
     - name: ticket_users
       type: count_distinct
       sql: user_id
+      shown: false
 
     - name: ticket_value
       type: avg
       sql: cast(ticket_value as float64)
-      title: 'Ticket Value £'
+      title: 'Guide Value £'
       meta:
         suffix: '£'
     
     - name: ticket_orders
       type: count_distinct
       sql: ticket_order_id
+      title: 'Guide Accessed'
 
     - name: ticket_views
       type: count
+      title: 'Number of Accesses'
     
     - name: ticket_views_order
       type: number
       sql: '{ticket_views} / {ticket_orders}'
+      title: 'Accesses per Guide'
   
   joins:
     - name: venue_lookup_tours
