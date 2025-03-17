@@ -1,0 +1,102 @@
+cubes:
+- name: ng_tessitura_tickets
+  data_source: default
+  sql: >
+    select
+      event_date
+      ,user_pseudo_id
+      ,user_id
+      ,event_name
+      ,platform
+      ,device.category as device_category
+      ,device.web_info.hostname as hostname
+      ,geo.country as geo_country
+      ,geo.city as geo_city
+      ,event_params_custom.user_connectivity
+      ,event_params_custom.component_type
+      ,event_params_custom.content_category
+      ,event_params_custom.page_type
+      ,event_params_custom.venue_id
+      ,event_params_custom.organisation_id
+      ,event_params_custom.tour_id
+      ,event_params_custom.ticket_line_item
+      ,event_params_custom.ticket_subline_item
+      ,event_params_custom.ticket_order_id
+      ,event_params_custom.ticket_value
+      ,user_properties.user_age
+      ,user_properties.user_gender
+    from `smartify-cc94e.superform_outputs_151371783.ga4_events`
+    where event_date >= '2025-02-17'
+    and event_name = 'external_purchase'
+    and stream_id in ("1047860117","1047860114","1913717213","2817285551")
+
+  dimensions:
+    - name: datetime
+      type: time 
+      sql: timestamp(event_date)
+
+    - name: device_platform
+      type: string
+      sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+      title: 'Platform'
+
+    - name: user_connectivity
+      type: string
+      sql: case when (user_connectivity = '' or user_connectivity is null) then 'Unknown' when user_connectivity = 'Cellular' then 'Cellular' else 'Wi-Fi' end
+
+    - name: tour_id
+      type: string
+      sql: tour_id
+    
+    - name: event_name
+      type: string
+      sql: event_name
+
+    - name: ticket_line_item
+      type: string
+      sql: ticket_line_item
+      shown: false
+      primaryKey: true
+
+    - name: ticket_subline_item
+      type: string
+      sql: ticket_subline_item
+      title: 'Subline Item'
+
+    - name: ticket_order_id
+      type: string
+      sql: ticket_order_id
+      title: 'Order ID'
+
+  measures:
+    - name: ticket_pseudo_users
+      type: count_distinct
+      sql: user_pseudo_id
+      title: 'Ticket Users'
+    
+    - name: ticket_users
+      type: count_distinct
+      sql: user_id
+
+    - name: ticket_value
+      type: avg
+      sql: cast(ticket_value as float64)
+      title: 'Ticket Value £'
+      meta:
+        suffix: '£'
+    
+    - name: ticket_orders
+      type: count_distinct
+      sql: ticket_order_id
+
+    - name: ticket_views
+      type: count
+    
+    - name: ticket_views_order
+      type: number
+      sql: '{ticket_views} / {ticket_orders}'
+  
+  joins:
+    - name: venue_lookup_tours
+      relationship: many_to_one
+      sql: '{CUBE.tour_id} = {venue_lookup_tours.tour_sid}'
