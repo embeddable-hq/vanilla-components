@@ -29,6 +29,9 @@ export const defaultTheme: Theme = {
     bar: {
       borderRadius: 4,
       borderWidth: 0,
+      font: {
+        size: 12,
+      },
     },
     bubble: {
       font: {
@@ -49,6 +52,11 @@ export const defaultTheme: Theme = {
       lineTension: 0.1,
     },
     pie: {
+      font: {
+        size: 12,
+      },
+    },
+    scatter: {
       font: {
         size: 12,
       },

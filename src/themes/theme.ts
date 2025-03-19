@@ -1,15 +1,4 @@
-export type ChartType =
-  | 'bar'
-  | 'bubble'
-  | 'doughnut'
-  | 'kpi'
-  | 'line'
-  | 'pie'
-  | 'pivotTable'
-  | 'polarArea'
-  | 'radar'
-  | 'scatter'
-  | 'table';
+export type ChartType = 'bar' | 'bubble' | 'kpi' | 'line' | 'pie' | 'scatter';
 
 type ButtonSettings = {
   background: string;
@@ -32,26 +21,40 @@ export type Theme = {
     bar: {
       borderRadius: number;
       borderWidth: number;
+      colors?: string[];
+      font: {
+        size: number;
+      };
     };
     bubble: {
+      colors?: string[];
       font: {
         size: number;
       };
     };
     kpi: {
       alignment: string;
+      colors?: string[];
       font: {
         negativeColor: string;
         size: number;
       };
     };
     line: {
+      colors?: string[];
       font: {
         size: number;
       };
       lineTension: number;
     };
     pie: {
+      colors?: string[];
+      font: {
+        size: number;
+      };
+    };
+    scatter: {
+      colors?: string[];
       font: {
         size: number;
       };

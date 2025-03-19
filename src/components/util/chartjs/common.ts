@@ -29,9 +29,7 @@ export const setChartJSDefaults = (theme: Theme, chartType?: ChartType) => {
   // remove 'px' from the font size and convert to a number
   let fontSize = parseInt(theme.font.size.replace('px', ''), 10);
   if (chartType && theme.charts[chartType]) {
-    if (theme.charts[chartType].font?.size) {
-      fontSize = theme.charts[chartType].font.size;
-    }
+    fontSize = theme.charts[chartType].font.size;
   }
   // We don't need to return Chartjs defaults as we are mutating the global object
   ChartJS.defaults.font.size = fontSize;

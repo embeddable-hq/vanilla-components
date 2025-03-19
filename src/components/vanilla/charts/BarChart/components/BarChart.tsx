@@ -75,6 +75,12 @@ function chartData(props: Props): ChartData<'bar' | 'line'> {
   } = theme;
   setChartJSDefaults(theme);
 
+  // Check for bar chart color overrides in theme
+  let chartColors = colors;
+  if (theme.charts.bar.colors) {
+    chartColors = theme.charts.bar.colors;
+  }
+
   let dateFormat: string | undefined;
   if (xAxis.nativeType === 'time' && granularity) {
     dateFormat = dateFormats[granularity];
@@ -94,7 +100,7 @@ function chartData(props: Props): ChartData<'bar' | 'line'> {
 
   const metricsDatasets =
     metrics?.map((metric, i) => ({
-      backgroundColor: colors[i % colors.length],
+      backgroundColor: chartColors[i % chartColors.length],
       barPercentage: 0.8,
       barThickness: 'flex',
       borderRadius: theme.charts.bar.borderRadius,
@@ -110,8 +116,8 @@ function chartData(props: Props): ChartData<'bar' | 'line'> {
   //optional metrics to display as a line on the barchart
   const lineMetricsDatasets =
     lineMetrics?.map((metric, i) => ({
-      backgroundColor: colors[metrics.length + (i % colors.length)],
-      borderColor: colors[metrics.length + (i % colors.length)],
+      backgroundColor: chartColors[metrics.length + (i % chartColors.length)],
+      borderColor: chartColors[metrics.length + (i % chartColors.length)],
       cubicInterpolationMode: 'monotone' as const,
       data: results?.data?.map((d) => parseFloat(d[metric.name] || 0)) || [],
       label: metric.title,
