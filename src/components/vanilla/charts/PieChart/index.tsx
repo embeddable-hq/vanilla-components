@@ -59,6 +59,12 @@ export default (props: Props) => {
   // Set ChartJS defaults
   setChartJSDefaults(theme, 'pie');
 
+  // Check for color overrides in the theme
+  let chartColors = theme.charts.colors;
+  if (theme.charts.pie.colors) {
+    chartColors = theme.charts.pie.colors;
+  }
+
   // Add the theme to props
   const updatedProps: PropsWithRequiredTheme = {
     ...props,
@@ -103,7 +109,7 @@ export default (props: Props) => {
       <Pie
         height="100%"
         options={chartOptions(updatedProps)}
-        data={chartData(updatedProps)}
+        data={chartData(updatedProps, chartColors)}
         ref={chartRef}
         onClick={handleClick}
       />
@@ -185,7 +191,7 @@ function mergeLongTail({ results, slice, metric, maxSegments }: Props) {
   return newData;
 }
 
-function chartData(props: PropsWithRequiredTheme) {
+function chartData(props: PropsWithRequiredTheme, chartColors: string[]) {
   const { maxSegments, results, metric, slice, displayAsPercentage, theme } = props;
   const labelsExceedMaxSegments = maxSegments && maxSegments < (results?.data?.length || 0);
   const newData = labelsExceedMaxSegments ? mergeLongTail(props) : results.data;
@@ -208,7 +214,7 @@ function chartData(props: PropsWithRequiredTheme) {
     datasets: [
       {
         data: counts,
-        backgroundColor: theme.charts.colors,
+        backgroundColor: chartColors,
         borderColor: '#fff',
         borderWeight: 5,
       },

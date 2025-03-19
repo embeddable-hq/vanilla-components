@@ -63,6 +63,12 @@ type Record = { [p: string]: any };
 export default (props: Props) => {
   const theme: Theme = useTheme() as Theme;
 
+  // Check for chart-specific overrides in the theme
+  let chartColors = theme.charts.colors;
+  if (theme.charts.bubble.colors) {
+    chartColors = theme.charts.bubble.colors;
+  }
+
   //add missing dates to time-series data
   const { fillGaps } = useTimeseries(props, 'desc');
   const { results } = props;
@@ -73,7 +79,7 @@ export default (props: Props) => {
     ...props,
     theme: theme,
   };
-  const bubbleData = chartData(updatedProps, updatedData);
+  const bubbleData = chartData(updatedProps, updatedData, chartColors);
 
   return (
     <Container {...props} className="overflow-y-hidden">
@@ -226,6 +232,7 @@ function chartOptions(
 function chartData(
   props: PropsWithRequiredTheme,
   updatedData: Record[] | undefined,
+  chartColors: string[],
 ): ChartData<'bubble'> {
   const { theme } = props;
   const bubbleRadiusValue =
@@ -251,7 +258,7 @@ function chartData(
       {
         label: props.yAxis.title,
         data: ndata,
-        backgroundColor: hexToRgb(theme.charts.colors[0], 0.8),
+        backgroundColor: hexToRgb(chartColors[0], 0.8),
       },
     ],
   };

@@ -80,6 +80,12 @@ export default (props: Props) => {
 
     const data = results?.data?.reduce(fillGaps, []);
 
+    // Check for color overrides in the theme
+    let chartColors = theme.charts.colors;
+    if (theme.charts.line.colors) {
+      chartColors = theme.charts.line.colors;
+    }
+
     return {
       datasets:
         metrics?.map((yAxis, i) => ({
@@ -90,9 +96,9 @@ export default (props: Props) => {
               x: parseTime(d[props.xAxis?.name || '']),
             })) || [],
           backgroundColor: applyFill
-            ? hexToRgb(theme.charts.colors[i % theme.charts.colors.length], 0.2)
-            : theme.charts.colors[i % theme.charts.colors.length],
-          borderColor: theme.charts.colors[i % theme.charts.colors.length],
+            ? hexToRgb(chartColors[i % chartColors.length], 0.2)
+            : chartColors[i % chartColors.length],
+          borderColor: chartColors[i % chartColors.length],
           pointRadius: 0,
           tension: theme.charts.line.lineTension,
           pointHoverRadius: 3,
