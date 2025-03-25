@@ -126,8 +126,7 @@ export const defaultTheme: Theme = {
     color: '#888',
     colorDark: '#333942',
     colorLight: '#e3e3e3',
-    family:
-      '-apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+    family: '"Pinyon Script"',
     size: `14px`,
     weight: 400,
     imports: {
