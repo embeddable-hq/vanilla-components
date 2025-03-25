@@ -166,7 +166,7 @@ export type Theme = {
     fillNormal: string;
     strokeNormal: string;
     strokeStrong: string;
-    strokeLight: string;
+    strokeSoft: string;
   };
 };
 

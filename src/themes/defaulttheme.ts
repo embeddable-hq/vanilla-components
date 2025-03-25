@@ -156,7 +156,7 @@ export const defaultTheme: Theme = {
     fillBkg: '#FFFFFF',
     fillNormal: '#474752',
     fillStrong: '#1D1E22',
-    strokeLight: '#474752',
+    strokeSoft: '#474752',
     strokeNormal: '#959CA8',
     strokeStrong: '#101010',
   },
