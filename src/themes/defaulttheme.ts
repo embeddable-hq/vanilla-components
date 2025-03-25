@@ -25,6 +25,7 @@ export const defaultTheme: Theme = {
       toolTipEnabled: true,
       usePointStyle: true,
     },
+    textJustify: 'start',
     /* Custom overrides for certain charts */
     bar: {
       borderRadius: 4,

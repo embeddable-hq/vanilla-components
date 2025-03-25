@@ -165,8 +165,6 @@ input::placeholder,
 .font-embeddable {
   color: var(--embeddable-font-color);
   font-family: var(--embeddable-font-family);
-  font-size: var(--embeddable-font-size);
-  font-weight: var(--embeddable-font-weight);
 }
 .embeddable-table-header {
   color: var(--embeddable-table-header-color);

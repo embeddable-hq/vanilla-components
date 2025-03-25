@@ -18,6 +18,16 @@ export type Theme = {
       toolTipEnabled: boolean;
       usePointStyle: boolean;
     };
+    textJustify:
+      | 'start'
+      | 'end'
+      | 'center'
+      | 'between'
+      | 'around'
+      | 'evenly'
+      | 'stretch'
+      | 'baseline'
+      | 'normal';
     bar: {
       borderRadius: number;
       borderWidth: number;

@@ -21,7 +21,6 @@ export default function Title({ title, style }: Props) {
           leading-6
           mb-2
           text-base
-          w-full
           text-[color:--embeddable.font.color]
         `}
         style={style || {}}
