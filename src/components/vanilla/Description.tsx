@@ -18,7 +18,6 @@ export default function Description({ description, style }: Props) {
           font-embeddable
           justify-start
           mb-2
-          w-full
           text-[color:--embeddable-font-color]
           text-[size:--embeddable-font-size]
         `}

@@ -1,6 +1,7 @@
 import { DataResponse } from '@embeddable.com/core';
 import React, { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
+import { useTheme } from '@embeddable.com/react';
 
 import useFont from '../hooks/useFont';
 import useResize, { Size } from '../hooks/useResize';
@@ -10,6 +11,7 @@ import Spinner from './Spinner';
 import Title from './Title';
 import { WarningIcon } from './icons';
 import './index.css';
+import { Theme } from '../../themes/theme';
 
 export type ContainerProps = {
   childContainerClassName?: string;
@@ -39,6 +41,8 @@ export default ({
   const refResizingTimeout = useRef<number | null>(null);
   const { height } = useResize(refResize, onResize || null);
   const [preppingDownload, setPreppingDownload] = useState<boolean>(false);
+
+  const theme: Theme = useTheme() as Theme;
 
   //Detect when the component is being resized by the user
   useEffect(() => {
@@ -91,9 +95,11 @@ export default ({
           </div>
         ) : null}
         <Spinner show={isLoading || preppingDownload} />
-        <div className="h-full relative flex flex-col" ref={refExportPNGElement}>
-          <Title title={props.title} />
-          <Description description={props.description} />
+        <div className={`h-full relative flex flex-col`} ref={refExportPNGElement}>
+          <div className={`flex flex-col items-${theme.charts.textJustify}`}>
+            <Title title={props.title} />
+            <Description description={props.description} />
+          </div>
 
           <div ref={refResize} className={twMerge(`relative grow flex flex-col`, className || '')}>
             <div
@@ -125,7 +131,7 @@ export default ({
                 top-0
                 w-full
                 z-10
-                bg-[color:--embeddable-controls-backgrounds-colors-mediumGray]
+                bg-[color:--embeddable-controls-backgrounds-colors-heavy]
               `}
               />
             )}

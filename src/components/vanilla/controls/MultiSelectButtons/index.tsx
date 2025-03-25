@@ -34,7 +34,7 @@ export default (props: Props) => {
           return (
             <div
               key={i}
-              className={`multiselectItem text-[color:--embeddable-font-colorDark]`}
+              className={`multiselectItem text-[color:--embeddable-font-colorNormal]`}
               style={{ background: background }}
               onClick={() => handleClick(value)}
             >

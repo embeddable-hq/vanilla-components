@@ -30,7 +30,12 @@ const TableHead = ({ columns, sortBy, sortDirection, onSortingChange, minColumnW
           return (
             <th
               key={column.name}
-              className="bg-white select-none cursor-pointer p-3"
+              className={`
+                cursor-pointer
+                p-3
+                select-none
+                bg-[color:--embeddable-controls-backgrounds-soft]
+              `}
               style={
                 minColumnWidth
                   ? {

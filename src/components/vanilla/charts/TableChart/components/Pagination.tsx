@@ -14,13 +14,13 @@ const Pagination = ({ currentPage, hasNextPage, onPageChange }: Props) => {
     <div
       className={`
         flex
-        font-bold
         items-center
         justify-center
         left-0
         select-none
         sticky
-        text-[color:--embeddable-font-colorDark]
+        font-[--embeddable-charts-fontWeights-pagination]
+        text-[color:--embeddable-font-colorNormal]
         text-[size:--embeddable-font-size]
       `}
     >
@@ -36,7 +36,7 @@ const Pagination = ({ currentPage, hasNextPage, onPageChange }: Props) => {
             justify-center
             p-1
             w-8
-            border-[color:--embeddable-controls-borders-colors-lightGray]
+            border-[color:--embeddable-controls-borders-colors-normal]
             rounded-[--embeddable-controls-buttons-radius]
           `,
           {
@@ -61,7 +61,7 @@ const Pagination = ({ currentPage, hasNextPage, onPageChange }: Props) => {
           justify-center
           p-1
           w-8
-          border-[color:--embeddable-controls-borders-colors-lightGray]
+          border-[color:--embeddable-controls-borders-colors-normal]
           rounded-[--embeddable-controls-buttons-radius]
           ${hasNextPage ? 'opacity-50 pointer-events-none' : ''}
         `}

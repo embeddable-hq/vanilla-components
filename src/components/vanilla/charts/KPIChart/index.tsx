@@ -58,7 +58,7 @@ export default (props: Props) => {
 
   const fontSize = props.fontSize || theme.charts.kpi.font.size;
   const metaFontSize = Math.max(fontSize / 3, parseInt(theme.font.size.replace('px', ''), 10));
-  const fontColor = theme.font.colorDark;
+  const fontColor = theme.font.colorNormal;
   const negativeColor = theme.charts.kpi.font.negativeColor;
 
   if (results?.error) {
@@ -76,7 +76,6 @@ export default (props: Props) => {
         className={`
           flex
           flex-col
-          font-bold
           font-embeddable
           h-full
           items-${theme.charts.kpi?.alignment || 'center'}
@@ -84,12 +83,13 @@ export default (props: Props) => {
           leading-tight
           relative
           text-${theme.charts.kpi?.alignment || 'center'}
+          font-[--embeddable-charts-fontWeights-kpiNumber]
         `}
       >
         {dimension ? (
           <>
             <div
-              className={`text-[color:--embeddable-font-colorDark]`}
+              className={`text-[color:--embeddable-font-colorNormal]`}
               style={{ fontSize: `${fontSize}px` }}
             >
               <p>{results?.data?.[0]?.[dimension.name]}</p>
@@ -114,7 +114,7 @@ export default (props: Props) => {
         ) : (
           <>
             <div
-              className={`text-[color:--embeddable-font-colorDark]`}
+              className={`text-[color:--embeddable-font-colorNormal]`}
               style={{ fontSize: `${fontSize}px` }}
             >
               <p>{`${prefix || ''}${n || 0}${suffix || ''}`}</p>

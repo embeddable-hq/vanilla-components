@@ -69,7 +69,7 @@ export default (props: Props) => {
               px-3
               relative
               w-full
-              border-[color:--embeddable-controls-borders-colors-lightGray]
+              border-[color:--embeddable-controls-borders-colors-normal]
               rounded-[--embeddable-controls-borders-radius]
             `}
             value={value}

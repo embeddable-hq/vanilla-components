@@ -155,7 +155,21 @@ const DownloadMenu: React.FC<Props> = (props) => {
           )}
           {showMenu && (
             <>
-              <div className="absolute bg-white flex items-center right-0 p-4 rounded shadow-md top-6 w-40 whitespace-nowrap">
+              <div
+                className={`
+                absolute
+                flex
+                items-center
+                p-4
+                right-0
+                rounded
+                shadow-md
+                top-6
+                w-40
+                whitespace-nowrap
+                bg-[color:--embeddable-controls-backgrounds-soft]
+              `}
+              >
                 <ul>
                   <li className="mb-2">
                     <a

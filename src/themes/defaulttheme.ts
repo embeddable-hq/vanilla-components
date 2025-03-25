@@ -1,3 +1,4 @@
+import { descriptors } from 'chart.js/dist/core/core.defaults';
 import { Theme } from './theme';
 
 export const defaultTheme: Theme = {
@@ -25,9 +26,17 @@ export const defaultTheme: Theme = {
       toolTipEnabled: true,
       usePointStyle: true,
     },
+    textJustify: 'start',
+    fontWeights: {
+      description: 400,
+      kpiNumber: 700,
+      pagination: 400,
+      title: 700,
+    },
     /* Custom overrides for certain charts */
     bar: {
       borderRadius: 4,
+      borderSkipped: 'bottom',
       borderWidth: 0,
       font: {
         size: 12,
@@ -63,13 +72,19 @@ export const defaultTheme: Theme = {
     },
     /* End custom chart overrides */
   },
+  container: {
+    boxShadow: 'none',
+    borderRadius: '12px',
+    padding: '15px',
+    border: '1px solid #ddd',
+  },
   controls: {
     backgrounds: {
       colors: {
-        lightGray: '#F3F4F6',
-        mediumGray: '#D1D5DB',
+        heavy: '#D1D5DB',
+        normal: '#F3F4F6',
+        soft: '#FFFFFF',
         transparent: 'transparent',
-        white: '#FFFFFF',
       },
     },
     buttons: {
@@ -96,8 +111,8 @@ export const defaultTheme: Theme = {
     },
     borders: {
       colors: {
-        lightGray: '#DADCE1',
-        mediumGray: 'D1D5DB',
+        normal: '#DADCE1',
+        heavy: 'D1D5DB',
       },
       padding: 8,
       radius: '12px',
@@ -124,8 +139,8 @@ export const defaultTheme: Theme = {
   },
   font: {
     color: '#888',
-    colorDark: '#333942',
-    colorLight: '#e3e3e3',
+    colorNormal: '#333942',
+    colorSoft: '#e3e3e3',
     family:
       '-apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
     size: `14px`,
@@ -139,12 +154,11 @@ export const defaultTheme: Theme = {
   },
   svg: {
     fillBkg: '#FFFFFF',
-    fill: '#333942',
-    fillDark: '#1D1E22',
-    fillLight: '#474752',
-    stroke: '#959CA8',
-    strokeDark: '#101010',
+    fillNormal: '#474752',
+    fillStrong: '#1D1E22',
     strokeLight: '#474752',
+    strokeNormal: '#959CA8',
+    strokeStrong: '#101010',
   },
 };
 

@@ -126,7 +126,7 @@ export default (props: Props) => {
             min-w-[50px]
             relative
             w-full
-            border-[color:--embeddable-controls-borders-colors-lightGray]
+            border-[color:--embeddable-controls-borders-colors-normal]
             rounded-[--embeddable-controls-borders-radius]
           `,
           props.className,
@@ -189,8 +189,8 @@ export default (props: Props) => {
               top-11
               w-full
               z-50
-              bg-[color:--embeddable-controls-backgrounds-colors-white]
-              border-[color:--embeddable-controls-borders-colors-lightGray]
+              bg-[color:--embeddable-controls-backgrounds-colors-soft]
+              border-[color:--embeddable-controls-borders-colors-normal]
               rounded-[--embeddable-controls-borders-radius]
             `}
           >

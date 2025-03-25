@@ -1,5 +1,5 @@
 import { DataResponse } from '@embeddable.com/core';
-import { useEmbeddableState, useTheme } from '@embeddable.com/react';
+import { useEmbeddableState } from '@embeddable.com/react';
 import React, {
   ReactNode,
   useCallback,
@@ -16,7 +16,6 @@ import CheckboxEmpty from '../../../icons/CheckboxEmpty';
 import Container from '../../Container';
 import Spinner from '../../Spinner';
 import { ChevronDown, ClearIcon } from '../../icons';
-import { Theme } from '../../../../themes/theme';
 
 export type Props = {
   className?: string;
@@ -45,8 +44,6 @@ export default (props: Props) => {
   const [_, setServerSearch] = useEmbeddableState({
     [props.searchProperty || 'search']: '',
   }) as [Record, (f: (m: Record) => Record) => void];
-
-  const theme: Theme = useTheme() as Theme;
 
   useEffect(() => {
     setValue(props.defaultValue);
@@ -139,7 +136,7 @@ export default (props: Props) => {
             min-w-[50px]
             relative
             w-full
-            border-[color:--embeddable-controls-borders-colors-lightGray]
+            border-[color:--embeddable-controls-borders-colors-normal]
             rounded-[--embeddable-controls-borders-radius]
           `,
           props.className,
@@ -196,7 +193,6 @@ export default (props: Props) => {
             style={{ minWidth: props.minDropdownWidth }}
             className={`
               absolute
-              bg-white
               border
               flex
               flex-col
@@ -206,7 +202,8 @@ export default (props: Props) => {
               top-11
               w-full
               z-50
-              border-[color:--embeddable-controls-borders-colors-lightGray]
+              bg-[color:--embeddable-controls-backgrounds-soft]
+              border-[color:--embeddable-controls-borders-colors-normal]
               rounded-[--embeddable-controls-borders-radius]
             `}
           >

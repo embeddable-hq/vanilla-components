@@ -6,6 +6,13 @@ type ButtonSettings = {
   border: string;
 };
 
+type BarChartBorderRadius = {
+  topRight: number;
+  topLeft: number;
+  bottomRight: number;
+  bottomLeft: number;
+};
+
 export type Theme = {
   isParent: boolean;
   brand: {
@@ -18,8 +25,34 @@ export type Theme = {
       toolTipEnabled: boolean;
       usePointStyle: boolean;
     };
+    textJustify:
+      | 'start'
+      | 'end'
+      | 'center'
+      | 'between'
+      | 'around'
+      | 'evenly'
+      | 'stretch'
+      | 'baseline'
+      | 'normal';
+    fontWeights: {
+      description: number;
+      kpiNumber: number;
+      pagination: number;
+      title: number;
+    };
     bar: {
-      borderRadius: number;
+      borderRadius: number | BarChartBorderRadius;
+      borderSkipped:
+        | 'start'
+        | 'end'
+        | 'middle'
+        | 'bottom'
+        | 'left'
+        | 'top'
+        | 'right'
+        | false
+        | true;
       borderWidth: number;
       colors?: string[];
       font: {
@@ -60,13 +93,19 @@ export type Theme = {
       };
     };
   };
+  container: {
+    boxShadow: string;
+    borderRadius: string;
+    padding: string;
+    border: string;
+  };
   controls: {
     backgrounds: {
       colors: {
-        lightGray: string;
-        mediumGray: string;
+        heavy: string;
+        normal: string;
+        soft: string;
         transparent: string;
-        white: string;
       };
     };
     buttons: {
@@ -81,8 +120,8 @@ export type Theme = {
     };
     borders: {
       colors: {
-        lightGray: string;
-        mediumGray: string;
+        normal: string;
+        heavy: string;
       };
       padding: number;
       radius: string;
@@ -109,8 +148,8 @@ export type Theme = {
   };
   font: {
     color: string;
-    colorDark: string;
-    colorLight: string;
+    colorNormal: string;
+    colorSoft: string;
     family: string;
     size: string;
     weight: number;
@@ -122,12 +161,11 @@ export type Theme = {
     backgroundColor: string;
   };
   svg: {
-    fill: string;
     fillBkg: string;
-    fillDark: string;
-    fillLight: string;
-    stroke: string;
-    strokeDark: string;
+    fillStrong: string;
+    fillNormal: string;
+    strokeNormal: string;
+    strokeStrong: string;
     strokeLight: string;
   };
 };
