@@ -35,6 +35,12 @@ export type Theme = {
       | 'stretch'
       | 'baseline'
       | 'normal';
+    fontWeights: {
+      description: number;
+      kpiNumber: number;
+      pagination: number;
+      title: number;
+    };
     bar: {
       borderRadius: number | BarChartBorderRadius;
       borderSkipped:
@@ -146,12 +152,7 @@ export type Theme = {
     colorLight: string;
     family: string;
     size: string;
-    weight: {
-      light: number;
-      normal: number;
-      semibold: number;
-      bold: number;
-    };
+    weight: number;
     imports: {
       [key: string]: string;
     };

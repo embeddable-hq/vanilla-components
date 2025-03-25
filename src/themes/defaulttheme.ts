@@ -1,3 +1,4 @@
+import { descriptors } from 'chart.js/dist/core/core.defaults';
 import { Theme } from './theme';
 
 export const defaultTheme: Theme = {
@@ -26,6 +27,12 @@ export const defaultTheme: Theme = {
       usePointStyle: true,
     },
     textJustify: 'start',
+    fontWeights: {
+      description: 400,
+      kpiNumber: 700,
+      pagination: 400,
+      title: 700,
+    },
     /* Custom overrides for certain charts */
     bar: {
       borderRadius: 4,
@@ -137,12 +144,7 @@ export const defaultTheme: Theme = {
     family:
       '-apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
     size: `14px`,
-    weight: {
-      light: 300,
-      normal: 400,
-      semibold: 600,
-      bold: 700,
-    },
+    weight: 400,
     imports: {
       // eg: 'Impact': 'impact',
     },

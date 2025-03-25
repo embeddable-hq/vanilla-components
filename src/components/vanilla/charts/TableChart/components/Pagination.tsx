@@ -19,7 +19,7 @@ const Pagination = ({ currentPage, hasNextPage, onPageChange }: Props) => {
         left-0
         select-none
         sticky
-        font-[--embeddable-font-bold]
+        font-[--embeddable-charts-fontWeights-pagination]
         text-[color:--embeddable-font-colorDark]
         text-[size:--embeddable-font-size]
       `}
