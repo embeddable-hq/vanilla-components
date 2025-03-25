@@ -14,12 +14,12 @@ const Pagination = ({ currentPage, hasNextPage, onPageChange }: Props) => {
     <div
       className={`
         flex
-        font-bold
         items-center
         justify-center
         left-0
         select-none
         sticky
+        font-[--embeddable-font-bold]
         text-[color:--embeddable-font-colorDark]
         text-[size:--embeddable-font-size]
       `}

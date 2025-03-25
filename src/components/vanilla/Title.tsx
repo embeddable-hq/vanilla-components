@@ -15,13 +15,13 @@ export default function Title({ title, style }: Props) {
       <h2
         className={`
           flex
-          font-bold
           font-embeddable
           justify-start
           leading-6
           mb-2
           text-base
-          text-[color:--embeddable.font.color]
+          font-[--embeddable-font-weight-bold]
+          text-[color:--embeddable-font-color]
         `}
         style={style || {}}
       >

@@ -76,7 +76,6 @@ export default (props: Props) => {
         className={`
           flex
           flex-col
-          font-bold
           font-embeddable
           h-full
           items-${theme.charts.kpi?.alignment || 'center'}
@@ -84,6 +83,7 @@ export default (props: Props) => {
           leading-tight
           relative
           text-${theme.charts.kpi?.alignment || 'center'}
+          font-[--embeddable-font-weight-bold]
         `}
       >
         {dimension ? (

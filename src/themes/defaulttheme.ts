@@ -28,12 +28,7 @@ export const defaultTheme: Theme = {
     textJustify: 'start',
     /* Custom overrides for certain charts */
     bar: {
-      borderRadius: {
-        topLeft: 4,
-        topRight: 20,
-        bottomLeft: 0,
-        bottomRight: 0,
-      },
+      borderRadius: 4,
       borderSkipped: 'bottom',
       borderWidth: 0,
       font: {
@@ -142,7 +137,12 @@ export const defaultTheme: Theme = {
     family:
       '-apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
     size: `14px`,
-    weight: 400,
+    weight: {
+      light: 300,
+      normal: 400,
+      semibold: 600,
+      bold: 700,
+    },
     imports: {
       // eg: 'Impact': 'impact',
     },

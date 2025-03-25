@@ -146,7 +146,12 @@ export type Theme = {
     colorLight: string;
     family: string;
     size: string;
-    weight: number;
+    weight: {
+      light: number;
+      normal: number;
+      semibold: number;
+      bold: number;
+    };
     imports: {
       [key: string]: string;
     };
