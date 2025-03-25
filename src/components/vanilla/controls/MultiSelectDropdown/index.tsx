@@ -46,8 +46,6 @@ export default (props: Props) => {
     [props.searchProperty || 'search']: '',
   }) as [Record, (f: (m: Record) => Record) => void];
 
-  const theme: Theme = useTheme() as Theme;
-
   useEffect(() => {
     setValue(props.defaultValue);
   }, [props.defaultValue]);

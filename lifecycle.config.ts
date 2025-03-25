@@ -6,7 +6,7 @@ export default {
     console.log('Theme updated:', updatedTheme);
     // If for some reason the theme is not provided, use the default theme
     const theme = updatedTheme ? updatedTheme : defaultTheme;
-
+    console.log('change!');
     /*
      * This function generates a CSS variable for every property in the theme.
      * Note: this will generate some invalid CSS variables (eg: --embeddable-isParent: true).
