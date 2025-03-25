@@ -102,10 +102,10 @@ export type Theme = {
   controls: {
     backgrounds: {
       colors: {
-        lightGray: string;
-        mediumGray: string;
+        heavy: string;
+        normal: string;
+        soft: string;
         transparent: string;
-        white: string;
       };
     };
     buttons: {
@@ -120,8 +120,8 @@ export type Theme = {
     };
     borders: {
       colors: {
-        lightGray: string;
-        mediumGray: string;
+        normal: string;
+        heavy: string;
       };
       padding: number;
       radius: string;
@@ -148,8 +148,8 @@ export type Theme = {
   };
   font: {
     color: string;
-    colorDark: string;
-    colorLight: string;
+    colorNormal: string;
+    colorSoft: string;
     family: string;
     size: string;
     weight: number;
@@ -161,12 +161,11 @@ export type Theme = {
     backgroundColor: string;
   };
   svg: {
-    fill: string;
     fillBkg: string;
-    fillDark: string;
-    fillLight: string;
-    stroke: string;
-    strokeDark: string;
+    fillStrong: string;
+    fillNormal: string;
+    strokeNormal: string;
+    strokeStrong: string;
     strokeLight: string;
   };
 };

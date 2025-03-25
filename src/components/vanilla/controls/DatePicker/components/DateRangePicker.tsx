@@ -109,7 +109,7 @@ export default function DateRangePicker(props: Props) {
           relative
           text-sm
           w-full
-          text-[color:--embeddable-font-colorDark]
+          text-[color:--embeddable-font-colorNormal]
         `}
       >
         <Dropdown
@@ -127,7 +127,7 @@ export default function DateRangePicker(props: Props) {
             rounded-r-none
             sm:max-w-[140px]
             w-full
-            border-[color:--embeddable-controls-borders-colors-lightGray]
+            border-[color:--embeddable-controls-borders-colors-normal]
           `}
           defaultValue={range?.relativeTimeString || ''}
           onChange={(relativeTimeString) => {
@@ -159,7 +159,7 @@ export default function DateRangePicker(props: Props) {
             p-4
             relative
             text-sm
-            border-[color:--embeddable-controls-borders-colors-lightGray]
+            border-[color:--embeddable-controls-borders-colors-normal]
             hover:bg-[color:--embeddable-controls-inputs-colors-hover]
             rounded-r-[--embedabble-controls-borders-radius]
           `}
@@ -192,15 +192,15 @@ export default function DateRangePicker(props: Props) {
                 px-4
                 py-3
                 !m-0
-                bg-[color:--embeddable-controls-backgrounds-white]
-                border-[color:--embeddable-controls-borders-colors-lightGray]
+                bg-[color:--embeddable-controls-backgrounds-soft]
+                border-[color:--embeddable-controls-borders-colors-normal]
                 rounded-[--embeddable-controls-borders-radius]
-                text-[color:--embeddable-font-colorDark]
+                text-[color:--embeddable-font-colorNormal]
               `}
               classNames={{
                 selected: `
                   bg-[color:--embeddable-controls-inputs-colors-selected]
-                  text-[color:--embeddable-font-colorDark]`,
+                  text-[color:--embeddable-font-colorNormal]`,
               }}
               components={{
                 MonthCaption: CustomCaption,
@@ -238,7 +238,17 @@ const CustomCaption = (props: MonthCaptionProps) => {
   return (
     <h2 className="flex items-center">
       <button
-        className="w-7 h-7 bg-white rounded border border-slate-400 justify-center items-center inline-flex"
+        className={`
+          border
+          h-7
+          inline-flex
+          items-center
+          justify-center
+          w-7
+          bg-[color:--embeddable-controls-backgrounds-soft]
+          border-[color:--embeddable-controls-borders-colors-heavy]
+          rounded-[--embeddable-controls-borders-radius]
+        `}
         disabled={!previousMonth}
         onClick={() => previousMonth && goToMonth(previousMonth)}
       >
@@ -248,7 +258,17 @@ const CustomCaption = (props: MonthCaptionProps) => {
         {formatValue(dateUTC.toJSON(), { dateFormat: 'MMMM yyy' })}
       </span>
       <button
-        className="w-7 h-7 bg-white rounded border border-slate-400 justify-center items-center inline-flex"
+        className={`
+          border
+          h-7
+          inline-flex
+          items-center
+          justify-center
+          w-7
+          bg-[color:--embeddable-controls-backgrounds-soft]
+          border-[color:--embeddable-controls-borders-colors-heavy]
+          rounded-[--embeddable-controls-borders-radius]
+        `}
         disabled={!nextMonth}
         onClick={() => nextMonth && goToMonth(nextMonth)}
       >

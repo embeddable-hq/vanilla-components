@@ -121,7 +121,7 @@ export default function DateRangeWithGranularity(props: Props) {
               shrink
               whitespace-nowrap
               text-[font-size:--embeddable-font-size]
-              text-[color:--embeddable-font-colorDark]
+              text-[color:--embeddable-font-colorNormal]
             `}
           >
             compare to

@@ -32,8 +32,8 @@ export default (props: Props) => {
           pr-8
           relative
           w-full
-          bg-[color:--embeddable-controls-backgrounds-white]
-          border-[color:--embeddable-controls-borders-colors-lightGray]
+          bg-[color:--embeddable-controls-backgrounds-soft]
+          border-[color:--embeddable-controls-borders-colors-normal]
           rounded-[--embeddable-controls-borders-radius]
         `}
       >

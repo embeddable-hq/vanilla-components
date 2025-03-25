@@ -29,7 +29,7 @@ export default function TableHead({
 }: Props) {
   const theme: Theme = useTheme() as Theme;
   fontSize = theme.font.size;
-  const fontColor = theme.font.colorDark;
+  const fontColor = theme.font.colorNormal;
 
   const renderColumn = (column: Column, columnIndex: number): ReactElement => {
     const isRowHeader =
@@ -60,7 +60,7 @@ export default function TableHead({
         className={cn('p-2 border-y first:border-l', {
           'border-b-0': column.children?.length,
           'border-r': shouldRenderRightBorder,
-          'lg:sticky lg:left-0 lg:z-10 bg-white': isSticky,
+          'lg:sticky lg:left-0 lg:z-10 bg-[color:--embeddable-controls-backgrounds-soft]': isSticky,
           'cursor-pointer': isSortable,
         })}
         style={
@@ -89,7 +89,7 @@ export default function TableHead({
             'flex justify-between items-center gap-2': isSortable,
           })}
         >
-          <span className={`text-[color:--embeddable-font-colorDark}]`} style={{ fontSize }}>
+          <span className={`text-[color:--embeddable-font-colorNormal}]`} style={{ fontSize }}>
             {column.label}
           </span>
           {isSortable ? (

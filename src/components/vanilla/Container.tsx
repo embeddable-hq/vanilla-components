@@ -131,7 +131,7 @@ export default ({
                 top-0
                 w-full
                 z-10
-                bg-[color:--embeddable-controls-backgrounds-colors-mediumGray]
+                bg-[color:--embeddable-controls-backgrounds-colors-heavy]
               `}
               />
             )}

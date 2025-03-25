@@ -20,7 +20,7 @@ const Pagination = ({ currentPage, hasNextPage, onPageChange }: Props) => {
         select-none
         sticky
         font-[--embeddable-charts-fontWeights-pagination]
-        text-[color:--embeddable-font-colorDark]
+        text-[color:--embeddable-font-colorNormal]
         text-[size:--embeddable-font-size]
       `}
     >
@@ -36,7 +36,7 @@ const Pagination = ({ currentPage, hasNextPage, onPageChange }: Props) => {
             justify-center
             p-1
             w-8
-            border-[color:--embeddable-controls-borders-colors-lightGray]
+            border-[color:--embeddable-controls-borders-colors-normal]
             rounded-[--embeddable-controls-buttons-radius]
           `,
           {
@@ -61,7 +61,7 @@ const Pagination = ({ currentPage, hasNextPage, onPageChange }: Props) => {
           justify-center
           p-1
           w-8
-          border-[color:--embeddable-controls-borders-colors-lightGray]
+          border-[color:--embeddable-controls-borders-colors-normal]
           rounded-[--embeddable-controls-buttons-radius]
           ${hasNextPage ? 'opacity-50 pointer-events-none' : ''}
         `}
