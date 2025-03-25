@@ -70,6 +70,12 @@ export type Theme = {
       };
     };
   };
+  container: {
+    boxShadow: string;
+    borderRadius: string;
+    padding: string;
+    border: string;
+  };
   controls: {
     backgrounds: {
       colors: {
