@@ -28,7 +28,13 @@ export const defaultTheme: Theme = {
     textJustify: 'start',
     /* Custom overrides for certain charts */
     bar: {
-      borderRadius: 4,
+      borderRadius: {
+        topLeft: 4,
+        topRight: 20,
+        bottomLeft: 0,
+        bottomRight: 0,
+      },
+      borderSkipped: 'bottom',
       borderWidth: 0,
       font: {
         size: 12,

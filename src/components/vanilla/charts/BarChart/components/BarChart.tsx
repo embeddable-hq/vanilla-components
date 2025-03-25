@@ -104,7 +104,7 @@ function chartData(props: Props): ChartData<'bar' | 'line'> {
       barPercentage: 0.8,
       barThickness: 'flex',
       borderRadius: theme.charts.bar.borderRadius,
-      borderSkipped: false,
+      borderSkipped: theme.charts.bar.borderSkipped,
       borderWidth: theme.charts.bar.borderWidth,
       data: results?.data?.map((d) => parseFloat(d[metric.name] || 0)) || [],
       label: metric.title,

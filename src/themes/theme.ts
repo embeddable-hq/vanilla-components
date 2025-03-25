@@ -6,6 +6,13 @@ type ButtonSettings = {
   border: string;
 };
 
+type BarChartBorderRadius = {
+  topRight: number;
+  topLeft: number;
+  bottomRight: number;
+  bottomLeft: number;
+};
+
 export type Theme = {
   isParent: boolean;
   brand: {
@@ -29,7 +36,17 @@ export type Theme = {
       | 'baseline'
       | 'normal';
     bar: {
-      borderRadius: number;
+      borderRadius: number | BarChartBorderRadius;
+      borderSkipped:
+        | 'start'
+        | 'end'
+        | 'middle'
+        | 'bottom'
+        | 'left'
+        | 'top'
+        | 'right'
+        | false
+        | true;
       borderWidth: number;
       colors?: string[];
       font: {
