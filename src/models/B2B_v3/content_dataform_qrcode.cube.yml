@@ -1,0 +1,53 @@
+cubes:
+- name: content_dataform_qrcode
+  data_source: default
+  sql: >
+    select
+      event_date
+      ,user_pseudo_id
+      ,event_name
+      ,platform
+      ,device.category as device_category
+      ,device.web_info.hostname as hostname
+      ,geo.country as geo_country
+      ,geo.city as geo_city
+      ,event_params_custom.user_connectivity
+      ,event_params_custom.component_type
+      ,event_params_custom.content_category
+      ,event_params_custom.page_type
+      ,event_params_custom.venue_id
+      ,event_params_custom.organisation_id
+      ,event_params_custom.qrcode_id
+      ,event_params_custom.qrcode_label
+    from `smartify-cc94e.superform_outputs_151371783.ga4_events`
+    where event_params_custom.qrcode_id = '{COMPILE_CONTEXT.securityContext.qrcode_id}'
+      and event_name = 'qrcode_open'
+      and event_date >= '2024-07-01'
+      and stream_id in ("1047860117","1047860114","1913717213","2817285551")
+  
+  dimensions:
+    - name: event_date
+      type: time
+      sql: timestamp(event_date)
+
+    - name: device_platform
+      type: string
+      sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+
+    - name: user_connectivity
+      type: string
+      sql: case when (user_connectivity = '' or user_connectivity is null) then 'Unknown' when user_connectivity = 'Cellular' then 'Cellular' else 'Wi-Fi' end
+    
+    - name: country
+      type: string
+      sql: if(geo_country = "", "Unknown", geo_country)
+
+  measures:
+    - name: qrcode_open
+      type: count
+      title: 'QR Code Open'
+    
+    - name: qrcode_users
+      type: count_distinct_approx
+      sql: user_pseudo_id
+      title: 'QR Code Users'

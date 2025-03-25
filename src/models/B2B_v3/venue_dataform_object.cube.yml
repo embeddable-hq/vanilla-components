@@ -11,6 +11,7 @@ cubes:
       ,device.web_info.hostname as hostname
       ,geo.country as geo_country
       ,geo.city as geo_city
+      ,device.language as device_language
       ,event_params_custom.user_connectivity
       ,event_params_custom.component_type
       ,event_params_custom.locale_translation_source
@@ -48,9 +49,27 @@ cubes:
       type: string
       sql: case when (user_connectivity = '' or user_connectivity is null) then 'Unknown' when user_connectivity = 'Cellular' then 'Cellular' else 'Wi-Fi' end
 
-    - name: user_generation
+    # - name: user_generation
+    #   type: string
+    #   sql: case when cast(user_age as int) >= 0 and cast(user_age as int) <= 12 then "Generation Alpha" when cast(user_age as int) >= 13 and cast(user_age as int) <= 28 then "Generation Z" when cast(user_age as int) >= 29 and cast(user_age as int) <= 44 then "Millennials" when cast(user_age as int) >= 45 and cast(user_age as int) <= 60 then "Generation X" when cast(user_age as int) >= 61 and cast(user_age as int) <= 79 then "Baby Boomers" when cast(user_age as int) >= 80 then "Silent Generation" else "Unknown" end
+
+    - name: user_age_range
       type: string
-      sql: case when cast(user_age as int) >= 0 and cast(user_age as int) <= 12 then "Generation Alpha" when cast(user_age as int) >= 13 and cast(user_age as int) <= 28 then "Generation Z" when cast(user_age as int) >= 29 and cast(user_age as int) <= 44 then "Millennials" when cast(user_age as int) >= 45 and cast(user_age as int) <= 60 then "Generation X" when cast(user_age as int) >= 61 and cast(user_age as int) <= 79 then "Baby Boomers" when cast(user_age as int) >= 80 then "Silent Generation" else "Unknown" end
+      sql: case when cast(user_age as int) < 18 then "- 18" when cast(user_age as int) >= 18 and cast(user_age as int) < 25 then "18 - 24" when cast(user_age as int) >= 25 and cast(user_age as int) < 35 then "25 - 34" when cast(user_age as int) >= 35 and cast(user_age as int) < 45 then "35 - 44" when cast(user_age as int) >= 45 and cast(user_age as int) < 55 then "45 - 54" when cast(user_age as int) >= 55 and cast(user_age as int) < 65 then "55 - 64" when cast(user_age as int) >= 65 and cast(user_age as int) < 71 then "65 - 70" when cast(user_age as int) >= 71 then "71+" else 'Unknown' end
+
+    - name: user_gender
+      type: string
+      sql: case when user_gender in ('Male', 'MALE', 'Man', 'Mand', 'Masculino', '男性', 'זכר', 'Männlich', 'Mann', 'Homme', 'Hombre') then 'Male' when user_gender in ('Female', 'Woman', 'Femme', 'Mujer', 'Vrouw', 'Weiblich', 'Frau', 'Feminino', '女性', 'Donna', 'Kvinde') then 'Female' when user_gender in ('Unspecified', 'Non spécifié', 'Sin especificar') then 'Unspecified' when user_gender in ('Other', 'Autre') then 'Other' else 'Unknown' end
+
+    - name: country
+      type: string
+      sql: if(geo_country = "", "Unknown", geo_country)
+    
+    - name: device_language
+      type: string
+      sql: device_language
+      primaryKey: true
+      shown: false
 
     - name: original_language
       type: string
@@ -157,6 +176,9 @@ cubes:
     - name: venue_lookup_artists
       relationship: many_to_one
       sql: '{CUBE.artist_id} = {venue_lookup_artists.artist_sid}'
+    - name: venue_lookup_language
+      relationship: many_to_one
+      sql: '{CUBE.device_language} = {venue_lookup_language.device_language}'
 
   pre_aggregations:
     - name: object_aggregation
@@ -173,6 +195,9 @@ cubes:
       dimensions:
         - venue_dataform_object.device_platform
         - venue_dataform_object.user_connectivity
+        - venue_dataform_object.user_age_range
+        - venue_dataform_object.user_gender
+        - venue_dataform_object.country
         - venue_dataform_object.original_language
         - venue_dataform_object.translated_language
         - venue_dataform_object.translation_from_to
@@ -182,5 +207,6 @@ cubes:
         - venue_lookup_objects.object_name
         - venue_lookup_objects.object_category
         - venue_lookup_artists.artist_name
+        - venue_lookup_language.language_name
       timeDimension: venue_dataform_object.datetime
       granularity: day
