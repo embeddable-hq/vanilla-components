@@ -1,5 +1,5 @@
 import { DataResponse } from '@embeddable.com/core';
-import { useEmbeddableState, useTheme } from '@embeddable.com/react';
+import { useEmbeddableState } from '@embeddable.com/react';
 import React, {
   ReactNode,
   useCallback,
@@ -16,7 +16,6 @@ import CheckboxEmpty from '../../../icons/CheckboxEmpty';
 import Container from '../../Container';
 import Spinner from '../../Spinner';
 import { ChevronDown, ClearIcon } from '../../icons';
-import { Theme } from '../../../../themes/theme';
 
 export type Props = {
   className?: string;
