@@ -8,11 +8,11 @@ export default defineConfig({
   // Uncomment for US deployments
   //
   // region: 'US'
-  
+
   //
   // Uncomment for EU deployments
   //
-  // region: 'EU'
+  region: 'EU'
 
   //
   // For internal use only
