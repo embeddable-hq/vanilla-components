@@ -2,58 +2,63 @@ cubes:
 - name: venue_dataform_visitors
   data_source: default
   sql: >
-    with raw as (
-      select
-        a.event_date
-        ,a.event_params_custom.organisation_id
-        ,a.event_params_custom.venue_id
-        ,b.visitors
-        ,count(distinct(case 
+    with users as (select
+      event_date
+      ,event_params_custom.organisation_id
+      ,event_params_custom.venue_id
+      ,concat(a.event_date,a.event_params_custom.venue_id,a.event_params_custom.organisation_id) as host_join
+      ,count(distinct(
+        case
           when event_date <= "2023-07-18" and (event_params.engagement_time_msec > 0 or event_params.session_engaged = "1") then user_pseudo_id
           when is_active_user = true then user_pseudo_id
           else null
         end)) as active_users
-      from `smartify-cc94e.superform_outputs_151371783.ga4_events` as a
-        full join `smartify-cc94e.report_ad_hoc.test_visitors_data` as b on concat(a.event_date,a.event_params_custom.venue_id,a.event_params_custom.organisation_id) = concat(FORMAT_TIMESTAMP('%Y-%m-%d', date),b.venue_sid,b.organisation_sid)
-      where a.event_date >= '2024-01-01'
-      AND a.stream_id IN ("1047860117","1047860114","1913717213","2817285551")
-      AND a.event_params_custom.organisation_id IS NOT NULL
-      group by 1,2,3,4
-    )
+    from `smartify-cc94e.superform_outputs_151371783.ga4_events` as a
+    where event_date  >= '2024-01-01'
+    and stream_id IN ("1047860117","1047860114","1913717213","2817285551")
+    group by 1,2,3,4)
 
     select
-      *
-    from raw
-    where organisation_id = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+      event_date
+      ,a.organisation_id
+      ,a.venue_id
+      ,a.active_users
+      ,b.visitors
+    from `smartify-cc94e.report_ad_hoc.test_visitors_data` as b
+    left join users as a on concat(FORMAT_TIMESTAMP('%Y-%m-%d', b.date),b.venue_sid,b.organisation_sid) = a.host_join
+    where b.date >= '2024-01-01'
+    and a.organisation_id = '{COMPILE_CONTEXT.securityContext.organisation_id}'
     and ('{COMPILE_CONTEXT.securityContext.venue_id}' IS NULL
           or '{COMPILE_CONTEXT.securityContext.venue_id}' = ''
           or '{COMPILE_CONTEXT.securityContext.venue_id}' = 'undefined'
-          or venue_id in unnest(split('{COMPILE_CONTEXT.securityContext.venue_id}', ','))
+          or a.venue_id in unnest(split('{COMPILE_CONTEXT.securityContext.venue_id}', ','))
     )
-
+    
   dimensions:
     - name: datetime
       type: time 
       sql: timestamp(event_date)
     
-    - name: venue_id
-      type: string
-      sql: venue_id
-    
     - name: organisation_id
       type: string
       sql: organisation_id
+    
+    - name: venue_id
+      type: string
+      sql: venue_id
 
   measures:
     - name: visitors
       type: sum
       sql: visitors
-
+    
     - name: active_users
       type: sum
       sql: active_users
-
+  
     - name: takeup_rate
       type: number
       title: Take-up Rate
       sql: case when {visitors} = 0 then 0 else ({active_users} / NULLIF({visitors}, 0) * 100) end
+      meta:
+        suffix: " %"
