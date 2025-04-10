@@ -18,12 +18,6 @@ export type Props = {
   year?: boolean;
 };
 
-type TimeRange = {
-  to?: Date;
-  from?: Date;
-  relativeTimeString?: string;
-};
-
 type GranularityResponse = {
   isLoading: boolean;
   data: { value: string }[];
