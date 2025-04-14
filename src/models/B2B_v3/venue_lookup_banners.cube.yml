@@ -1,0 +1,45 @@
+cubes:
+- name: venue_lookup_banners
+  data_source: default
+  sql: >
+    SELECT 
+      banner_id
+      ,banner_label
+      ,organisation_id
+      ,banner_type
+      ,banner_action_type
+      ,banner_action_sid
+      ,banner_action_url
+      ,banner_status
+    FROM `smartify-cc94e.smartify_lookup_tables.banner_lookup`
+  
+  dimensions:
+    - name: banner_id
+      type: string
+      sql: banner_id
+      primaryKey: true
+      shown: false
+    
+    - name: banner_label
+      type: string
+      sql: banner_label
+    
+    - name: banner_type
+      type: string
+      sql: banner_type
+    
+    - name: banner_action_type
+      type: string
+      sql: banner_action_type
+    
+    - name: banner_action_sid
+      type: string
+      sql: banner_action_sid
+    
+    - name: banner_action_url
+      type: string
+      sql: banner_action_url
+    
+    - name: banner_status
+      type: string
+      sql: banner_status
