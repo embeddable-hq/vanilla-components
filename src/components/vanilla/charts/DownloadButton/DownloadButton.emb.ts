@@ -52,7 +52,7 @@ export const meta = {
       name: 'maxRows',
       type: 'number',
       label: 'Maximum number of rows to download',
-      defaultValue: 100,
+      defaultValue: 1000,
       category: 'Settings',
     },
   ],

@@ -1,0 +1,63 @@
+cubes:
+- name: venue_lookup_banner_slides
+  data_source: default
+  sql: >
+    SELECT 
+      banner_id
+      ,banner_label
+      ,organization_id
+      ,banner_type
+      ,banner_slide_id
+      ,banner_slide_action_type
+      ,banner_slide_action_sid
+      ,banner_slide_action_url
+      ,banner_status
+    FROM `smartify-cc94e.smartify_lookup_tables.banner_slide_lookup`
+  
+  dimensions:
+    - name: banner_id
+      type: string
+      sql: banner_id
+      primaryKey: true
+      shown: false
+    
+    - name: banner_slide_label
+      type: string
+      sql: banner_label
+    
+    - name: banner_slide_type
+      type: string
+      sql: banner_type
+
+    - name: banner_slide_id
+      type: string
+      sql: banner_slide_id
+      primaryKey: true
+      shown: false
+    
+    - name: banner_slide_action_type
+      type: string
+      sql: banner_slide_action_type
+    
+    - name: banner_slide_action_sid
+      type: string
+      sql: banner_slide_action_sid
+    
+    - name: banner_slide_action_url
+      type: string
+      sql: banner_slide_action_url
+    
+    - name: banner_slide_status
+      type: string
+      sql: banner_status
+    
+    - name: banner_global_action
+      type: string
+      sql: case when {CUBE.banner_slide_action_type} is null then {venue_lookup_banners.banner_action_type} when ({CUBE.banner_slide_action_type} is null and {venue_lookup_banners.banner_action_type} is null) then {venue_dataform_banner.banner_action} else {CUBE.banner_slide_action_type} end
+      title: Banner Action Type
+
+  joins:
+    - name: venue_lookup_banners
+      relationship: many_to_one
+      sql: '{CUBE.banner_id} = {venue_lookup_banners.banner_id}'
+      

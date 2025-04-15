@@ -1,0 +1,142 @@
+cubes:
+- name: venue_dataform_banner
+  data_source: default
+  sql: >
+    select
+      event_date
+      ,user_pseudo_id
+      ,user_id
+      ,is_active_user
+      ,event_name
+      ,platform
+      ,device.category as device_category
+      ,device.web_info.hostname as hostname
+      ,geo.country as geo_country
+      ,geo.city as geo_city
+      ,event_params_custom.user_connectivity
+      ,user_properties.user_age
+      ,user_properties.user_gender
+      ,ifnull(user_properties.user_logged, "false") as user_logged
+      ,event_params_custom.event_label
+      ,event_params_custom.component_type
+      ,event_params_custom.content_category
+      ,event_params_custom.location_id
+      ,event_params_custom.page_type
+      ,event_params_custom.venue_id
+      ,event_params_custom.organisation_id
+      ,event_params_custom.banner_id
+      ,event_params_custom.banner_item_id
+    from `smartify-cc94e.superform_outputs_151371783.ga4_events`
+    where event_params_custom.organisation_id = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+      and ('{COMPILE_CONTEXT.securityContext.venue_id}' IS NULL
+          or '{COMPILE_CONTEXT.securityContext.venue_id}' = ''
+          or '{COMPILE_CONTEXT.securityContext.venue_id}' = 'undefined'
+          or event_params_custom.venue_id in unnest(split('{COMPILE_CONTEXT.securityContext.venue_id}', ','))
+      )
+    and event_date >= '2025-03-28'
+    and stream_id in ("1047860117","1047860114","1913717213","2817285551")
+    and event_params_custom.banner_id is not null
+
+  dimensions:
+    - name: event_date
+      type: time
+      sql: timestamp(event_date)
+
+    - name: device_platform
+      type: string
+      sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+
+    - name: user_connectivity
+      type: string
+      sql: case when (user_connectivity = '' or user_connectivity is null) then 'Unknown' when user_connectivity = 'Cellular' then 'Cellular' else 'Wi-Fi' end
+    
+    - name: user_gender
+      type: string
+      sql: case when user_gender in ('Male', 'MALE', 'Man', 'Mand', 'Masculino', '男性', 'זכר', 'Männlich', 'Mann', 'Homme', 'Hombre') then 'Male' when user_gender in ('Female', 'Woman', 'Femme', 'Mujer', 'Vrouw', 'Weiblich', 'Frau', 'Feminino', '女性', 'Donna', 'Kvinde') then 'Female' when user_gender in ('Unspecified', 'Non spécifié', 'Sin especificar') then 'Unspecified' when user_gender in ('Other', 'Autre') then 'Other' else 'Unknown' end
+
+    - name: user_age_range
+      type: string
+      sql: case when cast(user_age as int) < 18 then "- 18" when cast(user_age as int) >= 18 and cast(user_age as int) < 25 then "18 - 24" when cast(user_age as int) >= 25 and cast(user_age as int) < 35 then "25 - 34" when cast(user_age as int) >= 35 and cast(user_age as int) < 45 then "35 - 44" when cast(user_age as int) >= 45 and cast(user_age as int) < 55 then "45 - 54" when cast(user_age as int) >= 55 and cast(user_age as int) < 65 then "55 - 64" when cast(user_age as int) >= 65 and cast(user_age as int) < 71 then "65 - 70" when cast(user_age as int) >= 71 then "71+" else 'Unknown' end
+    
+    - name: organisation_id
+      type: string
+      sql: organisation_id
+      primaryKey: true
+      shown: true
+    
+    - name: venue_id
+      type: string
+      sql: venue_id
+      primaryKey: true
+      shown: true
+    
+    - name: component_type
+      type: string
+      sql: component_type
+    
+    - name: event_label
+      type: string
+      sql: event_label
+    
+    - name: location_id
+      type: string
+      sql: location_id
+
+    - name: location_id_prefix
+      type: string
+      sql: case when location_id = "venue_feed" then "venue_dp" when location_id = "exhibition:feed" then "exhibition_dp" when location_id = "org:feed" then "org_dp" else REGEXP_EXTRACT(location_id, r'^([^:]+)') end
+      #sql: REGEXP_EXTRACT({location_id}, r'^([^:]+)')
+      title: Banner Placement
+    
+    - name: banner_action
+      type: string
+      sql: case when contains_substr(content_category, ":") then REGEXP_EXTRACT(content_category, r':(.*)') when content_category = "campaign" then 'OpenUrl' else content_category end
+      title: Banner Action
+
+    - name: content_category
+      type: string
+      sql: content_category
+
+    - name: page_type
+      type: string
+      sql: page_type
+    
+    - name: banner_id
+      type: string
+      sql: banner_id
+    
+    - name: banner_item_id
+      type: string
+      sql: banner_item_id
+    
+  measures:
+    - name: active_users
+      type: count_distinct_approx
+      sql: user_pseudo_id
+
+    - name: banner_impressions
+      type: sum
+      sql: case when event_name = "view_component" then 1 else 0 end
+    
+    - name: banner_clicks
+      type: sum
+      sql: case when event_name in ("select_component", "click_button", "click_link", "click_banner") then 1 else 0 end
+    
+    - name: banner_ctr
+      type: number
+      sql: "({banner_clicks}/{banner_impressions}) * 100"
+      meta:
+        suffix: '%'
+
+    - name: banner_impressions_per_user
+      type: number
+      sql: "({banner_impressions}/{active_users})"
+    
+  joins:
+    - name: venue_lookup_banners
+      relationship: many_to_one
+      sql: '{CUBE.banner_id} = {venue_lookup_banners.banner_id}'
+    
+    - name: venue_lookup_banner_slides
+      relationship: many_to_one
+      sql: '{CUBE.banner_item_id} = {venue_lookup_banner_slides.banner_slide_id}'
