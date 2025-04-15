@@ -65,7 +65,7 @@ export default (props: Props) => {
         </div>
       </div>
       <div className="flex grow overflow-hidden">
-        {results.isLoading || !xAxis || results?.data?.[0]?.[xAxis.name] == null ? null : (
+        {results.isLoading || !xAxis || !results?.data?.filter((_,i) => i < 10)?.some((row) => row[xAxis.name]) ? null : (
           <BarChart key={value} {...updatedProps} />
         )}
       </div>
