@@ -31,6 +31,8 @@ export default (props: Props) => {
   const [maxRowsFit, setMaxRowFit] = useState(0);
   const [resizing, setResizing] = useState(false);
 
+  console.log('maxRowsFit', maxRowsFit);
+
   const [meta, setMeta] = useEmbeddableState({
     page: 0,
     maxRowsFit: 0,
