@@ -116,7 +116,7 @@ export default defineComponent<
     const limit =
       inputs.maxPageRows || state?.maxRowsFit
         ? Math.min(inputs.maxPageRows || 1000, Math.max(state?.maxRowsFit, 1) || 1000)
-        : 1;
+        : 0;
 
     const defaultSortDirection =
       // @ts-expect-error - defaultSortDirection.value is added by defineComponent.
@@ -147,14 +147,19 @@ export default defineComponent<
       ...inputs,
       limit,
       defaultSort,
-      results: loadData({
-        from: inputs.ds,
-        dimensions: (inputs.columns?.filter((c) => isDimension(c)) as Dimension[]) || [],
-        measures: (inputs.columns?.filter((c) => isMeasure(c)) as Measure[]) || [],
-        limit,
-        offset: limit * (state?.page || 0),
-        orderBy: state?.sort || defaultSort,
-      }),
+      results:
+        limit < 1
+          ? {
+              isLoading: true,
+            }
+          : loadData({
+              from: inputs.ds,
+              dimensions: (inputs.columns?.filter((c) => isDimension(c)) as Dimension[]) || [],
+              measures: (inputs.columns?.filter((c) => isMeasure(c)) as Measure[]) || [],
+              limit,
+              offset: limit * (state?.page || 0),
+              orderBy: state?.sort || defaultSort,
+            }),
     };
   },
 });
