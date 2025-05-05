@@ -30,7 +30,7 @@ export default (props: Props) => {
     (d: { dimension: Dimension | null }) => void,
   ];
 
-  const xAxisOptions = props.xAxisOptions?.find((item) => props.xAxis.name == item.name)
+  const xAxisOptions = props.xAxisOptions?.find((item) => props.xAxis.name === item.name)
     ? props.xAxisOptions
     : [...(props.xAxisOptions || []), props.xAxis];
 
