@@ -30,10 +30,6 @@ export default (props: Props) => {
     (d: { dimension: Dimension | null }) => void,
   ];
 
-  useEffect(() => {
-    setValue(props.xAxis.name);
-  }, [props.xAxis]);
-
   const xAxisOptions = props.xAxisOptions?.find((item) => props.xAxis.name == item.name)
     ? props.xAxisOptions
     : [...(props.xAxisOptions || []), props.xAxis];
@@ -65,7 +61,9 @@ export default (props: Props) => {
         </div>
       </div>
       <div className="flex grow overflow-hidden">
-        {results.isLoading || !xAxis || !results?.data?.filter((_,i) => i < 10)?.some((row) => row[xAxis.name]) ? null : (
+        {results.isLoading ||
+        !xAxis ||
+        !results?.data?.filter((_, i) => i < 10)?.some((row) => row[xAxis.name]) ? null : (
           <BarChart key={value} {...updatedProps} />
         )}
       </div>
