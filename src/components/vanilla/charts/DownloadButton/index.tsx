@@ -1,12 +1,10 @@
 import { DataResponse, DimensionOrMeasure } from '@embeddable.com/core';
 import { useEmbeddableState } from '@embeddable.com/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import downloadAsCSV from '../../../util/downloadAsCSV';
 import Button from '../../Button';
-import Container from '../../Container';
 
-// TODO - We should probably adjust DataResponse in the core package
 interface DataResponseWithPrevData extends DataResponse {
   prevData?: DataResponseData[];
 }
@@ -27,7 +25,32 @@ export default (props: Props) => {
     { downloading: boolean },
     React.Dispatch<React.SetStateAction<{ downloading: boolean }>>,
   ];
-  const [preppingDownload, setPreppingDownload] = useState(false);
+  const [isPreppingDownload, setIsPreppingDownload] = useState(false);
+  const [mostRecentData, setMostRecentData] = useState<DataResponseData[]>([]);
+
+  // Watch for attempts to download and ensure we have the most recent data
+  useEffect(() => {
+    if (isPreppingDownload) {
+      if (
+        !results ||
+        !results.data ||
+        JSON.stringify(results?.data) === JSON.stringify(mostRecentData)
+      ) {
+        // We haven't finished the loadData yet, so hang on
+        return;
+      }
+      downloadAsCSV(
+        props,
+        results?.data,
+        results?.prevData,
+        'downloaded-chart-data',
+        setIsPreppingDownload,
+      );
+      setMostRecentData(results?.data || []);
+      setIsPreppingDownload(false);
+      setEmbeddableState({ downloading: false });
+    }
+  }, [isPreppingDownload, results, props, setEmbeddableState, mostRecentData]);
 
   const downloadSVG = (
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -49,23 +72,15 @@ export default (props: Props) => {
   );
 
   return (
-    <Container {...props} className="overflow-y-hidden">
-      <Button
-        buttonLabel={buttonLabel}
-        showSpinner={preppingDownload}
-        disabled={results?.isLoading || preppingDownload}
-        onClick={() => {
-          setEmbeddableState({ downloading: true });
-          downloadAsCSV(
-            props,
-            results?.data,
-            results?.prevData,
-            'downloaded-chart-data',
-            setPreppingDownload,
-          );
-        }}
-        icon={downloadSVG}
-      />
-    </Container>
+    <Button
+      buttonLabel={buttonLabel}
+      showSpinner={isPreppingDownload}
+      disabled={results?.isLoading || isPreppingDownload}
+      onClick={() => {
+        setEmbeddableState({ downloading: true });
+        setIsPreppingDownload(true);
+      }}
+      icon={downloadSVG}
+    />
   );
 };
