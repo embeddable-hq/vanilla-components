@@ -7,7 +7,7 @@ import React, {
   useLayoutEffect,
   useMemo,
   useRef,
-  useState
+  useState,
 } from 'react';
 import { twMerge } from 'tailwind-merge';
 
@@ -42,7 +42,7 @@ export default (props: Props) => {
   const [value, setValue] = useState(props.defaultValue);
   const [search, setSearch] = useState('');
   const [_, setServerSearch] = useEmbeddableState({
-    [props.searchProperty || 'search']: ''
+    [props.searchProperty || 'search']: '',
   }) as [Record, (f: (m: Record) => Record) => void];
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export default (props: Props) => {
         setServerSearch((s) => ({ ...s, [props.searchProperty || 'search']: newSearch }));
       }, 500);
     },
-    [setSearch, setServerSearch, props.searchProperty]
+    [setSearch, setServerSearch, props.searchProperty],
   );
 
   const set = useCallback(
@@ -72,7 +72,7 @@ export default (props: Props) => {
 
       clearTimeout(debounce);
     },
-    [setValue, props, performSearch]
+    [setValue, props, performSearch],
   );
 
   useLayoutEffect(() => {
@@ -105,12 +105,12 @@ export default (props: Props) => {
             {o.note && (
               <span className="font-normal ml-auto pl-3 text-xs opacity-70">{o.note}</span>
             )}
-          </div>
+          </div>,
         );
 
         return memo;
       }, []),
-    [props, value, set]
+    [props, value, set],
   ) as ReactNode[];
 
   return (
@@ -118,7 +118,7 @@ export default (props: Props) => {
       <div
         className={twMerge(
           'relative rounded-xl w-full min-w-[50px] h-10 border border-[#DADCE1] flex items-center',
-          props.className
+          props.className,
         )}
       >
         <input
@@ -148,6 +148,12 @@ export default (props: Props) => {
           <div
             style={{ minWidth: props.minDropdownWidth }}
             className="flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[#DADCE1] w-full overflow-y-auto overflow-x-hidden max-h-[400px]"
+            onMouseDown={(e) => {
+              e.preventDefault();
+              // re-focus the input (allows repeated clicking in and out)
+              ref.current?.focus();
+              setTriggerBlur(false);
+            }}
           >
             {list}
             {list?.length === 0 && !!search && (
