@@ -161,6 +161,12 @@ export default (props: Props) => {
             onBlur={() => setFocus(false)}
             style={{ minWidth: props.minDropdownWidth }}
             className="flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[#DADCE1] w-full overflow-y-auto overflow-x-hidden max-h-[400px]"
+            onMouseDown={(e) => {
+              e.preventDefault();
+              // re-focus the input (allows repeated clicking in and out)
+              ref.current?.focus();
+              setTriggerBlur(false);
+            }}
           >
             {list}
             {list?.length === 0 && !!search && (
