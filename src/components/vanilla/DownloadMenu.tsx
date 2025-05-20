@@ -113,7 +113,8 @@ const DownloadMenu: React.FC<Props> = (props) => {
   }
 
   // If only CSV is enabled, skip the menu and show just the CSV download Icon
-  if (enableDownloadAsCSV && !enableDownloadAsPNG) {
+  // If there's a downloadAllFunction, we need to show the menu
+  if (enableDownloadAsCSV && !enableDownloadAsPNG && !downloadAllFunction) {
     return (
       <div className="absolute top-0 right-0 z-5 flex items-center justify-end space-x-2">
         <div onClick={handleCSVClick} className="cursor-pointer">
