@@ -16,12 +16,24 @@ export const meta = {
       type: 'dataset',
       label: 'Dataset',
       description: 'Dataset',
+      required: true,
       category: 'Dropdown values'
     },
     {
       name: 'property',
       type: 'dimension',
       label: 'Property',
+      required: true,
+      config: {
+        dataset: 'ds'
+      },
+      category: 'Dropdown values'
+    },
+    {
+      name: 'id',
+      type: 'dimension',
+      label: 'Id',
+      required: false,
       config: {
         dataset: 'ds'
       },
@@ -61,6 +73,10 @@ export const meta = {
         {
           name: 'value',
           type: 'string'
+        },
+        {
+          name: 'id',
+          type: 'string'
         }
       ]
     }
@@ -72,6 +88,12 @@ export const meta = {
       defaultValue: Value.noFilter(),
       inputs: ['defaultValue'],
       events: [{ name: 'onChange', property: 'value' }]
+    },
+    {
+      name: 'dropdown id',
+      type: 'string',
+      defaultValue: Value.noFilter(),
+      events: [{ name: 'onChange', property: 'id' }]
     }
   ]
 } as const satisfies EmbeddedComponentMeta;
@@ -88,7 +110,7 @@ export default defineComponent<Props, typeof meta, { search: string }>(Component
       ...inputs,
       options: loadData({
         from: inputs.ds,
-        dimensions: inputs.property ? [inputs.property] : [],
+        dimensions: inputs.id ? [inputs.property, inputs.id] : [inputs.property],
         limit: inputs.limit || 1000,
         filters:
           embState?.search && inputs.property
@@ -104,9 +126,10 @@ export default defineComponent<Props, typeof meta, { search: string }>(Component
     };
   },
   events: {
-    onChange: (value) => {
+    onChange: (e) => {
       return {
-        value: value || Value.noFilter()
+        value: e.value || Value.noFilter(),
+        id: e.id || Value.noFilter()
       };
     }
   }
