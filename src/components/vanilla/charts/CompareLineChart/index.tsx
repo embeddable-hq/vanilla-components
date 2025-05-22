@@ -184,14 +184,11 @@ export default (propsInitial: Props) => {
             text: props.yAxisTitle,
           },
           callback: function (value: number) {
-            return formatValue(
-              value.toString(), 
-              { type: 'number' }
-            )
+            return formatValue(value.toString(), { type: 'number' });
           },
-          afterDataLimits: function(axis) {
+          afterDataLimits: function (axis) {
             //Disable fractions unless they exist in the data.
-            setYAxisStepSize(axis, props.results, [...props.metrics], props.dps)
+            setYAxisStepSize(axis, props.results, [...props.metrics], props.dps);
           },
         },
         period: {
@@ -267,14 +264,16 @@ export default (propsInitial: Props) => {
           align: 'top',
           display: props.showLabels ? 'auto' : false,
           formatter: (v, context) => {
-            //get metrics index including for comparison datasets 
+            // get metrics index including for comparison datasets
             const metricIndex = context.datasetIndex % props.metrics.length;
             const metric = props.metrics[metricIndex];
-            const val = v ? formatValue(v.y, { 
-                type: 'number', 
-                dps: props.dps,
-                meta: metric?.meta
-            }) : null;
+            const val = v
+              ? formatValue(v.y, {
+                  type: 'number',
+                  dps: props.dps,
+                  meta: metric?.meta,
+                })
+              : null;
             return val;
           },
         },
