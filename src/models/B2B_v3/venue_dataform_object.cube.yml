@@ -11,6 +11,7 @@ cubes:
       ,device.web_info.hostname as hostname
       ,geo.country as geo_country
       ,geo.city as geo_city
+      ,stream_id
       ,device.language as device_language
       ,event_params_custom.user_connectivity
       ,event_params_custom.component_type
@@ -22,6 +23,7 @@ cubes:
       ,event_params_custom.organisation_id
       ,event_params_custom.object_id
       ,event_params_custom.artist_id
+      ,event_params_custom.audio_language
       ,user_properties.user_age
       ,user_properties.user_gender
     from `smartify-cc94e.superform_outputs_151371783.ga4_events`
@@ -32,8 +34,9 @@ cubes:
           or event_params_custom.venue_id in unnest(split('{COMPILE_CONTEXT.securityContext.venue_id}', ','))
       )
       and event_date >= '2022-01-01'
-      and stream_id in ("1047860117","1047860114","1913717213","2817285551")
+      and stream_id in ("1047860117","1047860114","1913717213","2817285551","10374153553")
       and event_params_custom.object_id is not null
+      and not contains_substr(event_params_custom.venue_id, ',')
 
   
   dimensions:
@@ -43,7 +46,8 @@ cubes:
     
     - name: device_platform
       type: string
-      sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+      #sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+      sql: case when stream_id = "10374153553" then 'Hardware' when platform = 'IOS' then 'iOS' when (platform = 'ANDROID' and stream_id != "10374153553") then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
 
     - name: user_connectivity
       type: string
@@ -71,6 +75,10 @@ cubes:
       primaryKey: true
       shown: false
 
+    - name: audio_language
+      type: string
+      sql: audio_language
+
     - name: original_language
       type: string
       sql: locale_translation_source
@@ -91,7 +99,7 @@ cubes:
     
     - name: venue_id
       type: string
-      sql: venue_id
+      sql: case when (venue_id = "" or venue_id is null) then "Not linked venue" else venue_id end
       primaryKey: true
       shown: true
 
@@ -128,6 +136,11 @@ cubes:
       type: sum
       title: "Total Translations"
       sql: case when event_name in ('translate_text') then 1 else 0 end
+    
+    - name: total_ditactions
+      type: sum
+      title: "Total Text-to-Speech"
+      sql: case when event_name = 'play_description' then 1 else 0 end
 
     - name: object_users
       type: count_distinct_approx
@@ -153,6 +166,11 @@ cubes:
       type: count_distinct_approx
       sql: case when event_name in ('translate_text') then user_pseudo_id else null end
       title: "Translation Users"
+
+    - name: ditaction_users
+      type: count_distinct_approx
+      title: "Text-to-Speech Users"
+      sql: case when event_name = 'play_description' then user_pseudo_id else null end
     
     - name: object_view_per_user
       type: number
@@ -180,33 +198,35 @@ cubes:
       relationship: many_to_one
       sql: '{CUBE.device_language} = {venue_lookup_language.device_language}'
 
-  pre_aggregations:
-    - name: object_aggregation
-      measures:
-        - venue_dataform_object.object_views
-        - venue_dataform_object.object_scans
-        - venue_dataform_object.object_favorites
-        - venue_dataform_object.total_translations
-        - venue_dataform_object.object_users
-        - venue_dataform_object.object_view_users
-        - venue_dataform_object.object_scan_users
-        - venue_dataform_object.object_favorite_users
-        - venue_dataform_object.translation_users
-      dimensions:
-        - venue_dataform_object.device_platform
-        - venue_dataform_object.user_connectivity
-        - venue_dataform_object.user_age_range
-        - venue_dataform_object.user_gender
-        - venue_dataform_object.country
-        - venue_dataform_object.original_language
-        - venue_dataform_object.translated_language
-        - venue_dataform_object.translation_from_to
-        - venue_dataform_object.venue_id
-        - venue_dataform_object.object_id
-        - venue_dataform_object.artist_id
-        - venue_lookup_objects.object_name
-        - venue_lookup_objects.object_category
-        - venue_lookup_artists.artist_name
-        - venue_lookup_language.language_name
-      timeDimension: venue_dataform_object.datetime
-      granularity: day
+  # pre_aggregations:
+  #   - name: object_aggregation
+  #     measures:
+  #       - venue_dataform_object.object_views
+  #       - venue_dataform_object.object_scans
+  #       - venue_dataform_object.object_favorites
+  #       - venue_dataform_object.total_translations
+  #       - venue_dataform_object.total_ditactions
+  #       - venue_dataform_object.object_users
+  #       - venue_dataform_object.object_view_users
+  #       - venue_dataform_object.object_scan_users
+  #       - venue_dataform_object.object_favorite_users
+  #       - venue_dataform_object.translation_users
+  #       - venue_dataform_object.ditaction_users
+  #     dimensions:
+  #       - venue_dataform_object.device_platform
+  #       - venue_dataform_object.user_connectivity
+  #       - venue_dataform_object.user_age_range
+  #       - venue_dataform_object.user_gender
+  #       - venue_dataform_object.country
+  #       - venue_dataform_object.original_language
+  #       - venue_dataform_object.translated_language
+  #       - venue_dataform_object.translation_from_to
+  #       - venue_dataform_object.venue_id
+  #       - venue_dataform_object.object_id
+  #       - venue_dataform_object.artist_id
+  #       - venue_lookup_objects.object_name
+  #       - venue_lookup_objects.object_category
+  #       - venue_lookup_artists.artist_name
+  #       - venue_lookup_language.language_name
+  #     timeDimension: venue_dataform_object.datetime
+  #     granularity: day

@@ -25,10 +25,11 @@ cubes:
       ,event_params_custom.ticket_value
       ,user_properties.user_age
       ,user_properties.user_gender
+      ,stream_id
     from `smartify-cc94e.superform_outputs_151371783.ga4_events`
-    where event_date >= '2025-02-17'
+    where event_date >= '2025-05-09'
     and event_name = 'external_purchase'
-    and stream_id in ("1047860117","1047860114","1913717213","2817285551")
+    and stream_id in ("1047860117","1047860114","1913717213","2817285551","10374153553")
 
   dimensions:
     - name: datetime
@@ -37,7 +38,7 @@ cubes:
 
     - name: device_platform
       type: string
-      sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+      sql: case when stream_id = "10374153553" then 'Hardware' when platform = 'IOS' then 'iOS' when (platform = 'ANDROID' and stream_id != "10374153553") then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
       title: 'Platform'
 
     - name: user_connectivity
@@ -89,11 +90,11 @@ cubes:
     - name: ticket_orders
       type: count_distinct
       sql: ticket_order_id
-      title: 'Guide Accessed'
+      title: 'Unique Link Accesses'
 
     - name: ticket_views
       type: count
-      title: 'Number of Accesses'
+      title: 'Number of Sessions'
     
     - name: ticket_views_order
       type: number

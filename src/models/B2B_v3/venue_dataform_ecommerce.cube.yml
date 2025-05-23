@@ -11,6 +11,7 @@ cubes:
       ,device.web_info.hostname as hostname
       ,geo.country as geo_country
       ,geo.city as geo_city
+      ,stream_id
       ,event_params_custom.user_connectivity
       ,event_params_custom.component_type
       ,event_params_custom.content_category
@@ -23,7 +24,7 @@ cubes:
       ,items
     from `smartify-cc94e.superform_outputs_151371783.ga4_events`
     where event_date >= '2022-01-01'
-      and stream_id in ("1047860117","1047860114","1913717213","2817285551")
+      and stream_id in ("1047860117","1047860114","1913717213","2817285551","10374153553")
       and items is not null
   
   dimensions:
@@ -33,8 +34,9 @@ cubes:
 
     - name: device_platform
       type: string
-      sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
-
+      #sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+      sql: case when stream_id = "10374153553" then 'Hardware' when platform = 'IOS' then 'iOS' when (platform = 'ANDROID' and stream_id != "10374153553") then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+      
     - name: user_connectivity
       type: string
       sql: case when (user_connectivity = '' or user_connectivity is null) then 'Unknown' when user_connectivity = 'Cellular' then 'Cellular' else 'Wi-Fi' end
