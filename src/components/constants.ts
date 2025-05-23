@@ -29,6 +29,7 @@ export const COLORS = [
 '#FFD98D',
 ]
 
+
 export const DATE_DISPLAY_FORMATS = {
   year: 'yyyy',
   quarter: 'MMM yy',
