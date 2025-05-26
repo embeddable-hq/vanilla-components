@@ -130,7 +130,6 @@ export default (props: Props) => {
             setFocus(true);
             setTriggerBlur(false);
           }}
-          onFocus={() => setFocus(true)}
           onBlur={() => setTriggerBlur(true)}
           onChange={(e) => performSearch(e.target.value)}
           className={`outline-none bg-transparent leading-9 h-9 border-0 px-3 w-full cursor-pointer text-sm ${
