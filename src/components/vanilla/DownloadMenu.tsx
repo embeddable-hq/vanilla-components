@@ -164,7 +164,10 @@ const DownloadMenu: React.FC<Props> = (props) => {
                     <li className="mb-2">
                       <a
                         href="#"
-                        onClick={downloadAllFunction}
+                        onClick={(e: React.MouseEvent) => {
+                          e.preventDefault();
+                          downloadAllFunction();
+                        }}
                         className="inline-block flex items-center hover:opacity-100 opacity-60"
                       >
                         <IconDownloadCSV className="cursor-pointer inline-block mr-2" /> Download
