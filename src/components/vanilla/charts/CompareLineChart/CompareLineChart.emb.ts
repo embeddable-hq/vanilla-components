@@ -28,6 +28,16 @@ export const meta = {
       category: 'Chart data',
     },
     {
+      name: 'comparisonXAxis',
+      type: 'dimension',
+      label: 'Comparison X-Axis (optional)',
+      config: {
+        dataset: 'ds',
+        supportedTypes: ['time'],
+      },
+      category: 'Chart data',
+    },
+    {
       name: 'metrics',
       type: 'measure',
       array: true,
@@ -77,6 +87,14 @@ export const meta = {
       type: 'string',
       label: 'X-Axis Title',
       category: 'Chart settings',
+    },
+    {
+      name: 'comparisonXAxisTitle',
+      type: 'string',
+      label: 'Comparison X-Axis Title (optional)',
+      description: 'Title for the comparison X-Axis',
+      category: 'Chart settings',
+      defaultValue: '',
     },
     {
       name: 'yAxisTitle',
@@ -154,6 +172,14 @@ export default defineComponent(Component, meta, {
             dimension: inputs.xAxis?.name,
             granularity: inputs.granularity,
           },
+          ...(inputs.comparisonXAxis
+            ? [
+                {
+                  dimension: inputs.comparisonXAxis.name,
+                  granularity: inputs.granularity,
+                },
+              ]
+            : []),
         ],
         measures: inputs.metrics,
         filters:
