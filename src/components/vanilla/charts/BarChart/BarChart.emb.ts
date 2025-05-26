@@ -187,7 +187,8 @@ export default defineComponent(Component, meta, {
     const measures = [...inputs.metrics, ...(inputs.lineMetrics || [])];
     if (inputs.sortBy && isDimension(inputs.sortBy) && !dimensions.includes(inputs.sortBy)) {
       dimensions.push(inputs.sortBy as Dimension);
-    } else if (inputs.sortBy && isMeasure(inputs.sortBy) && !measures.includes(inputs.sortBy)) {
+    }
+    if (inputs.sortBy && isMeasure(inputs.sortBy) && !measures.includes(inputs.sortBy)) {
       measures.push(inputs.sortBy as Measure);
     }
 
