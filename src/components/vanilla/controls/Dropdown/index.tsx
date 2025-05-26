@@ -94,7 +94,7 @@ export default (props: Props) => {
             key={i}
             onClick={() => {
               setFocus(false);
-              setTriggerBlur(false);
+              setTriggerBlur(true);
               set(o[props.property?.name || ''] || '');
             }}
             className={`flex items-center min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
@@ -126,7 +126,10 @@ export default (props: Props) => {
           value={search}
           name="dropdown"
           placeholder={props.placeholder}
-          onFocus={() => setFocus(true)}
+          onClick={() => {
+            setFocus(true);
+            setTriggerBlur(false);
+          }}
           onBlur={() => setTriggerBlur(true)}
           onChange={(e) => performSearch(e.target.value)}
           className={`outline-none bg-transparent leading-9 h-9 border-0 px-3 w-full cursor-pointer text-sm ${

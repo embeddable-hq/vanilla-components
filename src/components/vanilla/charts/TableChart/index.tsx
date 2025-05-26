@@ -2,41 +2,65 @@ import { DataResponse, DimensionOrMeasure, OrderBy, OrderDirection } from '@embe
 import { useEmbeddableState } from '@embeddable.com/react';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { SortDirection } from '../../../../enums/SortDirection';
-import { REGULAR_FONT_SIZE } from '../../../constants';
-import formatValue from '../../../util/format';
 import Container from '../../Container';
 import Pagination from './components/Pagination';
 import TableHead from './components/TableHead';
+import downloadAsCSV from '../../../util/downloadAsCSV';
+import formatValue from '../../../util/format';
+import { REGULAR_FONT_SIZE } from '../../../constants';
+import { SortDirection } from '../../../../enums/SortDirection';
 
 export type Props = {
-  limit?: number;
-  results: DataResponse;
-  defaultSort?: { property: DimensionOrMeasure; direction: string }[];
+  allResults?: DataResponse;
   columns: DimensionOrMeasure[];
-  title: string;
+  defaultSort?: { property: DimensionOrMeasure; direction: string }[];
   fontSize?: number;
+  limit?: number;
   minColumnWidth?: number;
+  results: DataResponse;
+  title: string;
 };
 
 type Meta = {
-  page: number;
+  downloadAll: boolean;
   maxRowsFit: number;
-  sort: OrderBy[];
+  page: number;
   prevVariableValues: Record<string, any>;
+  sort: OrderBy[];
 };
 
 export default (props: Props) => {
-  const { columns, results } = props;
+  const { columns, results, allResults } = props;
   const [maxRowsFit, setMaxRowFit] = useState(0);
   const [resizing, setResizing] = useState(false);
+  const [isDownloadingAll, setIsDownloadingAll] = useState(false);
 
   const [meta, setMeta] = useEmbeddableState({
-    page: 0,
+    downloadAll: false,
     maxRowsFit: 0,
-    sort: props.defaultSort,
+    page: 0,
     prevVariableValues: {},
+    sort: props.defaultSort,
   }) as [Meta, (f: (m: Meta) => Meta) => void];
+
+  useEffect(() => {
+    if (!resizing) {
+      setMeta((meta) => ({ ...meta, maxRowsFit }));
+    }
+  }, [props.columns, maxRowsFit, setMeta, resizing]);
+
+  // Catch "download all as csv" events
+  useEffect(() => {
+    if (isDownloadingAll) {
+      if (!allResults || !allResults.data || allResults.data.length === 0) {
+        // We haven't finished the loadData yet, so hang on
+        return;
+      }
+      downloadAsCSV(props, allResults?.data, [], 'downloaded-chart-data');
+      setIsDownloadingAll(false);
+      setMeta((meta) => ({ ...meta, downloadAll: false }));
+    }
+  }, [allResults, isDownloadingAll, props, results, setMeta]);
 
   const calculateMaxRowFix = useCallback(
     ({ height }: { height: number }) => {
@@ -56,11 +80,11 @@ export default (props: Props) => {
     [maxRowsFit, props.results],
   );
 
-  useEffect(() => {
-    if (!resizing) {
-      setMeta((meta) => ({ ...meta, maxRowsFit }));
-    }
-  }, [props.columns, maxRowsFit, setMeta, resizing]);
+  // We pass this to the download menu via the container
+  const handleDownloadAll = useCallback(() => {
+    setMeta((meta) => ({ ...meta, downloadAll: true }));
+    setIsDownloadingAll(true);
+  }, [setMeta]);
 
   const updateSort = useCallback(
     (column: DimensionOrMeasure) => {
@@ -89,6 +113,7 @@ export default (props: Props) => {
       setResizeState={(value) => setResizing(value)}
       className="overflow-y-auto"
       childContainerClassName="overflow-x-auto"
+      downloadAllFunction={handleDownloadAll}
     >
       <div style={{ minWidth: `${columns.length * (props.minColumnWidth ?? 100)}px` }}>
         {!!meta && !(props.results?.isLoading && !props.results?.data?.length) && (

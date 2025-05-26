@@ -15,6 +15,7 @@ export type ContainerProps = {
   childContainerClassName?: string;
   className?: string;
   description?: string;
+  downloadAllFunction?: () => void;
   enableDownloadAsCSV?: boolean;
   enableDownloadAsPNG?: boolean;
   onResize?: (size: Size) => void;
@@ -126,6 +127,7 @@ export default ({
               prevResults: props.prevResults,
             },
           }}
+          downloadAllFunction={props.downloadAllFunction}
           enableDownloadAsCSV={props.enableDownloadAsCSV}
           enableDownloadAsPNG={props.enableDownloadAsPNG}
           pngOpts={{ chartName: props.title || 'chart', element: refExportPNGElement.current }}

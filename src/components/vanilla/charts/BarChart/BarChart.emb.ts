@@ -1,4 +1,11 @@
-import { OrderBy, loadData } from '@embeddable.com/core';
+import {
+  isDimension,
+  isMeasure,
+  OrderBy,
+  loadData,
+  Measure,
+  Dimension,
+} from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component from './index';
@@ -67,14 +74,14 @@ export const meta = {
       label: 'Show 2nd axis',
       category: 'Optional chart data',
       defaultValue: false,
-    },  
+    },
     {
       name: 'secondAxisTitle',
       type: 'string',
       label: '2nd axis title',
       description: 'The title for the chart',
       category: 'Optional chart data',
-    },  
+    },
     {
       name: 'title',
       type: 'string',
@@ -175,13 +182,23 @@ export default defineComponent(Component, meta, {
       });
     }
 
+    // Allow sorting by any dimension or measure regardless of x-axis
+    const dimensions = [inputs.xAxis];
+    const measures = [...inputs.metrics, ...(inputs.lineMetrics || [])];
+    if (inputs.sortBy && isDimension(inputs.sortBy) && !dimensions.includes(inputs.sortBy)) {
+      dimensions.push(inputs.sortBy as Dimension);
+    }
+    if (inputs.sortBy && isMeasure(inputs.sortBy) && !measures.includes(inputs.sortBy)) {
+      measures.push(inputs.sortBy as Measure);
+    }
+
     return {
       ...inputs,
       reverseXAxis: inputs.reverseXAxis,
       results: loadData({
         from: inputs.ds,
-        dimensions: [inputs.xAxis],
-        measures: [...inputs.metrics, ...(inputs.lineMetrics || [])],
+        dimensions,
+        measures,
         orderBy: orderProp,
         limit: inputs.limit || 50,
       }),
