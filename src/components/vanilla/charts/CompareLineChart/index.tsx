@@ -63,12 +63,14 @@ type Props = {
   title?: string;
   ds: Dataset;
   xAxis: Dimension;
+  comparisonXAxis?: Dimension;
   granularity: Granularity;
   metrics: Measure[];
   timeFilter?: TimeRange;
   prevTimeFilter?: TimeRange;
   yAxisMin?: number;
   xAxisTitle?: string;
+  comparisonXAxisTitle?: string;
   yAxisTitle?: string;
   applyFill?: boolean;
   showLabels?: boolean;
@@ -128,7 +130,7 @@ export default (propsInitial: Props) => {
           data: props.prevTimeFilter
             ? prevData?.map((d: Record) => ({
                 y: parseFloat(d[metrics[i].name] || '0'),
-                x: parseTime(d[props.xAxis?.name || '']),
+                x: parseTime(d[props.comparisonXAxis?.name || '']),
               })) || []
             : [],
           backgroundColor: applyFill ? hexToRgb(COLORS[i % COLORS.length], 0.05) : c,
@@ -184,14 +186,11 @@ export default (propsInitial: Props) => {
             text: props.yAxisTitle,
           },
           callback: function (value: number) {
-            return formatValue(
-              value.toString(), 
-              { type: 'number' }
-            )
+            return formatValue(value.toString(), { type: 'number' });
           },
-          afterDataLimits: function(axis) {
+          afterDataLimits: function (axis) {
             //Disable fractions unless they exist in the data.
-            setYAxisStepSize(axis, props.results, [...props.metrics], props.dps)
+            setYAxisStepSize(axis, props.results, [...props.metrics], props.dps);
           },
         },
         period: {
@@ -215,7 +214,7 @@ export default (propsInitial: Props) => {
         comparison: {
           min: bounds.comparison?.from?.toJSON(),
           max: bounds.comparison?.to?.toJSON(),
-          display: false,
+          display: !!props.comparisonXAxis,
           grid: {
             display: false,
           },
@@ -227,7 +226,8 @@ export default (propsInitial: Props) => {
             unit: props.granularity,
           },
           title: {
-            display: false,
+            display: !!props.comparisonXAxisTitle,
+            text: props.comparisonXAxisTitle,
           },
         },
       },
@@ -267,14 +267,16 @@ export default (propsInitial: Props) => {
           align: 'top',
           display: props.showLabels ? 'auto' : false,
           formatter: (v, context) => {
-            //get metrics index including for comparison datasets 
+            //get metrics index including for comparison datasets
             const metricIndex = context.datasetIndex % props.metrics.length;
             const metric = props.metrics[metricIndex];
-            const val = v ? formatValue(v.y, { 
-                type: 'number', 
-                dps: props.dps,
-                meta: metric?.meta
-            }) : null;
+            const val = v
+              ? formatValue(v.y, {
+                  type: 'number',
+                  dps: props.dps,
+                  meta: metric?.meta,
+                })
+              : null;
             return val;
           },
         },
