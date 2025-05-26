@@ -26,6 +26,11 @@
     organisation_id: org_wpp
     venue_id:
 
+- name: Museum of Illusions User
+  securityContext:
+    organisation_id: org_museumofillusions
+    venue_id:
+
 - name: Royal Museum of Greenwich
   securityContext:
     organisation_id: org_rmg

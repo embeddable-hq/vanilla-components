@@ -11,6 +11,16 @@ cubes:
       ,tour_hidden
       ,tour_status
     from `smartify-cc94e.smartify_lookup_tables.tour_lookup` 
+    where tour_sid != 'tour_nXWykZAxnH9pXEcZONAz'
+    union all
+    select
+      'tour_nXWykZAxnH9pXEcZONAz' as tour_sid
+      ,'Collection Mobile Audio Tour' tour_id_name
+      ,null experience_id
+      ,0 paid_tour
+      ,null tour_geo_fanced
+      ,null tour_hidden
+      ,'published' tour_status
 
   dimensions:
     - name: tour_sid

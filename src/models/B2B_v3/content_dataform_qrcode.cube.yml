@@ -11,6 +11,7 @@ cubes:
       ,device.web_info.hostname as hostname
       ,geo.country as geo_country
       ,geo.city as geo_city
+      ,stream_id
       ,event_params_custom.user_connectivity
       ,event_params_custom.component_type
       ,event_params_custom.content_category
@@ -23,7 +24,7 @@ cubes:
     where event_params_custom.qrcode_id = '{COMPILE_CONTEXT.securityContext.qrcode_id}'
       and event_name = 'qrcode_open'
       and event_date >= '2024-07-01'
-      and stream_id in ("1047860117","1047860114","1913717213","2817285551")
+      and stream_id in ("1047860117","1047860114","1913717213","2817285551","10374153553")
   
   dimensions:
     - name: event_date
@@ -32,7 +33,14 @@ cubes:
 
     - name: device_platform
       type: string
-      sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+      #sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+      sql: case when stream_id = "10374153553" then 'Hardware' when platform = 'IOS' then 'iOS' when (platform = 'ANDROID' and stream_id != "10374153553") then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+
+    - name: venue_id
+      type: string
+      sql: case when (venue_id = "" or venue_id is null) then "Not linked venue" else venue_id end
+      primaryKey: true
+      shown: true
 
     - name: user_connectivity
       type: string

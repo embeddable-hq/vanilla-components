@@ -11,6 +11,7 @@ cubes:
       ,device.web_info.hostname as hostname
       ,geo.country as geo_country
       ,geo.city as geo_city
+      ,stream_id
       ,event_params_custom.user_connectivity
       ,event_params_custom.component_type
       ,event_params_custom.content_category
@@ -38,21 +39,22 @@ cubes:
           or event_params_custom.venue_id in unnest(split('{COMPILE_CONTEXT.securityContext.venue_id}', ','))
       )
       and event_date >= '2022-01-01'
-      and stream_id in ("1047860117","1047860114","1913717213","2817285551")
-      --and (event_params_custom.track_id is not null or event_params_custom.tour_id is not null)
+      and stream_id in ("1047860117","1047860114","1913717213","2817285551","10374153553")
+      and (
+        event_params_custom.track_id is not null or 
+        event_params_custom.tour_id is not null
+        )
       
   dimensions:
     - name: event_date
       type: time
       sql: timestamp(event_date)
 
-    - name: venue_id_security
-      type: string
-      sql: '{COMPILE_CONTEXT.securityContext.venue_id}'
-
     - name: device_platform
       type: string
-      sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+      #sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+      sql: case when stream_id = "10374153553" then 'Hardware' when platform = 'IOS' then 'iOS' when (platform = 'ANDROID' and stream_id != "10374153553") then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+
 
     - name: user_connectivity
       type: string
@@ -88,7 +90,7 @@ cubes:
     
     - name: venue_id
       type: string
-      sql: venue_id
+      sql: case when (venue_id = "" or venue_id is null) then "Not linked venue" else venue_id end
 
     - name: tour_id
       type: string
@@ -156,9 +158,9 @@ cubes:
       sql: case when {track_complete_users} = 0 then 0 else {track_complete} / {track_complete_users} end
 
     - name: track_completion_rate
-      title: Completion Rate
+      title: Completion Rate %
       type: number
-      sql: CASE WHEN {track_plays} = 0 THEN 0 ELSE ({track_complete} / NULLIF({track_plays}, 0) * 100) END
+      sql: "({track_complete} / NULLIF({track_plays}, 0) * 100)"
       meta:
         suffix: " %"
 
@@ -248,29 +250,30 @@ cubes:
       sql: '{CUBE.device_language} = {venue_lookup_language.device_language}'
 
   
-  pre_aggregations:
-    - name: media_player_aggregation
-      measures:
-        - venue_dataform_tracks.track_plays
-        - venue_dataform_tracks.track_play_users
-        - venue_dataform_tracks.track_complete
-        - venue_dataform_tracks.track_complete_users
-        - venue_dataform_tracks.track_listen_time
-        - venue_dataform_tracks.listen_time_minutes
-        - venue_dataform_tracks.tour_views
-        - venue_dataform_tracks.tour_users
-      dimensions:
-        - venue_dataform_tracks.device_platform
-        - venue_dataform_tracks.user_connectivity
-        - venue_dataform_tracks.venue_id
-        - venue_dataform_tracks.track_id
-        - venue_dataform_tracks.tour_id
-        - venue_dataform_tracks.track_language
-        - venue_dataform_tracks.country
-        - venue_dataform_tracks.user_age_range
-        - venue_dataform_tracks.user_gender
-        - venue_lookup_tracks.track_name
-        - venue_lookup_tours.tour_name
-        - venue_lookup_language.language_name
-      timeDimension: venue_dataform_tracks.event_date
-      granularity: day
+#   pre_aggregations:
+#     - name: media_player_aggregation
+#       measures:
+#         - venue_dataform_tracks.track_plays
+#         - venue_dataform_tracks.track_play_users
+#         - venue_dataform_tracks.track_complete
+#         - venue_dataform_tracks.track_completion_rate
+#         - venue_dataform_tracks.track_complete_users
+#         - venue_dataform_tracks.track_listen_time
+#         - venue_dataform_tracks.listen_time_minutes
+#         - venue_dataform_tracks.tour_views
+#         - venue_dataform_tracks.tour_users
+#       dimensions:
+#         - venue_dataform_tracks.device_platform
+#         - venue_dataform_tracks.user_connectivity
+#         - venue_dataform_tracks.venue_id
+#         - venue_dataform_tracks.track_id
+#         - venue_dataform_tracks.tour_id
+#         - venue_dataform_tracks.track_language
+#         - venue_dataform_tracks.country
+#         - venue_dataform_tracks.user_age_range
+#         - venue_dataform_tracks.user_gender
+#         - venue_lookup_tracks.track_name
+#         - venue_lookup_tours.tour_name
+#         - venue_lookup_language.language_name
+#       timeDimension: venue_dataform_tracks.event_date
+#       granularity: day

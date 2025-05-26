@@ -16,6 +16,7 @@ cubes:
       ,device.web_info.hostname as hostname
       ,geo.country as geo_country
       ,geo.city as geo_city
+      ,stream_id
       ,user_properties.user_age
       ,user_properties.user_gender
       ,ifnull(user_properties.user_logged, "false") as user_logged
@@ -43,7 +44,7 @@ cubes:
           or event_params_custom.venue_id in unnest(split('{COMPILE_CONTEXT.securityContext.venue_id}', ','))
       )
       and event_date >= '2022-01-01'
-      and stream_id in ("1047860117","1047860114","1913717213","2817285551")
+      and stream_id in ("1047860117","1047860114","1913717213","2817285551","10374153553")
       --and event_params_custom.organisation_id is not null
 
   dimensions:
@@ -53,7 +54,8 @@ cubes:
 
     - name: device_platform
       type: string
-      sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+      #sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+      sql: case when stream_id = "10374153553" then 'Hardware' when platform = 'IOS' then 'iOS' when (platform = 'ANDROID' and stream_id != "10374153553") then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
 
     - name: user_connectivity
       type: string
@@ -93,7 +95,7 @@ cubes:
     
     - name: venue_id
       type: string
-      sql: venue_id
+      sql: case when (venue_id = "" or venue_id is null) then "Not linked venue" else venue_id end
       primaryKey: true
       shown: true
 
@@ -301,38 +303,38 @@ cubes:
       relationship: many_to_one
       sql: '{CUBE.device_language} = {venue_lookup_region_language.device_language}'
   
-  pre_aggregations:
-    - name: overall_aggregation
-      measures:
-        - venue_dataform_overall.total_actions
-        - venue_dataform_overall.login_users
-        - venue_dataform_overall.active_user
-        - venue_dataform_overall.nps_score
-        - venue_dataform_overall.satisfaction_votes
-        - venue_dataform_overall.satisfaction_rate
-        - venue_dataform_overall.negative_feedback_votes
-        - venue_dataform_overall.nps_votes
-        - venue_dataform_overall.object_views
-        - venue_dataform_overall.object_views_users
-        - venue_dataform_overall.object_scans
-        - venue_dataform_overall.object_scans_users
-        - venue_dataform_overall.exhibition_views
-        - venue_dataform_overall.exhibition_views_users
-        - venue_dataform_overall.tour_views
-        - venue_dataform_overall.tour_view_users
-        - venue_dataform_overall.track_plays
-        - venue_dataform_overall.track_play_users
-        - venue_dataform_overall.track_listen_time
-        - venue_dataform_overall.listen_time_minutes
-      dimensions:
-        - venue_dataform_overall.device_platform
-        - venue_dataform_overall.user_connectivity
-        - venue_dataform_overall.country
-        - venue_dataform_overall.user_gender
-        - venue_dataform_overall.user_age_range
-        - venue_dataform_overall.venue_id
-        - venue_dataform_overall.negative_feedback_label
-        - venue_lookup_region_language.device_language
-        - venue_lookup_region_language.language_name
-      timeDimension: venue_dataform_overall.event_date
-      granularity: day
+  # pre_aggregations:
+  #   - name: overall_aggregation
+  #     measures:
+  #       - venue_dataform_overall.total_actions
+  #       - venue_dataform_overall.login_users
+  #       - venue_dataform_overall.active_user
+  #       - venue_dataform_overall.nps_score
+  #       - venue_dataform_overall.satisfaction_votes
+  #       - venue_dataform_overall.satisfaction_rate
+  #       - venue_dataform_overall.negative_feedback_votes
+  #       - venue_dataform_overall.nps_votes
+  #       - venue_dataform_overall.object_views
+  #       - venue_dataform_overall.object_views_users
+  #       - venue_dataform_overall.object_scans
+  #       - venue_dataform_overall.object_scans_users
+  #       - venue_dataform_overall.exhibition_views
+  #       - venue_dataform_overall.exhibition_views_users
+  #       - venue_dataform_overall.tour_views
+  #       - venue_dataform_overall.tour_view_users
+  #       - venue_dataform_overall.track_plays
+  #       - venue_dataform_overall.track_play_users
+  #       - venue_dataform_overall.track_listen_time
+  #       - venue_dataform_overall.listen_time_minutes
+  #     dimensions:
+  #       - venue_dataform_overall.device_platform
+  #       - venue_dataform_overall.user_connectivity
+  #       - venue_dataform_overall.country
+  #       - venue_dataform_overall.user_gender
+  #       - venue_dataform_overall.user_age_range
+  #       - venue_dataform_overall.venue_id
+  #       - venue_dataform_overall.negative_feedback_label
+  #       - venue_lookup_region_language.device_language
+  #       - venue_lookup_region_language.language_name
+  #     timeDimension: venue_dataform_overall.event_date
+  #     granularity: day

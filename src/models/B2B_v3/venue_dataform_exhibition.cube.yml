@@ -11,6 +11,7 @@ cubes:
       ,device.web_info.hostname as hostname
       ,geo.country as geo_country
       ,geo.city as geo_city
+      ,stream_id
       ,event_params_custom.user_connectivity
       ,event_params_custom.component_type
       ,event_params_custom.content_category
@@ -28,7 +29,7 @@ cubes:
           or event_params_custom.venue_id in unnest(split('{COMPILE_CONTEXT.securityContext.venue_id}', ','))
       )
       and event_date >= '2022-01-01'
-      and stream_id in ("1047860117","1047860114","1913717213","2817285551")
+      and stream_id in ("1047860117","1047860114","1913717213","2817285551","10374153553")
       and event_params_custom.exhibition_id is not null
 
 
@@ -39,7 +40,8 @@ cubes:
 
     - name: device_platform
       type: string
-      sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+      #sql: case when platform = 'IOS' then 'iOS' when platform = 'ANDROID' then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
+      sql: case when stream_id = "10374153553" then 'Hardware' when platform = 'IOS' then 'iOS' when (platform = 'ANDROID' and stream_id != "10374153553") then 'Android' when (platform = 'WEB' and contains_substr(hostname, 'smartify.org') and hostname not in ('app.smartify.org','shop.smartify.org','ar.smartify.org','3d.smartify.org')) then 'Webapp' when (platform = 'WEB' and device_category in ('tablet','desktop')) then 'Desktop' else 'Webapp' end
 
     - name: user_connectivity
       type: string
@@ -51,7 +53,7 @@ cubes:
     
     - name: venue_id
       type: string
-      sql: venue_id
+      sql: case when (venue_id = "" or venue_id is null) then "Not linked venue" else venue_id end
       primaryKey: true
       shown: true
     
@@ -94,20 +96,20 @@ cubes:
       relationship: many_to_one
       sql: '{CUBE.exhibition_id} = {venue_lookup_exhibitions.exhibition_sid}'
 
-  pre_aggregations:
-    - name: exhibition_aggregation
-      measures:
-        - venue_dataform_exhibition.exhibition_users
-        - venue_dataform_exhibition.exhibition_views
-        - venue_dataform_exhibition.exhibition_clicks
-        - venue_dataform_exhibition.exhibition_favorites
-      dimensions:
-        - venue_dataform_exhibition.device_platform
-        - venue_dataform_exhibition.user_connectivity
-        - venue_dataform_exhibition.venue_id
-        - venue_dataform_exhibition.exhibition_id
-        - venue_lookup_exhibitions.exhibition_name
-        - venue_lookup_exhibitions.exhibition_start
-        - venue_lookup_exhibitions.exhibition_end
-      timeDimension: datetime
-      granularity: day
+  # pre_aggregations:
+  #   - name: exhibition_aggregation
+  #     measures:
+  #       - venue_dataform_exhibition.exhibition_users
+  #       - venue_dataform_exhibition.exhibition_views
+  #       - venue_dataform_exhibition.exhibition_clicks
+  #       - venue_dataform_exhibition.exhibition_favorites
+  #     dimensions:
+  #       - venue_dataform_exhibition.device_platform
+  #       - venue_dataform_exhibition.user_connectivity
+  #       - venue_dataform_exhibition.venue_id
+  #       - venue_dataform_exhibition.exhibition_id
+  #       - venue_lookup_exhibitions.exhibition_name
+  #       - venue_lookup_exhibitions.exhibition_start
+  #       - venue_lookup_exhibitions.exhibition_end
+  #     timeDimension: datetime
+  #     granularity: day
