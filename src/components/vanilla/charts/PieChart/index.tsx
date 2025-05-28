@@ -41,6 +41,7 @@ ChartJS.defaults.plugins.tooltip.usePointStyle = true;
 type Props = {
   results: DataResponse;
   title: string;
+  dimensionToUse?: string; // JSON string of a Dimension, overrides slice
   dps?: number;
   slice: Dimension;
   metric: Measure;
@@ -178,12 +179,23 @@ function mergeLongTail({ results, slice, metric, maxSegments }: Props) {
 }
 
 function chartData(props: Props) {
-  const { maxSegments, results, metric, slice, displayAsPercentage } = props;
+  const { dimensionToUse, maxSegments, results, metric, slice, displayAsPercentage } = props;
+  console.log(props);
   const labelsExceedMaxSegments = maxSegments && maxSegments < (results?.data?.length || 0);
   const newData = labelsExceedMaxSegments ? mergeLongTail(props) : results.data;
 
   // Chart.js pie expects labels like so: ['US', 'UK', 'Germany']
-  const labels = newData?.map((d) => formatValue(d[slice.name], { meta: slice?.meta }));
+  let labelDimensionName = slice.name;
+  let labelDimensionMeta = slice.meta;
+  if (dimensionToUse) {
+    const dimObj = JSON.parse(dimensionToUse);
+    console.log(dimObj);
+    labelDimensionName = dimObj.name;
+    labelDimensionMeta = dimObj.meta;
+  }
+  const labels = newData?.map((d) =>
+    formatValue(d[labelDimensionName], { meta: labelDimensionMeta }),
+  );
 
   const sum = displayAsPercentage
     ? newData?.reduce((accumulator, obj) => accumulator + parseFloat(obj[metric.name]), 0)

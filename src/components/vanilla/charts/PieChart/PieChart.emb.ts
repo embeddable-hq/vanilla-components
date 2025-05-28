@@ -25,6 +25,14 @@ export const meta = {
       category: 'Chart data',
     },
     {
+      name: 'dimensionToUse',
+      type: 'string',
+      label: 'Dimension Variable to use (optional, overrides slice)',
+      description:
+        'If set, this will override the slice dimension and use the provided dimension instead. Works with the dimension select control.',
+      category: 'Chart settings',
+    },
+    {
       name: 'metric',
       type: 'measure',
       label: 'Metric',
@@ -116,11 +124,12 @@ export const meta = {
 
 export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
+    const dimensionValue = inputs.dimensionToUse ? JSON.parse(inputs.dimensionToUse) : inputs.slice;
     return {
       ...inputs,
       results: loadData({
         from: inputs.ds,
-        dimensions: [inputs.slice],
+        dimensions: [dimensionValue],
         measures: [inputs.metric],
       }),
     };
