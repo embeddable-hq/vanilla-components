@@ -137,6 +137,10 @@ function chartOptions(props: Props): ChartOptions<'pie'> {
         callbacks: {
           label: function (context) {
             let label = context.dataset.label || '';
+            // handle labels that are booleans
+            if (typeof context.dataset.label === 'boolean') {
+              label = context.dataset.label ? 'True' : 'False';
+            }
             if (context.parsed !== null) {
               label += `: ${formatValue(`${context.parsed || ''}`, {
                 type: 'number',
