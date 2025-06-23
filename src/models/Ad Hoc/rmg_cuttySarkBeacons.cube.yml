@@ -3,33 +3,33 @@ cubes:
   data_source: default
   sql: >
     select
-      date(timestamp_micros(a.event_timestamp)) as partition_date
-      ,a.event_name
-      ,a.user_id
-      ,a.user_pseudo_id
-      ,a.stream_id
-      ,a.content_category
-      ,a.device.language as device_language
-      ,a.event_label
-      ,a.platform
-      ,a.venue_id
-      ,a.organization_id
-      ,a.beacon_id
-      ,a.beacon_group
-      ,a.weather_group
-      ,a.weather
-      ,a.connectivity
-      ,a.device.category as device_category
+      event_date
+      ,event_name
+      ,user_id
+      ,user_pseudo_id
+      ,stream_id
+      ,event_params_custom.content_category
+      ,device.language as device_langauge
+      ,event_params_custom.event_label
+      ,platform
+      ,event_params_custom.venue_id
+      ,event_params_custom.organisation_id
+      ,event_params_custom.beacon_id
+      ,event_params_custom.beacon_group
+      ,event_params_custom.beacon_weather_group as weather_group
+      ,event_params_custom.beacon_weather as weather
+      ,event_params_custom.user_connectivity as connectivity
+      ,device.category as device_category
       ,"Experience Page Funnel" as beacon_funnel
-      ,a.firebase_screen_class
-    from `smartify-cc94e.smartify_flat_analytics.smartify_ga_flat` as a
-    where partition_date >= "2024-05-22"
+      ,event_params.firebase_screen_class
+    from `smartify-cc94e.superform_outputs_151371783.ga4_events`
+    where event_date >= "2024-05-22"
     and stream_id in ("1047860117","1047860114")
   
   dimensions:
     - name: date
       type: time
-      sql: timestamp(partition_date)
+      sql: timestamp(event_date)
     
     - name: event_name
       type: string

@@ -73,7 +73,7 @@ cubes:
     - name: ticket_pseudo_users
       type: count_distinct
       sql: user_pseudo_id
-      title: 'Unique Users'
+      title: 'Unique Devices'
     
     - name: ticket_users
       type: count_distinct
@@ -90,16 +90,26 @@ cubes:
     - name: ticket_orders
       type: count_distinct
       sql: ticket_order_id
+      title: 'Unique Order Accesses'
+    
+    - name: ticket_links
+      type: count_distinct
+      sql: ticket_subline_item
       title: 'Unique Link Accesses'
 
     - name: ticket_views
       type: count
-      title: 'Number of Sessions'
+      title: 'Link Clicks'
     
-    - name: ticket_views_order
+    - name: ticket_views_link
       type: number
-      sql: '{ticket_views} / {ticket_orders}'
-      title: 'Accesses per Guide'
+      sql: '{ticket_views} / {ticket_links}'
+      title: 'Accesses per Guide Link'
+    
+    - name: ticket_links_order
+      type: number
+      sql: '{ticket_views} / {ticket_links}'
+      title: 'Guide Links per Order ID'
   
   joins:
     - name: venue_lookup_tours

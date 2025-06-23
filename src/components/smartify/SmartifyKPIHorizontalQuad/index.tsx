@@ -234,6 +234,41 @@ export default (props: Props) => {
               </div>
             )}
           </div>
+          {/* <div className="flex flex-col items-center" style={{ width: '25%' }}>
+            <div style={{ fontSize: `${metaFontSize}px`, marginBottom: '8px' }}>
+              <p>{`${fourTitle || ''}`}</p>
+            </div>
+            <div style={{ fontSize: `${fontSize}px` }}>
+              <p>
+                {`${prefix_four || ''}${m_four.value || 0}`}
+                <span style={{ fontSize: `${metaFontSize}px` }}>{`${suffix_four || ''}`}</span>
+              </p>
+            </div>
+            {prevTimeFilter?.to && (
+              <div
+                className="font-normal text-center"
+                style={{
+                  color: m_four.percentage && m_four.percentage < 0 ? '#FF6B6C' : '#3BA99C',
+                  fontSize: `${metaFontSize}px`,
+                  whiteSpace: 'nowrap',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                }}
+              >
+                <Chevron
+                  className={`${m_four.percentage && m_four.percentage < 0 ? 'rotate-180' : ''} h-[20px] w-[9px] min-w-[9px] mr-1.5`}
+                />
+                <span>
+                  {m_four.percentage === Infinity
+                    ? '∞'
+                    : `${formatValue(`${Math.abs(m_four.percentage || 0)}`, { type: 'number', dps })}%`}
+                </span>
+                {showPrevPeriodLabel && prevTimeFilter?.relativeTimeString && (
+                  <span style={{ color: `${LIGHTEST_FONT}` }}>&nbsp;vs {prevTimeFilter.relativeTimeString}</span>
+                )}
+              </div>
+            )}
+          </div> */}
         </div>
       </div>
     </Container>

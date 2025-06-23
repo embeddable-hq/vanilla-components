@@ -114,24 +114,29 @@ cubes:
   measures:
     - name: active_users
       type: count_distinct_approx
-      sql: user_pseudo_id
+      title: "Total Users"
+      sql: if(stream_id = '10374153553', concat(user_pseudo_id,ifnull(user_id, '-null')), user_pseudo_id)
 
     - name: banner_impressions
       type: sum
+      title: "Impressions"
       sql: case when event_name = "view_component" then 1 else 0 end
     
     - name: banner_clicks
       type: sum
+      title: "Clicks"
       sql: case when event_name in ("select_component", "click_button", "click_link", "click_banner") then 1 else 0 end
     
     - name: banner_ctr
       type: number
+      title: "CTR"
       sql: "({banner_clicks}/{banner_impressions}) * 100"
       meta:
         suffix: '%'
 
     - name: banner_impressions_per_user
       type: number
+      title: "Impressions per User"
       sql: "({banner_impressions}/{active_users})"
     
   joins:

@@ -90,7 +90,7 @@ cubes:
   measures:
     - name: qrcode_users
       type: count_distinct_approx
-      sql: user_pseudo_id
+      sql: if(stream_id = '10374153553', concat(user_pseudo_id,ifnull(user_id, '-null')), user_pseudo_id)
       title: "QR Code Users"
 
     - name: qrcode_opens
