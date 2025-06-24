@@ -13,6 +13,8 @@ dist-ssr
 *.local
 .embeddable-build
 .embeddable-dev-build
+.embeddable-dev-tmp
+.embeddable-tmp
 
 # cube
 .env

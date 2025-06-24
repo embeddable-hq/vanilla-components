@@ -16,19 +16,19 @@ import Spinner from '../../Spinner';
 import { ChevronDown, ClearIcon } from '../../icons';
 
 export type Props = {
-  icon?: ReactNode;
   className?: string;
-  options: DataResponse;
-  unclearable?: boolean;
-  inputClassName?: string;
-  onChange: (v: string) => void;
-  searchProperty?: string;
-  minDropdownWidth?: number;
-  property?: { name: string; title: string; nativeType: string; __type__: string };
-  title?: string;
   defaultValue?: string;
-  placeholder?: string;
   ds?: { embeddableId: string; datasetId: string; variableValues: Record };
+  icon?: ReactNode;
+  inputClassName?: string;
+  minDropdownWidth?: number;
+  onChange: (v: string) => void;
+  options: DataResponse;
+  placeholder?: string;
+  property?: { name: string; title: string; nativeType: string; __type__: string };
+  searchProperty?: string;
+  title?: string;
+  unclearable?: boolean;
 };
 
 type Record = { [p: string]: string };
@@ -36,11 +36,14 @@ type Record = { [p: string]: string };
 let debounce: number | undefined = undefined;
 
 export default (props: Props) => {
-  const [focus, setFocus] = useState(false);
   const ref = useRef<HTMLInputElement | null>(null);
+
+  const [focus, setFocus] = useState(false);
+  const [isDropdownOrItemFocused, setIsDropdownOrItemFocused] = useState(false);
+  const [search, setSearch] = useState('');
   const [triggerBlur, setTriggerBlur] = useState(false);
   const [value, setValue] = useState(props.defaultValue);
-  const [search, setSearch] = useState('');
+
   const [_, setServerSearch] = useEmbeddableState({
     [props.searchProperty || 'search']: '',
   }) as [Record, (f: (m: Record) => Record) => void];
@@ -48,6 +51,38 @@ export default (props: Props) => {
   useEffect(() => {
     setValue(props.defaultValue);
   }, [props.defaultValue]);
+
+  // Accessibility - Close the menu if we've tabbed off of any items it contains
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout | null = null;
+
+    if (!isDropdownOrItemFocused) {
+      timeoutId = setTimeout(() => {
+        setFocus(false);
+      }, 200);
+    } else {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [isDropdownOrItemFocused]);
+
+  useLayoutEffect(() => {
+    if (!triggerBlur) return;
+
+    const timeout = setTimeout(() => {
+      setFocus(false);
+      setTriggerBlur(false);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [triggerBlur]);
 
   const performSearch = useCallback(
     (newSearch: string) => {
@@ -62,29 +97,34 @@ export default (props: Props) => {
     [setSearch, setServerSearch, props.searchProperty],
   );
 
-  const set = useCallback(
+  const setDropdownValue = useCallback(
     (value: string) => {
       performSearch('');
-
       setValue(value);
-
       props.onChange(value);
-
       clearTimeout(debounce);
     },
     [setValue, props, performSearch],
   );
 
-  useLayoutEffect(() => {
-    if (!triggerBlur) return;
-
-    const timeout = setTimeout(() => {
+  // Used for handling keydown events on the menu items
+  const handleKeyDownCallback = (
+    e: React.KeyboardEvent<HTMLElement>,
+    callback: any,
+    escapable?: boolean,
+  ) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      callback(e);
       setFocus(false);
-      setTriggerBlur(false);
-    }, 500);
-
-    return () => clearTimeout(timeout);
-  }, [triggerBlur]);
+      setTriggerBlur(true);
+    }
+    if (escapable && e.key === 'Escape') {
+      e.preventDefault();
+      setFocus(false);
+      setTriggerBlur(true);
+    }
+  };
 
   const list = useMemo(
     () =>
@@ -95,11 +135,21 @@ export default (props: Props) => {
             onClick={() => {
               setFocus(false);
               setTriggerBlur(true);
-              set(o[props.property?.name || ''] || '');
+              setDropdownValue(o[props.property?.name || ''] || '');
+            }}
+            onKeyDown={(e) => {
+              handleKeyDownCallback(
+                e,
+                () => {
+                  setDropdownValue(o[props.property?.name || ''] || '');
+                },
+                true,
+              );
             }}
             className={`flex items-center min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
               value === o[props.property?.name || ''] ? 'bg-black/5' : ''
             } whitespace-nowrap overflow-hidden text-ellipsis`}
+            tabIndex={0}
           >
             {o[props.property?.name || '']}
             {o.note && (
@@ -110,7 +160,7 @@ export default (props: Props) => {
 
         return memo;
       }, []),
-    [props, value, set],
+    [props.options?.data, props.property?.name, value, setDropdownValue],
   ) as ReactNode[];
 
   return (
@@ -130,7 +180,14 @@ export default (props: Props) => {
             setFocus(true);
             setTriggerBlur(false);
           }}
-          onBlur={() => setTriggerBlur(true)}
+          onFocus={() => {
+            setFocus(true);
+            setTriggerBlur(false);
+            setIsDropdownOrItemFocused(true);
+          }}
+          onBlur={() => {
+            setIsDropdownOrItemFocused(false);
+          }}
           onChange={(e) => performSearch(e.target.value)}
           className={`outline-none bg-transparent leading-9 h-9 border-0 px-3 w-full cursor-pointer text-sm ${
             focus || !value ? '' : 'opacity-0'
@@ -157,6 +214,13 @@ export default (props: Props) => {
               ref.current?.focus();
               setTriggerBlur(false);
             }}
+            onFocus={() => {
+              setIsDropdownOrItemFocused(true);
+            }}
+            onBlur={() => {
+              setIsDropdownOrItemFocused(false);
+            }}
+            tabIndex={0}
           >
             {list}
             {list?.length === 0 && !!search && (
@@ -174,7 +238,7 @@ export default (props: Props) => {
         {!props.unclearable && !!value && (
           <div
             onClick={() => {
-              set('');
+              setDropdownValue('');
             }}
             className="absolute right-10 top-0 h-10 flex items-center z-10 cursor-pointer"
           >
