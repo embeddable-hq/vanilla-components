@@ -1,0 +1,52 @@
+cubes:
+- name: moi_custom_medians
+  data_source: default
+  sql: >
+    select
+      event_date
+      ,user_pseudo_id
+      ,case
+        when contains_substr(page.path, '/manchester') then "venue_moimanchester"
+        when contains_substr(page.path, '/moi-ny') then "venue_moiny"
+        when contains_substr(page.path, '/copenhagen') then "venue_moicopenhagen"
+        else event_params_custom.venue_id
+      end venue_id
+      ,event_params_custom.organisation_id
+      ,sum(case when event_name in ('track_start') then 1 else 0 end) tracks_play
+      ,sum(case
+            when event_params_custom.track_listen_time_string = 'inf' then 0
+            else CAST(event_params_custom.track_listen_time_string AS NUMERIC)
+          END) track_listen_time
+    from `smartify-cc94e.superform_outputs_151371783.ga4_events`
+    where event_date between '2025-05-09' and '2025-05-26'
+      and stream_id in ("1913717213")
+      and event_params_custom.organisation_id = 'org_museumofillusions'
+      --and event_name = 'track_start'
+      and contains_substr(event_name, 'track_')
+    group by 1,2,3,4
+  
+  dimensions:
+    - name: event_date
+      type: time
+      sql: timestamp(event_date)
+    
+    - name: organisation_id
+      type: string
+      sql: organisation_id
+      primaryKey: true
+      shown: true
+    
+    - name: venue_id
+      type: string
+      sql: case when (venue_id = "" or venue_id is null) then "Not linked venue" else venue_id end
+      primaryKey: true
+      shown: true
+
+  measures:
+    - name: track_play_median
+      type: number
+      sql: APPROX_QUANTILES(tracks_play, 2)[OFFSET(1)]
+
+    - name: listen_time_median
+      type: number
+      sql: APPROX_QUANTILES(track_listen_time, 2)[OFFSET(1)]/60000

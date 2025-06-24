@@ -62,9 +62,9 @@ cubes:
       type: string
       sql: case when user_gender in ('Male', 'MALE', 'Man', 'Mand', 'Masculino', '男性', 'זכר', 'Männlich', 'Mann', 'Homme', 'Hombre') then 'Male' when user_gender in ('Female', 'Woman', 'Femme', 'Mujer', 'Vrouw', 'Weiblich', 'Frau', 'Feminino', '女性', 'Donna', 'Kvinde') then 'Female' when user_gender in ('Unspecified', 'Non spécifié', 'Sin especificar') then 'Unspecified' when user_gender in ('Other', 'Autre') then 'Other' else 'Unknown' end
 
-    - name: user_age_range
-      type: string
-      sql: case when cast(user_age as int) < 18 then "- 18" when cast(user_age as int) >= 18 and cast(user_age as int) < 25 then "18 - 24" when cast(user_age as int) >= 25 and cast(user_age as int) < 35 then "25 - 34" when cast(user_age as int) >= 35 and cast(user_age as int) < 45 then "35 - 44" when cast(user_age as int) >= 45 and cast(user_age as int) < 55 then "45 - 54" when cast(user_age as int) >= 55 and cast(user_age as int) < 65 then "55 - 64" when cast(user_age as int) >= 65 and cast(user_age as int) < 71 then "65 - 70" when cast(user_age as int) >= 71 then "71+" else 'Unknown' end
+    # - name: user_age_range
+    #   type: string
+    #   sql: case when cast(user_age as int) < 18 then "- 18" when cast(user_age as int) >= 18 and cast(user_age as int) < 25 then "18 - 24" when cast(user_age as int) >= 25 and cast(user_age as int) < 35 then "25 - 34" when cast(user_age as int) >= 35 and cast(user_age as int) < 45 then "35 - 44" when cast(user_age as int) >= 45 and cast(user_age as int) < 55 then "45 - 54" when cast(user_age as int) >= 55 and cast(user_age as int) < 65 then "55 - 64" when cast(user_age as int) >= 65 and cast(user_age as int) < 71 then "65 - 70" when cast(user_age as int) >= 71 then "71+" else 'Unknown' end
 
     - name: device_language
       type: string
@@ -112,18 +112,18 @@ cubes:
       relationship: many_to_one
       sql: '{CUBE.tour_id} = {venue_lookup_tours.tour_sid}'
 
-  pre_aggregations:
-    - name: inapp_aggregation
-      measures:
-        - venue_dataform_inapppurchase.tour_views
-        - venue_dataform_inapppurchase.in_app_purchases
-        - venue_dataform_inapppurchase.tour_users
-      dimensions:
-        - venue_dataform_inapppurchase.device_platform
-        - venue_dataform_inapppurchase.user_connectivity
-        - venue_dataform_inapppurchase.country
-        - venue_dataform_inapppurchase.venue_id
-        - venue_dataform_inapppurchase.tour_id
-        - venue_lookup_tours.tour_name
-      timeDimension: venue_dataform_inapppurchase.event_date
-      granularity: day
+  # pre_aggregations:
+  #   - name: inapp_aggregation
+  #     measures:
+  #       - venue_dataform_inapppurchase.tour_views
+  #       - venue_dataform_inapppurchase.in_app_purchases
+  #       - venue_dataform_inapppurchase.tour_users
+  #     dimensions:
+  #       - venue_dataform_inapppurchase.device_platform
+  #       - venue_dataform_inapppurchase.user_connectivity
+  #       - venue_dataform_inapppurchase.country
+  #       - venue_dataform_inapppurchase.venue_id
+  #       - venue_dataform_inapppurchase.tour_id
+  #       - venue_lookup_tours.tour_name
+  #     timeDimension: venue_dataform_inapppurchase.event_date
+  #     granularity: day

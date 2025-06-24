@@ -145,32 +145,32 @@ cubes:
     - name: object_users
       type: count_distinct_approx
       title: 'Object Users'
-      sql: case when event_name in ('screen_view', 'page_view') and contains_substr(page_type, 'object_dp') then user_pseudo_id else null end
+      sql: case when event_name in ('screen_view', 'page_view') and contains_substr(page_type, 'object_dp') then if(stream_id = '10374153553', concat(user_pseudo_id,ifnull(user_id, '-null')), user_pseudo_id) else null end
 
     - name: object_view_users
       type: count_distinct_approx
       title: 'View Users'
-      sql: case when event_name in ('screen_view', 'page_view') and contains_substr(page_type, 'object_dp') then user_pseudo_id else null end
+      sql: case when event_name in ('screen_view', 'page_view') and contains_substr(page_type, 'object_dp') then if(stream_id = '10374153553', concat(user_pseudo_id,ifnull(user_id, '-null')), user_pseudo_id) else null end
 
     - name: object_scan_users
       type: count_distinct_approx
       title: 'Scan Users'
-      sql: case when event_name in ('scan_recognition_hit') then user_pseudo_id else null end
+      sql: case when event_name in ('scan_recognition_hit') then if(stream_id = '10374153553', concat(user_pseudo_id,ifnull(user_id, '-null')), user_pseudo_id) else null end
     
     - name: object_favorite_users
       type: count_distinct_approx
       title: 'Favorite Users'
-      sql: case when event_name in ('add_favorite') and object_id is not null then user_pseudo_id else null end
+      sql: case when event_name in ('add_favorite') and object_id is not null then if(stream_id = '10374153553', concat(user_pseudo_id,ifnull(user_id, '-null')), user_pseudo_id) else null end
 
     - name: translation_users
       type: count_distinct_approx
-      sql: case when event_name in ('translate_text') then user_pseudo_id else null end
+      sql: case when event_name in ('translate_text') then if(stream_id = '10374153553', concat(user_pseudo_id,ifnull(user_id, '-null')), user_pseudo_id) else null end
       title: "Translation Users"
 
     - name: ditaction_users
       type: count_distinct_approx
       title: "Text-to-Speech Users"
-      sql: case when event_name = 'play_description' then user_pseudo_id else null end
+      sql: case when event_name = 'play_description' then if(stream_id = '10374153553', concat(user_pseudo_id,ifnull(user_id, '-null')), user_pseudo_id) else null end
     
     - name: object_view_per_user
       type: number
