@@ -10,20 +10,7 @@ import Spinner from './Spinner';
 import Title from './Title';
 import { WarningIcon } from './icons';
 import './index.css';
-
-export type ContainerProps = {
-  childContainerClassName?: string;
-  className?: string;
-  description?: string;
-  downloadAllFunction?: () => void;
-  enableDownloadAsCSV?: boolean;
-  enableDownloadAsPNG?: boolean;
-  onResize?: (size: Size) => void;
-  prevResults?: DataResponse;
-  results?: DataResponse | DataResponse[];
-  setResizeState?: (resizing: boolean) => void;
-  title?: string;
-};
+import { ContainerProps } from './Container.types';
 
 export default ({
   children,

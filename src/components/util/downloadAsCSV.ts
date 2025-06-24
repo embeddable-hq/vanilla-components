@@ -1,6 +1,5 @@
 import { DataResponse } from '@embeddable.com/core';
-
-import { ContainerProps } from '../vanilla/Container';
+import { ContainerProps } from '../vanilla/Container.types';
 
 type DataResponseData = { [key: string]: any };
 
