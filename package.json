@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "embeddable:build": "npm run check-circular-dependencies && embeddable build",
+    "embeddable:build": "embeddable build",
     "embeddable:push": "embeddable push",
     "embeddable:login": "embeddable login",
-    "embeddable:dev": "npm run check-circular-dependencies && cross-env NODE_OPTIONS='--max-old-space-size=4096' embeddable dev",
+    "embeddable:dev": "cross-env NODE_OPTIONS='--max-old-space-size=4096' embeddable dev",
     "embeddable:update": "npx npm-check-updates -u \"/embeddable/\"",
     "check-circular-dependencies": "npx madge --circular src --extensions ts,tsx",
     "check-types": "tsc --noemit",
