@@ -36,11 +36,14 @@ type Record = { [p: string]: string };
 let debounce: number | undefined = undefined;
 
 export default (props: Props) => {
-  const [focus, setFocus] = useState(false);
   const ref = useRef<HTMLInputElement | null>(null);
+
+  const [focus, setFocus] = useState(false);
+  const [isDropdownOrItemFocused, setIsDropdownOrItemFocused] = useState(false);
+  const [search, setSearch] = useState('');
   const [triggerBlur, setTriggerBlur] = useState(false);
   const [value, setValue] = useState(props.defaultValue);
-  const [search, setSearch] = useState('');
+
   const [_, setServerSearch] = useEmbeddableState({
     [props.searchProperty || 'search']: '',
   }) as [Record, (f: (m: Record) => Record) => void];
@@ -48,6 +51,38 @@ export default (props: Props) => {
   useEffect(() => {
     setValue(props.defaultValue);
   }, [props.defaultValue]);
+
+  // Accessibility - Close the menu if we've tabbed off of any items it contains
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout | null = null;
+
+    if (!isDropdownOrItemFocused) {
+      timeoutId = setTimeout(() => {
+        setFocus(false);
+      }, 200);
+    } else {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [isDropdownOrItemFocused]);
+
+  useLayoutEffect(() => {
+    if (!triggerBlur) return;
+
+    const timeout = setTimeout(() => {
+      setFocus(false);
+      setTriggerBlur(false);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [triggerBlur]);
 
   const performSearch = useCallback(
     (newSearch: string) => {
@@ -86,16 +121,22 @@ export default (props: Props) => {
     [performSearch, props, value],
   );
 
-  useLayoutEffect(() => {
-    if (!triggerBlur) return;
-
-    const timeout = setTimeout(() => {
+  // Used for handling keydown events on the menu items
+  const handleKeyDownCallback = (
+    e: React.KeyboardEvent<HTMLElement>,
+    callback: any,
+    escapable?: boolean,
+  ) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      callback(e);
+    }
+    if (escapable && e.key === 'Escape') {
+      e.preventDefault();
       setFocus(false);
-      setTriggerBlur(false);
-    }, 500);
-
-    return () => clearTimeout(timeout);
-  }, [triggerBlur]);
+      setTriggerBlur(true);
+    }
+  };
 
   const list = useMemo(
     () =>
@@ -107,9 +148,20 @@ export default (props: Props) => {
               setTriggerBlur(false);
               set(o[props.property?.name || ''] || '');
             }}
+            onKeyDown={(e) =>
+              handleKeyDownCallback(e, set(o[props.property?.name || ''] || ''), true)
+            }
+            onFocus={() => {
+              setIsDropdownOrItemFocused(true);
+              setFocus(true);
+            }}
+            onBlur={() => {
+              setIsDropdownOrItemFocused(false);
+            }}
             className={`flex items-left items-center min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
               value?.includes(o[props.property?.name || '']) ? 'bg-black/5' : ''
             } truncate`}
+            tabIndex={0}
           >
             {value?.includes(o[props.property?.name || '']) ? <Checkbox /> : <CheckboxEmpty />}
             <span className="font-normal pl-1 truncate" title={o[props.property?.name || '']}>
@@ -138,7 +190,6 @@ export default (props: Props) => {
           name="dropdown"
           placeholder={props.placeholder}
           onFocus={() => setFocus(true)}
-          onBlur={() => setTriggerBlur(true)}
           onChange={(e) => performSearch(e.target.value)}
           className={`outline-none bg-transparent leading-9 h-9 border-0 px-3 w-full cursor-pointer text-sm ${
             focus || !value ? '' : 'opacity-0'
@@ -157,8 +208,6 @@ export default (props: Props) => {
 
         {focus && (
           <div
-            tabIndex={0}
-            onBlur={() => setFocus(false)}
             style={{ minWidth: props.minDropdownWidth }}
             className="flex flex-col bg-white rounded-xl absolute top-11 z-50 border border-[#DADCE1] w-full overflow-y-auto overflow-x-hidden max-h-[400px]"
             onMouseDown={(e) => {
@@ -167,6 +216,13 @@ export default (props: Props) => {
               ref.current?.focus();
               setTriggerBlur(false);
             }}
+            onFocus={() => {
+              setIsDropdownOrItemFocused(true);
+            }}
+            onBlur={() => {
+              setIsDropdownOrItemFocused(false);
+            }}
+            tabIndex={0}
           >
             {list}
             {list?.length === 0 && !!search && (
