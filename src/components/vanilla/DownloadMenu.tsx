@@ -8,9 +8,12 @@ import downloadAsCSV from '../util/downloadAsCSV';
 import downloadAsPNG from '../util/downloadAsPNG';
 import { ContainerProps } from './Container';
 
+const TIMEOUT_FOCUS_MS = 200;
+const TIMEOUT_PNG_MS = 200;
+
 interface CSVProps extends ContainerProps {
-  results?: DataResponse | DataResponse[];
   prevResults?: DataResponse;
+  results?: DataResponse | DataResponse[];
 }
 
 type Props = {
@@ -60,11 +63,38 @@ const DownloadMenu: React.FC<Props> = (props) => {
         // We can't clear this timeout because the download will be cancelled due to useEffect cleanup
         setTimeout(() => {
           downloadAsPNG(element, `${cleanedChartName}-${timestamp}.png`, setPreppingDownload);
-        }, 200);
+        }, TIMEOUT_PNG_MS);
       }
       setIsDownloadStarted(false);
     }
   }, [isDownloadStarted, pngOpts, preppingDownload, setPreppingDownload]);
+
+  useEffect(() => {
+    if (showMenu) {
+      refFocus.current?.focus();
+    }
+  }, [showMenu]);
+
+  // Accessibility - Close the menu if we've tabbed off of any items it contains
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout | null = null;
+
+    if (focusedMenuItem === '') {
+      timeoutId = setTimeout(() => {
+        setShowMenu(false);
+      }, TIMEOUT_FOCUS_MS);
+    } else {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [focusedMenuItem]);
 
   // Handle CSV downloads using supplied options
   const handleCSVClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<Element>) => {
@@ -103,33 +133,6 @@ const DownloadMenu: React.FC<Props> = (props) => {
       setShowMenu(false);
     }
   };
-
-  useEffect(() => {
-    if (showMenu) {
-      refFocus.current?.focus();
-    }
-  }, [showMenu]);
-
-  // Accessibility - Close the menu if we've tabbed off of any items it contains
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout | null = null;
-
-    if (focusedMenuItem === '') {
-      timeoutId = setTimeout(() => {
-        setShowMenu(false);
-      }, 200);
-    } else {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    }
-
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, [focusedMenuItem]);
 
   // Handle the Click on the PNG icon - triggers the useEffect above
   const handlePNGClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
