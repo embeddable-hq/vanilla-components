@@ -6,7 +6,7 @@ import IconDownloadPNG from '../icons/DownloadPNG';
 import IconVerticalEllipsis from '../icons/VerticalEllipsis';
 import downloadAsCSV from '../util/downloadAsCSV';
 import downloadAsPNG from '../util/downloadAsPNG';
-import { ContainerProps } from './Container';
+import { ContainerProps } from './Container.types';
 
 const TIMEOUT_FOCUS_MS = 200;
 const TIMEOUT_PNG_MS = 200;
