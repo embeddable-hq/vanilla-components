@@ -130,7 +130,7 @@ export default (propsInitial: Props) => {
           data: props.prevTimeFilter
             ? prevData?.map((d: Record) => ({
                 y: parseFloat(d[metrics[i].name] || '0'),
-                x: parseTime(d[props.comparisonXAxis?.name || '']),
+                x: parseTime(d[props.comparisonXAxis?.name || props.xAxis.name || '']),
               })) || []
             : [],
           backgroundColor: applyFill ? hexToRgb(COLORS[i % COLORS.length], 0.05) : c,
