@@ -1,5 +1,5 @@
 cubes:
-- name: venue_dataform_tracks
+- name: venue_dataform_bespoke_tour
   data_source: default
   sql: >
     select
@@ -41,10 +41,7 @@ cubes:
       )
       and event_date >= '2022-01-01'
       and stream_id in ("1047860117","1047860114","1913717213","2817285551","10374153553")
-      and (
-        event_params_custom.track_id is not null or 
-        event_params_custom.tour_id is not null
-        )
+      and (event_params_custom.tour_id = 'tour_nXWykZAxnH9pXEcZONAz' or contains_substr(event_params_custom.tour_id, 'ptour_'))
       
   dimensions:
     - name: event_date
@@ -249,6 +246,10 @@ cubes:
     - name: venue_lookup_language
       relationship: many_to_one
       sql: '{CUBE.device_language} = {venue_lookup_language.device_language}'
+
+    - name: venue_lookup_experiences
+      relationship: many_to_one
+      sql: '{CUBE.experience_id} = {venue_lookup_experiences.experience_id}'
 
   
 #   pre_aggregations:

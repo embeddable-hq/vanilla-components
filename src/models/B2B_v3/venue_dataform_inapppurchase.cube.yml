@@ -5,6 +5,7 @@ cubes:
     with raw as (SELECT
       event_date
       ,user_pseudo_id
+      ,user_id
       ,event_name
       ,platform
       ,device.category as device_category
