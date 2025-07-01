@@ -2,9 +2,6 @@
   securityContext:
     organisation_id: org_belvedere
     venue_id:
-      - venue_belvedere
-      - venue_belvlower
-      - venue_belv21
 
 - name: National Gallery User
   securityContext:
@@ -59,9 +56,7 @@
 - name: Smithsonian User
   securityContext:
     organisation_id: org_smithsonian
-    venue_id: 
-      - venue_saam
-      - venue_snpg
+    venue_id:
 
 - name: Qatar
   securityContext:

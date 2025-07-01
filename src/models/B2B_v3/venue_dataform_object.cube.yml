@@ -14,7 +14,7 @@ cubes:
       ,geo.city as geo_city
       ,stream_id
       ,device.language as device_language
-      ,event_params_custom.user_connectivity
+      ,event_params_custom.client_connectivity
       ,event_params_custom.component_type
       ,event_params_custom.locale_translation_source
       ,event_params_custom.locale_translation_destination
@@ -34,6 +34,7 @@ cubes:
           or '{COMPILE_CONTEXT.securityContext.venue_id}' = 'undefined'
           or event_params_custom.venue_id in unnest(split('{COMPILE_CONTEXT.securityContext.venue_id}', ','))
       )
+      and (event_params_custom.organisation_id != 'org_smithsonian' or (event_params_custom.organisation_id = 'org_smithsonian' and not contains_substr(event_params_custom.venue_id, ',')))
       and event_date >= '2022-01-01'
       and stream_id in ("1047860117","1047860114","1913717213","2817285551","10374153553")
       and event_params_custom.object_id is not null
@@ -52,7 +53,7 @@ cubes:
 
     - name: user_connectivity
       type: string
-      sql: case when (user_connectivity = '' or user_connectivity is null) then 'Unknown' when user_connectivity = 'Cellular' then 'Cellular' else 'Wi-Fi' end
+      sql: case when (client_connectivity = '' or client_connectivity is null) then 'Unknown' when client_connectivity in ('WIFI', 'Internet Corporate', 'Internet Highspeed') then 'Wi-Fi' else 'Cellular' end
 
     # - name: user_generation
     #   type: string

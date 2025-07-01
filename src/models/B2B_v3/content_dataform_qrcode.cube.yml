@@ -13,7 +13,7 @@ cubes:
       ,geo.country as geo_country
       ,geo.city as geo_city
       ,stream_id
-      ,event_params_custom.user_connectivity
+      ,event_params_custom.client_connectivity
       ,event_params_custom.component_type
       ,event_params_custom.content_category
       ,event_params_custom.page_type
@@ -45,7 +45,7 @@ cubes:
 
     - name: user_connectivity
       type: string
-      sql: case when (user_connectivity = '' or user_connectivity is null) then 'Unknown' when user_connectivity = 'Cellular' then 'Cellular' else 'Wi-Fi' end
+      sql: case when (client_connectivity = '' or client_connectivity is null) then 'Unknown' when client_connectivity in ('WIFI', 'Internet Corporate', 'Internet Highspeed') then 'Wi-Fi' else 'Cellular' end
     
     - name: country
       type: string

@@ -23,7 +23,7 @@ cubes:
       ,ifnull(user_properties.user_logged, "false") as user_logged
       ,collected_traffic_source.manual_content as utm_content
       ,collected_traffic_source.manual_term as utm_term
-      ,event_params_custom.user_connectivity
+      ,event_params_custom.client_connectivity
       ,event_params_custom.event_label
       ,event_params_custom.component_type
       ,event_params_custom.content_category
@@ -89,6 +89,10 @@ cubes:
     - name: user_type
       type: string
       sql: user_type
+    
+    - name: user_connectivity
+      type: string
+      sql: case when (client_connectivity = '' or client_connectivity is null) then 'Unknown' when client_connectivity in ('WIFI', 'Internet Corporate', 'Internet Highspeed') then 'Wi-Fi' else 'Cellular' end
 
     #SURVEY DATA
     - name: satisfaction_vote_label
@@ -124,24 +128,24 @@ cubes:
       type: sum
       title: NPS Promoters
       sql: case when (utm_content = "Smilies NPS" and event_label = "Very positive") then 1 else 0 end
-      shown: false
+      #shown: false
     
     - name: passives
       type: sum
       title: NPS Neutrals
       sql: case when (utm_content = "Smilies NPS" and event_label = "Positive") then 1 else 0 end
-      shown: false
+      #shown: false
     
     - name: detractors
       type: sum
       title: NPS Detractors
-      sql: case when (utm_content = "Smilies NPS" and (event_label = "Negative" or event_label = "Very Negative" or event_label = "Neutral")) then 1 else 0 end
-      shown: false
+      sql: case when (utm_content = "Smilies NPS" and (event_label = "Negative" or event_label = "Very negative" or event_label = "Neutral")) then 1 else 0 end
+      #shown: false
     
     - name: nps_score_100
       type: number
       sql: "case when {nps_votes} = 0 then 0 else ((({promoters} - {detractors}) / {nps_votes}) * 100) end"
-      shown: false
+      #shown: false
     
     - name: nps_score
       type: number
