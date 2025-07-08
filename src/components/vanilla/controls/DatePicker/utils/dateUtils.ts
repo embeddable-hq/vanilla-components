@@ -67,7 +67,7 @@ export function getComparisonOptions(period: TimeRange) {
 
   let weekNote = '';
   if (days > 7) {
-    // We have to use "to" for both, here, because otherwise it produces more than 7 days
+    // We have to use "from" for both, here, because otherwise it produces more than 7 days
     weekNote = getNote(subDays(period.from, 7), subDays(period.from, 1));
   } else {
     // If the period is less than 7 days, we can give the exact spread from the previous week
