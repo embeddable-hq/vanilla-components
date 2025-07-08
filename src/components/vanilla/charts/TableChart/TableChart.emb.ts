@@ -36,6 +36,14 @@ export const meta = {
         dataset: 'ds',
       },
       category: 'Chart data',
+      inputs: [
+        {
+          name: 'customColumnLabel',
+          type: 'string',
+          label: 'Column Header',
+          description: 'Custom label to display instead of the default column header',
+        },
+      ],
     },
     // Chart settings
     {
