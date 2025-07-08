@@ -65,11 +65,24 @@ export function getComparisonOptions(period: TimeRange) {
   const previousQuarter = determinePreviousQuarter(comparisonPeriod);
   const previousYear = determinePreviousYear(comparisonPeriod);
 
+  let weekNote = '';
+  if (days > 7) {
+    // We have to use "from" for both, here, because otherwise it produces more than 7 days
+    weekNote = getNote(subDays(period.from, 7), subDays(period.from, 1));
+  } else {
+    // If the period is less than 7 days, we can give the exact spread from the previous week
+    weekNote = getNote(subDays(period.from, 7), subDays(period.to, 7));
+  }
+
   return [
     { value: 'No comparison' },
     {
       value: 'Previous period',
       note: getNote(subDays(period.from, days), subDays(period.to, days)),
+    },
+    {
+      value: 'Previous week',
+      note: weekNote,
     },
     {
       value: 'Previous month',
@@ -95,6 +108,17 @@ export function getComparisonPeriod(rts: string, period: TimeRange) {
     };
   }
   const comparisonPeriod: MandatoryTimeRange = period as MandatoryTimeRange;
+  if (rts === 'Previous week') {
+    // Same calculation here, in order to keep the range consistent with the options
+    const days = Math.abs(differenceInCalendarDays(period.from, period.to)) + 1;
+    const from = subDays(period.from, 7);
+    const to = days > 7 ? subDays(period.from, 1) : subDays(period.to, 7);
+    return {
+      relativeTimeString: 'previous week',
+      from,
+      to,
+    };
+  }
   if (rts === 'Previous month') {
     const previousMonth = determinePreviousMonth(comparisonPeriod);
     return {
