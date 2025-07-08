@@ -38,7 +38,7 @@ export default (props: Props) => {
   const [triggerBlur, setTriggerBlur] = useState(false);
   const [value, setValue] = useState(props.defaultValue);
 
-  const [_, setServerSearch] = useEmbeddableState({
+  const [, setServerSearch] = useEmbeddableState({
     [props.searchProperty || 'search']: '',
   }) as [SelectorRecord, (f: (m: SelectorRecord) => SelectorRecord) => void];
 
@@ -137,6 +137,7 @@ export default (props: Props) => {
       return (
         <div
           key={option.value}
+          role="button"
           onClick={() => {
             setTriggerBlur(false);
             set(option.value);

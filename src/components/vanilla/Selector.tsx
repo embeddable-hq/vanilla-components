@@ -40,7 +40,7 @@ export default (props: Props) => {
     (option) => option.value === value,
   )?.label;
 
-  const [_, setServerSearch] = useEmbeddableState({
+  const [, setServerSearch] = useEmbeddableState({
     [props.searchProperty || 'search']: '',
   }) as [SelectorRecord, (f: (m: SelectorRecord) => SelectorRecord) => void];
 
@@ -126,6 +126,7 @@ export default (props: Props) => {
     return props.options?.map((option) => (
       <div
         key={option.value}
+        role="button"
         onClick={() => {
           setFocus(false);
           setTriggerBlur(true);
