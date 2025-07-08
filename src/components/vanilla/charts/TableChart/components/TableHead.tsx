@@ -38,7 +38,10 @@ const TableHead = ({ columns, sortBy, sortDirection, onSortingChange, minColumnW
               onClick={() => onSortingChange?.(column, newSortDirection)}
             >
               <div className="flex items-center gap-1 hover:text-black">
-                <span className="text-[#333942] mr-1 truncate">{column.title}</span>
+                <span className="text-[#333942] mr-1 truncate">
+                  {/* Use the label from inputs if available, otherwise use the title */}
+                  {column?.inputs?.customColumnLabel ?? column.title}
+                </span>
 
                 {isSorted ? (
                   <span className="w-3">
