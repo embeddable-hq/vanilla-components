@@ -1,15 +1,15 @@
-import { Value, loadData } from '@embeddable.com/core';
+import { Value } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component, { Props } from './index';
 
 export const meta = {
-  name: 'Dropdown',
-  label: 'Dropdown',
+  name: 'MultiSelectorDimension',
+  label: 'Dimensions multi-select',
   defaultWidth: 300,
   defaultHeight: 80,
   classNames: ['on-top'],
-  category: 'Controls: inputs & dropdowns',
+  category: 'Controls: measures and dimensions',
   inputs: [
     {
       name: 'ds',
@@ -19,13 +19,29 @@ export const meta = {
       category: 'Dropdown values',
     },
     {
-      name: 'property',
+      name: 'options',
+      array: true,
       type: 'dimension',
-      label: 'Property',
+      label: 'Choices',
       config: {
         dataset: 'ds',
       },
       category: 'Dropdown values',
+      inputs: [
+        {
+          name: 'overrideName',
+          type: 'string',
+          label: 'Override name',
+          description: 'Overrides the default name shown',
+        },
+      ],
+    },
+    {
+      name: 'defaultValue',
+      type: 'dimension',
+      array: true,
+      label: 'Default value',
+      category: 'Pre-configured variables',
     },
     {
       name: 'title',
@@ -33,24 +49,13 @@ export const meta = {
       label: 'Title',
       category: 'Settings',
     },
+
     {
-      name: 'defaultValue',
-      type: 'string',
-      label: 'Default value',
-      category: 'Pre-configured variables',
-    },
-    {
-      name: 'placeholder',
-      type: 'string',
-      label: 'Placeholder',
+      name: 'allowNoValue',
+      type: 'boolean',
+      label: 'Allow no value',
       category: 'Settings',
-    },
-    {
-      name: 'limit',
-      type: 'number',
-      label: 'Default number of options',
-      defaultValue: 100,
-      category: 'Settings',
+      defaultValue: false,
     },
   ],
   events: [
@@ -60,16 +65,17 @@ export const meta = {
       properties: [
         {
           name: 'value',
-          type: 'string',
+          type: 'dimension',
+          array: true,
         },
       ],
     },
   ],
   variables: [
     {
-      name: 'dropdown choice',
-      type: 'string',
-      defaultValue: Value.noFilter(),
+      name: 'Dimension multi choice',
+      type: 'dimension',
+      array: true,
       inputs: ['defaultValue'],
       events: [{ name: 'onChange', property: 'value' }],
     },
@@ -86,21 +92,12 @@ export default defineComponent<Props, typeof meta, { search: string }>(Component
 
     return {
       ...inputs,
-      options: loadData({
-        from: inputs.ds,
-        dimensions: inputs.property ? [inputs.property] : [],
-        limit: inputs.limit || 1000,
-        filters:
-          embState?.search && inputs.property
-            ? [
-                {
-                  operator: 'contains',
-                  property: inputs.property,
-                  value: embState?.search,
-                },
-              ]
-            : undefined,
-      }),
+      options: (inputs.options || []).filter(
+        (option) =>
+          !embState?.search ||
+          option.name.includes(embState.search) ||
+          option.title.includes(embState.search),
+      ),
     };
   },
   events: {
