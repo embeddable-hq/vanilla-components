@@ -11,11 +11,11 @@ import React, {
 import { twMerge } from 'tailwind-merge';
 import Container from '../Container';
 import { ChevronDown, ClearIcon } from '../icons';
-import { SelectorOption, SelectorRecord } from './Selector.types';
+import { SelectorOption } from './Selector.types';
+import { selectorOptionIncludesSearch } from './Selector.utils';
 
 export type Props = {
   className?: string;
-  searchProperty?: string;
   minDropdownWidth?: number;
   placeholder?: string;
   defaultValue?: string;
@@ -24,8 +24,6 @@ export type Props = {
   unclearable?: boolean;
   onChange: (v: string) => void;
 };
-
-let debounce: number | undefined = undefined;
 
 export default (props: Props) => {
   const ref = useRef<HTMLInputElement | null>(null);
@@ -39,10 +37,6 @@ export default (props: Props) => {
   const valueLabel: string | undefined = props.options.find(
     (option) => option.value === value,
   )?.label;
-
-  const [, setServerSearch] = useEmbeddableState({
-    [props.searchProperty || 'search']: '',
-  }) as [SelectorRecord, (f: (m: SelectorRecord) => SelectorRecord) => void];
 
   useEffect(() => {
     setValue(props.defaultValue);
@@ -83,14 +77,8 @@ export default (props: Props) => {
   const performSearch = useCallback(
     (newSearch: string) => {
       setSearch(newSearch);
-
-      clearTimeout(debounce);
-
-      debounce = window.setTimeout(() => {
-        setServerSearch((s) => ({ ...s, [props.searchProperty || 'search']: newSearch }));
-      }, 500);
     },
-    [setSearch, setServerSearch, props.searchProperty],
+    [setSearch],
   );
 
   const setDropdownValue = useCallback(
@@ -122,33 +110,35 @@ export default (props: Props) => {
   };
 
   const list = useMemo(() => {
-    return props.options?.map((option) => (
-      <div
-        key={option.value}
-        role="button"
-        onClick={() => {
-          setFocus(false);
-          setTriggerBlur(true);
-          setDropdownValue(option.value);
-        }}
-        onKeyDown={(e) => {
-          handleKeyDownCallback(
-            e,
-            () => {
-              setDropdownValue(option.value);
-            },
-            true,
-          );
-        }}
-        className={`flex items-center min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
-          value === option.value ? 'bg-black/5' : ''
-        } whitespace-nowrap overflow-hidden text-ellipsis`}
-        tabIndex={0}
-      >
-        {option.label}
-      </div>
-    ));
-  }, [props.options, value, setDropdownValue]) as ReactNode[];
+    return props.options
+      .filter((option) => selectorOptionIncludesSearch(search, option))
+      .map((option) => (
+        <div
+          key={option.value}
+          role="button"
+          onClick={() => {
+            setFocus(false);
+            setTriggerBlur(true);
+            setDropdownValue(option.value);
+          }}
+          onKeyDown={(e) => {
+            handleKeyDownCallback(
+              e,
+              () => {
+                setDropdownValue(option.value);
+              },
+              true,
+            );
+          }}
+          className={`flex items-center min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
+            value === option.value ? 'bg-black/5' : ''
+          } whitespace-nowrap overflow-hidden text-ellipsis`}
+          tabIndex={0}
+        >
+          {option.label}
+        </div>
+      ));
+  }, [props.options, value, setDropdownValue, search]) as ReactNode[];
 
   return (
     <Container title={props.title}>

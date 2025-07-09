@@ -89,9 +89,7 @@ export default defineComponent<Props, typeof meta, { search: string }>(Component
 
     return {
       ...inputs,
-      options: (inputs.options || []).filter((option) =>
-        selectorOptionIncludesSearch(embState?.search, option),
-      ),
+      options: inputs.options || [],
     };
   },
   events: {

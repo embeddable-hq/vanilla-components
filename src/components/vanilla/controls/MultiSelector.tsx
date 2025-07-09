@@ -13,11 +13,11 @@ import Checkbox from '../../icons/Checkbox';
 import CheckboxEmpty from '../../icons/CheckboxEmpty';
 import Container from '../Container';
 import { ChevronDown, ClearIcon } from '../icons';
-import { SelectorOption, SelectorRecord } from './Selector.types';
+import { SelectorOption } from './Selector.types';
+import { selectorOptionIncludesSearch } from './Selector.utils';
 
 export type Props = {
   className?: string;
-  searchProperty?: string;
   minDropdownWidth?: number;
   placeholder?: string;
   defaultValue?: string[];
@@ -27,8 +27,6 @@ export type Props = {
   onChange: (v: string[]) => void;
 };
 
-let debounce: number | undefined = undefined;
-
 export default (props: Props) => {
   const ref = useRef<HTMLInputElement | null>(null);
 
@@ -37,10 +35,6 @@ export default (props: Props) => {
   const [search, setSearch] = useState('');
   const [triggerBlur, setTriggerBlur] = useState(false);
   const [value, setValue] = useState(props.defaultValue);
-
-  const [, setServerSearch] = useEmbeddableState({
-    [props.searchProperty || 'search']: '',
-  }) as [SelectorRecord, (f: (m: SelectorRecord) => SelectorRecord) => void];
 
   useEffect(() => {
     setValue(props.defaultValue);
@@ -81,14 +75,8 @@ export default (props: Props) => {
   const performSearch = useCallback(
     (newSearch: string) => {
       setSearch(newSearch);
-
-      clearTimeout(debounce);
-
-      debounce = window.setTimeout(() => {
-        setServerSearch((s) => ({ ...s, [props.searchProperty || 'search']: newSearch }));
-      }, 500);
     },
-    [setSearch, setServerSearch, props.searchProperty],
+    [setSearch],
   );
 
   const set = useCallback(
@@ -108,8 +96,6 @@ export default (props: Props) => {
 
       props.onChange(newValues);
       setValue(newValues);
-      setServerSearch((s) => ({ ...s, [props.searchProperty || 'search']: '' }));
-      clearTimeout(debounce);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [performSearch, props, value],
@@ -133,36 +119,38 @@ export default (props: Props) => {
   };
 
   const list = useMemo(() => {
-    return props.options.map((option) => {
-      return (
-        <div
-          key={option.value}
-          role="button"
-          onClick={() => {
-            setTriggerBlur(false);
-            set(option.value);
-          }}
-          onKeyDown={(e) => handleKeyDownCallback(e, set(option.value), true)}
-          onFocus={() => {
-            setIsDropdownOrItemFocused(true);
-            setFocus(true);
-          }}
-          onBlur={() => {
-            setIsDropdownOrItemFocused(false);
-          }}
-          className={`flex items-left items-center min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
-            value?.includes(option.value) ? 'bg-black/5' : ''
-          } truncate`}
-          tabIndex={0}
-        >
-          {value?.includes(option.value) ? <Checkbox /> : <CheckboxEmpty />}
-          <span className="font-normal pl-1 truncate" title={option.label}>
-            {option.label}
-          </span>
-        </div>
-      );
-    });
-  }, [props, value, set]) as ReactNode[];
+    return props.options
+      .filter((option) => selectorOptionIncludesSearch(search, option))
+      .map((option) => {
+        return (
+          <div
+            key={option.value}
+            role="button"
+            onClick={() => {
+              setTriggerBlur(false);
+              set(option.value);
+            }}
+            onKeyDown={(e) => handleKeyDownCallback(e, set(option.value), true)}
+            onFocus={() => {
+              setIsDropdownOrItemFocused(true);
+              setFocus(true);
+            }}
+            onBlur={() => {
+              setIsDropdownOrItemFocused(false);
+            }}
+            className={`flex items-left items-center min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
+              value?.includes(option.value) ? 'bg-black/5' : ''
+            } truncate`}
+            tabIndex={0}
+          >
+            {value?.includes(option.value) ? <Checkbox /> : <CheckboxEmpty />}
+            <span className="font-normal pl-1 truncate" title={option.label}>
+              {option.label}
+            </span>
+          </div>
+        );
+      });
+  }, [props, value, set, search]) as ReactNode[];
 
   return (
     <Container title={props.title}>

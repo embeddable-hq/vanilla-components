@@ -78,6 +78,7 @@ export const meta = {
       type: 'dimension',
       array: true,
       inputs: ['defaultValue'],
+      defaultValue: [{ name: 'customers.country' }],
       events: [{ name: 'onChange', property: 'value' }],
     },
   ],
@@ -93,9 +94,7 @@ export default defineComponent<Props, typeof meta, { search: string }>(Component
 
     return {
       ...inputs,
-      options: (inputs.options || []).filter((option) =>
-        selectorOptionIncludesSearch(embState?.search, option),
-      ),
+      options: inputs.options || [],
     };
   },
   events: {
