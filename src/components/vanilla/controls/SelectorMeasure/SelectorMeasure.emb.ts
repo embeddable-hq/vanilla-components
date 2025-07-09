@@ -1,7 +1,6 @@
-import { Measure, Value } from '@embeddable.com/core';
+import { Value } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 import Component, { Props } from './index';
-import { selectorOptionIncludesSearch } from '../Selector.utils';
 
 export const meta = {
   name: 'SelectorMeasure',

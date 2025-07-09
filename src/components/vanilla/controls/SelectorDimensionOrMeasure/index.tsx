@@ -2,7 +2,7 @@ import { DimensionOrMeasure, Measure } from '@embeddable.com/core';
 import React from 'react';
 
 import Selector from '../Selector';
-import { getSelectorOptions } from '../Selector.utils';
+import { getSelectorDefaultValue, getSelectorOptions } from '../Selector.utils';
 
 export type Props = {
   allowNoValue?: boolean;
@@ -22,7 +22,7 @@ export default (props: Props) => {
     <Selector
       title={props.title}
       options={getSelectorOptions(props.options)}
-      defaultValue={props.defaultValue?.name}
+      defaultValue={getSelectorDefaultValue(props.defaultValue, props.options)}
       unclearable={!props.allowNoValue}
       onChange={handleChange}
     />

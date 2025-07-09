@@ -78,7 +78,6 @@ export const meta = {
       type: 'dimensionOrMeasure',
       array: true,
       inputs: ['defaultValue'],
-      defaultValue: [{ name: 'customers.country' }],
       events: [{ name: 'onChange', property: 'value' }],
     },
   ],

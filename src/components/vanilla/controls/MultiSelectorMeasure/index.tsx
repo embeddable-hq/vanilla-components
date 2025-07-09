@@ -2,7 +2,7 @@ import { Measure } from '@embeddable.com/core';
 import React from 'react';
 
 import MultiSelector from '../MultiSelector';
-import { getSelectorOptions } from '../Selector.utils';
+import { getMultiSelectorDefaultValue, getSelectorOptions } from '../Selector.utils';
 
 export type Props = {
   allowNoValue?: boolean;
@@ -13,8 +13,6 @@ export type Props = {
 };
 
 export default (props: Props) => {
-  const calculatedDefaultValue = props.defaultValue?.map((v) => v.name) || [];
-
   const handleChange = (newValues: string[]) => {
     const newSelection = props.options.filter((option) => newValues.includes(option.name));
     props.onChange(newSelection);
@@ -24,7 +22,7 @@ export default (props: Props) => {
     <MultiSelector
       title={props.title}
       options={getSelectorOptions(props.options)}
-      defaultValue={calculatedDefaultValue}
+      defaultValue={getMultiSelectorDefaultValue(props.defaultValue, props.options)}
       unclearable={!props.allowNoValue}
       onChange={handleChange}
     />
