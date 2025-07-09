@@ -9,25 +9,21 @@ import React, {
   useState,
 } from 'react';
 import { twMerge } from 'tailwind-merge';
-import Checkbox from '../icons/Checkbox';
-import CheckboxEmpty from '../icons/CheckboxEmpty';
-import Container from './Container';
-import { ChevronDown, ClearIcon } from './icons';
-import { SelectorOption, SelectorRecord } from './Selector.types';
+import Container from '../Container';
+import { ChevronDown, ClearIcon } from '../icons';
+import { SelectorOption } from './Selector.types';
+import { selectorOptionIncludesSearch } from './Selector.utils';
 
 export type Props = {
   className?: string;
-  searchProperty?: string;
   minDropdownWidth?: number;
   placeholder?: string;
-  defaultValue?: string[];
+  defaultValue?: string;
   options: SelectorOption[];
   title?: string;
   unclearable?: boolean;
-  onChange: (v: string[]) => void;
+  onChange: (v: string) => void;
 };
-
-let debounce: number | undefined = undefined;
 
 export default (props: Props) => {
   const ref = useRef<HTMLInputElement | null>(null);
@@ -38,9 +34,9 @@ export default (props: Props) => {
   const [triggerBlur, setTriggerBlur] = useState(false);
   const [value, setValue] = useState(props.defaultValue);
 
-  const [, setServerSearch] = useEmbeddableState({
-    [props.searchProperty || 'search']: '',
-  }) as [SelectorRecord, (f: (m: SelectorRecord) => SelectorRecord) => void];
+  const valueLabel: string | undefined = props.options.find(
+    (option) => option.value === value,
+  )?.label;
 
   useEffect(() => {
     setValue(props.defaultValue);
@@ -81,38 +77,17 @@ export default (props: Props) => {
   const performSearch = useCallback(
     (newSearch: string) => {
       setSearch(newSearch);
-
-      clearTimeout(debounce);
-
-      debounce = window.setTimeout(() => {
-        setServerSearch((s) => ({ ...s, [props.searchProperty || 'search']: newSearch }));
-      }, 500);
     },
-    [setSearch, setServerSearch, props.searchProperty],
+    [setSearch],
   );
 
-  const set = useCallback(
-    (newValue: string) => {
+  const setDropdownValue = useCallback(
+    (value: string) => {
       performSearch('');
-
-      let newValues: string[] = [];
-
-      if (newValue !== '') {
-        newValues = value || [];
-        if (newValues?.includes(newValue)) {
-          newValues = newValues.filter((v) => v !== newValue);
-        } else {
-          newValues = [...newValues, newValue];
-        }
-      }
-
-      props.onChange(newValues);
-      setValue(newValues);
-      setServerSearch((s) => ({ ...s, [props.searchProperty || 'search']: '' }));
-      clearTimeout(debounce);
+      setValue(value);
+      props.onChange(value);
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [performSearch, props, value],
+    [setValue, props, performSearch],
   );
 
   // Used for handling keydown events on the menu items
@@ -124,6 +99,8 @@ export default (props: Props) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       callback(e);
+      setFocus(false);
+      setTriggerBlur(true);
     }
     if (escapable && e.key === 'Escape') {
       e.preventDefault();
@@ -133,36 +110,35 @@ export default (props: Props) => {
   };
 
   const list = useMemo(() => {
-    return props.options.map((option) => {
-      return (
+    return props.options
+      .filter((option) => selectorOptionIncludesSearch(search, option))
+      .map((option) => (
         <div
           key={option.value}
           role="button"
           onClick={() => {
-            setTriggerBlur(false);
-            set(option.value);
+            setFocus(false);
+            setTriggerBlur(true);
+            setDropdownValue(option.value);
           }}
-          onKeyDown={(e) => handleKeyDownCallback(e, set(option.value), true)}
-          onFocus={() => {
-            setIsDropdownOrItemFocused(true);
-            setFocus(true);
+          onKeyDown={(e) => {
+            handleKeyDownCallback(
+              e,
+              () => {
+                setDropdownValue(option.value);
+              },
+              true,
+            );
           }}
-          onBlur={() => {
-            setIsDropdownOrItemFocused(false);
-          }}
-          className={`flex items-left items-center min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
-            value?.includes(option.value) ? 'bg-black/5' : ''
-          } truncate`}
+          className={`flex items-center min-h-[36px] px-3 py-2 hover:bg-black/5 cursor-pointer font-normal ${
+            value === option.value ? 'bg-black/5' : ''
+          } whitespace-nowrap overflow-hidden text-ellipsis`}
           tabIndex={0}
         >
-          {value?.includes(option.value) ? <Checkbox /> : <CheckboxEmpty />}
-          <span className="font-normal pl-1 truncate" title={option.label}>
-            {option.label}
-          </span>
+          {option.label}
         </div>
-      );
-    });
-  }, [props, value, set]) as ReactNode[];
+      ));
+  }, [props.options, value, setDropdownValue, search]) as ReactNode[];
 
   return (
     <Container title={props.title}>
@@ -195,13 +171,13 @@ export default (props: Props) => {
           }`}
         />
 
-        {!!value && (
+        {valueLabel && (
           <span
-            className={`absolute w-[calc(100%-2rem)] whitespace-nowrap overflow-hidden truncate rounded-xl left-3 top-1 h-8 leading-8 block pointer-events-none text-sm ${
+            className={`absolute w-[calc(100%-2.5rem)] whitespace-nowrap overflow-hidden truncate rounded-xl left-3 top-1 h-8 leading-8 block pointer-events-none text-sm ${
               focus ? 'hidden' : ''
             }`}
           >
-            Selected {value.length} {value.length === 1 ? 'option' : 'options'}
+            {valueLabel}
           </span>
         )}
 
@@ -230,12 +206,12 @@ export default (props: Props) => {
           </div>
         )}
 
-        <ChevronDown className="absolute right-2.5 top-2.5 z-1 pointer-events-none" />
+        <ChevronDown className="absolute right-2 top-2.5 z-1 pointer-events-none" />
 
         {!props.unclearable && !!value && (
           <div
             onClick={() => {
-              set('');
+              setDropdownValue('');
             }}
             className="absolute right-10 top-0 h-10 flex items-center z-10 cursor-pointer"
           >
