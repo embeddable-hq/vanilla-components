@@ -115,7 +115,7 @@ export default (props: Props) => {
       childContainerClassName="overflow-x-auto"
       downloadAllFunction={handleDownloadAll}
     >
-      <div style={{ minWidth: `${columns.length * (props.minColumnWidth ?? 100)}px` }}>
+      <div style={{ minWidth: `${columns?.length * (props.minColumnWidth ?? 100)}px` }}>
         {!!meta && !(props.results?.isLoading && !props.results?.data?.length) && (
           <table
             className="overflow-visible w-full"

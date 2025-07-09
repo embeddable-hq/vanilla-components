@@ -15,7 +15,7 @@ const TableHead = ({ columns, sortBy, sortDirection, onSortingChange, minColumnW
   return (
     <thead className="border-y border-[#B8BDC6]">
       <tr>
-        {columns.map((column) => {
+        {columns?.map((column) => {
           const isSorted = sortBy?.name === column.name;
           const newSortDirection = isSorted
             ? sortDirection === SortDirection.ASCENDING

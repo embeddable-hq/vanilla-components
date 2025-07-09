@@ -53,14 +53,14 @@ export const meta = {
       label: 'Show 2nd axis',
       category: 'Optional chart data',
       defaultValue: false,
-    },  
+    },
     {
       name: 'secondAxisTitle',
       type: 'string',
       label: '2nd axis title',
       description: 'The title for the chart',
       category: 'Optional chart data',
-    }, 
+    },
     {
       name: 'granularity',
       type: 'granularity',
@@ -168,7 +168,7 @@ export default defineComponent(Component, meta, {
             granularity: inputs.granularity,
           },
         ],
-        measures: [...inputs.metrics, ...(inputs.lineMetrics || [])],
+        measures: [...(inputs.metrics || []), ...(inputs.lineMetrics || [])],
         orderBy: [
           {
             property: inputs.xAxis,
