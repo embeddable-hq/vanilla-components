@@ -1,7 +1,8 @@
-import { Value, loadData } from '@embeddable.com/core';
+import { Value } from '@embeddable.com/core';
 import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 
 import Component, { Props } from './index';
+import { selectorOptionIncludesSearch } from '../Selector.utils';
 
 export const meta = {
   name: 'MultiSelectorMeasure',
@@ -92,11 +93,8 @@ export default defineComponent<Props, typeof meta, { search: string }>(Component
 
     return {
       ...inputs,
-      options: (inputs.options || []).filter(
-        (option) =>
-          !embState?.search ||
-          option.name.includes(embState.search) ||
-          option.title.includes(embState.search),
+      options: (inputs.options || []).filter((option) =>
+        selectorOptionIncludesSearch(embState?.search, option),
       ),
     };
   },

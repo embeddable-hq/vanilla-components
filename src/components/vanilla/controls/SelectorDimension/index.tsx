@@ -1,18 +1,18 @@
 import { Dimension } from '@embeddable.com/core';
 import React from 'react';
 
-import Selector from '../../Selector';
+import Selector from '../Selector';
+import { getSelectorOptions } from '../Selector.utils';
 
 export type Props = {
   allowNoValue?: boolean;
-  defaultValue: Dimension;
+  defaultValue?: Dimension;
   options: Dimension[];
   title?: string;
   onChange: (v: Dimension) => void;
 };
 
 export default (props: Props) => {
-  console.log('props', props);
   const handleChange = (newValue: string) => {
     const newSelection = props.options.find((option) => option.name === newValue)!;
     props.onChange(newSelection);
@@ -21,10 +21,7 @@ export default (props: Props) => {
   return (
     <Selector
       title={props.title}
-      options={props.options.map((option) => ({
-        value: option.name,
-        label: option.inputs?.overrideName ?? option.title,
-      }))}
+      options={getSelectorOptions(props.options)}
       defaultValue={props.defaultValue?.name}
       unclearable={!props.allowNoValue}
       onChange={handleChange}
