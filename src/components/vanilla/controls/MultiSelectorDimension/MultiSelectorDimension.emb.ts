@@ -43,6 +43,9 @@ export const meta = {
       array: true,
       label: 'Default value',
       category: 'Pre-configured variables',
+      config: {
+        dataset: 'ds',
+      },
     },
     {
       name: 'title',
