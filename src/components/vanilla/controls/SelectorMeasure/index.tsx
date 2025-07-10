@@ -1,11 +1,12 @@
 import { Measure } from '@embeddable.com/core';
 import React from 'react';
 
-import Selector from '../../Selector';
+import Selector from '../Selector';
+import { getSelectorDefaultValue, getSelectorOptions } from '../Selector.utils';
 
 export type Props = {
   allowNoValue?: boolean;
-  defaultValue: Measure;
+  defaultValue?: Measure;
   options: Measure[];
   title?: string;
   onChange: (v: Measure) => void;
@@ -20,11 +21,8 @@ export default (props: Props) => {
   return (
     <Selector
       title={props.title}
-      options={props.options.map((option) => ({
-        value: option.name,
-        label: option.inputs?.overrideName ?? option.title,
-      }))}
-      defaultValue={props.defaultValue?.name}
+      options={getSelectorOptions(props.options)}
+      defaultValue={getSelectorDefaultValue(props.defaultValue, props.options)}
       unclearable={!props.allowNoValue}
       onChange={handleChange}
     />

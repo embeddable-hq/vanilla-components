@@ -91,12 +91,7 @@ export default defineComponent<Props, typeof meta, { search: string }>(Component
 
     return {
       ...inputs,
-      options: (inputs.options || []).filter(
-        (option) =>
-          !embState?.search ||
-          option.name.includes(embState.search) ||
-          option.title.includes(embState.search),
-      ),
+      options: inputs.options || [],
     };
   },
   events: {
