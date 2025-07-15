@@ -6,7 +6,7 @@ import Container from '../../Container';
 import Pagination from './components/Pagination';
 import TableHead from './components/TableHead';
 import downloadAsCSV from '../../../util/downloadAsCSV';
-import formatValue from '../../../util/format';
+import formatValue, { detectAndReturnLinks } from '../../../util/format';
 import { REGULAR_FONT_SIZE } from '../../../constants';
 import { SortDirection } from '../../../../enums/SortDirection';
 
@@ -136,20 +136,30 @@ export default (props: Props) => {
             <tbody>
               {results?.data?.slice(0, maxRowsFit).map((row, index) => (
                 <tr key={index} className="hover:bg-gray-400/5">
-                  {columns.map((column, index) => (
-                    <td
-                      key={index}
-                      className="text-dark p-3 truncate"
-                      style={{
-                        fontSize: props.fontSize ? `${props.fontSize}px` : REGULAR_FONT_SIZE,
-                        maxWidth: props.minColumnWidth ? `${props.minColumnWidth * 1.2}px` : 'auto',
-                      }}
-                    >
-                      <span title={formatColumn(row[column.name], column) ?? ''}>
-                        {formatColumn(row[column.name], column)}
-                      </span>
-                    </td>
-                  ))}
+                  {columns.map((column, index) => {
+                    const formattedValue = formatColumn(row[column.name], column);
+                    let title = '';
+                    if (typeof formattedValue === 'object') {
+                      // It's a link, so we just want the link text as the title
+                      title = (formattedValue as React.ReactElement).props.children;
+                    } else {
+                      title = formattedValue;
+                    }
+                    return (
+                      <td
+                        key={index}
+                        className="text-dark p-3 truncate"
+                        style={{
+                          fontSize: props.fontSize ? `${props.fontSize}px` : REGULAR_FONT_SIZE,
+                          maxWidth: props.minColumnWidth
+                            ? `${props.minColumnWidth * 1.2}px`
+                            : 'auto',
+                        }}
+                      >
+                        <span title={title}>{formattedValue}</span>
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>
@@ -176,6 +186,16 @@ function formatColumn(text: string | number, column: DimensionOrMeasure) {
   }
 
   if (text && column.nativeType === 'time') return formatValue(text, 'date');
+
+  // detect links - we can't do this in the format function because it returns a dom element
+  const { linkText, linkUrl } = detectAndReturnLinks(text);
+  if (linkText && linkUrl) {
+    return (
+      <a href={linkUrl} target="_blank" rel="noopener noreferrer">
+        {linkText}
+      </a>
+    );
+  }
 
   return formatValue(text);
 }
