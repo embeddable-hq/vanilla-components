@@ -50,3 +50,11 @@ export default function formatValue(str: string = '', opt: Type | Options = 'str
     return `${meta?.pretext || ''}${v}${meta?.posttext || ''}`;
   }
 }
+
+export const detectAndReturnLinks = (text: string) => {
+  if (!text) {
+    return { linkText: null, linkUrl: null };
+  }
+  const linkData = /\[(.*)\]\((.*)\)/.exec(text);
+  return { linkText: linkData?.[1], linkUrl: encodeURI(linkData?.[2] || '') };
+};
