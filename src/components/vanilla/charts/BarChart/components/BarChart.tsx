@@ -78,7 +78,7 @@ export default function BarChart({ ...props }: Props) {
 
 function chartData(props: Props): ChartData<'bar' | 'line'> {
   const { results, xAxis, metrics, lineMetrics, showSecondYAxis } = props;
-  const granularity = xAxis?.inputs?.granularity as Granularity | undefined;
+  const granularity = xAxis?.inputs?.granularity;
 
   let dateFormat: string = 'yyyy-mm-dd';
   if (xAxis.nativeType === 'time' && granularity) {
