@@ -61,7 +61,6 @@ type Props = {
   xAxis: Dimension;
   xAxisTitle?: string;
   yAxisTitle?: string;
-  granularity?: Granularity;
   showSecondYAxis?: boolean;
   secondAxisTitle?: string;
 };
@@ -78,9 +77,10 @@ export default function BarChart({ ...props }: Props) {
 }
 
 function chartData(props: Props): ChartData<'bar' | 'line'> {
-  const { results, xAxis, metrics, granularity, lineMetrics, showSecondYAxis } = props;
+  const { results, xAxis, metrics, lineMetrics, showSecondYAxis } = props;
+  const granularity = xAxis?.inputs?.granularity as Granularity | undefined;
 
-  let dateFormat: string | undefined;
+  let dateFormat: string = 'yyyy-mm-dd';
   if (xAxis.nativeType === 'time' && granularity) {
     dateFormat = DATE_DISPLAY_FORMATS[granularity];
   }
@@ -97,34 +97,36 @@ function chartData(props: Props): ChartData<'bar' | 'line'> {
     ),
   ] as string[];
 
-  const metricsDatasets =  metrics?.map((metric, i) => ({
-    barPercentage: 0.8,
-    barThickness: 'flex',
-    maxBarThickness: 50,
-    minBarLength: 0,
-    borderRadius: 4,
-    label: metric.title,
-    data: results?.data?.map((d) => parseFloat(d[metric.name] || 0)) || [],
-    backgroundColor: COLORS[i % COLORS.length],
-    order: 1
-  })) || [];
-
-  //optional metrics to display as a line on the barchart 
-  const lineMetricsDatasets = lineMetrics?.map((metric, i) => ({
+  const metricsDatasets =
+    metrics?.map((metric, i) => ({
+      barPercentage: 0.8,
+      barThickness: 'flex',
+      maxBarThickness: 50,
+      minBarLength: 0,
+      borderRadius: 4,
       label: metric.title,
       data: results?.data?.map((d) => parseFloat(d[metric.name] || 0)) || [],
-      backgroundColor: COLORS[metrics.length + i % COLORS.length],
-      borderColor: COLORS[metrics.length + i % COLORS.length],
+      backgroundColor: COLORS[i % COLORS.length],
+      order: 1,
+    })) || [];
+
+  //optional metrics to display as a line on the barchart
+  const lineMetricsDatasets =
+    lineMetrics?.map((metric, i) => ({
+      label: metric.title,
+      data: results?.data?.map((d) => parseFloat(d[metric.name] || 0)) || [],
+      backgroundColor: COLORS[metrics.length + (i % COLORS.length)],
+      borderColor: COLORS[metrics.length + (i % COLORS.length)],
       cubicInterpolationMode: 'monotone' as const,
       pointRadius: 2,
       pointHoverRadius: 3,
       type: 'line' as const,
       order: 0,
       yAxisID: showSecondYAxis ? 'y1' : 'y',
-  })) || [];
+    })) || [];
 
   return {
     labels,
-    datasets: [...metricsDatasets, ...lineMetricsDatasets]
+    datasets: [...metricsDatasets, ...lineMetricsDatasets],
   };
 }
