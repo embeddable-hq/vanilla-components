@@ -79,9 +79,10 @@ export default function BarChart({ ...props }: Props) {
 function chartData(props: Props): ChartData<'bar' | 'line'> {
   const { results, xAxis, metrics, lineMetrics, showSecondYAxis } = props;
   const granularity = xAxis?.inputs?.granularity;
-  const isTimeDimension = xAxis?.nativeType === 'time' && granularity;
+  const isTimeDimension = xAxis?.nativeType === 'time';
 
-  const dateFormat: string = isTimeDimension ? DATE_DISPLAY_FORMATS[granularity] : 'yyyy-mm-dd';
+  const dateFormat: string =
+    isTimeDimension && granularity ? DATE_DISPLAY_FORMATS[granularity] : 'yyyy-mm-dd';
 
   const labels = [
     ...new Set(
@@ -89,7 +90,7 @@ function chartData(props: Props): ChartData<'bar' | 'line'> {
         const value = d[xAxis?.name];
         return formatValue(value ?? '', {
           meta: xAxis?.meta,
-          dateFormat: dateFormat,
+          ...(isTimeDimension ? { dateFormat: dateFormat } : {}),
         });
       }),
     ),
