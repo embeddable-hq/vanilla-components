@@ -90,7 +90,7 @@ function chartData(props: Props): ChartData<'bar' | 'line'> {
         const value = d[xAxis?.name];
         return formatValue(value ?? '', {
           meta: xAxis?.meta,
-          ...(isTimeDimension ? { dateFormat: dateFormat } : {}),
+          ...(isTimeDimension ? { dateFormat } : {}),
         });
       }),
     ),
