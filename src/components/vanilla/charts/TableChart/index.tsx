@@ -180,9 +180,14 @@ export default (props: Props) => {
   );
 };
 
-function formatColumn(text: string | number, column: DimensionOrMeasure) {
+function formatColumn(text: string | number | boolean, column: DimensionOrMeasure) {
   if (typeof text === 'number' || column.nativeType === 'number') {
     return formatValue(`${text}`, { type: 'number', meta: column?.meta });
+  }
+
+  if (typeof text === 'boolean') {
+    // don't use formatValue for booleans, just return the string representation
+    return text ? 'True' : 'False';
   }
 
   if (text && column.nativeType === 'time') return formatValue(text, 'date');

@@ -25,7 +25,7 @@ type Props<T> = {
   columnSortingEnabled?: boolean;
   fontSize?: string;
   aggregateRowDimensions?: boolean;
-}
+};
 
 const PivotTable = <T,>({
   data,
@@ -42,25 +42,22 @@ const PivotTable = <T,>({
   // measureVisualizationFormat,
   fontSize = REGULAR_FONT_SIZE,
   columnSortingEnabled = true,
-  aggregateRowDimensions = true
+  aggregateRowDimensions = true,
 }: Props<T>) => {
-
   const [sortCriteria, setSortCriteria] = useState<SortCriteria<any>[]>(() => {
     if (!rowDimensions || !defaultRowDimensionSortDirection) {
       return [];
     }
 
-    return [{
-      key: rowDimensions.length === 1 ? rowDimensions[0].name : '__group.key',
-      direction: defaultRowDimensionSortDirection
-    }];
+    return [
+      {
+        key: rowDimensions.length === 1 ? rowDimensions[0].name : '__group.key',
+        direction: defaultRowDimensionSortDirection,
+      },
+    ];
   });
 
-  const {
-    rows,
-    columns,
-    getLeafColumns
-  } = usePivotTable<T>(
+  const { rows, columns, getLeafColumns } = usePivotTable<T>(
     data,
     measures,
     rowDimensions,
@@ -68,29 +65,31 @@ const PivotTable = <T,>({
     {
       aggregateRowDimensions,
       defaultColumnsSort: defaultColumnDimensionSortDirection,
-      granularity
-    }
+      granularity,
+    },
   );
 
   const sortRows = (rows: Row[], sortCriteria: SortCriteria<any>[]): Row[] => {
     const sortedRows = [...rows];
     sortedRows.sort(multisortFn(sortCriteria));
 
-    sortedRows.forEach(row => {
+    sortedRows.forEach((row) => {
       if (row.children?.length) {
         row.children = sortRows(row.children, sortCriteria);
       }
-    })
+    });
 
     return sortedRows;
-  }
+  };
 
   const sortCriteriaWithDataAccessor = useMemo<SortCriteria<any>[]>(() => {
     const nullValueCharacterAsNumber = parseInt(nullValueCharacter, 10);
 
-    return sortCriteria.map(sortCriterion => ({
+    return sortCriteria.map((sortCriterion) => ({
       ...sortCriterion,
-      key: (row: Row) => row.data[sortCriterion.key as string] || (isNaN(nullValueCharacterAsNumber) ? null : nullValueCharacterAsNumber)
+      key: (row: Row) =>
+        row.data[sortCriterion.key as string] ||
+        (isNaN(nullValueCharacterAsNumber) ? null : nullValueCharacterAsNumber),
     }));
   }, [sortCriteria]);
 
@@ -98,10 +97,12 @@ const PivotTable = <T,>({
     return sortRows(rows, sortCriteriaWithDataAccessor);
   }, [rows, sortCriteriaWithDataAccessor]);
 
-
-  const getMeasureByLabel = useMemo(() => (label: string) => {
-    return measures.find(measure => measure.title === label);
-  }, [measures]);
+  const getMeasureByLabel = useMemo(
+    () => (label: string) => {
+      return measures.find((measure) => measure.title === label);
+    },
+    [measures],
+  );
 
   return (
     <table className="min-w-full border-separate border-spacing-0 table-fixed">
@@ -113,18 +114,19 @@ const PivotTable = <T,>({
           enableSorting={columnSortingEnabled}
           sortCriteria={sortCriteria}
           onSortingChange={(columnKey, sortDirection) => {
-            setSortCriteria([{
-              key: columnKey,
-              direction: sortDirection
-            }]);
+            setSortCriteria([
+              {
+                key: columnKey,
+                direction: sortDirection,
+              },
+            ]);
           }}
           fontSize={fontSize}
         />
       </thead>
 
       <tbody className="overflow-y-auto">
-      {
-        sortedRows.map((row => (
+        {sortedRows.map((row) => (
           <TableRow
             key={row.id}
             columns={getLeafColumns()}
@@ -133,29 +135,38 @@ const PivotTable = <T,>({
             renderCell={(rowRecord, column) => {
               const cellValue = rowRecord[column.key];
 
+              // Check if it's a boolean and if so just return the string representation
+              if (typeof cellValue === 'boolean') {
+                return <span style={{ fontSize }}>{cellValue ? 'True' : 'False'}</span>;
+              }
+
               return (
                 <span style={{ fontSize }}>
-                  {
-                    cellValue === undefined || cellValue === null
-                      ? nullValueCharacter
-                      : formatValue(cellValue, {
+                  {cellValue === undefined || cellValue === null
+                    ? nullValueCharacter
+                    : formatValue(cellValue, {
                         //format date columns
-                        ...(granularity && column.dataType === 'time' ? {
-                          dateFormat: DATE_DISPLAY_FORMATS[granularity as keyof typeof DATE_DISPLAY_FORMATS]
-                        } : {}),
+                        ...(granularity && column.dataType === 'time'
+                          ? {
+                              dateFormat:
+                                DATE_DISPLAY_FORMATS[
+                                  granularity as keyof typeof DATE_DISPLAY_FORMATS
+                                ],
+                            }
+                          : {}),
                         //format measures
-                        ...(getMeasureByLabel(column.label) ? { meta: getMeasureByLabel(column.label)?.meta, type: 'number' } : {})
-                      })
-                  }
+                        ...(getMeasureByLabel(column.label)
+                          ? { meta: getMeasureByLabel(column.label)?.meta, type: 'number' }
+                          : {}),
+                      })}
                 </span>
               );
             }}
           />
-        )))
-      }
+        ))}
       </tbody>
     </table>
-  )
-}
+  );
+};
 
 export default PivotTable;
