@@ -29,6 +29,12 @@ cubes:
         rolling_window:
           trailing: unbounded
 
+      - name: is_large_order
+        type: boolean
+        sql: CASE WHEN COUNT(*) > 10 THEN TRUE ELSE FALSE END
+        title: 'Is Large Order'
+        description: 'Returns true if the order count is greater than 10'
+
     joins:
       - name: products # the name of the data model to join to (not the table)
         sql: '{CUBE}.product_id = {products}.id'
