@@ -40,3 +40,6 @@ license-report.csv
 
 # misc
 csvjson.json
+
+# Cursor IDE
+.cursor

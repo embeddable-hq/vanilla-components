@@ -21,6 +21,7 @@ export const meta = {
       label: 'Default X-axis',
       config: {
         dataset: 'ds',
+        hideGranularity: true,
       },
       category: 'Chart data',
     },
@@ -31,6 +32,7 @@ export const meta = {
       label: 'X-axis options',
       config: {
         dataset: 'ds',
+        hideGranularity: true,
       },
       category: 'Chart data',
     },
@@ -140,13 +142,13 @@ export default defineComponent<Props, typeof meta, EmbeddableState>(Component, m
       results: isTimeDimension
         ? loadData({
             from: inputs.ds,
-            timeDimensions: [
+            select: [
               {
                 dimension: selectedDimension.name,
                 granularity: inputs.granularity,
               },
+              ...inputs.metrics,
             ],
-            measures: inputs.metrics,
             orderBy: [
               {
                 property: selectedDimension,
@@ -157,8 +159,7 @@ export default defineComponent<Props, typeof meta, EmbeddableState>(Component, m
           })
         : loadData({
             from: inputs.ds,
-            dimensions: [selectedDimension],
-            measures: inputs.metrics,
+            select: [selectedDimension, ...inputs.metrics],
             orderBy: [
               {
                 property: inputs.metrics[0],

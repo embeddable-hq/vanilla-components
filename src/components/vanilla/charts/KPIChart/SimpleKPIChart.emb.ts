@@ -92,7 +92,7 @@ export default defineComponent(Component, meta, {
       ...inputs,
       results: loadData({
         from: inputs.ds,
-        measures: [inputs.metric],
+        select: [inputs.metric],
       }),
     };
   },

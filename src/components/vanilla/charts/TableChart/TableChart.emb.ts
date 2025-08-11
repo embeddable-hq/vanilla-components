@@ -163,8 +163,7 @@ export default defineComponent<
         ? { isLoading: true }
         : loadData({
             from: inputs.ds,
-            dimensions: (inputs.columns?.filter((c) => isDimension(c)) as Dimension[]) || [],
-            measures: (inputs.columns?.filter((c) => isMeasure(c)) as Measure[]) || [],
+            select: inputs.columns || [],
             limit,
             offset: limit * (state?.page || 0),
             orderBy: state?.sort || defaultSort,
@@ -172,9 +171,8 @@ export default defineComponent<
 
     // All results get loaded when the download all button is clicked (otherwise they return empty)
     const allResults = loadData({
-      from: inputs.ds,
-      dimensions: (inputs.columns?.filter((c) => isDimension(c)) as Dimension[]) || [],
-      measures: (inputs.columns?.filter((c) => isMeasure(c)) as Measure[]) || [],
+            from: inputs.ds,
+            select: inputs.columns || [],
       limit: state?.downloadAll ? 10_000 : 0,
       offset: 0,
       orderBy: state?.sort || defaultSort,
