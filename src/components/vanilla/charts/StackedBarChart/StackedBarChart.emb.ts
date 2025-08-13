@@ -160,8 +160,7 @@ export default defineComponent(Component, meta, {
       isGroupedBar: true,
       results: loadData({
         from: inputs.ds,
-        dimensions: [inputs.xAxis, inputs.segment],
-        measures: [inputs.metric],
+        select: [inputs.xAxis, inputs.segment, inputs.metric],
         orderBy: orderProp,
       }),
     };

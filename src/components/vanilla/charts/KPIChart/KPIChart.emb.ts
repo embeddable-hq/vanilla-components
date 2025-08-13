@@ -124,7 +124,7 @@ export default defineComponent(Component, meta, {
       ...inputs,
       results: loadData({
         from: inputs.ds,
-        measures: [inputs.metric],
+        select: [inputs.metric],
         filters:
           inputs.timeFilter?.from && inputs.timeProperty
             ? [
@@ -140,7 +140,7 @@ export default defineComponent(Component, meta, {
         inputs.timeProperty &&
         loadData({
           from: inputs.ds,
-          measures: [inputs.metric],
+          select: [inputs.metric],
           limit: !inputs.prevTimeFilter?.from ? 1 : undefined,
           filters: inputs.prevTimeFilter?.from
             ? [

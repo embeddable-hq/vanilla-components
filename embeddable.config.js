@@ -4,11 +4,11 @@ import react from '@embeddable.com/sdk-react';
 export default defineConfig({
   plugins: [react],
 
-  // 
+  //
   // Uncomment for US deployments
   //
   // region: 'US'
-  
+
   //
   // Uncomment for EU deployments
   //

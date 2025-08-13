@@ -130,8 +130,7 @@ export default defineComponent(Component, meta, {
       results: loadData({
         from: inputs.ds,
         limit: 5000,
-        dimensions: [inputs.bubblePlacement],
-        measures: [inputs.metric],
+        select: [inputs.bubblePlacement, inputs.metric],
       }),
     };
   },
