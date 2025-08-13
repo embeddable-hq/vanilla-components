@@ -174,12 +174,12 @@ export default defineComponent(Component, meta, {
             dimension: inputs.xAxis?.name,
             granularity: inputs.granularity,
           },
-          inputs.comparisonXAxis
-            ? {
+          ...(inputs.comparisonXAxis
+            ? [{
                 dimension: inputs.comparisonXAxis.name,
                 granularity: inputs.granularity,
-              }
-            : null,
+              }]
+            : []),
           inputs.metrics,
         ],
         filters:
