@@ -197,16 +197,16 @@ export default defineComponent(Component, meta, {
               [`resultsDimension${index}`]: loadData({
                 from: inputs.ds,
                 select: [
-                  ...dimensionsToFetch.filter(
+                  dimensionsToFetch.filter(
                     (dimension) => dimension.nativeType !== 'time',
                   ),
-                  ...dimensionsToFetch
+                  dimensionsToFetch
                     .filter((dimension) => dimension.nativeType === 'time')
                     .map((timeDimension) => ({
                       dimension: timeDimension.name,
                       granularity: inputs.granularity,
                     })),
-                  ...measures,
+                  measures,
                 ],
                 orderBy: sort.slice(0, index + 1),
                 limit: 10_000,
@@ -217,16 +217,16 @@ export default defineComponent(Component, meta, {
             resultsDimension0: loadData({
               from: inputs.ds,
               select: [
-                ...[...(filteredRowDimensions || []), ...columnDimensions].filter(
+                [...(filteredRowDimensions || []), ...columnDimensions].filter(
                   (dimension) => dimension.nativeType !== 'time',
                 ),
-                ...[...(filteredRowDimensions || []), ...columnDimensions]
+                [...(filteredRowDimensions || []), ...columnDimensions]
                   .filter((dimension) => dimension.nativeType === 'time')
                   .map((timeDimension) => ({
                     dimension: timeDimension.name,
                     granularity: inputs.granularity,
                   })),
-                ...measures,
+                measures,
               ],
               limit: 10_000,
             }),

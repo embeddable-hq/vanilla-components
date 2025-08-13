@@ -151,13 +151,13 @@ export default defineComponent(Component, meta, {
                 dimension: inputs.xAxis?.name,
                 granularity: inputs.granularity,
               },
-              ...inputs.metrics,
+              inputs.metrics,
             ],
             limit: inputs.limit || 50,
           })
         : loadData({
             from: inputs.ds,
-            select: [inputs.xAxis, ...inputs.metrics],
+            select: [inputs.xAxis, inputs.metrics],
             limit: inputs.limit || 50,
           }),
     };

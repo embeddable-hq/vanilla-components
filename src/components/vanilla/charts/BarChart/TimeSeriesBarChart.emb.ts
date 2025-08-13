@@ -168,8 +168,8 @@ export default defineComponent(Component, meta, {
             dimension: inputs.xAxis?.name,
             granularity: inputs.granularity,
           },
-          ...(inputs.metrics || []),
-          ...(inputs.lineMetrics || []),
+          inputs.metrics,
+          inputs.lineMetrics,
         ],
         orderBy: [
           {

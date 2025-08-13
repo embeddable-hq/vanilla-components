@@ -147,7 +147,7 @@ export default defineComponent<Props, typeof meta, EmbeddableState>(Component, m
                 dimension: selectedDimension.name,
                 granularity: inputs.granularity,
               },
-              ...inputs.metrics,
+              inputs.metrics,
             ],
             orderBy: [
               {
@@ -159,7 +159,7 @@ export default defineComponent<Props, typeof meta, EmbeddableState>(Component, m
           })
         : loadData({
             from: inputs.ds,
-            select: [selectedDimension, ...inputs.metrics],
+            select: [selectedDimension, inputs.metrics],
             orderBy: [
               {
                 property: inputs.metrics[0],

@@ -197,7 +197,7 @@ export default defineComponent(Component, meta, {
       reverseXAxis: inputs.reverseXAxis,
       results: loadData({
         from: inputs.ds,
-        select: [...dimensions, ...measures],
+        select: [dimensions, measures],
         orderBy: orderProp,
         limit: inputs.limit || 50,
       }),

@@ -174,15 +174,13 @@ export default defineComponent(Component, meta, {
             dimension: inputs.xAxis?.name,
             granularity: inputs.granularity,
           },
-          ...(inputs.comparisonXAxis
-            ? [
-                {
-                  dimension: inputs.comparisonXAxis.name,
-                  granularity: inputs.granularity,
-                },
-              ]
-            : []),
-          ...inputs.metrics,
+          inputs.comparisonXAxis
+            ? {
+                dimension: inputs.comparisonXAxis.name,
+                granularity: inputs.granularity,
+              }
+            : null,
+          inputs.metrics,
         ],
         filters:
           inputs.timeFilter && inputs.xAxis
@@ -202,7 +200,7 @@ export default defineComponent(Component, meta, {
             dimension: inputs.xAxis?.name,
             granularity: inputs.granularity,
           },
-          ...inputs.metrics,
+          inputs.metrics,
         ],
         limit: !inputs.prevTimeFilter ? 1 : 500,
         orderBy: orderProp,
