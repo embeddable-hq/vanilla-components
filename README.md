@@ -38,7 +38,7 @@ This is how you push code changes to your Embeddable workspace
 
 `npm run embeddable:push -- --api-key <API Key> --email <Email> --message <Message>`
 
-4.  Head back to https://app.embeddable.com (or https://app.eu.embeddable.com) and "Create new Embeddable" using the **components** and **models** from your code bundle
+5.  Head back to https://app.embeddable.com (or https://app.eu.embeddable.com) and "Create new Embeddable" using the **components** and **models** from your code bundle
 
 ### Local Development
 
