@@ -88,7 +88,7 @@ export default defineComponent<Props, typeof meta, { search: string }>(Component
       ...inputs,
       options: loadData({
         from: inputs.ds,
-        dimensions: inputs.property ? [inputs.property] : [],
+        select: inputs.property ? [inputs.property] : [],
         limit: inputs.limit || 1000,
         filters:
           embState?.search && inputs.property

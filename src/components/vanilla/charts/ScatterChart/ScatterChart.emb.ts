@@ -23,6 +23,7 @@ export const meta = {
       label: 'X-Axis',
       config: {
         dataset: 'ds',
+        hideGranularity: true,
       },
       category: 'Chart data',
     },
@@ -33,6 +34,7 @@ export const meta = {
       array: true,
       config: {
         dataset: 'ds',
+        hideGranularity: true,
       },
       category: 'Chart data',
     },
@@ -144,19 +146,18 @@ export default defineComponent(Component, meta, {
         ? loadData({
             from: inputs.ds,
             orderBy: orderProp,
-            timeDimensions: [
+            select: [
               {
                 dimension: inputs.xAxis?.name,
                 granularity: inputs.granularity,
               },
+              inputs.metrics,
             ],
-            measures: inputs.metrics,
             limit: inputs.limit || 50,
           })
         : loadData({
             from: inputs.ds,
-            dimensions: [inputs.xAxis],
-            measures: inputs.metrics,
+            select: [inputs.xAxis, inputs.metrics],
             limit: inputs.limit || 50,
           }),
     };

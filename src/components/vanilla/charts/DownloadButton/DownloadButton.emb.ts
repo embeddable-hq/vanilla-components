@@ -67,8 +67,7 @@ export default defineComponent<Props, typeof meta, { downloading: boolean }>(Com
     if (downloading) {
       results = loadData({
         from: inputs.ds,
-        dimensions: inputs.columns.filter((c) => isDimension(c)).map((c) => c as Dimension),
-        measures: inputs.columns.filter((c) => isMeasure(c)).map((c) => c as Measure),
+        select: inputs.columns,
         limit: inputs.maxRows || undefined,
       });
       return {

@@ -106,8 +106,7 @@ export default defineComponent(Component, meta, {
       ...inputs,
       results: loadData({
         from: inputs.ds,
-        measures: [inputs.metric],
-        dimensions: [inputs.dimension],
+        select: [inputs.metric, inputs.dimension],
         orderBy: [
           {
             property: inputs.metric,
