@@ -34,6 +34,7 @@ export default (props: Props) => {
   const [maxRowsFit, setMaxRowFit] = useState(0);
   const [resizing, setResizing] = useState(false);
   const [isDownloadingAll, setIsDownloadingAll] = useState(false);
+  const [hasNextPage, setHasNextPage] = useState(false);
 
   const [meta, setMeta] = useEmbeddableState({
     downloadAll: false,
@@ -79,6 +80,12 @@ export default (props: Props) => {
     },
     [maxRowsFit, props.results],
   );
+
+  useEffect(() => {
+    if (props.results?.data?.length) {
+      setHasNextPage(props.limit ? props.results.data.length > props.limit - 1 : false);
+    }
+  }, [props.results, props.limit]);
 
   // We pass this to the download menu via the container
   const handleDownloadAll = useCallback(() => {
@@ -169,9 +176,7 @@ export default (props: Props) => {
 
       <Pagination
         currentPage={meta?.page || 0}
-        hasNextPage={
-          props.limit && results?.data?.length ? results?.data?.length < props.limit : false
-        }
+        hasNextPage={hasNextPage}
         onPageChange={(page) => {
           setMeta((meta) => ({ ...meta, page: page }));
         }}
