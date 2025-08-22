@@ -171,8 +171,8 @@ export default defineComponent<
 
     // All results get loaded when the download all button is clicked (otherwise they return empty)
     const allResults = loadData({
-            from: inputs.ds,
-            select: inputs.columns || [],
+      from: inputs.ds,
+      select: inputs.columns || [],
       limit: state?.downloadAll ? 10_000 : 0,
       offset: 0,
       orderBy: state?.sort || defaultSort,
