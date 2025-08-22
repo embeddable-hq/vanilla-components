@@ -28,6 +28,11 @@ cubes:
       - name: signed_up_at
         sql: signed_up_at
         type: time
+        granularities:
+          - name: week_starting_on_sunday
+            interval: 1 week
+            offset: -1 day
+
 
       # - name: full_name
       #   title: "Full name"

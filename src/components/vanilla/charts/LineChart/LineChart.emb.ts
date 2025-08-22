@@ -14,7 +14,7 @@ export const meta = {
       type: 'dataset',
       label: 'Dataset',
       description: 'Dataset',
-      defaultValue: false,
+      defaultValue: false, 
       category: 'Chart data',
     },
     {
@@ -145,7 +145,7 @@ export default defineComponent(Component, meta, {
         timeDimensions: [
           {
             dimension: inputs.xAxis?.name,
-            granularity: inputs.granularity,
+            granularity: 'week_starting_on_sunday',
           },
         ],
         measures: inputs.metrics,
