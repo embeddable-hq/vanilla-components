@@ -13,7 +13,6 @@ import {
   Tooltip,
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import React from 'react';
 import { Chart } from 'react-chartjs-2';
 
 import {
@@ -49,6 +48,7 @@ type Props = {
   displayHorizontally?: boolean;
   dps?: number;
   enableDownloadAsCSV?: boolean;
+  granularity?: Granularity;
   metrics: Measure[];
   lineMetrics?: Measure[];
   results?: DataResponse;
@@ -78,8 +78,9 @@ export default function BarChart({ ...props }: Props) {
 
 function chartData(props: Props): ChartData<'bar' | 'line'> {
   const { results, xAxis, metrics, lineMetrics, showSecondYAxis } = props;
-  const granularity = xAxis?.inputs?.granularity;
+  const granularity = props.granularity || xAxis?.inputs?.granularity;
   const isTimeDimension = xAxis?.nativeType === 'time';
+  console.log(xAxis);
 
   const dateFormat: string =
     isTimeDimension && granularity ? DATE_DISPLAY_FORMATS[granularity] : 'yyyy-mm-dd';
