@@ -80,7 +80,6 @@ function chartData(props: Props): ChartData<'bar' | 'line'> {
   const { results, xAxis, metrics, lineMetrics, showSecondYAxis } = props;
   const granularity = props.granularity || xAxis?.inputs?.granularity;
   const isTimeDimension = xAxis?.nativeType === 'time';
-  console.log(xAxis);
 
   const dateFormat: string =
     isTimeDimension && granularity ? DATE_DISPLAY_FORMATS[granularity] : 'yyyy-mm-dd';
