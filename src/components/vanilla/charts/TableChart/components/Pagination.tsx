@@ -27,7 +27,7 @@ const Pagination = ({ currentPage, hasNextPage, onPageChange }: Props) => (
 
     <ChevronRight
       className={`cursor-pointer hover:bg-black/10 rounded-full w-8 h-8 p-1 border border-[#DADCE1] flex items-center justify-center ${
-        hasNextPage ? 'opacity-50 pointer-events-none' : ''
+        !hasNextPage ? 'opacity-50 pointer-events-none' : ''
       }`}
       onClick={() => {
         onPageChange?.(currentPage + 1);
