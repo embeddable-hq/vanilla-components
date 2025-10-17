@@ -167,7 +167,8 @@ export const meta = {
 } as const satisfies EmbeddedComponentMeta;
 
 export default defineComponent(Component, meta, {
-  props: (inputs: Inputs<typeof meta>) => {
+  // eslint-disable-next-line no-empty-pattern
+  props: (inputs: Inputs<typeof meta>, [], clientContext: any ) => {
     const orderProp: OrderBy[] = [];
 
     if (inputs.sortBy) {
@@ -200,6 +201,7 @@ export default defineComponent(Component, meta, {
         select: [dimensions, measures],
         orderBy: orderProp,
         limit: inputs.limit || 50,
+        timezone: clientContext.timezone
       }),
     };
   },
