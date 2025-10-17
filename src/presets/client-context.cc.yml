@@ -1,19 +1,7 @@
-- name: GMT
-  clientContext:
-    timezone: GMT
-
 - name: UTC
   clientContext:
     timezone: UTC
 
-- name: No timezone
-  clientContext:
-    test: test
-
 - name: India
   clientContext:
     timezone: Asia/Kolkata
-
-- name: Europe/Paris
-  clientContext:
-    timezone: Europe/Paris
