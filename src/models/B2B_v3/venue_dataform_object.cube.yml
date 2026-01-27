@@ -35,12 +35,12 @@ cubes:
           or '{COMPILE_CONTEXT.securityContext.venue_id}' = 'undefined'
           or event_params_custom.venue_id in unnest(split('{COMPILE_CONTEXT.securityContext.venue_id}', ',')))
       */
-      and (event_params_custom.organisation_id != 'org_smithsonian' or (event_params_custom.organisation_id = 'org_smithsonian' and not contains_substr(event_params_custom.venue_id, ',')))
+      --and (event_params_custom.organisation_id != 'org_smithsonian' or (event_params_custom.organisation_id = 'org_smithsonian' and not contains_substr(event_params_custom.venue_id, ',')))
       and event_date >= DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 13 MONTH)
       and event_name in ('page_view', 'screen_view', 'add_favorite', 'scan_recognition_hit','translate_text','play_description','translate_text')
       and (stream_id in ('1047860117','1047860114','1913717213','2817285551','10374153553') or (stream_id = '4029517643' and event_params_custom.organisation_id = 'org_ukparliament'))
       and event_params_custom.object_id is not null
-      and not contains_substr(event_params_custom.venue_id, ',')
+      --and not contains_substr(event_params_custom.venue_id, ',')
 
   
   dimensions:
@@ -144,7 +144,9 @@ cubes:
       sql: event_name
       filters:
         - sql: event_name in ('page_view', 'screen_view')
-        - sql: contains_substr(page_type, 'object_dp')
+        #- sql: contains_substr(page_type, 'object_dp')
+        - sql: page_type in ('object_dp', 'object_group_dp')
+
 
     - name: object_scans
       type: count
@@ -186,7 +188,8 @@ cubes:
       sql: user_pseudo_id
       filters:
         - sql: event_name in ('screen_view', 'page_view')
-        - sql: contains_substr(page_type, 'object_dp')
+        #- sql: contains_substr(page_type, 'object_dp')
+        - sql: page_type in ('object_dp', 'object_group_dp')
 
     - name: object_scan_users
       type: count_distinct_approx

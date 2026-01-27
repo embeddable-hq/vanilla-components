@@ -1,0 +1,53 @@
+cubes:
+  - name: venue_locale_labels
+    data_source: default
+    sql: >
+      SELECT 'Filter' AS component_type, 'date_range' AS component, 'ALL' AS report_section, 'filter-date_range-all' AS report_component_id, 'en-GB' AS label_locale, 'Date range' AS text_label
+      UNION ALL
+      SELECT 'Filter', 'date_range', 'ALL', 'filter-date_range-all', 'pt-BR', 'Período'
+      UNION ALL
+      SELECT 'Filter', 'venue_id', 'ALL', 'filter-venue_id-all', 'en-GB', 'Venue ID'
+      UNION ALL
+      SELECT 'Filter', 'venue_id', 'ALL', 'filter-venue_id-all', 'pt-BR', 'ID do Museu'
+      UNION ALL
+      SELECT 'Filter', 'platform', 'ALL', 'filter-platform-all', 'en-GB', 'Platform'
+      UNION ALL
+      SELECT 'Filter', 'platform', 'ALL', 'filter-platform-all', 'pt-BR', 'Plataformas'
+      UNION ALL
+      SELECT 'Filter', 'connection', 'ALL', 'filter-connection-all', 'en-GB', 'Connection Type'
+      UNION ALL
+      SELECT 'Filter', 'connection', 'ALL', 'filter-connection-all', 'pt-BR', 'Tipo de Conexão'
+      UNION ALL
+      SELECT 'Filter', 'apply_button', 'ALL', 'filter-apply_button-all', 'en-GB', '🔍 Apply Filters'
+      UNION ALL
+      SELECT 'Filter', 'apply_button', 'ALL', 'filter-apply_button-all', 'pt-BR', '🔍 Filtrar Resultados';
+
+    dimensions:
+      - name: component_type
+        type: string
+        sql: component_type
+      
+      - name: component
+        type: string
+        sql: component
+      
+      - name: report_section
+        type: string
+        sql: report_section
+      
+      - name: report_component_id
+        type: string
+        sql: report_component_id
+
+      - name: label_locale
+        type: string
+        sql: label_locale
+
+      - name: text_label
+        type: string
+        sql: text_label
+    
+
+    measures:
+      - name: count_values
+        type: count
