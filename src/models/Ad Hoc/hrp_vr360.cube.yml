@@ -10,7 +10,7 @@ cubes:
         ,event_params.engagement_time_msec
         ,event_name
         --,platform
-        --,device.category as device_category
+        ,device.category as device_category
         ,page.hostname
         ,page.path as page_path
         ,geo.country
@@ -21,7 +21,7 @@ cubes:
       from `smartify-cc94e.superform_outputs_151371783.ga4_events`
       where event_date >= '2025-07-01'
       and page.hostname = 'ar.smartify.org'
-      and event_name in ('page_view','scroll','move_scene','click_info','user_engagement','click_header','session_start','first_visit','track_start','poi_triggered','cta_expanded','audio_paused','audio_played')
+      and event_name in ('expand_info','page_view','scroll','move_scene','click_info','user_engagement','click_header','session_start','first_visit','track_start','poi_triggered','cta_expanded','audio_paused','audio_played')
 
   dimensions:
     - name: event_date
@@ -31,6 +31,17 @@ cubes:
     - name: stream_id
       type: string
       sql: stream_id
+    
+    - name: device_platform
+      type: string
+      sql: |-
+        case
+          when stream_id = '1047860117' then 'iOS'
+          when stream_id = '1047860114' then 'Android'
+          when (stream_id = '1913717213' and device_category in ('tablet','desktop')) then 'Desktop'
+          when (stream_id = '10374153553') then 'Hardware'
+          else 'Webapp'
+        end
     
     - name: vr360_id
       type: string
@@ -70,7 +81,7 @@ cubes:
       type: count
       sql: event_name
       filters:
-        - sql: "(event_name = 'click_info')"
+        - sql: "(event_name = 'expand_info')"
     
     - name: track_play
       type: count

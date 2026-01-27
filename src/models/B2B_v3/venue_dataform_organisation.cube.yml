@@ -18,12 +18,14 @@ cubes:
         event_params_custom.organisation_id,
         event_params_custom.zone_id,
         event_params_custom.zone_type,
-        event_params_custom.object_id
+        event_params_custom.object_id,
+        event_params_custom.content_category,
+        event_params_custom.event_label
       from `smartify-cc94e.superform_outputs_151371783.ga4_events`
       where event_params_custom.organisation_id = '{COMPILE_CONTEXT.securityContext.organisation_id}'
       and event_date >= DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 13 MONTH)
       and stream_id in ('1047860117','1047860114','1913717213','2817285551','10374153553')
-      and event_name in ('page_view', 'screen_view', 'click_button', 'select_component')
+      and event_name in ('page_view', 'screen_view', 'click_button', 'select_component', 'click_tab')
       
 
     dimensions:
@@ -67,6 +69,32 @@ cubes:
         type: string
         sql: REGEXP_EXTRACT(location_id, r'^([^:]+)')
 
+      - name: event_label
+        type: string
+        sql: event_label
+
+      - name: tabs_label_test
+        type: string
+        sql: |-
+          case
+            when event_label in ('Colecciones','Collection','Collections','Sammlung') then 'Collection'
+            when event_label in ('Besuchen','Bezoeken','Visit','Visit  ','Visitar', 'Visiter') then 'Visit'
+            when event_label in ('Entdecken','Nu te zien') then 'What's On'
+            when contains_substring(event_label, "affiche") then "What's On"
+            when contains_substring(event_label, "What") then "What's On"
+            else null
+          end
+
+      - name: tabs_label
+        type: string
+        sql: |-
+          case
+              when event_label in ("Colecciones","Collection","Collections","Sammlung") then "Collection"
+              when event_label in ("Besuchen","Bezoeken","Visit","Visit  ","Visitar","Visiter") then "Visit"
+              when event_label in ("A l'affiche","Entdecken","Nu te zien","What's on") then "What's On"
+              else null
+          end
+
       - name: zone_id
         type: string
         sql: zone_id
@@ -80,6 +108,13 @@ cubes:
         shown: true
 
     measures:
+      - name: active_user
+        type: count_distinct_approx
+        title: Total Users
+        sql: user_pseudo_id
+        filters:
+          - sql: event_name not in ('view_component','email_sent', 'in_app_sent', 'email_delivered', 'email_opened', 'in_app_opened', 'in_app_clicked', 'unsubscribe', 'push_opened', 'Email_Link_Clicked', 'push_sent', 'push_delivered')
+
       - name: organisation_view
         sql: event_name
         type: count
@@ -102,11 +137,23 @@ cubes:
           - sql: page_type = 'venue_zone_dp'
 
       - name: location_page_users
-        sql: event_name
+        sql: user_pseudo_id
         type: count_distinct_approx
         filters:
           - sql: event_name in ('page_view', 'screen_view')
           - sql: page_type in ('venue_zone_dp', 'venue_dp', 'organization_dp')
+
+      - name: click_tab
+        sql: event_name
+        type: count
+        filters:
+          - sql: event_name in ('click_tab')
+      
+      - name: click_tab_users
+        sql: user_pseudo_id
+        type: count_distinct_approx
+        filters:
+          - sql: event_name in ('click_tab')
 
       - name: click_map_button
         sql: event_name
@@ -129,20 +176,9 @@ cubes:
           - sql: event_name in ('click_button')
           - sql: location_id in ('zone_dp:map_cta', 'zone_dp:feature_location')
 
-      # - name: map_button_ctr
-      #   type: number
-      #   sql: "COALESCE(CAST(({venue_click_map}+{zone_click_map}) AS FLOAT64) / NULLIF(CAST(({venue_view}+{zone_view}) AS FLOAT64), 0.0), 0.0)"
-      #   "COALESCE(CAST({object_views} AS FLOAT64) / NULLIF(CAST({object_view_users} AS FLOAT64), 0.0), 0.0)"
-
-      # - name: venue_map_ctr
-      #   type: number
-      #   sql: "COALESCE(CAST({venue_click_map} AS FLOAT64) / NULLIF(CAST({venue_view} AS FLOAT64), 0.0), 0.0)"
-      #   "COALESCE(CAST({object_views} AS FLOAT64) / NULLIF(CAST({object_view_users} AS FLOAT64), 0.0), 0.0)"
-
       - name: zone_map_ctr
         type: number
         sql: "COALESCE(CAST({zone_click_map} AS FLOAT64) / NULLIF(CAST({zone_view} AS FLOAT64), 0.0), 0.0)"
-      #   "COALESCE(CAST({object_views} AS FLOAT64) / NULLIF(CAST({object_view_users} AS FLOAT64), 0.0), 0.0)"
         
       - name: venue_click_secondary
         sql: event_name
@@ -165,47 +201,12 @@ cubes:
           - sql: event_name in ('click_button')
           - sql: location_id in ('venue_dp:secondary_button', 'org_dp:secondary_button')
 
-      # - name: venue_select_page_content
-      #   sql: event_name
-      #   type: count
-      #   filters:
-      #     - sql: event_name in ('select_content')
-      #     - sql: location_id LIKE 'venue_dp:%'
-      
-      # - name: organisation_select_page_content
-      #   sql: event_name
-      #   type: count
-      #   filters:
-      #     - sql: event_name in ('select_content')
-      #     - sql: location_id LIKE 'organization_dp:%'
-
       - name: select_page_content
         sql: event_name
         type: count
         filters:
           - sql: event_name in ('select_content')
           - sql: location_id LIKE 'organization_dp:%' or location_id LIKE 'venue_dp:%' or location_id LIKE 'zone_dp:%' or location_id LIKE 'venue_zone_dp:%'
-
-      # - name: venue_select_object_collection
-      #   sql: event_name
-      #   type: count
-      #   filters:
-      #     - sql: event_name in ('select_component')
-      #     - sql: location_id = 'venue_collections_lp:feature_objects'
-
-      # - name: organisation_select_object_collection
-      #   sql: event_name
-      #   type: count
-      #   filters:
-      #     - sql: event_name in ('select_component')
-      #     - sql: location_id = 'organization_collections_lp:feature_objects'
-
-      # - name: zone_select_object_collection
-      #   sql: event_name
-      #   type: count
-      #   filters:
-      #     - sql: event_name in ('select_component')
-      #     - sql: location_id = 'venue_zone_dp:feature_objects'
 
       - name: select_object_collection
         sql: event_name

@@ -17,10 +17,25 @@
   securityContext:
     organisation_id: org_towerbridge
     venue_id:
+
+- name: Royal Borough of Kensington and Chelsea
+  securityContext:
+    organisation_id: org_rbkc
+    venue_id:
     
 - name: World Press Photo
   securityContext:
     organisation_id: org_wpp
+    venue_id:
+    
+- name: Horizon 22
+  securityContext:
+    organisation_id: org_horizon22
+    venue_id:
+
+- name: Ashmolean Museum
+  securityContext:
+    organisation_id: org_ashmolean
     venue_id:
 
 - name: Museum of Illusions
@@ -53,6 +68,11 @@
     organisation_id: org_smag
     venue_id:
 
+- name: Princeton University Art Museum
+  securityContext:
+    organisation_id: org_princetonuam
+    venue_id:
+
 - name: Historical Royal Palaces
   securityContext:
     organisation_id: org_hrp
@@ -78,6 +98,11 @@
     organisation_id: org_louvre
     venue_id:
       - venue_louvre
+
+- name: Louvre - David
+  securityContext:
+    organisation_id: org_david
+    venue_id:
 
 - name: Dresden Frauenkirche
   securityContext:

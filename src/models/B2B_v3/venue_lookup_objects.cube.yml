@@ -9,6 +9,14 @@ cubes:
       ,art_category
       ,venue_sid
     FROM `smartify-cc94e.smartify_lookup_tables.object_lookup`
+    union all
+    select
+      art_sid
+      ,art_name as art_default_name
+      ,null as artist_sid
+      ,'Object Group' as art_category
+      ,venue_sid
+    FROM `smartify-cc94e.smartify_lookup_tables.objectgroup_lookup`
   
   dimensions:
     - name: object_sid
