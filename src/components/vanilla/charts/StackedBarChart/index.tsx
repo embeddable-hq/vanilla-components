@@ -9,6 +9,7 @@ import {
   PointElement,
   Title,
   Tooltip,
+  ChartOptions,
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import React from 'react';
@@ -89,7 +90,9 @@ export default (props: Props) => {
     <Container {...props} className="overflow-y-hidden">
       <Bar
         height="100%"
-        options={getBarChartOptions({ ...updatedProps, stacked: props.stackBars })}
+        options={
+          getBarChartOptions({ ...updatedProps, stacked: props.stackBars }) as ChartOptions<'bar'>
+        }
         data={
           getStackedChartData(updatedProps, datasetsMeta) as ChartData<'bar', number[], unknown>
         }

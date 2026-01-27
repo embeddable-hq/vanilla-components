@@ -87,7 +87,7 @@ export default (props: Props) => {
       return;
     }
 
-    fireClickEvent(getElementAtEvent(chart, event));
+    fireClickEvent(getElementAtEvent(chart as unknown as ChartJS, event));
   };
 
   return (

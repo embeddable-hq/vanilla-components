@@ -1,4 +1,4 @@
-import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser.js';
+import { dateParser } from '@cubejs-backend/api-gateway/dist/src/date-parser.js';
 import { DataResponse, Dimension, Granularity, TimeRange } from '@embeddable.com/core';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 

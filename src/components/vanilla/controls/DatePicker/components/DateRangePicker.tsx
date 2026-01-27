@@ -1,4 +1,4 @@
-import { dateParser } from '@cubejs-backend/api-gateway/dist/src/dateParser.js';
+import { dateParser } from '@cubejs-backend/api-gateway/dist/src/date-parser.js';
 import { endOfDay, getYear } from 'date-fns';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { DayPicker, MonthCaptionProps, NavProps, useDayPicker } from 'react-day-picker';
