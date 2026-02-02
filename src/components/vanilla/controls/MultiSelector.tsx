@@ -97,7 +97,7 @@ export default (props: Props) => {
       props.onChange(newValues);
       setValue(newValues);
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     [performSearch, props, value],
   );
 

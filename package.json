@@ -18,7 +18,7 @@
     "dev": "cross-env NODE_OPTIONS='--max-old-space-size=4096' embeddable dev",
     "build": "embeddable build",
     "push": "embeddable push",
-    "lint": "npx eslint . --ext .ts --ext .tsx",
+    "lint": "eslint .",
     "license-report": "license-report --output=csv --csvHeaders --fields name --fields link --fields licenseType --fields installedVersion --fields author > license-report.csv"
   },
   "dependencies": {
@@ -81,48 +81,17 @@
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.14",
     "cross-env": "^7.0.3",
-    "eslint": "^9.39.2",
+    "eslint": "^9.0.0",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
+    "globals": "^15.0.0",
     "madge": "^8.0.0",
     "postcss": "^8.4.48",
     "prettier": "3.3.3",
     "tailwindcss": "^3.3.2",
     "tw-colors": "^3.3.2",
     "typescript": "^5.3.3"
-  },
-  "eslintConfig": {
-    "env": {
-      "browser": true,
-      "es2020": true
-    },
-    "extends": [
-      "eslint:recommended",
-      "plugin:react/recommended",
-      "plugin:react/jsx-runtime",
-      "plugin:react-hooks/recommended",
-      "plugin:@typescript-eslint/eslint-recommended",
-      "plugin:@typescript-eslint/recommended"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "settings": {
-      "react": {
-        "version": "18.2"
-      }
-    },
-    "plugins": [
-      "react-refresh",
-      "@typescript-eslint"
-    ],
-    "rules": {
-      "react/display-name": "off",
-      "react/prop-types": "off",
-      "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": "off",
-      "react-refresh/only-export-components": "off",
-      "@typescript-eslint/no-explicit-any": "off"
-    }
   },
   "postcss": {
     "plugins": {
