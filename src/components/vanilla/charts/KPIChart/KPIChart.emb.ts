@@ -119,42 +119,51 @@ export const meta = {
 } as const satisfies EmbeddedComponentMeta;
 
 export default defineComponent(Component, meta, {
-  props: (inputs: Inputs<typeof meta>) => {
+  props: (inputs: Inputs<typeof meta>, _, clientContext) => {
     return {
       ...inputs,
       results: loadData({
         from: inputs.ds,
         select: [inputs.metric],
         filters:
-          inputs.timeFilter?.from && inputs.timeProperty
+          (inputs.timeFilter?.from || inputs.timeFilter?.relativeTimeString) && inputs.timeProperty
             ? [
                 {
                   property: inputs.timeProperty,
                   operator: 'inDateRange',
-                  value: inputs.timeFilter,
+                  value: {
+                    from: inputs.timeFilter.from,
+                    relativeTimeString: inputs.timeFilter.relativeTimeString,
+                    to: inputs.timeFilter.to,
+                  },
                 },
               ]
             : undefined,
+        timezone: clientContext.timezone || 'UTC',
       }),
       prevResults:
         inputs.timeProperty &&
         loadData({
           from: inputs.ds,
           select: [inputs.metric],
-          limit: !inputs.prevTimeFilter?.from ? 1 : undefined,
-          filters: inputs.prevTimeFilter?.from
-            ? [
-                {
-                  property: inputs.timeProperty,
-                  operator: 'inDateRange',
-                  value: {
-                    from: inputs.prevTimeFilter.from,
-                    relativeTimeString: '',
-                    to: inputs.prevTimeFilter.to,
+          limit:
+            !inputs.prevTimeFilter?.from && !inputs.timeFilter?.relativeTimeString ? 1 : undefined,
+          filters:
+            (inputs.prevTimeFilter?.from || inputs.prevTimeFilter?.relativeTimeString) &&
+            inputs.timeProperty
+              ? [
+                  {
+                    property: inputs.timeProperty,
+                    operator: 'inDateRange',
+                    value: {
+                      from: inputs.prevTimeFilter.from,
+                      relativeTimeString: inputs.prevTimeFilter.relativeTimeString,
+                      to: inputs.prevTimeFilter.to,
+                    },
                   },
-                },
-              ]
-            : undefined,
+                ]
+              : undefined,
+          timezone: clientContext.timezone || 'UTC',
         }),
     };
   },
