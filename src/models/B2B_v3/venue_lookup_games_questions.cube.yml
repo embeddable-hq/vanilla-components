@@ -1,0 +1,32 @@
+cubes:
+- name: venue_lookup_games_questions
+  data_source: default
+  sql: >
+    SELECT
+      *
+    FROM `smartify-cc94e.smartify_lookup_tables.game_question_lookup`
+
+  dimensions:
+    - name: game_id
+      type: string
+      sql: sid
+
+    - name: organisation_id
+      type: string
+      sql: orgSid
+
+    - name: game_question_id
+      type: string
+      sql: question_sid
+
+    - name: game_question_text
+      type: string
+      sql: question_text
+
+    - name: question_allow_retry
+      type: string
+      sql: allow_retry
+    
+    - name: question_show_answer
+      type: string
+      sql: show_incorrect_answers

@@ -40,7 +40,8 @@ cubes:
           or event_params_custom.venue_id in unnest(split('{COMPILE_CONTEXT.securityContext.venue_id}', ',')))
       */
       and (event_params_custom.organisation_id != 'org_smithsonian' or (event_params_custom.organisation_id = 'org_smithsonian' and not contains_substr(event_params_custom.venue_id, ',')))
-      and event_date >= DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 13 MONTH)
+      and ((event_date >= DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 13 MONTH) and event_params_custom.organisation_id != 'org_hrp') or (event_date >= DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 28 MONTH) and event_params_custom.organisation_id = 'org_hrp'))
+      --and event_date >= "2023-01-01"
       and (stream_id in ('1047860117','1047860114','1913717213','2817285551','10374153553') or (stream_id = '4029517643' and event_params_custom.organisation_id = 'org_ukparliament'))
       and not (
           event_params_custom.event_custom_timestamp is not null 

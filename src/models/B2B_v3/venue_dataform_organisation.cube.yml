@@ -23,7 +23,7 @@ cubes:
         event_params_custom.event_label
       from `smartify-cc94e.superform_outputs_151371783.ga4_events`
       where event_params_custom.organisation_id = '{COMPILE_CONTEXT.securityContext.organisation_id}'
-      and event_date >= DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 13 MONTH)
+      and ((event_date >= DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 13 MONTH) and event_params_custom.organisation_id != 'org_hrp') or (event_date >= DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 28 MONTH) and event_params_custom.organisation_id = 'org_hrp'))
       and stream_id in ('1047860117','1047860114','1913717213','2817285551','10374153553')
       and event_name in ('page_view', 'screen_view', 'click_button', 'select_component', 'click_tab')
       
