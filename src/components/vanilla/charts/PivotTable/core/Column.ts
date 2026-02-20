@@ -1,11 +1,14 @@
-import { NativeDataType } from '@embeddable.com/core';
+import { NativeDataType, TCubeMeasureType } from '@embeddable.com/core';
 import { ColumnType } from '../enums/ColumnType';
+
+// Add "geo" to the list of native data types imported from '@embeddable.com/core'
+type ExtendedNativeDataType = NativeDataType | 'geo' | TCubeMeasureType;
 
 export type ColumnConfig = {
   label: string;
   key: string;
   type: ColumnType;
-  dataType?: NativeDataType;
+  dataType?: ExtendedNativeDataType;
   depth: number;
   parent?: Column | null;
   children?: Column[];
@@ -40,10 +43,10 @@ export class Column {
 
   /**
    * Column data type that will be used for formatting of the value
-   * @type {NativeDataType | null}
+   * @type {ExtendedNativeDataType | null}
    * @required
    */
-  dataType: NativeDataType | null;
+  dataType: ExtendedNativeDataType | null;
 
   /**
    * Column depth in the column hierarchy
@@ -86,16 +89,7 @@ export class Column {
    * @param {Column[]} config.children - Column children that are nested under this column
    * @param {Column} config.parent - Reference to parent column that this column is nested under
    */
-  constructor({
-    label,
-    key,
-    type,
-    dataType,
-    depth = 0,
-    children,
-    parent,
-    group
-  }: ColumnConfig) {
+  constructor({ label, key, type, dataType, depth = 0, children, parent, group }: ColumnConfig) {
     this.label = label;
     this.key = key;
     this.type = type;
@@ -113,10 +107,7 @@ export class Column {
    * @public
    */
   public addChildren(childColumns: Column[]): Column[] {
-    this.children = [
-      ...this.children || [],
-      ...childColumns
-    ];
+    this.children = [...(this.children || []), ...childColumns];
 
     return this.children;
   }
