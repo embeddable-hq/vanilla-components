@@ -1,0 +1,49 @@
+cubes:
+- name: venue_lookup_organisations
+  data_source: default
+  sql: >
+    SELECT
+      org_sid
+      ,org_name
+      ,org_locale
+      ,org_status
+      ,org_tier
+      --,venue_country
+      --,venue_city
+      ,concat(venue_country,'-',venue_city) as timezone_sid
+    FROM `smartify-cc94e.smartify_lookup_tables.org_lookup`
+
+  dimensions:
+    - name: timezone_sid
+      type: string
+      sql: timezone_sid
+      shown: false
+      primary_key: true
+
+    - name: org_sid
+      type: string
+      sql: org_sid
+      shown: false
+      primary_key: true
+    
+    - name: org_name
+      type: string
+      sql: org_name
+    
+    - name: org_locale
+      type: string
+      sql: org_locale
+
+    - name: org_status
+      type: string
+      sql: org_status
+    
+    - name: org_tier  
+      type: string
+      sql: org_tier
+    
+  joins:
+    - name: venue_lookup_timezone
+      relationship: many_to_one
+      sql: "{CUBE.timezone_sid} = {venue_lookup_timezone.timezone_sid}"
+  

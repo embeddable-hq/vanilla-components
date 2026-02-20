@@ -28,6 +28,11 @@
     organisation_id: org_wpp
     venue_id:
     
+- name: Museum of Fine Arts Houston
+  securityContext:
+    organisation_id: org_mfahouston
+    venue_id:
+    
 - name: Horizon 22
   securityContext:
     organisation_id: org_horizon22
@@ -51,6 +56,11 @@
 - name: Acropolis Museum
   securityContext:
     organisation_id: org_acropolismuseum
+    venue_id:
+
+- name: Smartify & Tests
+  securityContext:
+    organisation_id: org_test
     venue_id:
 
 - name: Hamburger Kunsthalle

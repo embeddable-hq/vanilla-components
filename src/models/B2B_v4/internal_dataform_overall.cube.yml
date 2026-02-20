@@ -33,19 +33,28 @@ cubes:
       END AS track_listen_time
     from `smartify-cc94e.superform_outputs_151371783.ga4_events`
     where (event_params_custom.organisation_id != 'org_smithsonian' or (event_params_custom.organisation_id = 'org_smithsonian' and not contains_substr(event_params_custom.venue_id, ',')))
-      and event_date >= DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 13 MONTH)
-      and (stream_id in ('1047860117','1047860114','1913717213','2817285551','10374153553') or (stream_id = '4029517643' and event_params_custom.organisation_id = 'org_ukparliament'))
-      and not (
-          event_params_custom.event_custom_timestamp is not null 
-          and DATE(TIMESTAMP_SECONDS(event_params_custom.event_custom_timestamp)) = '2025-06-06'
-          and stream_id = '1913717213'
-          and device.mobile_brand_name =  'Smartify'
-      )
+      and event_date >= DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 1 MONTH)
+      -- and (stream_id in ('1047860117','1047860114','1913717213','2817285551','10374153553') or (stream_id = '4029517643' and event_params_custom.organisation_id = 'org_ukparliament'))
+      -- and not (
+      --    event_params_custom.event_custom_timestamp is not null 
+      --    and DATE(TIMESTAMP_SECONDS(event_params_custom.event_custom_timestamp)) = '2025-06-06'
+      --    and stream_id = '1913717213'
+      --    and device.mobile_brand_name =  'Smartify'
+      -- )
 
   dimensions:
     - name: datetime
       type: time
       sql: if(event_custom_timestamp is null, timestamp_micros(event_timestamp), timestamp_seconds(event_custom_timestamp))
+
+    - name: datetime_local
+      type: time
+      title: Local DateTime
+      sql: >
+        TIMESTAMP_ADD(
+          if(event_custom_timestamp is null, timestamp_micros(event_timestamp), timestamp_seconds(event_custom_timestamp)),
+          INTERVAL CAST(CAST(IFNULL({venue_lookup_timezone.timezone_offset}, 0) AS FLOAT64) * 3600 AS INT64) SECOND
+        )
 
     - name: user_connectivity
       type: string
@@ -112,6 +121,8 @@ cubes:
     - name: organisation_id
       type: string
       sql: organisation_id
+      shown: true
+      primary_key: true
     
     - name: venue_id
       type: string
@@ -271,36 +282,8 @@ cubes:
       #sql: safe_divide({track_listen_time}, NULLIF({track_play_users}, 0))
       sql: "COALESCE({listen_time_minutes} / NULLIF({track_play_users}, 0), 0)"
 
-  # joins:
-  #   - name: venue_lookup_region_language
-  #     relationship: many_to_one
-  #     sql: "{CUBE.device_language} = {venue_lookup_region_language.device_language}"
+  joins:
+    - name: venue_lookup_organisations
+      relationship: many_to_one
+      sql: "{CUBE.organisation_id} = {venue_lookup_organisations.org_sid}"
   
-  # pre_aggregations:
-  #   - name: overall_aggregation
-  #     measures:
-  #       - venue_dataform_overall.active_user
-  #       - venue_dataform_overall.login_users
-  #       - venue_dataform_overall.total_actions
-  #       - venue_dataform_overall.object_views
-  #       - venue_dataform_overall.object_views_users
-  #       - venue_dataform_overall.object_scans
-  #       - venue_dataform_overall.object_scans_users
-  #       - venue_dataform_overall.tour_views
-  #       - venue_dataform_overall.tour_view_users
-  #       - venue_dataform_overall.track_plays
-  #       - venue_dataform_overall.track_play_users
-  #       - venue_dataform_overall.exhibition_views
-  #       - venue_dataform_overall.exhibition_views_users
-  #     dimensions:
-  #       - venue_dataform_overall.datetime
-  #       - venue_dataform_overall.venue_id
-  #       - venue_dataform_overall.device_platform
-  #       - venue_dataform_overall.user_connectivity
-  #       - venue_dataform_overall.user_age_range
-  #       - venue_dataform_overall.user_gender
-  #       - venue_dataform_overall.country
-  #       - venue_dataform_overall.user_type
-  #       - venue_lookup_region_language.language_name
-  #     timeDimension: venue_dataform_overall.datetime
-  #     granularity: day

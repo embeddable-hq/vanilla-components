@@ -1,0 +1,26 @@
+cubes:
+- name: venue_lookup_timezone
+  data_source: default
+  sql: >
+    SELECT
+      --country,
+      --city,
+      concat(country, '-', city) as timezone_sid,
+      timezone_gmt,
+      timezone_offset
+    FROM `smartify-cc94e.smartify_lookup_tables.timezone_lookup`
+
+  dimensions:
+    - name: timezone_sid
+      type: string
+      sql: timezone_sid
+      shown: false
+      primary_key: true
+    
+    - name: timezone_gmt
+      type: string
+      sql: timezone_gmt
+    
+    - name: timezone_offset
+      type: string
+      sql: timezone_offset

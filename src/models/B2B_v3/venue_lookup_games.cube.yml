@@ -1,0 +1,39 @@
+cubes:
+- name: venue_lookup_games
+  data_source: default
+  sql: >
+    SELECT
+      *
+    FROM `smartify-cc94e.smartify_lookup_tables.game_lookup`
+
+  dimensions:
+    - name: game_id
+      type: string
+      sql: sid
+      primaryKey: true
+      shown: false
+
+    - name: organisation_id
+      type: string
+      shown: false
+      sql: orgSid
+
+    - name: game_type
+      type: string
+      sql: type
+
+    - name: game_label
+      type: string
+      sql: label
+
+    - name: game_status
+      type: string
+      sql: game_status
+
+    - name: game_theme
+      type: string
+      sql: custom_theme_sid
+
+    - name: question_count
+      type: string
+      sql: question_count

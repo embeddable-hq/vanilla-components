@@ -10,6 +10,7 @@ cubes:
       ,tour_geo_fanced
       ,tour_hidden
       ,tour_status
+      ,in_permanent_collection
     from `smartify-cc94e.smartify_lookup_tables.tour_lookup` 
     where tour_sid != 'tour_nXWykZAxnH9pXEcZONAz'
     union all
@@ -21,6 +22,7 @@ cubes:
       ,null tour_geo_fanced
       ,null tour_hidden
       ,'published' tour_status
+      ,'true' in_permanent_collection
 
   dimensions:
     - name: tour_sid
@@ -52,3 +54,7 @@ cubes:
     - name: tour_hidden
       type: string
       sql: if(tour_hidden = 'true', 'true', 'false')
+    
+    - name: in_permanent_collection
+      type: string
+      sql: case when in_permanent_collection = 'true' then 'Permanent' when in_permanent_collection = 'false' then 'Temporary' else 'Unknown' end
