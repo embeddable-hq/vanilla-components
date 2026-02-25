@@ -139,7 +139,6 @@ export default defineComponent(Component, meta, {
                 },
               ]
             : undefined,
-        timezone: clientContext.timezone || 'UTC',
       }),
       prevResults:
         inputs.timeProperty &&
@@ -163,7 +162,6 @@ export default defineComponent(Component, meta, {
                   },
                 ]
               : undefined,
-          timezone: clientContext.timezone || 'UTC',
         }),
     };
   },

@@ -1,8 +1,8 @@
-import { NativeDataType, TCubeMeasureType } from '@embeddable.com/core';
+import { NativeDataType, MeasureType } from '@embeddable.com/core';
 import { ColumnType } from '../enums/ColumnType';
 
 // Add "geo" to the list of native data types imported from '@embeddable.com/core'
-type ExtendedNativeDataType = NativeDataType | 'geo' | TCubeMeasureType;
+type ExtendedNativeDataType = NativeDataType | 'geo' | MeasureType;
 
 export type ColumnConfig = {
   label: string;

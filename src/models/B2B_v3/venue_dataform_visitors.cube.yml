@@ -24,7 +24,7 @@ cubes:
         ,a.venue_id
         ,a.active_users
         ,b.visitors
-      from `smartify-cc94e.report_ad_hoc.test_visitors_data` as b
+      from `smartify-cc94e.report_ad_hoc.n8n_visitors_data` as b
       left join users as a on concat(FORMAT_TIMESTAMP('%Y-%m-%d', b.date),b.venue_sid,b.organisation_sid) = a.host_join
       where b.date >= DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 13 MONTH)
       and a.organisation_id = '{COMPILE_CONTEXT.securityContext.organisation_id}'
