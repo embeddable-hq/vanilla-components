@@ -48,6 +48,11 @@
     organisation_id: org_museumofillusions
     venue_id:
 
+- name: National Heritage Board of Singapore
+  securityContext:
+    organisation_id: org_nhb
+    venue_id:
+
 - name: Royal Museum of Greenwich
   securityContext:
     organisation_id: org_rmg

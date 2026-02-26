@@ -6,6 +6,7 @@ cubes:
       event_date
       ,event_params_custom.event_custom_timestamp
       ,time.event_timestamp
+      --,if(event_params_custom.event_custom_timestamp is null, timestamp_micros(time.event_timestamp), timestamp_seconds(event_params_custom.event_custom_timestamp)) as event_timestamp
       ,user_pseudo_id
       ,event_name
       ,stream_id
@@ -13,12 +14,9 @@ cubes:
       ,device.language as device_language
       ,geo.country
       ,event_params_custom.client_connectivity
-
       --,safe_cast(user_properties.user_age as int64) as user_age
       --,user_properties.user_gender
       --,ifnull(user_properties.user_logged, 'false') as user_logged
-      
-      
       ,event_params_custom.page_type
       ,event_params_custom.page_path
       ,event_params_custom.page_category
@@ -31,9 +29,7 @@ cubes:
       ,event_params_custom.answer_id
       ,event_params_custom.progress_step
       ,event_params_custom.success
-      
       ,"User Type" as user_type
-
     from `smartify-cc94e.superform_outputs_151371783.ga4_events`
     where event_params_custom.organisation_id = '{COMPILE_CONTEXT.securityContext.organisation_id}'
       and event_params_custom.game_id is not null
@@ -44,8 +40,24 @@ cubes:
   dimensions:
     - name: datetime
       type: time
-      sql: if(event_custom_timestamp is null, timestamp_micros(event_timestamp), timestamp_seconds(event_custom_timestamp))
-
+      # sql: if(event_custom_timestamp is null, timestamp_micros(event_timestamp), timestamp_seconds(event_custom_timestamp))
+      # 👆 Above it is the previous way of calculating the time of the event, without taking in consideration the timezone of the venue.
+      # 👇 Below is the new way, which adjusts the event time to the local time of the venue.
+      sql: >
+        TIMESTAMP_ADD(
+          if(event_custom_timestamp is null, timestamp_micros(event_timestamp), timestamp_seconds(event_custom_timestamp)),
+          INTERVAL CAST(CAST(IFNULL({venue_lookup_timezone.timezone_offset}, 0) AS FLOAT64) * 3600 AS INT64) SECOND
+        )
+    
+    # - name: datetime_local
+    #   type: time
+    #   title: Local DateTime
+    #   sql: >
+    #     TIMESTAMP_ADD(
+    #       if(event_custom_timestamp is null, timestamp_micros(event_timestamp), timestamp_seconds(event_custom_timestamp)),
+    #       INTERVAL CAST(CAST(IFNULL({venue_lookup_timezone.timezone_offset}, 0) AS FLOAT64) * 3600 AS INT64) SECOND
+    #     )
+    
     - name: user_connectivity
       type: string
       sql: |-
@@ -101,6 +113,8 @@ cubes:
     - name: organisation_id
       type: string
       sql: organisation_id
+      primaryKey: true
+      shown: true
 
     - name: game_id
       type: string
@@ -185,3 +199,7 @@ cubes:
     - name: venue_lookup_games
       relationship: many_to_one
       sql: '{CUBE.game_id} = {venue_lookup_games.game_id}'
+    
+    - name: venue_lookup_organisations
+      relationship: many_to_one
+      sql: "{CUBE.organisation_id} = {venue_lookup_organisations.org_sid}"
