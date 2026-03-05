@@ -53,7 +53,23 @@ cubes:
   dimensions:
     - name: datetime
       type: time
-      sql: if(event_custom_timestamp is null, timestamp_micros(event_timestamp), timestamp_seconds(event_custom_timestamp))
+      # sql: if(event_custom_timestamp is null, timestamp_micros(event_timestamp), timestamp_seconds(event_custom_timestamp))
+      # 👆 Above it is the previous way of calculating the time of the event, without taking in consideration the timezone of the venue.
+      # 👇 Below is the new way, which adjusts the event time to the local time of the venue.
+      sql: >
+        TIMESTAMP_ADD(
+          if(event_custom_timestamp is null, timestamp_micros(event_timestamp), timestamp_seconds(event_custom_timestamp)),
+          INTERVAL CAST(CAST(IFNULL({venue_lookup_timezone.timezone_offset}, 0) AS FLOAT64) * 3600 AS INT64) SECOND
+        )
+    
+    # - name: datetime_local
+    #   type: time
+    #   title: Local DateTime
+    #   sql: >
+    #     TIMESTAMP_ADD(
+    #       if(event_custom_timestamp is null, timestamp_micros(event_timestamp), timestamp_seconds(event_custom_timestamp)),
+    #       INTERVAL CAST(CAST(IFNULL({venue_lookup_timezone.timezone_offset}, 0) AS FLOAT64) * 3600 AS INT64) SECOND
+    #     )
 
     - name: user_connectivity
       type: string
@@ -120,6 +136,8 @@ cubes:
     - name: organisation_id
       type: string
       sql: organisation_id
+      primaryKey: true
+      shown: true
     
     - name: venue_id
       type: string
@@ -283,6 +301,10 @@ cubes:
     - name: venue_lookup_region_language
       relationship: many_to_one
       sql: "{CUBE.device_language} = {venue_lookup_region_language.device_language}"
+    
+    - name: venue_lookup_organisations
+      relationship: many_to_one
+      sql: "{CUBE.organisation_id} = {venue_lookup_organisations.org_sid}"
   
   # pre_aggregations:
   #   - name: overall_aggregation
