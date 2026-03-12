@@ -78,6 +78,11 @@
     organisation_id: org_scotng
     venue_id:
 
+- name: Yale University Art Gallery
+  securityContext:
+    organisation_id: org_yale
+    venue_id:
+
 - name: Salford Museum and Art Gallery
   securityContext:
     organisation_id: org_smag
