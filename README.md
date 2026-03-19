@@ -1,14 +1,8 @@
-# This Repo Is In Maintenance Mode
+# This Repo Is Deprecated
 
-Unless you are an existing client who has cloned this repo in the past, please do not clone or otherwise use this repo! This is the v0 version of Vanilla Components. The current v1 version of [Vanilla Components](https://github.com/embeddable-hq/vanilla-components-v1), which allows the importing of the components as a package and is what we recommend for all of our newer clients, lives in its own repo.
+This component library is no longer supported by Embeddable, and will soon be archived entirely. If you are seeing this for some reason, please [visit our documentation](https://docs.embeddable.com/component-libraries/remarkable-pro/introduction) for full information on our current component set, Remarkable Pro.
 
-The "clone the repo" version of Vanilla Components (this repo) will only receive updates in the future if there are significant bug fixes, or if the components need to be updated to work with changes in the Embeddable SDK or Platform.
-
-## Helpful Links
-
-- [Vanilla Components v1 Repo](https://github.com/embeddable-hq/vanilla-components-v1)
-- [Intro to Vanilla Components v1 for Existing Users](https://docs.embeddable.com/development/theme-welcome)
-- [Full Instructions for Upgrading from v0 to v1](https://docs.embeddable.com/development/theme-upgrading)
+If you would like assistance in upgrading to Remarkable Pro, please reach out to Embeddable Customer Success.
 
 ---
 
