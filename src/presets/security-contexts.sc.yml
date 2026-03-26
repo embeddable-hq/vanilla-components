@@ -2,137 +2,164 @@
   securityContext:
     organisation_id: org_belvedere
     venue_id:
+    gmtTimezone: 1
 
 - name: National Gallery
   securityContext:
     organisation_id: org_ng
     venue_id: venue_ng
+    gmtTimezone: 0
 
 - name: Salford Museum
   securityContext:
     organisation_id: org_smag
     venue_id:
+    gmtTimezone: 0
     
 - name: Tower Bridge
   securityContext:
     organisation_id: org_towerbridge
     venue_id:
+    gmtTimezone: 0
 
 - name: Royal Borough of Kensington and Chelsea
   securityContext:
     organisation_id: org_rbkc
     venue_id:
-    
+    gmtTimezone: 0
+
 - name: World Press Photo
   securityContext:
     organisation_id: org_wpp
     venue_id:
+    gmtTimezone: 1
     
 - name: Museum of Fine Arts Houston
   securityContext:
     organisation_id: org_mfahouston
     venue_id:
+    gmtTimezone: -6
     
 - name: Horizon 22
   securityContext:
     organisation_id: org_horizon22
     venue_id:
+    gmtTimezone: 0
 
 - name: Ashmolean Museum
   securityContext:
     organisation_id: org_ashmolean
     venue_id:
+    gmtTimezone: 0
 
 - name: Museum of Illusions
   securityContext:
     organisation_id: org_museumofillusions
     venue_id:
+    gmtTimezone: 0
 
 - name: National Heritage Board of Singapore
   securityContext:
     organisation_id: org_nhb
     venue_id:
+    gmtTimezone: 8
 
 - name: Royal Museum of Greenwich
   securityContext:
     organisation_id: org_rmg
     venue_id:
+    gmtTimezone: 0
 
 - name: Acropolis Museum
   securityContext:
     organisation_id: org_acropolismuseum
     venue_id:
+    gmtTimezone: 2
 
 - name: Smartify & Tests
   securityContext:
     organisation_id: org_test
     venue_id:
+    gmtTimezone: 0
 
 - name: Hamburger Kunsthalle
   securityContext:
     organisation_id: org_hamkunsthalle
     venue_id:
+    gmtTimezone: 0
 
 - name: Scottish National Gallery
   securityContext:
     organisation_id: org_scotng
     venue_id:
+    gmtTimezone: 0
 
 - name: Yale University Art Gallery
   securityContext:
     organisation_id: org_yale
     venue_id:
+    gmtTimezone: -5
 
 - name: Salford Museum and Art Gallery
   securityContext:
     organisation_id: org_smag
     venue_id:
+    gmtTimezone: 0
 
 - name: Princeton University Art Museum
   securityContext:
     organisation_id: org_princetonuam
     venue_id:
+    gmtTimezone: -5
 
 - name: Historical Royal Palaces
   securityContext:
     organisation_id: org_hrp
     venue_id:
+    gmtTimezone: 0
 
 - name: National Trust for Scotland
   securityContext:
     organisation_id: org_nts
     venue_id:
+    gmtTimezone: 0
 
 - name: Smithsonian
   securityContext:
     organisation_id: org_smithsonian
     venue_id:
+    gmtTimezone: -5
 
 - name: Qatar
   securityContext:
     organisation_id: org_qatarmuseums
     venue_id: 
+    gmtTimezone: 2
 
 - name: Louvre
   securityContext:
     organisation_id: org_louvre
     venue_id:
       - venue_louvre
+    gmtTimezone: 1
 
 - name: Louvre - David
   securityContext:
     organisation_id: org_david
     venue_id:
+    gmtTimezone: 1
 
 - name: Dresden Frauenkirche
   securityContext:
     organisation_id: org_dresdenfrauenkirche
     venue_id:
+    gmtTimezone: 1
 
 - name: UK Parliament
   securityContext:
     organisation_id: org_ukparliament
     venue_id:
+    gmtTimezone: 0
 
 - name: QR Code
   securityContext:

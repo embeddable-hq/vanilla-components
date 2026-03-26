@@ -1,0 +1,33 @@
+cubes:
+  - name: venue_lookup_vr_experience_hotspot
+    sql: |-
+      select
+        * 
+      from `smartify-cc94e.smartify_lookup_tables.ar360_hotspot_lookup`
+    
+    dimensions:    
+      - name: hotspot_sid
+        type: string
+        sql: hotspot_sid
+        primaryKey: true
+        shown: false
+      
+      - name: hotspot_title
+        type: string
+        sql: hotspot_title
+      
+      - name: hotspot_type
+        type: string
+        sql: hotspot_type
+      
+      - name: icon_type
+        type: string
+        sql: icon_type
+      
+      # - name: rotation
+      #   type: integer
+      #   sql: rotation
+      
+      - name: target_scene_sid
+        type: string
+        sql: target_scene_sid

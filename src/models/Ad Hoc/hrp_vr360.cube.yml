@@ -17,7 +17,6 @@ cubes:
         ,stream_id
         --,event_params_custom.track_id
         ,event_params_custom.scene_id
-        ,event_params_custom.vr_experience_id
       from `smartify-cc94e.superform_outputs_151371783.ga4_events`
       where event_date >= '2025-07-01'
       and page.hostname = 'ar.smartify.org'
@@ -61,10 +60,6 @@ cubes:
       sql: scene_id
       primaryKey: true
       shown: true
-    
-    # - name: vr_experience_id
-    #   type: string
-    #   sql: vr_experience_id
 
   measures:
     - name: total_users

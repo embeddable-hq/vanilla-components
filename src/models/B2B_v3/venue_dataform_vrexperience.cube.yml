@@ -1,0 +1,177 @@
+cubes:
+  - name: venue_dataform_vr_experience
+    data_source: default
+    sql: >
+      select
+        event_date
+        ,event_params_custom.event_custom_timestamp
+        ,time.event_timestamp
+        ,time.timestamp_local
+        ,user_pseudo_id
+        ,user_id
+        ,event_name
+        ,platform
+        ,event_params.engagement_time_msec
+        ,device.category as device_category
+        ,page.path as page_path
+        --,device.web_info.hostname as hostname
+        ,stream_id
+        ,geo.country as geo_country
+        ,event_params_custom.client_connectivity
+        ,event_params_custom.component_type
+        ,event_params_custom.content_category
+        ,event_params_custom.page_type
+        ,event_params_custom.venue_id
+        ,ifnull(event_params_custom.organisation_id, event_params_custom.organisation_id_s) as organisation_id
+        ,event_params_custom.vr_experience_id as vr_experience_id_raw
+        ,event_params_custom.scene_id
+        ,event_params_custom.scene_name
+        ,event_params_custom.hotspot_id
+      from `smartify-cc94e.superform_outputs_151371783.ga4_events`
+      where ifnull(event_params_custom.organisation_id, event_params_custom.organisation_id_s) = '{COMPILE_CONTEXT.securityContext.organisation_id}'
+      and (event_date >= DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 13 MONTH))
+      and event_params_custom.vr_experience_id is not null
+      and (stream_id in ('1047860117','1047860114','1913717213','2817285551','10374153553'))
+
+    dimensions:
+      - name: datetime
+        type: time
+        sql: if(event_custom_timestamp is null, timestamp(timestamp_local), timestamp_seconds(event_custom_timestamp))
+            
+      - name: user_connectivity
+        type: string
+        sql: |-
+          case
+            when (client_connectivity = '' or client_connectivity is null) then 'Unknown'
+            when client_connectivity in ('WIFI', 'Internet Corporate', 'Internet Highspeed') then 'Wi-Fi'
+            else 'Cellular'
+          end
+        
+      - name: device_platform
+        type: string
+        sql: |-
+          case
+            when stream_id = '1047860117' then 'iOS'
+            when stream_id = '1047860114' then 'Android'
+            when (stream_id = '1913717213' and device_category in ('tablet','desktop')) then 'Desktop'
+            when (stream_id = '10374153553' or (stream_id = '1913717213' and event_custom_timestamp is not null)) then 'Hardware'
+            else 'Webapp'
+          end
+      
+      - name: country
+        type: string
+        sql: if(geo_country = '', 'Unknown', geo_country)
+
+      - name: device_language
+        type: string
+        sql: device_language
+
+      - name: organisation_id
+        type: string
+        sql: organisation_id
+        primaryKey: true
+        shown: true
+      
+      - name: venue_id
+        type: string
+        sql: case when (venue_id = "" or venue_id is null) then "No linked venue" else venue_id end
+      
+      - name: event_name
+        type: string
+        sql: event_name
+      
+      - name: vr_experience_id_fixed
+        type: string
+        sql: |-
+          case 
+            when contains_substr(vr_experience_id_raw, 'ar360_') then vr_experience_id_raw
+            when contains_substr(page_path, '-360') then REGEXP_EXTRACT(page_path, r'/hrp-360/([^/]+)/index\.html')
+            else null
+          end
+        primaryKey: true
+        shown: true
+      
+      - name: scene_name
+        type: string
+        sql: |-
+          case
+            when scene_name is null or scene_name = '' then {venue_lookup_vr_experience_scene.scene_title}
+            else scene_name
+          end
+      
+      - name: scene_id
+        type: string
+        sql: scene_id
+        primaryKey: true
+        shown: true
+      
+      - name: hotspot_id
+        type: string
+        sql: hotspot_id
+        primaryKey: true
+        shown: true
+      
+    measures:
+      - name: active_user
+        type: count_distinct_approx
+        title: Total Users
+        sql: user_pseudo_id
+
+      - name: move_scene
+        type: count
+        title: Click to Next Scene
+        sql: event_name
+        filters:
+          - sql: "(event_name = 'move_scene')"
+      
+      - name: scan_marker
+        type: count
+        title: Scan Marker
+        sql: event_name
+        filters:
+          - sql: "(event_name = 'scan_recognition_hit')"
+      
+      - name: expand_info
+        type: count
+        title: Expand POI
+        sql: event_name
+        filters:
+          - sql: "(event_name = 'expand_info')"
+      
+      - name: complete_experience
+        type: count
+        title: Scan all POIs
+        sql: event_name
+        filters:
+          - sql: "(event_name = 'complete_experience')"
+      
+      - name: track_play
+        type: count
+        sql: event_name
+        filters:
+          - sql: "(event_name = 'track_start')"
+      
+      - name: total_engagement_time
+        type: sum
+        sql: safe_divide(engagement_time_msec, 60000)
+
+      - name: avg_engagement_time
+        type: number
+        sql: safe_divide({total_engagement_time}, {active_user})
+    
+    joins:
+      - name: venue_lookup_organisations
+        relationship: many_to_one
+        sql: "{CUBE.organisation_id} = {venue_lookup_organisations.org_sid}"
+      
+      - name: venue_lookup_vr_experience
+        relationship: many_to_one
+        sql: "{CUBE.vr_experience_id_fixed} = {venue_lookup_vr_experience.vr_experience_id}"
+      
+      - name: venue_lookup_vr_experience_scene
+        relationship: many_to_one
+        sql: "{CUBE.scene_id} = {venue_lookup_vr_experience_scene.scene_sid}"
+      
+      - name: venue_lookup_vr_experience_hotspot
+        relationship: many_to_one
+        sql: "{CUBE.hotspot_id} = {venue_lookup_vr_experience_hotspot.hotspot_sid}"

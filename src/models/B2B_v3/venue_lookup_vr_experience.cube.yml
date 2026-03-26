@@ -1,0 +1,40 @@
+cubes:
+  - name: venue_lookup_vr_experience
+    sql: |-
+      select
+        * 
+      from `smartify-cc94e.smartify_lookup_tables.ar360_lookup`
+      union all
+      select
+        'tudors-kitchens' as vr_experience_id
+        ,'Tudors - Kitchens' as vr_experience_title
+        ,'org_hrp' as organization_sid
+        ,'Published' as vr_experience_status
+      union all
+      select
+        'hillsborough-gardens' as vr_experience_id
+        ,'Hillsborough Gardens' as vr_experience_title
+        ,'org_hrp' as organization_sid
+        ,'Published' as vr_experience_status
+      union all
+      select
+        'beauchamp-tower' as vr_experience_id
+        ,'Beauchamp Tower' as vr_experience_title
+        ,'org_hrp' as organization_sid
+        ,'Published' as vr_experience_status
+
+    
+    dimensions:
+      - name: vr_experience_id
+        type: string
+        sql: vr_experience_id
+        primaryKey: true
+        shown: false
+      
+      - name: vr_experience_title
+        type: string
+        sql: vr_experience_title
+      
+      - name: vr_experience_status
+        type: string
+        sql: vr_experience_status

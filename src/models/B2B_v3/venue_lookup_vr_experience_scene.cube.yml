@@ -1,0 +1,29 @@
+cubes:
+  - name: venue_lookup_vr_experience_scene
+    sql: |-
+      select
+        * 
+      from `smartify-cc94e.smartify_lookup_tables.ar360_scene_lookup`
+    
+    dimensions:     
+      - name: scene_sid
+        type: string
+        sql: scene_sid
+        shown: false
+        primaryKey: true
+      
+      - name: scene_title
+        type: string
+        sql: scene_title
+      
+      # - name: scene_order
+      #   type: float
+      #   sql: scene_order
+      
+      - name: is_scene_hidden
+        type: string
+        sql: is_hidden
+      
+      - name: scene_projection_type
+        type: string
+        sql: projection_type

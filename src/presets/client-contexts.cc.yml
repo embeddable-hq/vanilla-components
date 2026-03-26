@@ -1,0 +1,8 @@
+# src/embeddable/presets/client-contexts.cc.yml
+- name: GMT 0
+  clientContext:
+    gmtTimezone: 0
+ 
+- name: GMT -6
+  clientContext:
+    gmtTimezone: -6
