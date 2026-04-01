@@ -63,7 +63,8 @@
       "d3-interpolate": "^3.0.1",
       "d3-select": "^3.0.0",
       "d3-zoom": "^3.0.0"
-    }
+    },
+    "axios": "1.13.5"
   },
   "devDependencies": {
     "@embeddable.com/core": "^2.13.6",
